@@ -4,25 +4,24 @@ package com.emu.apps.qcm.services.projections;
 import com.emu.apps.qcm.services.entity.epics.Epic;
 import org.hibernate.annotations.Immutable;
 
-
 import java.util.Date;
 
 @Immutable
 public interface QuestionnaireProjection {
 
-    public Long getId();
+    Long getId();
 
-    public Long getVersion();
+    Long getVersion();
 
-    public Date getDateCreation();
+    Date getDateCreation();
 
-    public String getTitle();
+    String getTitle();
 
-    public Epic getEpic();
+    Epic getEpic();
 
-    public String getDescription();
+    String getDescription();
 
-    public String getLocale();
+    String getLocale();
 
 
 }

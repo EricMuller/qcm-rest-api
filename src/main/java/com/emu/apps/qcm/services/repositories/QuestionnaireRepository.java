@@ -16,9 +16,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface QuestionnaireRepository extends JpaRepository<Questionnaire, Long> {
 
-//    @Query(value = "SELECT Max(q.position) from Questionnaire q")
-//    Long getMaxPosition();
-
     @Query("SELECT q.id as id, q.version as version,  q.dateCreation as date, q.title as title, q.description as description, q.epic as epic  from Questionnaire q  WHERE q.id = :id ")
     QuestionnaireProjection findQuestionnaireById(@Param("id") Long questionnaireId);
 

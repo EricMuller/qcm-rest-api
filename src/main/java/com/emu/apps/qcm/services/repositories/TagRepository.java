@@ -9,8 +9,6 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-//@Api(tags = "tags")
-//@RepositoryRestResource(collectionResourceRel = "tags", path = "/api/v1/tags")
 public interface TagRepository extends PagingAndSortingRepository<Tag, Long> {
 
     @Query("SELECT DISTINCT q FROM Tag q WHERE q.libelle  = :libelle ")

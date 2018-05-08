@@ -8,6 +8,6 @@ import java.util.Set;
 @Immutable
 public interface QuestionTagProjection extends QuestionProjection {
 
-    public Set<QuestionTag> getQuestionTags();
+    Set<QuestionTag> getQuestionTags();
 
 }

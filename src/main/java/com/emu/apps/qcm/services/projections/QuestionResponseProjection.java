@@ -8,9 +8,6 @@ import java.util.List;
 @Immutable
 public interface QuestionResponseProjection extends QuestionProjection {
 
-
-
-    public List<Response> getResponses();
-
+     List<Response> getResponses();
 
 }

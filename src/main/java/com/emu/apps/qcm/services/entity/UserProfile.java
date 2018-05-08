@@ -12,7 +12,6 @@ import java.util.Collections;
 import java.util.Date;
 
 
-//@Table(name = "User")
 @Entity
 public class UserProfile extends BasicEntity implements UserDetails {
 

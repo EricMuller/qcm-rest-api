@@ -7,7 +7,7 @@ import org.hibernate.annotations.Immutable;
 public interface QuestionnaireQuestionProjection extends QuestionResponseProjection {
 
 
-    public Questionnaire getQuestionnaire();
+    Questionnaire getQuestionnaire();
 
 
 }

@@ -18,11 +18,6 @@ public abstract class BasicEntity extends AbstractPersistable<Long> {
     @Column(unique = true, name = "uuid", nullable = false)
     protected String uuid = UUID.randomUUID().toString().toUpperCase();
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
-//    @ApiModelProperty(notes = "The database generated Question ID")
-//    private Long id;
-
     @Version
     private Long version;
 
@@ -33,17 +28,6 @@ public abstract class BasicEntity extends AbstractPersistable<Long> {
     @Column(name = "modified_date")
     @LastModifiedDate
     private Date dateModification;
-
-
-    /*// @Column(name = "created_by_user", nullable = false)
-    @CreatedBy
-    private String createdByUser;
-
-    //
-    //@Column(name = "modified_by_user", nullable = false)
-    @LastModifiedBy
-    private String modifiedByUser;
-*/
 
     public String getUuid() {
         return uuid;
@@ -61,10 +45,6 @@ public abstract class BasicEntity extends AbstractPersistable<Long> {
         } else {
             this.setDateModification(new Date());
         }
-
-//        String createdByUser = getUsernameOfAuthenticatedUser();
-//        this.createdByUser = createdByUser;
-//        this.modifiedByUser = createdByUser;
     }
 
     public Long getVersion() {
@@ -101,19 +81,5 @@ public abstract class BasicEntity extends AbstractPersistable<Long> {
     public void setDateModification(Date dateModification) {
         this.dateModification = dateModification;
     }
-//
-//    private String getUsernameOfAuthenticatedUser() {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        if (authentication == null || !authentication.isAuthenticated()) {
-//            return "SYS";
-//        }
-////        if (authentication.getPrincipal() instanceof UserDetails) {
-////            return ((UserDetails) authentication.getPrincipal()).getUsername();
-////        } else {
-////            return (String) authentication.getPrincipal();
-////        }
-//        return "SYS";
-//    }
-
 
 }

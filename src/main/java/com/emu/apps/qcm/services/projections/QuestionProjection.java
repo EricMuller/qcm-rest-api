@@ -9,20 +9,19 @@ import java.util.Date;
 @Immutable
 public interface QuestionProjection {
 
-//    @Value("#target.id")
-    public Long getId();
+    Long getId();
 
-    public Long getVersion();
+    Long getVersion();
 
-    public Date getDateCreation();
+    Date getDateCreation();
 
-    public Boolean getMandatory();
+    Boolean getMandatory();
 
-    public Long getPosition();
+    Long getPosition();
 
-    public String getQuestion();
+    String getQuestion();
 
-    public Type getType();
+    Type getType();
 
-    public String getUuid();
+    String getUuid();
 }
