@@ -35,7 +35,6 @@ public class TagRestController {
     @Autowired
     private TagMapper tagMapper;
 
-
     @ApiOperation(value = "Find all Tags By Page", responseContainer = "List", response = TagDto.class, nickname = "getTags")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page", dataType = "integer", paramType = "query", value = "Results page you want to retrieve (0..N)"),
@@ -53,14 +52,14 @@ public class TagRestController {
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     @PreAuthorize("true")
-    public Page<TagDto> getQuestionnairesByPAge(Pageable pageable) {
+    public Page<TagDto> getTagsByPAge(Pageable pageable) {
         return tagMapper.pageToDto(tagService.findAllByPage(pageable));
     }
 
     @ApiOperation(value = "Find a tag by ID", response = TagDto.class, nickname = "getTagById")
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     @ResponseBody
-    public TagDto getTag(@PathVariable("id") Long id) {
+    public TagDto getTagById(@PathVariable("id") Long id) {
         return tagMapper.modelToDto(tagService.findById(id));
     }
 

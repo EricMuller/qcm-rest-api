@@ -105,8 +105,6 @@ public class QuestionnaireRestController {
         questionnaire = questionnaireTagService.saveQuestionnaireTags(questionnaire.getId(), questionnaireTags);
 
         return questionnaireMapper.modelToDto(questionnaire);
-
-
     }
 
     @ApiOperation(value = "Find all questions by QuestionnaireID", nickname = "getQuestionsProjectionByQuestionnaireId")
