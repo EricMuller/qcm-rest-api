@@ -74,6 +74,11 @@ public class FixtureService {
     public FixtureService() {
     }
 
+   @Transactional(readOnly = true)
+   public Tag findTagbyLibelle(String Name){
+        return tagRepository.findByLibelle(TAG_LIBELLE_4);
+   }
+
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Questionnaire createQuestionQuestionnaireTag() {
 

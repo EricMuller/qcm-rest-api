@@ -38,7 +38,6 @@ public class QuestionServiceImpl implements QuestionService {
         return questionRepository.findOne(id);
     }
 
-
     @Override
     public Question saveQuestion(Question question) {
         return questionRepository.save(question);

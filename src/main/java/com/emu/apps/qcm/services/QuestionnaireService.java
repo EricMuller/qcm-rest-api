@@ -5,12 +5,13 @@ import com.emu.apps.qcm.services.entity.questionnaires.QuestionnaireQuestion;
 import com.emu.apps.qcm.services.projections.QuestionnaireProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 public interface QuestionnaireService {
 
     Questionnaire findById(long id);
 
-    void deleteById(long id) ;
+    void deleteById(long id);
 
     Iterable<Questionnaire> findAll();
 
@@ -18,11 +19,10 @@ public interface QuestionnaireService {
 
     Questionnaire saveQuestionnaire(Questionnaire questionnaire);
 
-    Iterable<Questionnaire> saveQuestionnaire(Iterable<Questionnaire> questionnaires);
-
     QuestionnaireQuestion saveQuestionnaireQuestion(QuestionnaireQuestion questionnaireQuestion);
 
     Iterable<QuestionnaireProjection> findByTitleContaining(String title);
 
+    Page<Questionnaire> findAllBySpecifications(Specification<Questionnaire> specification, Pageable pageable) ;
 
 }

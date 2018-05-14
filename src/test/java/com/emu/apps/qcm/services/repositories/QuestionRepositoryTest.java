@@ -2,8 +2,8 @@ package com.emu.apps.qcm.services.repositories;
 
 import com.emu.apps.qcm.services.FixtureService;
 import com.emu.apps.qcm.services.entity.questions.Question;
-import com.emu.apps.qcm.services.entity.tags.QuestionTag;
 import com.emu.apps.qcm.services.entity.questions.Response;
+import com.emu.apps.qcm.services.entity.tags.QuestionTag;
 import com.google.common.collect.Iterables;
 import org.assertj.core.api.Assertions;
 import org.hibernate.LazyInitializationException;
@@ -119,7 +119,6 @@ public class QuestionRepositoryTest {
         Question first = Iterables.getFirst(content, null);
 
         Assertions.assertThat(first).isNotNull();
-        //Assertions.assertThat(first.getQuestion()).isNotNull().isEqualTo(fixture.QUESTION_QUESTION_);
 
         Set<QuestionTag> questionTags = first.getQuestionTags();
         Assertions.assertThat(questionTags).isNotEmpty();

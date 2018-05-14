@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,11 +59,6 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     }
 
     @Override
-    public Iterable<Questionnaire> saveQuestionnaire(Iterable<Questionnaire> questionnaires) {
-        return questionnaireRepository.save(questionnaires);
-    }
-
-    @Override
     public QuestionnaireQuestion saveQuestionnaireQuestion(QuestionnaireQuestion questionnaireQuestion) {
         return questionnaireQuestionRepository.save(questionnaireQuestion);
     }
@@ -72,5 +68,8 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
         return questionnaireRepository.findByTitleContaining(title);
     }
 
-
+    @Override
+    public Page<Questionnaire> findAllBySpecifications(Specification<Questionnaire> specification, Pageable pageable) {
+        return questionnaireRepository.findAll(specification, pageable);
+    }
 }

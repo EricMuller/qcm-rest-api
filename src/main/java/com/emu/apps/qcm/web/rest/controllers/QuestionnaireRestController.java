@@ -6,6 +6,8 @@ import com.emu.apps.qcm.services.QuestionnaireService;
 import com.emu.apps.qcm.services.QuestionnaireTagService;
 import com.emu.apps.qcm.services.entity.questionnaires.Questionnaire;
 import com.emu.apps.qcm.services.entity.tags.QuestionnaireTag;
+import com.emu.apps.qcm.services.repositories.specifications.questionnaire.QuestionnaireSpecification;
+import com.emu.apps.qcm.web.rest.dtos.FilterDto;
 import com.emu.apps.qcm.web.rest.dtos.QuestionDto;
 import com.emu.apps.qcm.web.rest.dtos.QuestionnaireDto;
 import com.emu.apps.qcm.web.rest.dtos.SuggestDto;
@@ -13,8 +15,10 @@ import com.emu.apps.qcm.web.rest.exceptions.ExceptionUtil;
 import com.emu.apps.qcm.web.rest.mappers.QuestionMapper;
 import com.emu.apps.qcm.web.rest.mappers.QuestionnaireMapper;
 import com.emu.apps.qcm.web.rest.mappers.QuestionnaireTagMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import io.swagger.annotations.*;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +30,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
+import java.util.stream.IntStream;
 
 @RestController
 @RequestMapping("/api/v1/questionnaires")
@@ -53,25 +60,11 @@ public class QuestionnaireRestController {
     @Autowired
     private QuestionnaireTagMapper questionnaireTagMapper;
 
+    @Autowired
+    private QuestionnaireSpecification questionnaireSpecification;
 
-    @ApiOperation(value = "Find all questionnaires By Page", nickname = "getQuestionnaires")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "page", dataType = "integer", paramType = "query", value = "Results page you want to retrieve (0..N)"),
-            @ApiImplicitParam(name = "size", dataType = "integer", paramType = "query", value = "Number of records per page."),
-            @ApiImplicitParam(name = "sort", allowMultiple = true, dataType = "string", paramType = "query",
-                    value = "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.")
-    })
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved list"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
-    }
-    )
-    @ResponseBody
-    @RequestMapping(method = RequestMethod.GET, produces = "application/json")
-    public Page<QuestionnaireDto> getQuestionnaires(Pageable pageable) {
-        return questionnaireMapper.pageToDto(questionnairesService.findAllByPage(pageable));
+    public static boolean isEmpty(final byte[] data) {
+        return IntStream.range(0, data.length).parallel().allMatch(i -> data[i] == 0);
     }
 
     @ApiOperation(value = "Find a currentQuestionnaire by ID", response = QuestionnaireDto.class, nickname = "getQuestionnaireById")
@@ -120,15 +113,6 @@ public class QuestionnaireRestController {
         return questionMapper.pageQuestionResponseProjectionToDto(questionService.getQuestionsProjectionByQuestionnaireId(id, pageable));
     }
 
-//
-//    @ApiOperation(value = "Find a question projection by ID", responseContainer = "List", response = QuestionDto.class, nickname = "getQuestionsProjectionByQuestionnaireId")
-//    @RequestMapping(value = "/{id:[\\d]+}/questions", method = RequestMethod.GET)
-//    @ResponseBody
-//    public Iterable<QuestionDto> getQuestionsByByQuestionnaireId(@PathVariable("id") long id) {
-//        return questionMapper.projectionsToDtos(questionService.getQuestionsProjectionByQuestionnaireId(id));
-//    }
-
-
     @ApiOperation(value = "Find suggestions ", responseContainer = "List", response = SuggestDto.class, nickname = "getSuggestions")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully retrieved list"),
@@ -148,5 +132,38 @@ public class QuestionnaireRestController {
         return suggestions;
     }
 
+    @ApiOperation(value = "Find all questionnaires By Page", nickname = "getQuestionnaires")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "filters", dataType = "String", paramType = "query", value = "base64 encoded string"),
+            @ApiImplicitParam(name = "page", dataType = "integer", paramType = "query", value = "Results page you want to retrieve (0..N)"),
+            @ApiImplicitParam(name = "size", dataType = "integer", paramType = "query", value = "Number of records per page."),
+            @ApiImplicitParam(name = "sort", allowMultiple = true, dataType = "string", paramType = "query",
+                    value = "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.")
+    })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully retrieved list"),
+            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+    }
+    )
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.GET, produces = "application/json")
+    public Iterable<QuestionnaireDto> getQuestionnairesWithFilters(@RequestParam(value = "filters", required = false) String filterString, Pageable pageable) {
+        if (StringUtils.isNoneEmpty(filterString)) {
+            byte[] bytes = Base64.getDecoder().decode(filterString);
+            if (!isEmpty(bytes)) {
+                try {
+                    final FilterDto[] filterDtos = new ObjectMapper().readValue(bytes, FilterDto[].class);
+                    if (ArrayUtils.isNotEmpty(filterDtos)) {
+                        return questionnaireMapper.pageToDto(questionnairesService.findAllBySpecifications(questionnaireSpecification.getFilter(filterDtos), pageable));
+                    }
+                } catch (IOException e) {
+                    logger.error(e.getMessage(), e);
+                }
+            }
+        }
+        return questionnaireMapper.pageToDto(questionnairesService.findAllByPage(pageable));
+    }
 
 }

@@ -10,17 +10,17 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Set;
+
 /**
  * Created by eric on 05/06/2017.
- *
- //   REMEMBER  pb perf
- //    @Query(value ="SELECT  q.id as id, q.uuid as uuid, q.dateCreation as dateCreation,q.version as version,q.question as question ,q.type as type, q.dateModification as dateModification, qt.id.questionId  as questionId " +
- //                " from  Question  q left join fetch QuestionTag qt on qt.id.questionId = q.id join fetch qt.tag",
- //            countQuery = "SELECT COUNT(q) FROM Question q left JOIN  q.questionTags qt join  qt.tag "
- //    )
- //    Page<QuestionTagProjection> findAllProjectionQuestionsTags(Pageable pageable); *
- *
- *
+ * <p>
+ * //   REMEMBER  pb perf
+ * //    @Query(value ="SELECT  q.id as id, q.uuid as uuid, q.dateCreation as dateCreation,q.version as version,q.question as question ,q.type as type, q.dateModification as dateModification, qt.id.questionId  as questionId " +
+ * //                " from  Question  q left join fetch QuestionTag qt on qt.id.questionId = q.id join fetch qt.tag",
+ * //            countQuery = "SELECT COUNT(q) FROM Question q left JOIN  q.questionTags qt join  qt.tag "
+ * //    )
+ * //    Page<QuestionTagProjection> findAllProjectionQuestionsTags(Pageable pageable); *
  */
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, Long>, JpaSpecificationExecutor {
@@ -41,4 +41,9 @@ public interface QuestionRepository extends JpaRepository<Question, Long>, JpaSp
 
     @EntityGraph(value = "Question.questionTags")
     Page<Question> findAll(Pageable pageable);
+
+    @Query(value= "SELECT distinct q from Question q  join  q.questionTags qt join  qt.tag WHERE q.id in :ids ",
+            countQuery = "SELECT COUNT(distinct q) from Question q  join  q.questionTags qt join  qt.tag WHERE q.id in :ids ")
+    @EntityGraph(value = "Question.questionTags")
+    Page<Question> findAllByTagIds(@Param("ids") Set<Long> ids, Pageable pageable);
 }

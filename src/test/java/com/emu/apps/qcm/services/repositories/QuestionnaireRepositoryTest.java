@@ -6,7 +6,10 @@ import com.emu.apps.qcm.services.entity.questionnaires.QuestionnaireQuestion;
 import com.emu.apps.qcm.services.entity.questions.Question;
 import com.emu.apps.qcm.services.entity.questions.Response;
 import com.emu.apps.qcm.services.entity.tags.QuestionTag;
+import com.emu.apps.qcm.services.entity.tags.Tag;
 import com.emu.apps.qcm.services.projections.QuestionnaireProjection;
+import com.emu.apps.qcm.services.repositories.specifications.questionnaire.QuestionnaireSpecification;
+import com.emu.apps.qcm.web.rest.dtos.FilterDto;
 import com.google.common.collect.Iterables;
 import org.assertj.core.api.Assertions;
 import org.junit.Assert;
@@ -14,8 +17,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Arrays;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
@@ -26,6 +34,9 @@ public class QuestionnaireRepositoryTest {
 
     @Autowired
     private FixtureService questionnaireFixture;
+
+    @Autowired
+    private QuestionnaireSpecification questionnaireSpecification;
 
     @Test
     @Transactional
@@ -59,7 +70,7 @@ public class QuestionnaireRepositoryTest {
 
         QuestionTag questionTag = Iterables.getFirst(question.getQuestionTags(), null);
         Assertions.assertThat(questionTag.getTag()).isNotNull();
-        Assertions.assertThat(questionTag.getTag().getLibelle()).isNotNull().startsWith(FixtureService.TAG_LIBELLE_1.substring(0,3));
+        Assertions.assertThat(questionTag.getTag().getLibelle()).isNotNull().startsWith(FixtureService.TAG_LIBELLE_1.substring(0, 3));
 
     }
 
@@ -75,6 +86,24 @@ public class QuestionnaireRepositoryTest {
         Assert.assertEquals(questionnaire.getEpic().getLibelle(), FixtureService.CATEGORIE_LIBELLE);
         Assert.assertNotNull(questionnaire.getDescription());
         Assert.assertEquals(questionnaire.getDescription(), FixtureService.QUESTIONNAIRE_DESC);
+    }
+
+    @Test
+    public void findAllWithSpecification() {
+
+        questionnaireFixture.createQuestionQuestionnaireTag();
+
+        Tag tag = questionnaireFixture.findTagbyLibelle(questionnaireFixture.TAG_LIBELLE_4);
+        Assertions.assertThat(tag).isNotNull();
+
+        FilterDto filterDto = new FilterDto("tag_id", tag.getId());
+
+        Specification<Questionnaire> specification = questionnaireSpecification.getFilter(Arrays.asList(filterDto).toArray(new FilterDto[0]));
+
+        Page<Questionnaire> page = questionnaireRepository.findAll(specification,(Pageable) null);
+        Assertions.assertThat(page).isNotNull();
+
+        Assertions.assertThat(page.getNumberOfElements()).isEqualTo(1);
     }
 
 }
