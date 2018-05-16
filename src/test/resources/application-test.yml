@@ -1,8 +1,4 @@
-# Security enable/disable
-security:
-  ignored: /**
-  basic:
-    enabled: false
+
 
 jpa:
     generate-ddl: false
@@ -13,10 +9,6 @@ jpa:
 keycloak:
   enabled: false
 
-
-spring:
-  security:
-    enabled: false
 
 management:
   security:

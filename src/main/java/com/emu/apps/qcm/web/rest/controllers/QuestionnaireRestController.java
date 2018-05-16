@@ -11,14 +11,13 @@ import com.emu.apps.qcm.web.rest.dtos.FilterDto;
 import com.emu.apps.qcm.web.rest.dtos.QuestionDto;
 import com.emu.apps.qcm.web.rest.dtos.QuestionnaireDto;
 import com.emu.apps.qcm.web.rest.dtos.SuggestDto;
-import com.emu.apps.qcm.web.rest.exceptions.ExceptionUtil;
 import com.emu.apps.qcm.web.rest.mappers.QuestionMapper;
 import com.emu.apps.qcm.web.rest.mappers.QuestionnaireMapper;
 import com.emu.apps.qcm.web.rest.mappers.QuestionnaireTagMapper;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.emu.apps.qcm.web.rest.utils.ExceptionUtil;
+import com.emu.apps.qcm.web.rest.utils.StringToFilter;
 import com.google.common.collect.Lists;
 import io.swagger.annotations.*;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,9 +30,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.Base64;
+import java.security.Principal;
 import java.util.List;
-import java.util.stream.IntStream;
 
 @RestController
 @RequestMapping("/api/v1/questionnaires")
@@ -63,9 +61,8 @@ public class QuestionnaireRestController {
     @Autowired
     private QuestionnaireSpecification questionnaireSpecification;
 
-    public static boolean isEmpty(final byte[] data) {
-        return IntStream.range(0, data.length).parallel().allMatch(i -> data[i] == 0);
-    }
+    @Autowired
+    private StringToFilter stringToFilter;
 
     @ApiOperation(value = "Find a currentQuestionnaire by ID", response = QuestionnaireDto.class, nickname = "getQuestionnaireById")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -149,21 +146,12 @@ public class QuestionnaireRestController {
     )
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
-    public Iterable<QuestionnaireDto> getQuestionnairesWithFilters(@RequestParam(value = "filters", required = false) String filterString, Pageable pageable) {
-        if (StringUtils.isNoneEmpty(filterString)) {
-            byte[] bytes = Base64.getDecoder().decode(filterString);
-            if (!isEmpty(bytes)) {
-                try {
-                    final FilterDto[] filterDtos = new ObjectMapper().readValue(bytes, FilterDto[].class);
-                    if (ArrayUtils.isNotEmpty(filterDtos)) {
-                        return questionnaireMapper.pageToDto(questionnairesService.findAllBySpecifications(questionnaireSpecification.getFilter(filterDtos), pageable));
-                    }
-                } catch (IOException e) {
-                    logger.error(e.getMessage(), e);
-                }
-            }
-        }
-        return questionnaireMapper.pageToDto(questionnairesService.findAllByPage(pageable));
+    public Iterable<QuestionnaireDto> getQuestionnairesWithFilters(Principal principal, @RequestParam(value = "filters", required = false) String filterString, Pageable pageable) throws IOException {
+
+        FilterDto[] filterDtos = stringToFilter.getFilterDtos(filterString);
+
+        return questionnaireMapper.pageToDto(questionnairesService.findAllByPage(questionnaireSpecification.getFilter(filterDtos, principal), pageable));
     }
+
 
 }

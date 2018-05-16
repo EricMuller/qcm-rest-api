@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.SetJoin;
+import java.security.Principal;
 import java.util.Arrays;
 
 import static org.springframework.data.jpa.domain.Specifications.where;
@@ -29,13 +30,15 @@ public class QuestionnaireSpecification extends BaseSpecification<Questionnaire,
     }
 
     @Override
-    public Specification<Questionnaire> getFilter(final FilterDto[] filters) {
+    public Specification<Questionnaire> getFilter(final FilterDto[] filters, Principal principal) {
         return (root, query, cb) -> {
             query.distinct(true); //Important because of the join in the questionnaireTags specifications
-            return where(
+            return
                     where(questionnaireTitleContains(getTitle(filters)))
-                            .and(tagIdIn(getTagIds(filters))))
-                    .toPredicate(root, query, cb);
+                            .and(tagIdIn(getTagIds(filters)))
+                            .and(questionnaireCreatdByEqual(principal.getName())
+                            )
+                            .toPredicate(root, query, cb);
         };
     }
 
@@ -47,6 +50,10 @@ public class QuestionnaireSpecification extends BaseSpecification<Questionnaire,
         return tagAttributeIn("id", ids);
     }
 
+    private Specification<Questionnaire> questionnaireCreatdByEqual(String name) {
+        return questionnaireAttributeEquals("createdBy", name);
+    }
+
     private Specification<Questionnaire> questionnaireAttributeContains(String attribute, String value) {
         return (root, query, cb) -> {
             if (StringUtils.isEmpty(value)) {
@@ -56,6 +63,15 @@ public class QuestionnaireSpecification extends BaseSpecification<Questionnaire,
                     cb.lower(root.get(attribute)),
                     containsLowerCase(value)
             );
+        };
+    }
+
+    private Specification<Questionnaire> questionnaireAttributeEquals(String attribute, String value) {
+        return (root, query, cb) -> {
+            if (StringUtils.isEmpty(value)) {
+                return null;
+            }
+            return cb.equal(root.get(attribute), value);
         };
     }
 

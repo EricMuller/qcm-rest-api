@@ -1,6 +1,7 @@
 package com.emu.apps.qcm.web.rest;
 
 import com.emu.apps.qcm.Application;
+import com.emu.apps.qcm.ApplicationTest;
 import com.emu.apps.qcm.web.rest.dtos.PageDto;
 import com.emu.apps.qcm.web.rest.dtos.QuestionnaireDto;
 import com.google.common.collect.Iterables;
@@ -17,8 +18,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestOperations;
-import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.Base64;
 import java.util.List;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
@@ -52,23 +53,22 @@ public class UploadRestControllerTest {
 
     @Test
     public void shouldUploadFile() {
-        final HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.AUTHORIZATION, "Bearer FOO");
-        headers.setContentType(MediaType.APPLICATION_JSON);
 
         ClassPathResource resource = new ClassPathResource("javaquestions2017.json", getClass());
         MultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
         map.add("file", resource);
 
-        final ResponseEntity<String> response = restTemplate.exchange(createURLWithPort("/api/v1/upload/questionnaire"), HttpMethod.POST,
-                                                                      new HttpEntity<>(map), String.class);
+        MultiValueMap<String, String> authHeaders = new LinkedMultiValueMap();
+        String token = new String(Base64.getEncoder().encode((ApplicationTest.USER_TEST + ":" + ApplicationTest.USER_PASSWORD).getBytes()));
+        authHeaders.add(HttpHeaders.AUTHORIZATION, "Basic " + token);
 
+        final ResponseEntity<String> response = restTemplate.exchange(createURLWithPort("/api/v1/upload/questionnaire"), HttpMethod.POST,
+                new HttpEntity<>(map, authHeaders), String.class);
         assertThat(response.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
 
 
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(createURLWithPort("/api/v1/questionnaires/"));
-        final ResponseEntity<PageQuestionnaireDto> responseGet = restTemplate.getForEntity(builder.build().encode().toUri(), PageQuestionnaireDto.class);
-
+        final ResponseEntity<PageQuestionnaireDto> responseGet = restTemplate.exchange(createURLWithPort("/api/v1/questionnaires/"), HttpMethod.GET,
+                new HttpEntity<>(null, authHeaders), PageQuestionnaireDto.class);
 
         List<QuestionnaireDto> questionnaireDtos = responseGet.getBody().getContent();
 

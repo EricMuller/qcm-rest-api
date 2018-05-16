@@ -1,14 +1,15 @@
 package com.emu.apps.qcm.services.entity.questions;
 
-import com.emu.apps.qcm.services.entity.common.BasicEntity;
+import com.emu.apps.qcm.services.entity.common.AuditableEntity;
 import com.emu.apps.qcm.services.entity.converters.BooleanTFConverter;
+import org.springframework.security.core.userdetails.User;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 
 @Entity
-public class Choice extends BasicEntity {
+public class Choice extends AuditableEntity<String> {
 
     @Column(name = "MESSAGE", nullable = false, length = 1024)
     private String message;

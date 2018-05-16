@@ -1,8 +1,9 @@
 package com.emu.apps.qcm.services.entity;
 
-import com.emu.apps.qcm.services.entity.common.BasicEntity;
+import com.emu.apps.qcm.services.entity.common.AuditableEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.Column;
@@ -13,7 +14,7 @@ import java.util.Date;
 
 
 @Entity
-public class UserProfile extends BasicEntity implements UserDetails {
+public class UserProfile extends AuditableEntity<String> implements UserDetails {
 
     @Column(nullable = false, unique = true)
     private String username;

@@ -15,14 +15,12 @@ public interface QuestionnaireService {
 
     Iterable<Questionnaire> findAll();
 
-    Page<Questionnaire> findAllByPage(Pageable pageable);
+    Page<Questionnaire> findAllByPage(Specification<Questionnaire> specification, Pageable pageable);
 
     Questionnaire saveQuestionnaire(Questionnaire questionnaire);
 
     QuestionnaireQuestion saveQuestionnaireQuestion(QuestionnaireQuestion questionnaireQuestion);
 
     Iterable<QuestionnaireProjection> findByTitleContaining(String title);
-
-    Page<Questionnaire> findAllBySpecifications(Specification<Questionnaire> specification, Pageable pageable) ;
 
 }

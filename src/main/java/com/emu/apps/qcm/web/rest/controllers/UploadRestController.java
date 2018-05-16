@@ -31,7 +31,7 @@ public class UploadRestController {
     @ApiOperation(value = "upload a file", responseContainer = "ResponseEntity", response = MessageDto.class, tags = "Upload", nickname = "uploadFile")
     @ResponseBody
     @Secured("ROLE_USER")
-    @RequestMapping(value = "/{fileType}", method = RequestMethod.POST, headers = "Content-Type= multipart/form-data", produces = "application/json")
+    @RequestMapping(value = "/{fileType}", method = RequestMethod.POST, headers = "Content-Type=multipart/form-data", produces = "application/json")
     public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file, @PathVariable("fileType") String fileType) throws IOException {
         try {
             logger.info(file.getOriginalFilename());

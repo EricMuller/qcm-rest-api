@@ -1,12 +1,13 @@
 package com.emu.apps.qcm.services.entity.questions;
 
-import com.emu.apps.qcm.services.entity.common.BasicEntity;
+import com.emu.apps.qcm.services.entity.common.AuditableEntity;
+import org.springframework.security.core.userdetails.User;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-public class Response extends BasicEntity {
+public class Response extends AuditableEntity<String> {
 
     @Column(name = "RESPONSE", nullable = false, length = 32672)
     private String response;

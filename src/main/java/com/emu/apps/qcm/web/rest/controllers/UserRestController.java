@@ -2,6 +2,8 @@ package com.emu.apps.qcm.web.rest.controllers;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.keycloak.KeycloakPrincipal;
+import org.keycloak.representations.AccessToken;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,7 +19,7 @@ import java.util.Objects;
 @RequestMapping("/api/v1/users/me")
 public class UserRestController {
 
-    @Value("${spring.profiles.active}")
+    @Value("{spring.profiles.active}")
     private String profile;
 
     @ApiOperation(value = "get Current user", response = Map.class, nickname = "getCurrentUser")

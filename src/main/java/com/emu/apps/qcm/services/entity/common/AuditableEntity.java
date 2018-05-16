@@ -1,33 +1,44 @@
 package com.emu.apps.qcm.services.entity.common;
 
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.Objects;
 import java.util.UUID;
 
 @SuppressWarnings("serial")
 @MappedSuperclass
-@EntityListeners({AuditingEntityListener.class})
-public abstract class BasicEntity extends AbstractPersistable<Long> {
+@EntityListeners(AuditingEntityListener.class)
+public abstract class AuditableEntity<U> extends AbstractPersistable<Long> {
+
+    @Column(name = "created_by")
+    @CreatedBy
+    protected U createdBy;
+
+    @Column(name = "modified_by")
+    @LastModifiedBy
+    protected U lastModifiedBy;
+
+    @Column(name = "created_date", nullable = false, updatable = false)
+    @CreatedDate
+    //  @Temporal(TIMESTAMP)
+    protected Date dateCreation;
+
+    @Column(name = "modified_date")
+    @LastModifiedDate
+    //  @Temporal(TIMESTAMP)
+    protected Date dateModification;
 
     @Column(unique = true, name = "uuid", nullable = false)
     protected String uuid = UUID.randomUUID().toString().toUpperCase();
 
     @Version
     private Long version;
-
-    @Column(name = "created_date", nullable = false, updatable = false)
-    @CreatedDate
-    private Date dateCreation;
-
-    @Column(name = "modified_date")
-    @LastModifiedDate
-    private Date dateModification;
 
     public String getUuid() {
         return uuid;
@@ -40,11 +51,6 @@ public abstract class BasicEntity extends AbstractPersistable<Long> {
     @PrePersist
     public void prePersist() {
         this.setUuid(UUID.randomUUID().toString());
-        if (Objects.isNull(getDateCreation())) {
-            this.setDateCreation(new Date());
-        } else {
-            this.setDateModification(new Date());
-        }
     }
 
     public Long getVersion() {
@@ -82,4 +88,19 @@ public abstract class BasicEntity extends AbstractPersistable<Long> {
         this.dateModification = dateModification;
     }
 
+    public U getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(U createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public U getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(U lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
 }

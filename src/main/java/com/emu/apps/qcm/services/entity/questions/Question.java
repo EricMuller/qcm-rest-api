@@ -1,10 +1,11 @@
 package com.emu.apps.qcm.services.entity.questions;
 
 
-import com.emu.apps.qcm.services.entity.common.BasicEntity;
+import com.emu.apps.qcm.services.entity.common.AuditableEntity;
 import com.emu.apps.qcm.services.entity.converters.BooleanTFConverter;
 import com.emu.apps.qcm.services.entity.questionnaires.QuestionnaireQuestion;
 import com.emu.apps.qcm.services.entity.tags.QuestionTag;
+import org.springframework.security.core.userdetails.User;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -21,7 +22,7 @@ import java.util.Set;
                 @NamedAttributeNode(value = "questionTags", subgraph = "tags")
         },
         subgraphs = @NamedSubgraph(name = "tags", attributeNodes = @NamedAttributeNode("tag")))
-public class Question extends BasicEntity {
+public class Question extends AuditableEntity<String> {
 
     @Convert(converter = BooleanTFConverter.class)
     private Boolean mandatory;

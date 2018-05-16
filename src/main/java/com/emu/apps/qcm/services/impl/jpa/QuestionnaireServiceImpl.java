@@ -49,11 +49,6 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     }
 
     @Override
-    public Page<Questionnaire> findAllByPage(Pageable pageable) {
-        return questionnaireRepository.findAll(pageable);
-    }
-
-    @Override
     public Questionnaire saveQuestionnaire(Questionnaire questionnaire) {
         return questionnaireRepository.save(questionnaire);
     }
@@ -69,7 +64,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     }
 
     @Override
-    public Page<Questionnaire> findAllBySpecifications(Specification<Questionnaire> specification, Pageable pageable) {
+    public Page<Questionnaire> findAllByPage(Specification<Questionnaire> specification, Pageable pageable) {
         return questionnaireRepository.findAll(specification, pageable);
     }
 }

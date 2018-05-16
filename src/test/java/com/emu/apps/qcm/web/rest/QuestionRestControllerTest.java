@@ -1,6 +1,7 @@
 package com.emu.apps.qcm.web.rest;
 
 import com.emu.apps.qcm.Application;
+import com.emu.apps.qcm.ApplicationTest;
 import com.emu.apps.qcm.services.FixtureService;
 import com.emu.apps.qcm.web.rest.dtos.QuestionDto;
 import com.emu.apps.qcm.web.rest.dtos.ResponseDto;
@@ -18,14 +19,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestOperations;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.Base64;
+
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles(value = "test")
-// @WithMockUser(username = "user", roles = { "myAuthority" })
-// @WithMockCustomUser
-// @TestExecutionListeners(WithSecurityContextTestExecutionListener.class)
 public class QuestionRestControllerTest {
 
     private static final String QUESTION = "c'est quoi la meilleure maniere ?";
@@ -54,8 +54,9 @@ public class QuestionRestControllerTest {
     public void saveQuestionTest() throws Exception {
         final HttpHeaders headers = new HttpHeaders();
         headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
-        headers.add(HttpHeaders.AUTHORIZATION, "Bearer FOO");
         headers.setContentType(MediaType.APPLICATION_JSON);
+        String token = new String(Base64.getEncoder().encode((ApplicationTest.USER_TEST + ":" + ApplicationTest.USER_PASSWORD).getBytes()));
+        headers.add(HttpHeaders.AUTHORIZATION, "Basic " + token);
 
         // POST
         QuestionDto questionDto = new QuestionDto();
@@ -69,8 +70,7 @@ public class QuestionRestControllerTest {
         questionDto.setResponses(Lists.newArrayList(responseDto));
 
         final ResponseEntity<QuestionDto> response = restTemplate.exchange(createURLWithPort("/api/v1/questions/")
-                , HttpMethod.POST,
-                                                                           new HttpEntity<>(questionDto), QuestionDto.class);
+                , HttpMethod.POST, new HttpEntity<>(questionDto, headers), QuestionDto.class);
 
         assertThat(response.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
         assertThat(response.getBody().getId()).isNotNull();
@@ -98,7 +98,7 @@ public class QuestionRestControllerTest {
         first.setResponse(RESPONSE2);
 
         final ResponseEntity<QuestionDto> responsePut = restTemplate.exchange(createURLWithPort("/api/v1/questions/")
-                , HttpMethod.PUT, new HttpEntity<>(responseDtoGet), QuestionDto.class);
+                , HttpMethod.PUT, new HttpEntity<>(responseDtoGet, headers), QuestionDto.class);
 
         assertThat(responsePut.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
 

@@ -1,14 +1,16 @@
 package com.emu.apps.qcm.services.entity.questionnaires;
 
-import com.emu.apps.qcm.services.entity.common.BasicEntity;
+import com.emu.apps.qcm.services.entity.common.AuditableEntity;
 import com.emu.apps.qcm.services.entity.epics.Epic;
 import com.emu.apps.qcm.services.entity.tags.QuestionnaireTag;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+
 @NamedEntityGraphs({
         @NamedEntityGraph(name = "Questionnaire.questionnaireTags",
                 attributeNodes = {
@@ -16,7 +18,7 @@ import java.util.Set;
                 },
                 subgraphs = @NamedSubgraph(name = "tags", attributeNodes = @NamedAttributeNode("tag")))
 })
-public class Questionnaire extends BasicEntity {
+public class Questionnaire extends AuditableEntity<String> {
 
     @Column(name = "DESCRIPTION")
     private String description;
@@ -26,9 +28,6 @@ public class Questionnaire extends BasicEntity {
 
     @Column(name = "LOCALE")
     private String locale;
-
-//    @Column(name = "POSITION")
-//    private Long position;
 
     @OneToMany(mappedBy = "questionnaire", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<QuestionnaireQuestion> questionnaireQuestions = new HashSet<>();
