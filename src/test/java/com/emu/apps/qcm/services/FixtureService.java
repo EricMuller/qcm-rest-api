@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.services;
 
-import com.emu.apps.qcm.services.entity.epics.Epic;
+import com.emu.apps.qcm.services.entity.epics.Category;
 import com.emu.apps.qcm.services.entity.questionnaires.Questionnaire;
 import com.emu.apps.qcm.services.entity.questionnaires.QuestionnaireQuestion;
 import com.emu.apps.qcm.services.entity.questions.Choice;
@@ -92,7 +92,7 @@ public class FixtureService {
         questionnaireJpaRepository.deleteAll();
 
         // category
-        Epic epic = new Epic();
+        Category epic = new Category();
         epic.setLibelle(CATEGORIE_LIBELLE);
         epic = epicRepository.save(epic);
 

@@ -1,9 +1,9 @@
 package com.emu.apps.qcm.services.entity.questionnaires;
 
 import com.emu.apps.qcm.services.entity.common.AuditableEntity;
-import com.emu.apps.qcm.services.entity.epics.Epic;
+import com.emu.apps.qcm.services.entity.epics.Category;
 import com.emu.apps.qcm.services.entity.tags.QuestionnaireTag;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -33,9 +33,10 @@ public class Questionnaire extends AuditableEntity<String> {
     private Set<QuestionnaireQuestion> questionnaireQuestions = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
-    private Epic epic;
+    private Category epic;
 
     @OneToMany(mappedBy = "questionnaire")
+    @BatchSize(size = 20)
     private Set<QuestionnaireTag> questionnaireTags = new HashSet<>();
 
     public Questionnaire() {
@@ -61,11 +62,11 @@ public class Questionnaire extends AuditableEntity<String> {
         this.title = title;
     }
 
-    public Epic getEpic() {
+    public Category getEpic() {
         return epic;
     }
 
-    public void setEpic(Epic epic) {
+    public void setEpic(Category epic) {
         this.epic = epic;
     }
 

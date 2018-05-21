@@ -6,24 +6,16 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
-@Mapper(componentModel = "spring", uses = {EpicMapper.class})
+@Mapper(componentModel = "spring", uses = {CategoryMapper.class})
 public interface QuestionTagMapper {
 
     @Mappings({
-            @Mapping(source = "tag.id", target = "tagId"),
+            @Mapping(source = "tag.id", target = "id"),
             @Mapping(source = "tag.libelle", target = "libelle"),
-            @Mapping(source = "tag.publique", target = "publique"),
-            @Mapping(source = "question.id", target = "questionId")
     })
-    QuestionTagDto modelToDto(QuestionTag questionTag);
+    QuestionTagDto dtoToModel(QuestionTag questionTag);
 
     Iterable<QuestionTagDto> modelToDtos(Iterable<QuestionTag> questionTags);
 
-//    @Mappings({
-//            @Mapping(target = "tag.id", source = "tagId"),
-//            @Mapping(target = "tag.libelle", source = "libelle"),
-//            @Mapping(target = "tag.publique", source = "publique")
-//    })
-//   QuestionTag dtoToModel(QuestionTagDto questionTagDto);
 
 }

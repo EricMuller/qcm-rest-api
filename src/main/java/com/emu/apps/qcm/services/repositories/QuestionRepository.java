@@ -3,6 +3,7 @@ package com.emu.apps.qcm.services.repositories;
 import com.emu.apps.qcm.services.entity.questions.Question;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -10,20 +11,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.Set;
-
-/**
- * Created by eric on 05/06/2017.
- * <p>
- * //   REMEMBER  pb perf
- * //    @Query(value ="SELECT  q.id as id, q.uuid as uuid, q.dateCreation as dateCreation,q.version as version,q.question as question ,q.type as type, q.dateModification as dateModification, qt.id.questionId  as questionId " +
- * //                " from  Question  q left join fetch QuestionTag qt on qt.id.questionId = q.id join fetch qt.tag",
- * //            countQuery = "SELECT COUNT(q) FROM Question q left JOIN  q.questionTags qt join  qt.tag "
- * //    )
- * //    Page<QuestionTagProjection> findAllProjectionQuestionsTags(Pageable pageable); *
- */
 @Repository
-public interface QuestionRepository extends JpaRepository<Question, Long>, JpaSpecificationExecutor {
+public interface QuestionRepository extends JpaRepository<Question, Long>, JpaSpecificationExecutor<Question> {
 
     @Query(value = " SELECT distinct q  from  Question  q left join fetch q.questionTags qt   join fetch qt.tag t",
             countQuery = "SELECT COUNT(distinct q) FROM Question q left JOIN  q.questionTags qt  join  qt.tag t")
@@ -42,8 +31,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long>, JpaSp
     @EntityGraph(value = "Question.questionTags")
     Page<Question> findAll(Pageable pageable);
 
-    @Query(value= "SELECT distinct q from Question q  join  q.questionTags qt join  qt.tag WHERE q.id in :ids ",
-            countQuery = "SELECT COUNT(distinct q) from Question q  join  q.questionTags qt join  qt.tag WHERE q.id in :ids ")
-    @EntityGraph(value = "Question.questionTags")
-    Page<Question> findAllByTagIds(@Param("ids") Set<Long> ids, Pageable pageable);
+    @Override
+    Page<Question> findAll(Specification<Question> specification, Pageable pageable);
+
 }

@@ -17,7 +17,7 @@ public class QuestionnaireDto extends EntityDto {
     private String description;
 
     @JsonProperty("epic")
-    private EpicDto epic;
+    private CategoryDto epic;
 
     @JsonProperty("tags")
     private Set<QuestionnaireTagDto> questionnaireTags;
@@ -38,11 +38,11 @@ public class QuestionnaireDto extends EntityDto {
         this.description = description;
     }
 
-    public EpicDto getEpic() {
+    public CategoryDto getEpic() {
         return epic;
     }
 
-    public void setEpic(EpicDto epic) {
+    public void setEpic(CategoryDto epic) {
         this.epic = epic;
     }
 

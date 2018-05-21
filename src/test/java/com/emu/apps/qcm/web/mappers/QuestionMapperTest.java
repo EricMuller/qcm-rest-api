@@ -29,10 +29,10 @@ public class QuestionMapperTest {
         questionDto.setQuestion("Question");
 
         QuestionTagDto questionTagDto = new QuestionTagDto();
-        questionTagDto.setTagId(1L);
-        questionTagDto.setDeleted(false);
+        questionTagDto.setId(1L);
+
         questionTagDto.setLibelle("Test");
-        questionTagDto.setPublique(true);
+
 
         Question question = questionMapper.dtoToModel(questionDto);
 

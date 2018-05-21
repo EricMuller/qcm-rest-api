@@ -8,14 +8,14 @@ import javax.persistence.Entity;
  * Created by eric on 05/06/2017.
  */
 @Entity
-public class Epic extends RefEntity {
+public class Category extends RefEntity {
 
     private String libelle;
 
-    public Epic() {
+    public Category() {
     }
 
-    public Epic(String libelle) {
+    public Category(String libelle) {
         this.libelle = libelle;
     }
 

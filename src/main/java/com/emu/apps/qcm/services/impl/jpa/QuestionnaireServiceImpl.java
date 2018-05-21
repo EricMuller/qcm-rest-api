@@ -39,11 +39,13 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Questionnaire findById(long id) {
         return questionnaireRepository.findOne(id);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Iterable<Questionnaire> findAll() {
         return questionnaireRepository.findAll();
     }
@@ -59,11 +61,13 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Iterable<QuestionnaireProjection> findByTitleContaining(String title) {
         return questionnaireRepository.findByTitleContaining(title);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<Questionnaire> findAllByPage(Specification<Questionnaire> specification, Pageable pageable) {
         return questionnaireRepository.findAll(specification, pageable);
     }

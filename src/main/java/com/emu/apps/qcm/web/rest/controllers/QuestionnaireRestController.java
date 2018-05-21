@@ -83,7 +83,7 @@ public class QuestionnaireRestController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @ApiOperation(value = "Save a currentQuestionnaire", response = QuestionnaireDto.class, nickname = "saveEpic")
+    @ApiOperation(value = "Save a currentQuestionnaire", response = QuestionnaireDto.class, nickname = "saveCategory")
     @RequestMapping(method = {RequestMethod.PUT, RequestMethod.POST})
     @ResponseBody
     public QuestionnaireDto saveQuestionnaire(@RequestBody QuestionnaireDto questionnaireDto) {

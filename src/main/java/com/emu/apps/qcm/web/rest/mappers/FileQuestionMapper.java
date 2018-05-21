@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {EpicMapper.class})
+@Mapper(componentModel = "spring", uses = {CategoryMapper.class})
 public interface FileQuestionMapper {
 
 

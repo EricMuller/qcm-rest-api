@@ -5,6 +5,7 @@ import com.emu.apps.qcm.services.entity.common.AuditableEntity;
 import com.emu.apps.qcm.services.entity.converters.BooleanTFConverter;
 import com.emu.apps.qcm.services.entity.questionnaires.QuestionnaireQuestion;
 import com.emu.apps.qcm.services.entity.tags.QuestionTag;
+import org.hibernate.annotations.BatchSize;
 import org.springframework.security.core.userdetails.User;
 
 import javax.persistence.*;
@@ -37,9 +38,11 @@ public class Question extends AuditableEntity<String> {
     private Type type;
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @BatchSize(size = 20)
     private Set<QuestionTag> questionTags = new HashSet<>();
 
     @OneToMany(mappedBy = "question")
+    @BatchSize(size = 20)
     private Set<QuestionnaireQuestion> questionnaireQuestions = new HashSet<>();
 
     public Question() {

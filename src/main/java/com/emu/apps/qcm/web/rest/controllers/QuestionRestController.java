@@ -2,24 +2,27 @@ package com.emu.apps.qcm.web.rest.controllers;
 
 import com.emu.apps.qcm.services.QuestionService;
 import com.emu.apps.qcm.services.entity.questions.Question;
+import com.emu.apps.qcm.services.repositories.specifications.question.QuestionSpecification;
 import com.emu.apps.qcm.web.rest.ApiVersion;
+import com.emu.apps.qcm.web.rest.dtos.FilterDto;
 import com.emu.apps.qcm.web.rest.dtos.MessageDto;
 import com.emu.apps.qcm.web.rest.dtos.QuestionDto;
 import com.emu.apps.qcm.web.rest.dtos.question.QuestionTagsDto;
 import com.emu.apps.qcm.web.rest.mappers.QuestionMapper;
 import com.emu.apps.qcm.web.rest.mappers.QuestionTagsMapper;
+import com.emu.apps.qcm.web.rest.utils.StringToFilter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.security.Principal;
 
 /**
  * Created by eric on 05/06/2017.
@@ -40,6 +43,12 @@ public class QuestionRestController {
     @Autowired
     private QuestionTagsMapper questionTagsMapper;
 
+    @Autowired
+    private QuestionSpecification questionSpecification;
+
+    @Autowired
+    private StringToFilter stringToFilter;
+
     @ApiOperation(value = "Find all questions  by Page", responseContainer = "List", response = QuestionDto.class, nickname = "getTagsByPAge")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page", dataType = "integer", paramType = "query", value = "Results page you want to retrieve (0..N)"),
@@ -55,9 +64,9 @@ public class QuestionRestController {
     }
     )
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
-    public Page<QuestionTagsDto> getQuestionsTagsByPAge(Pageable pageable) {
-        return questionTagsMapper.pageQuestionResponseProjectionToDto(questionService.findAllQuestionsTags(pageable));
-
+    public Iterable<QuestionTagsDto> getQuestionsWithFilters(Principal principal, @RequestParam(value = "filters", required = false) String filterString, Pageable pageable) throws IOException {
+        FilterDto[] filterDtos = stringToFilter.getFilterDtos(filterString);
+        return questionMapper.pageToPageTagDto(questionService.findAllByPage(questionSpecification.getFilter(filterDtos, principal), pageable));
     }
 
     @ApiOperation(value = "Find a question by ID", response = QuestionDto.class, nickname = "getQuestionById")
@@ -75,7 +84,7 @@ public class QuestionRestController {
         return questionMapper.modelToDto(questionService.saveQuestion(question));
     }
 
-    @ApiOperation(value = "Save a question", response = QuestionDto.class, nickname = "saveEpic")
+    @ApiOperation(value = "Save a question", response = QuestionDto.class, nickname = "saveCategory")
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public QuestionDto saveQuestion(@RequestBody QuestionDto questionDto) {

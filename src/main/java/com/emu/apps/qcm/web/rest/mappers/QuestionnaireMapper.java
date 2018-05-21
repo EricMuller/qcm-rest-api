@@ -11,7 +11,7 @@ import org.mapstruct.Mappings;
 import org.springframework.data.domain.Page;
 
 
-@Mapper(componentModel = "spring", uses = {EpicMapper.class, QuestionnaireTagMapper.class})
+@Mapper(componentModel = "spring", uses = {CategoryMapper.class, QuestionnaireTagMapper.class})
 public interface QuestionnaireMapper {
 
     QuestionnaireDto modelToDto(Questionnaire questionnaire);

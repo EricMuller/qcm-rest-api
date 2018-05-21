@@ -2,7 +2,7 @@ package com.emu.apps.qcm.services.impl.jpa;
 
 
 import com.emu.apps.qcm.services.*;
-import com.emu.apps.qcm.services.entity.epics.Epic;
+import com.emu.apps.qcm.services.entity.epics.Category;
 import com.emu.apps.qcm.services.entity.questionnaires.Questionnaire;
 import com.emu.apps.qcm.services.entity.questionnaires.QuestionnaireQuestion;
 import com.emu.apps.qcm.services.entity.questions.Question;
@@ -33,7 +33,7 @@ public class UploadServiceImpl implements UploadService {
     private TagService tagService;
 
     @Autowired
-    private EpicService epicService;
+    private CategoryService epicService;
 
     @Autowired
     private QuestionService questionService;
@@ -54,7 +54,7 @@ public class UploadServiceImpl implements UploadService {
 
         //Tag tag = tagService.findOrCreateByLibelle("import");
 
-        Epic epic = epicService.findOrCreateByLibelle("Java");
+        Category epic = epicService.findOrCreateByLibelle("Java");
 
         for (FileQuestionDto fileQuestionDto : fileQuestionDtos) {
 

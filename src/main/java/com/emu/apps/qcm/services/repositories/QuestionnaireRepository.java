@@ -31,12 +31,7 @@ public interface QuestionnaireRepository extends JpaRepository<Questionnaire, Lo
     Questionnaire findOne(Long id);
 
     @Override
-    @EntityGraph(value = "Questionnaire.questionnaireTags")
     Page<Questionnaire> findAll(Specification<Questionnaire> specification, Pageable pageable);
 
-//    @Query(value = "SELECT distinct q from Questionnaire q  join  q.questionnaireTags qt join  qt.tag  t WHERE t.id in :ids ",
-//            countQuery = "SELECT COUNT(distinct q) from Questionnaire q  join  q.questionnaireTags qt  join  qt.tag t WHERE t.id in :ids ")
-//    @EntityGraph(value = "Questionnaire.questionnaireTags")
-//    Page<Questionnaire> findAllByTagIds(@Param("ids") Iterable<Long> ids, Pageable pageable);
 
 }

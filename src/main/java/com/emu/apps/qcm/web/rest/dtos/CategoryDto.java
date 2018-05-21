@@ -8,7 +8,7 @@ import io.swagger.annotations.ApiModel;
  * Created by eric on 05/06/2017.
  */
 @ApiModel(value = "Epic")
-public class EpicDto {
+public class CategoryDto {
 
     @JsonProperty("id")
     private String id;
@@ -16,11 +16,11 @@ public class EpicDto {
     @JsonProperty("libelle")
     private String libelle;
 
-    public EpicDto() {
+    public CategoryDto() {
             //nope sonar
     }
 
-    public EpicDto(String id, String libelle) {
+    public CategoryDto(String id, String libelle) {
         this.id = id;
         this.libelle = libelle;
     }

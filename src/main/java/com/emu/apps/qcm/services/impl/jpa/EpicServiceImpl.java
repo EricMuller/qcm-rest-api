@@ -1,8 +1,8 @@
 package com.emu.apps.qcm.services.impl.jpa;
 
-import com.emu.apps.qcm.services.entity.epics.Epic;
+import com.emu.apps.qcm.services.entity.epics.Category;
 import com.emu.apps.qcm.services.repositories.EpicRepository;
-import com.emu.apps.qcm.services.EpicService;
+import com.emu.apps.qcm.services.CategoryService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
  * Created by eric on 14/06/2017.
  */
 @Service
-public class EpicServiceImpl implements EpicService {
+public class EpicServiceImpl implements CategoryService {
 
     protected final org.slf4j.Logger log = LoggerFactory.getLogger(getClass());
 
@@ -19,32 +19,32 @@ public class EpicServiceImpl implements EpicService {
     private EpicRepository epicRepository;
 
     @Override
-    public Epic save(Epic epic) {
+    public Category save(Category epic) {
         return epicRepository.save(epic);
     }
 
     @Override
-    public Epic findById(Long id) {
+    public Category findById(Long id) {
         return epicRepository.findOne(id);
     }
 
     @Override
-    public Epic findByLibelle(String libelle) {
+    public Category findByLibelle(String libelle) {
         return epicRepository.findByLibelle(libelle);
     }
 
     @Override
-    public Epic findOrCreateByLibelle(String libelle) {
-        Epic epic = epicRepository.findByLibelle(libelle);
+    public Category findOrCreateByLibelle(String libelle) {
+        Category epic = epicRepository.findByLibelle(libelle);
         if(epic == null ) {
-            epic = save(new Epic(libelle));
+            epic = save(new Category(libelle));
         }
         return epic;
     }
 
 
     @Override
-    public Iterable<Epic> findAll() {
+    public Iterable<Category> findAll() {
         return epicRepository.findAll();
     }
 

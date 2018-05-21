@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.services.projections;
 
 
-import com.emu.apps.qcm.services.entity.epics.Epic;
+import com.emu.apps.qcm.services.entity.epics.Category;
 import org.hibernate.annotations.Immutable;
 
 import java.util.Date;
@@ -17,7 +17,7 @@ public interface QuestionnaireProjection {
 
     String getTitle();
 
-    Epic getEpic();
+    Category getEpic();
 
     String getDescription();
 

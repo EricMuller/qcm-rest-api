@@ -1,10 +1,10 @@
 package com.emu.apps.qcm.web.rest.controllers;
 
-import com.emu.apps.qcm.services.EpicService;
-import com.emu.apps.qcm.services.entity.epics.Epic;
-import com.emu.apps.qcm.web.rest.dtos.EpicDto;
+import com.emu.apps.qcm.services.CategoryService;
+import com.emu.apps.qcm.services.entity.epics.Category;
+import com.emu.apps.qcm.web.rest.dtos.CategoryDto;
 import com.emu.apps.qcm.web.rest.dtos.MessageDto;
-import com.emu.apps.qcm.web.rest.mappers.EpicMapper;
+import com.emu.apps.qcm.web.rest.mappers.CategoryMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -24,27 +24,27 @@ import java.io.IOException;
  * Created by eric on 05/06/2017.
  */
 @RestController
-@RequestMapping("/api/v1/epics")
-@Api(value = "epic-store", description = "All operations ", tags = "Epic")
-public class EpicRestController {
+@RequestMapping("/api/v1/categories")
+@Api(value = "categories-store", description = "All operations ", tags = "Categories")
+public class CategoryRestController {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private EpicService epicService;
+    private CategoryService categoryService;
 
     @Autowired
-    private EpicMapper epicMapper;
+    private CategoryMapper categoryMapper;
 
 
-    @ApiOperation(value = "Find a epics by ID", response = EpicDto.class, tags = "Epic", nickname = "getEpicById")
+    @ApiOperation(value = "Find a category by ID", response = CategoryDto.class, nickname = "getCategoryById")
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     @ResponseBody
-    public EpicDto getEpic(@PathVariable("id") Long id) {
-        return epicMapper.modelToDto(epicService.findById(id));
+    public CategoryDto getCategory(@PathVariable("id") Long id) {
+        return categoryMapper.modelToDto(categoryService.findById(id));
     }
 
-    @ApiOperation(value = "Find all epics", responseContainer = "List", response = EpicDto.class, nickname = "getEpics")
+    @ApiOperation(value = "Find all categories", responseContainer = "List", response = CategoryDto.class, nickname = "getCategories")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully retrieved list"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
@@ -55,17 +55,17 @@ public class EpicRestController {
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     @PreAuthorize("true")
-    public Iterable<EpicDto> getCategories() {
-        return epicMapper.modelsToDtos(epicService.findAll());
+    public Iterable<CategoryDto> getCategories() {
+        return categoryMapper.modelsToDtos(categoryService.findAll());
 
     }
 
-    @ApiOperation(value = "Save a epic", response = EpicDto.class, nickname = "saveEpic")
+    @ApiOperation(value = "save a Category", response = CategoryDto.class, nickname = "saveCategory")
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public EpicDto saveEpic(@RequestBody EpicDto epicDto) {
-        Epic epic = epicMapper.dtoToModel(epicDto);
-        return epicMapper.modelToDto(epicService.save(epic));
+    public CategoryDto saveCategory(@RequestBody CategoryDto epicDto) {
+        Category epic = categoryMapper.dtoToModel(epicDto);
+        return categoryMapper.modelToDto(categoryService.save(epic));
     }
 
     @ExceptionHandler({JsonProcessingException.class, IOException.class})

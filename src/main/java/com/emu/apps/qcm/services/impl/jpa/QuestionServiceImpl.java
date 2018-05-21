@@ -1,6 +1,7 @@
 package com.emu.apps.qcm.services.impl.jpa;
 
 import com.emu.apps.qcm.services.QuestionService;
+import com.emu.apps.qcm.services.entity.questionnaires.Questionnaire;
 import com.emu.apps.qcm.services.entity.questions.Question;
 import com.emu.apps.qcm.services.entity.tags.QuestionTag;
 import com.emu.apps.qcm.services.projections.QuestionResponseProjection;
@@ -12,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +36,7 @@ public class QuestionServiceImpl implements QuestionService {
     private QuestionnaireQuestionRepository questionnaireQuestionRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public Question findOne(Long id) {
         return questionRepository.findOne(id);
     }
@@ -48,8 +51,10 @@ public class QuestionServiceImpl implements QuestionService {
         return questionTagCrudRepository.save(questionTag);
     }
 
-    public Page<Question> findAllQuestionsTag1(Pageable pageable) {
-        return questionRepository.findAllQuestionsTags(pageable);
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Question> findAllByPage(Specification<Question> specification, Pageable pageable) {
+        return questionRepository.findAll(specification, pageable);
     }
 
     @Override
@@ -58,10 +63,12 @@ public class QuestionServiceImpl implements QuestionService {
         return questionRepository.findAll(pageable);
     }
 
+    @Transactional(readOnly = true)
     public Page<QuestionResponseProjection> getQuestionsProjectionByQuestionnaireId(Long questionnaireId, Pageable pageable) {
         return questionnaireQuestionRepository.findQuestionsByQuestionnaireId(questionnaireId, pageable);
     }
 
+    @Transactional(readOnly = true)
     public Iterable<QuestionResponseProjection> getQuestionsProjectionByQuestionnaireId(Long questionnaireId) {
         return questionnaireQuestionRepository.findQuestionsByQuestionnaireId(questionnaireId);
     }

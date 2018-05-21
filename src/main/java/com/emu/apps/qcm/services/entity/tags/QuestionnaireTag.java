@@ -1,6 +1,7 @@
 package com.emu.apps.qcm.services.entity.tags;
 
 import com.emu.apps.qcm.services.entity.questionnaires.Questionnaire;
+import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import java.io.Serializable;
