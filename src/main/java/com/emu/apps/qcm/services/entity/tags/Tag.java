@@ -5,9 +5,12 @@ import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Index;
+import javax.persistence.Table;
 
 @Entity
 @BatchSize(size = 20)
+@Table(indexes = { @Index(name = "IDX_TAG_LIBELLE_IDX", columnList = "libelle") })
 public class Tag extends RefEntity {
 
     @Column

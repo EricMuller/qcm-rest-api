@@ -1,15 +1,18 @@
 package com.emu.apps.qcm.web.rest.controllers;
 
 import com.emu.apps.qcm.services.QuestionService;
+import com.emu.apps.qcm.services.entity.questionnaires.Questionnaire;
 import com.emu.apps.qcm.services.entity.questions.Question;
 import com.emu.apps.qcm.services.repositories.specifications.question.QuestionSpecification;
 import com.emu.apps.qcm.web.rest.ApiVersion;
 import com.emu.apps.qcm.web.rest.dtos.FilterDto;
 import com.emu.apps.qcm.web.rest.dtos.MessageDto;
 import com.emu.apps.qcm.web.rest.dtos.QuestionDto;
+import com.emu.apps.qcm.web.rest.dtos.QuestionnaireDto;
 import com.emu.apps.qcm.web.rest.dtos.question.QuestionTagsDto;
 import com.emu.apps.qcm.web.rest.mappers.QuestionMapper;
 import com.emu.apps.qcm.web.rest.mappers.QuestionTagsMapper;
+import com.emu.apps.qcm.web.rest.utils.ExceptionUtil;
 import com.emu.apps.qcm.web.rest.utils.StringToFilter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.annotations.*;
@@ -40,8 +43,6 @@ public class QuestionRestController {
     @Autowired
     private QuestionMapper questionMapper;
 
-    @Autowired
-    private QuestionTagsMapper questionTagsMapper;
 
     @Autowired
     private QuestionSpecification questionSpecification;
@@ -97,5 +98,14 @@ public class QuestionRestController {
         return new ResponseEntity<>(new MessageDto(e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
+    @ApiOperation(value = "Delete a question by ID", response = ResponseEntity.class, nickname = "deleteQuestionById")
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public ResponseEntity<Question> deleteQuestionnaireById(@PathVariable("id") long id) {
+        Question question = questionService.findOne(id);
+        ExceptionUtil.assertFound(question, String.valueOf(id));
+        questionService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 
 }

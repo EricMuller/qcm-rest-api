@@ -33,7 +33,7 @@ public class UploadServiceImpl implements UploadService {
     private TagService tagService;
 
     @Autowired
-    private CategoryService epicService;
+    private CategoryService categoryService;
 
     @Autowired
     private QuestionService questionService;
@@ -54,13 +54,13 @@ public class UploadServiceImpl implements UploadService {
 
         //Tag tag = tagService.findOrCreateByLibelle("import");
 
-        Category epic = epicService.findOrCreateByLibelle("Java");
+        Category category = categoryService.findOrCreateByLibelle("Java");
 
         for (FileQuestionDto fileQuestionDto : fileQuestionDtos) {
 
             if (StringUtils.isNotEmpty(fileQuestionDto.getCategorie())) {
 
-                //Category category = epicService.findOrCreateByLibelle(fileQuestionDto.getCategorie());
+                // Category category = categoryService.findOrCreateByLibelle(fileQuestionDto.getCategorie());
 
                 Tag tag = tagService.findOrCreateByLibelle(fileQuestionDto.getCategorie());
 
@@ -79,7 +79,8 @@ public class UploadServiceImpl implements UploadService {
                 Questionnaire questionnaire = questionnaireCacheMap.get(tag.getLibelle());
                 if (questionnaire == null) {
                     questionnaire = new Questionnaire(name + "-" + fileQuestionDto.getCategorie());
-                    questionnaire.setEpic(epic);
+                    questionnaire.setDescription(questionnaire.getTitle());
+                    questionnaire.setCategory(category);
                     //questionnaire.setPosition(++maxPos);
                     questionnaire = questionnaireService.saveQuestionnaire(questionnaire);
 

@@ -51,8 +51,8 @@ public class QuestionnaireRepositoryTest {
         Questionnaire questionnaire = questionnaireRepository.findOne(q.getId());
 
         Assert.assertNotNull(questionnaire.getId());
-        Assert.assertNotNull(questionnaire.getEpic());
-        Assert.assertEquals(questionnaire.getEpic().getLibelle(), FixtureService.CATEGORIE_LIBELLE);
+        Assert.assertNotNull(questionnaire.getCategory());
+        Assert.assertEquals(questionnaire.getCategory().getLibelle(), FixtureService.CATEGORIE_LIBELLE);
         Assert.assertNotNull(questionnaire.getDescription());
         Assert.assertEquals(questionnaire.getDescription(), FixtureService.QUESTIONNAIRE_DESC);
 
@@ -86,8 +86,8 @@ public class QuestionnaireRepositoryTest {
         QuestionnaireProjection questionnaire = questionnaireRepository.findQuestionnaireById(q.getId());
 
         Assert.assertNotNull(questionnaire.getId());
-        Assert.assertNotNull(questionnaire.getEpic());
-        Assert.assertEquals(questionnaire.getEpic().getLibelle(), FixtureService.CATEGORIE_LIBELLE);
+        Assert.assertNotNull(questionnaire.getCategory());
+        Assert.assertEquals(questionnaire.getCategory().getLibelle(), FixtureService.CATEGORIE_LIBELLE);
         Assert.assertNotNull(questionnaire.getDescription());
         Assert.assertEquals(questionnaire.getDescription(), FixtureService.QUESTIONNAIRE_DESC);
     }

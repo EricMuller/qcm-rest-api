@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -40,7 +41,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
 
     @Override
     @Transactional(readOnly = true)
-    public Questionnaire findById(long id) {
+    public Questionnaire findOne(long id) {
         return questionnaireRepository.findOne(id);
     }
 

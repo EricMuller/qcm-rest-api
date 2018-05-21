@@ -9,7 +9,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 public interface QuestionnaireService {
 
-    Questionnaire findById(long id);
+    Questionnaire findOne(long id);
 
     void deleteById(long id);
 

@@ -17,6 +17,7 @@ import com.emu.apps.qcm.web.rest.mappers.QuestionnaireTagMapper;
 import com.emu.apps.qcm.web.rest.utils.ExceptionUtil;
 import com.emu.apps.qcm.web.rest.utils.StringToFilter;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import io.swagger.annotations.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.HashSet;
 import java.util.List;
 
 @RestController
@@ -68,7 +70,7 @@ public class QuestionnaireRestController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
     public QuestionnaireDto getQuestionnaireById(@PathVariable("id") long id) {
-        Questionnaire questionnaire = questionnairesService.findById(id);
+        Questionnaire questionnaire = questionnairesService.findOne(id);
         ExceptionUtil.assertFound(questionnaire, String.valueOf(id));
         return questionnaireMapper.modelToDto(questionnaire);
     }
@@ -77,14 +79,30 @@ public class QuestionnaireRestController {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseBody
     public ResponseEntity<Questionnaire> deleteQuestionnaireById(@PathVariable("id") long id) {
-        Questionnaire questionnaire = questionnairesService.findById(id);
+        Questionnaire questionnaire = questionnairesService.findOne(id);
         ExceptionUtil.assertFound(questionnaire, String.valueOf(id));
         questionnairesService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @ApiOperation(value = "Save a currentQuestionnaire", response = QuestionnaireDto.class, nickname = "saveCategory")
-    @RequestMapping(method = {RequestMethod.PUT, RequestMethod.POST})
+    @ApiOperation(value = "Update a currentQuestionnaire", response = QuestionnaireDto.class, nickname = "updateQuestionnaire")
+    @RequestMapping(method = {RequestMethod.PUT})
+    @ResponseBody
+    public QuestionnaireDto updateQuestionnaire(@RequestBody QuestionnaireDto questionnaireDto) {
+
+        Questionnaire questionnaire = questionnairesService.findOne(questionnaireDto.getId());
+
+        questionnaire = questionnairesService.saveQuestionnaire(questionnaireMapper.dtoToModel(questionnaire, questionnaireDto));
+
+        Iterable<QuestionnaireTag> questionnaireTags = questionnaireTagMapper.dtosToModels(questionnaireDto.getQuestionnaireTags());
+
+        questionnaire = questionnaireTagService.saveQuestionnaireTags(questionnaire.getId(), questionnaireTags);
+
+        return questionnaireMapper.modelToDto(questionnaire);
+    }
+
+    @ApiOperation(value = "Save a currentQuestionnaire", response = QuestionnaireDto.class, nickname = "saveQuestionnaire")
+    @RequestMapping(method = {RequestMethod.POST})
     @ResponseBody
     public QuestionnaireDto saveQuestionnaire(@RequestBody QuestionnaireDto questionnaireDto) {
 

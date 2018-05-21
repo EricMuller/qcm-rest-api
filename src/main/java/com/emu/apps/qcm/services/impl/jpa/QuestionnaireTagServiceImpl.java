@@ -12,6 +12,7 @@ import com.emu.apps.qcm.services.repositories.TagRepository;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
@@ -31,16 +32,13 @@ public class QuestionnaireTagServiceImpl implements QuestionnaireTagService {
     @Autowired
     private TagRepository tagRepository;
 
-
-
     @Override
     public QuestionnaireTag saveQuestionnaireTag(QuestionnaireTag questionnaireTag) {
         return questionnaireTagRepository.save(questionnaireTag);
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Questionnaire saveQuestionnaireTags(long questionnaireId, Iterable<QuestionnaireTag> questionnaireTags) {
-
-        questionnaireTagRepository.deleteByQuestionnaireId(questionnaireId);
 
         Questionnaire questionnaire = questionnaireRepository.findOne(questionnaireId);
 

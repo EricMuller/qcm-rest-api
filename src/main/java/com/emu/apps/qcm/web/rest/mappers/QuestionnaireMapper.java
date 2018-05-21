@@ -7,6 +7,7 @@ import com.emu.apps.qcm.web.rest.dtos.QuestionnaireDto;
 import com.emu.apps.qcm.web.rest.dtos.SuggestDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Mappings;
 import org.springframework.data.domain.Page;
 
@@ -21,6 +22,12 @@ public interface QuestionnaireMapper {
             @Mapping(target = "questionnaireTags", ignore = true)
     })
     Questionnaire dtoToModel(QuestionnaireDto questionnaireDto);
+
+    @Mappings({
+            @Mapping(target = "questionnaireQuestions", ignore = true),
+            @Mapping(target = "questionnaireTags", ignore = true)
+    })
+    Questionnaire dtoToModel(@MappingTarget Questionnaire questionnaire, QuestionnaireDto questionnaireDto);
 //
 //    Iterable<QuestionnaireDto> modelsToDtos(Iterable<Questionnaire> questionnaires);
 //    @Mappings ({

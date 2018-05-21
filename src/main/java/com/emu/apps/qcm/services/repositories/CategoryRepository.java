@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
  * Created by eric on 05/06/2017.
  */
 @Repository
-public interface EpicRepository extends PagingAndSortingRepository<Category, Long> {
+public interface CategoryRepository extends PagingAndSortingRepository<Category, Long> {
 
     @Query("SELECT DISTINCT q FROM Category q WHERE q.libelle  = :libelle ")
     Category findByLibelle(@Param("libelle") String libelle);

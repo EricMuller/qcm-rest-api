@@ -7,7 +7,7 @@ import io.swagger.annotations.ApiModel;
 /**
  * Created by eric on 05/06/2017.
  */
-@ApiModel(value = "Epic")
+@ApiModel(value = "Category")
 public class CategoryDto {
 
     @JsonProperty("id")

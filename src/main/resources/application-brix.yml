@@ -22,6 +22,7 @@ spring:
                          fetch_size: 100
                          batch_size: 20
                          batch_versioned_data: true
+
              cache:
                  use_second_level_cache: false
                  use_query_cache: false

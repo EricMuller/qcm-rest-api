@@ -6,7 +6,6 @@ import com.emu.apps.qcm.services.entity.converters.BooleanTFConverter;
 import com.emu.apps.qcm.services.entity.questionnaires.QuestionnaireQuestion;
 import com.emu.apps.qcm.services.entity.tags.QuestionTag;
 import org.hibernate.annotations.BatchSize;
-import org.springframework.security.core.userdetails.User;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -23,6 +22,7 @@ import java.util.Set;
                 @NamedAttributeNode(value = "questionTags", subgraph = "tags")
         },
         subgraphs = @NamedSubgraph(name = "tags", attributeNodes = @NamedAttributeNode("tag")))
+@Table(indexes = { @Index(name = "IDX_QTO_CREATE_BY_IDX", columnList = "created_by") })
 public class Question extends AuditableEntity<String> {
 
     @Convert(converter = BooleanTFConverter.class)

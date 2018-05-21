@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.services.impl.jpa;
 
 import com.emu.apps.qcm.services.entity.epics.Category;
-import com.emu.apps.qcm.services.repositories.EpicRepository;
+import com.emu.apps.qcm.services.repositories.CategoryRepository;
 import com.emu.apps.qcm.services.CategoryService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ public class EpicServiceImpl implements CategoryService {
     protected final org.slf4j.Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private EpicRepository epicRepository;
+    private CategoryRepository epicRepository;
 
     @Override
     public Category save(Category epic) {

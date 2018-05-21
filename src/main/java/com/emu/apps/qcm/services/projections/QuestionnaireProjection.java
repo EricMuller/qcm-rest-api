@@ -17,7 +17,7 @@ public interface QuestionnaireProjection {
 
     String getTitle();
 
-    Category getEpic();
+    Category getCategory();
 
     String getDescription();
 

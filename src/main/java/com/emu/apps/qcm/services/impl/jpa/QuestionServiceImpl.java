@@ -1,7 +1,6 @@
 package com.emu.apps.qcm.services.impl.jpa;
 
 import com.emu.apps.qcm.services.QuestionService;
-import com.emu.apps.qcm.services.entity.questionnaires.Questionnaire;
 import com.emu.apps.qcm.services.entity.questions.Question;
 import com.emu.apps.qcm.services.entity.tags.QuestionTag;
 import com.emu.apps.qcm.services.projections.QuestionResponseProjection;
@@ -35,10 +34,16 @@ public class QuestionServiceImpl implements QuestionService {
     @Autowired
     private QuestionnaireQuestionRepository questionnaireQuestionRepository;
 
+
     @Override
     @Transactional(readOnly = true)
     public Question findOne(Long id) {
         return questionRepository.findOne(id);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        questionRepository.delete(id);
     }
 
     @Override

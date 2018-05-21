@@ -18,6 +18,7 @@ import java.util.Set;
                 },
                 subgraphs = @NamedSubgraph(name = "tags", attributeNodes = @NamedAttributeNode("tag")))
 })
+@Table(indexes = { @Index(name = "IDX_QTE_CREATE_BY_IDX", columnList = "created_by") })
 public class Questionnaire extends AuditableEntity<String> {
 
     @Column(name = "DESCRIPTION")
@@ -33,9 +34,9 @@ public class Questionnaire extends AuditableEntity<String> {
     private Set<QuestionnaireQuestion> questionnaireQuestions = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
-    private Category epic;
+    private Category category;
 
-    @OneToMany(mappedBy = "questionnaire")
+    @OneToMany(mappedBy = "questionnaire", orphanRemoval = true)
     @BatchSize(size = 20)
     private Set<QuestionnaireTag> questionnaireTags = new HashSet<>();
 
@@ -62,12 +63,12 @@ public class Questionnaire extends AuditableEntity<String> {
         this.title = title;
     }
 
-    public Category getEpic() {
-        return epic;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setEpic(Category epic) {
-        this.epic = epic;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public String getDescription() {

@@ -61,7 +61,7 @@ public class FixtureService {
     private QuestionnaireQuestionRepository questionnaireQuestionRepository;
 
     @Autowired
-    private EpicRepository epicRepository;
+    private CategoryRepository epicRepository;
 
     @Autowired
     private ResponseRepository responseCrudRepository;
@@ -100,7 +100,7 @@ public class FixtureService {
         Questionnaire questionnaire = new Questionnaire();
         questionnaire.setTitle(QUESTIONNAIRE_TITLE);
         questionnaire.setDescription(QUESTIONNAIRE_DESC);
-        questionnaire.setEpic(epic);
+        questionnaire.setCategory(epic);
         questionnaire = questionnaireJpaRepository.save(questionnaire);
 
         Response response = new Response();

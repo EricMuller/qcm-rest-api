@@ -1,7 +1,6 @@
 package com.emu.apps.qcm.services.entity.tags;
 
 import com.emu.apps.qcm.services.entity.questionnaires.Questionnaire;
-import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -30,18 +29,9 @@ public class QuestionnaireTag implements Serializable {
 
     public QuestionnaireTag(Questionnaire questionnaire, Tag tag) {
         this.id = new QuestionnaireTagId(questionnaire.getId(), tag.getId());
-        this.setTag(tag);
+        this.tag = tag;
         this.questionnaire = questionnaire;
     }
-
-    public Questionnaire getQuestion() {
-        return questionnaire;
-    }
-
-    public void setQuestion(Questionnaire questionnaire) {
-        this.questionnaire = questionnaire;
-    }
-
 
     public QuestionnaireTagId getId() {
         return id;
