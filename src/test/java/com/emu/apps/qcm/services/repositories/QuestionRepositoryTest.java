@@ -100,9 +100,6 @@ public class QuestionRepositoryTest {
         Response response = Iterables.getFirst(newQuestion.getResponses(), null);
 
         Assertions.assertThat(response).isNotNull();
-        Assertions.assertThat(response.getChoices()).isNotEmpty();
-        Assertions.assertThat(response.getChoices().size()).isEqualTo(2);
-
 
     }
 

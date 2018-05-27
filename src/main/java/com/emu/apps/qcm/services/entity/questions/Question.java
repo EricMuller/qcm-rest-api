@@ -41,10 +41,6 @@ public class Question extends AuditableEntity<String> {
     @BatchSize(size = 20)
     private Set<QuestionTag> questionTags = new HashSet<>();
 
-    @OneToMany(mappedBy = "question")
-    @BatchSize(size = 20)
-    private Set<QuestionnaireQuestion> questionnaireQuestions = new HashSet<>();
-
     public Question() {
     }
 
@@ -93,13 +89,6 @@ public class Question extends AuditableEntity<String> {
         this.questionTags = questionTags;
     }
 
-    public Set<QuestionnaireQuestion> getQuestionnaireQuestions() {
-        return questionnaireQuestions;
-    }
-
-    public void setQuestionnaireQuestions(Set<QuestionnaireQuestion> questionnaireQuestions) {
-        this.questionnaireQuestions = questionnaireQuestions;
-    }
 
     @Override
     public boolean equals(Object obj) {

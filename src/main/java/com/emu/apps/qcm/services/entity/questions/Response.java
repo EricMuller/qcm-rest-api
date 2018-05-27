@@ -1,6 +1,7 @@
 package com.emu.apps.qcm.services.entity.questions;
 
 import com.emu.apps.qcm.services.entity.common.AuditableEntity;
+import com.emu.apps.qcm.services.entity.converters.BooleanTFConverter;
 import org.springframework.security.core.userdetails.User;
 
 import javax.persistence.*;
@@ -15,8 +16,9 @@ public class Response extends AuditableEntity<String> {
     @Column(name = "NUMBER")
     private Long number;
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private Set<Choice> choices;
+    @Column(name = "GOOD")
+    @Convert(converter = BooleanTFConverter.class)
+    private Boolean good;
 
     public Response() {
         //
@@ -47,11 +49,11 @@ public class Response extends AuditableEntity<String> {
         return String.format("Response[id=%d,  response='%s']", getId(), response);
     }
 
-    public Set<Choice> getChoices() {
-        return choices;
+    public Boolean getGood() {
+        return good;
     }
 
-    public void setChoices(Set<Choice> choices) {
-        this.choices = choices;
+    public void setGood(Boolean good) {
+        this.good = good;
     }
 }

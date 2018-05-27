@@ -6,6 +6,8 @@ import com.emu.apps.qcm.web.rest.dtos.QuestionDto;
 import com.emu.apps.qcm.web.rest.dtos.question.QuestionTagsDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.Mappings;
 import org.springframework.data.domain.Page;
 
 @Mapper(componentModel = "spring", uses = {CategoryMapper.class, QuestionTagMapper.class, ResponseMapper.class})
@@ -13,6 +15,11 @@ public abstract class QuestionMapper {
 
     @Mapping(target = "questionTags", ignore = true)
     public abstract Question dtoToModel(QuestionDto questionDto);
+    @Mappings ({
+        @Mapping(target = "questionTags", ignore = true),
+        @Mapping(target = "uuid", ignore = true),
+    })
+    public abstract Question dtoToModel(@MappingTarget Question question, QuestionDto questionDto);
 
     public abstract QuestionDto modelToDto(Question question);
 

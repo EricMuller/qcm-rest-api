@@ -1,17 +1,14 @@
 package com.emu.apps.qcm.web.rest.controllers;
 
 import com.emu.apps.qcm.services.QuestionService;
-import com.emu.apps.qcm.services.entity.questionnaires.Questionnaire;
 import com.emu.apps.qcm.services.entity.questions.Question;
 import com.emu.apps.qcm.services.repositories.specifications.question.QuestionSpecification;
 import com.emu.apps.qcm.web.rest.ApiVersion;
 import com.emu.apps.qcm.web.rest.dtos.FilterDto;
 import com.emu.apps.qcm.web.rest.dtos.MessageDto;
 import com.emu.apps.qcm.web.rest.dtos.QuestionDto;
-import com.emu.apps.qcm.web.rest.dtos.QuestionnaireDto;
 import com.emu.apps.qcm.web.rest.dtos.question.QuestionTagsDto;
 import com.emu.apps.qcm.web.rest.mappers.QuestionMapper;
-import com.emu.apps.qcm.web.rest.mappers.QuestionTagsMapper;
 import com.emu.apps.qcm.web.rest.utils.ExceptionUtil;
 import com.emu.apps.qcm.web.rest.utils.StringToFilter;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -81,11 +78,15 @@ public class QuestionRestController {
     @RequestMapping(method = RequestMethod.PUT)
     @ResponseBody
     public QuestionDto updateQuestion(@RequestBody QuestionDto questionDto) {
-        Question question = questionMapper.dtoToModel(questionDto);
+
+        Question question = questionService.findOne(questionDto.getId());
+
+        question = questionMapper.dtoToModel(question, questionDto);
+
         return questionMapper.modelToDto(questionService.saveQuestion(question));
     }
 
-    @ApiOperation(value = "Save a question", response = QuestionDto.class, nickname = "saveCategory")
+    @ApiOperation(value = "Save a question", response = QuestionDto.class, nickname = "saveQuestion")
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public QuestionDto saveQuestion(@RequestBody QuestionDto questionDto) {

@@ -24,7 +24,6 @@ public interface QuestionRepository extends JpaRepository<Question, Long>, JpaSp
     @Query("SELECT q from Question q left join fetch q.questionTags qt " +
             "join fetch qt.tag " +
             "left join fetch q.responses  r " +
-            "left join fetch r.choices  " +
             "WHERE q.id = :id ")
     Question findByIdAndFetchTagsAndResponses(@Param("id") Long id);
 

@@ -18,6 +18,10 @@ public abstract class EntityDto {
     @JsonProperty("version")
     private Long version;
 
+    @ApiModelProperty(notes = "The  Creation Date record")
+    @JsonProperty("date_creation")
+    private Date dateCreation;
+
     @ApiModelProperty(notes = "The last Modification Date record")
     @JsonProperty("date_modification")
     private Date dateModification;
@@ -52,5 +56,13 @@ public abstract class EntityDto {
 
     public void setDateModification(Date dateModification) {
         this.dateModification = dateModification;
+    }
+
+    public Date getDateCreation() {
+        return dateCreation;
+    }
+
+    public void setDateCreation(Date dateCreation) {
+        this.dateCreation = dateCreation;
     }
 }
