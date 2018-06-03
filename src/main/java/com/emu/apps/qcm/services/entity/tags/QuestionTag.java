@@ -1,6 +1,7 @@
 package com.emu.apps.qcm.services.entity.tags;
 
 import com.emu.apps.qcm.services.entity.questions.Question;
+import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
 import java.io.Serializable;

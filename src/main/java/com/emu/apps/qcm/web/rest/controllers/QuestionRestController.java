@@ -1,7 +1,10 @@
 package com.emu.apps.qcm.web.rest.controllers;
 
 import com.emu.apps.qcm.services.QuestionService;
+import com.emu.apps.qcm.services.QuestionTagService;
 import com.emu.apps.qcm.services.entity.questions.Question;
+import com.emu.apps.qcm.services.entity.tags.QuestionTag;
+import com.emu.apps.qcm.services.entity.tags.QuestionnaireTag;
 import com.emu.apps.qcm.services.repositories.specifications.question.QuestionSpecification;
 import com.emu.apps.qcm.web.rest.ApiVersion;
 import com.emu.apps.qcm.web.rest.dtos.FilterDto;
@@ -9,6 +12,7 @@ import com.emu.apps.qcm.web.rest.dtos.MessageDto;
 import com.emu.apps.qcm.web.rest.dtos.QuestionDto;
 import com.emu.apps.qcm.web.rest.dtos.question.QuestionTagsDto;
 import com.emu.apps.qcm.web.rest.mappers.QuestionMapper;
+import com.emu.apps.qcm.web.rest.mappers.QuestionTagMapper;
 import com.emu.apps.qcm.web.rest.utils.ExceptionUtil;
 import com.emu.apps.qcm.web.rest.utils.StringToFilter;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -40,6 +44,11 @@ public class QuestionRestController {
     @Autowired
     private QuestionMapper questionMapper;
 
+    @Autowired
+    private QuestionTagService questionTagService;
+
+    @Autowired
+    private QuestionTagMapper questionTagMapper;
 
     @Autowired
     private QuestionSpecification questionSpecification;
@@ -81,9 +90,13 @@ public class QuestionRestController {
 
         Question question = questionService.findOne(questionDto.getId());
 
-        question = questionMapper.dtoToModel(question, questionDto);
+        question = questionService.saveQuestion(questionMapper.dtoToModel(question, questionDto));
 
-        return questionMapper.modelToDto(questionService.saveQuestion(question));
+        Iterable<QuestionTag> questionTags = questionTagMapper.dtosToModels(questionDto.getQuestionTags());
+
+        question = questionTagService.saveQuestionTags(question.getId(), questionTags);
+
+        return questionMapper.modelToDto(question);
     }
 
     @ApiOperation(value = "Save a question", response = QuestionDto.class, nickname = "saveQuestion")

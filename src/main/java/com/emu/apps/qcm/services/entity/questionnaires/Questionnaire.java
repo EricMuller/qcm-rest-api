@@ -30,13 +30,13 @@ public class Questionnaire extends AuditableEntity<String> {
     @Column(name = "LOCALE")
     private String locale;
 
-    @OneToMany(mappedBy = "questionnaire", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "questionnaire", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<QuestionnaireQuestion> questionnaireQuestions = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
     private Category category;
 
-    @OneToMany(mappedBy = "questionnaire", orphanRemoval = true)
+    @OneToMany(mappedBy = "questionnaire", cascade = CascadeType.ALL, orphanRemoval = true)
     @BatchSize(size = 20)
     private Set<QuestionnaireTag> questionnaireTags = new HashSet<>();
 

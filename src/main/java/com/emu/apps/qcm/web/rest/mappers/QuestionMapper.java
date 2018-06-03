@@ -18,6 +18,7 @@ public abstract class QuestionMapper {
     @Mappings ({
         @Mapping(target = "questionTags", ignore = true),
         @Mapping(target = "uuid", ignore = true),
+        @Mapping(target = "dateCreation", ignore = true),
     })
     public abstract Question dtoToModel(@MappingTarget Question question, QuestionDto questionDto);
 

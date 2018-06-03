@@ -2,17 +2,16 @@ package com.emu.apps.qcm.services.impl.jpa;
 
 
 import com.emu.apps.qcm.services.QuestionnaireTagService;
+import com.emu.apps.qcm.services.TagService;
 import com.emu.apps.qcm.services.entity.questionnaires.Questionnaire;
 import com.emu.apps.qcm.services.entity.tags.QuestionnaireTag;
 import com.emu.apps.qcm.services.entity.tags.QuestionnaireTagBuilder;
 import com.emu.apps.qcm.services.entity.tags.Tag;
 import com.emu.apps.qcm.services.repositories.QuestionnaireRepository;
 import com.emu.apps.qcm.services.repositories.QuestionnaireTagRepository;
-import com.emu.apps.qcm.services.repositories.TagRepository;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
@@ -30,14 +29,14 @@ public class QuestionnaireTagServiceImpl implements QuestionnaireTagService {
     private QuestionnaireRepository questionnaireRepository;
 
     @Autowired
-    private TagRepository tagRepository;
+    private TagService tagService;
 
     @Override
     public QuestionnaireTag saveQuestionnaireTag(QuestionnaireTag questionnaireTag) {
         return questionnaireTagRepository.save(questionnaireTag);
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional()
     public Questionnaire saveQuestionnaireTags(long questionnaireId, Iterable<QuestionnaireTag> questionnaireTags) {
 
         Questionnaire questionnaire = questionnaireRepository.findOne(questionnaireId);
@@ -46,11 +45,16 @@ public class QuestionnaireTagServiceImpl implements QuestionnaireTagService {
 
         if (Objects.nonNull(questionnaireTags)) {
             for (QuestionnaireTag questionnaireTag : questionnaireTags) {
-
-                Tag tag = tagRepository.findOne(questionnaireTag.getId().getTagId());
-                QuestionnaireTag   newTag =   new  QuestionnaireTagBuilder().setQuestionnaire(questionnaire).setTag(tag).createQuestionnaireTag();
-
-                questionnaire.getQuestionnaireTags().add(questionnaireTagRepository.save(newTag));
+                Tag tag;
+                if (Objects.nonNull(questionnaireTag.getId().getTagId())) {
+                    tag = tagService.findById(questionnaireTag.getId().getTagId());
+                } else {
+                    tag = tagService.findOrCreateByLibelle(questionnaireTag.getTag().getLibelle());
+                }
+                if (tag != null) {
+                    QuestionnaireTag newTag = new QuestionnaireTagBuilder().setQuestionnaire(questionnaire).setTag(tag).createQuestionnaireTag();
+                    questionnaire.getQuestionnaireTags().add(questionnaireTagRepository.save(newTag));
+                }
             }
         }
         return questionnaire;

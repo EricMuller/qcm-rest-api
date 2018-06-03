@@ -25,16 +25,10 @@ public interface QuestionnaireMapper {
 
     @Mappings({
             @Mapping(target = "questionnaireQuestions", ignore = true),
-            @Mapping(target = "questionnaireTags", ignore = true)
+            @Mapping(target = "questionnaireTags", ignore = true),
+            @Mapping(target = "uuid", ignore = true)
     })
     Questionnaire dtoToModel(@MappingTarget Questionnaire questionnaire, QuestionnaireDto questionnaireDto);
-//
-//    Iterable<QuestionnaireDto> modelsToDtos(Iterable<Questionnaire> questionnaires);
-//    @Mappings ({
-//        @Mapping(target = "questions", ignore = true),
-//        @Mapping(target = "category", ignore = true)
-//    })
-//    void updateQuestionnaire( @MappingTarget Questionnaire questionnaire,QuestionnaireDto ownerDto);
 
     default Page<QuestionnaireDto> pageToDto(Page<Questionnaire> page) {
         return page.map(this::modelToDto);

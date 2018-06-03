@@ -17,10 +17,9 @@ public interface QuestionnaireTagMapper {
 
     @Mappings({
             @Mapping(source = "id", target = "id.tagId"),
+            @Mapping(source = "libelle", target = "tag.libelle"),
     })
     QuestionnaireTag dtoToModel(QuestionnaireTagDto questionnaireTagDto);
-
-    Iterable<QuestionnaireTagDto> modelsToDtos(Iterable<QuestionnaireTag> questionnaireTags);
 
     Iterable<QuestionnaireTag> dtosToModels(Iterable<QuestionnaireTagDto> questionnaireTagDtos);
 
