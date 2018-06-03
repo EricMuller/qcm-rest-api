@@ -29,13 +29,9 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     @Autowired
     private QuestionnaireQuestionRepository questionnaireQuestionRepository;
 
-    @Autowired
-    private QuestionnaireTagRepository questionnaireTagRepository;
-
     @Override
+    @Transactional()
     public void deleteById(long id) {
-        questionnaireQuestionRepository.deleteByQuestionnaireId(id);
-        questionnaireTagRepository.deleteByQuestionnaireId(id);
         questionnaireRepository.delete(id);
     }
 
