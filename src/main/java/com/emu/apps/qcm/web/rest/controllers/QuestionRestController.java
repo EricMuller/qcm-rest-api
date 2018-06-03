@@ -4,7 +4,6 @@ import com.emu.apps.qcm.services.QuestionService;
 import com.emu.apps.qcm.services.QuestionTagService;
 import com.emu.apps.qcm.services.entity.questions.Question;
 import com.emu.apps.qcm.services.entity.tags.QuestionTag;
-import com.emu.apps.qcm.services.entity.tags.QuestionnaireTag;
 import com.emu.apps.qcm.services.repositories.specifications.question.QuestionSpecification;
 import com.emu.apps.qcm.web.rest.ApiVersion;
 import com.emu.apps.qcm.web.rest.dtos.FilterDto;
@@ -103,9 +102,17 @@ public class QuestionRestController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public QuestionDto saveQuestion(@RequestBody QuestionDto questionDto) {
-        Question question = questionMapper.dtoToModel(questionDto);
-        return questionMapper.modelToDto(questionService.saveQuestion(question));
+
+        Question question = questionService.saveQuestion(questionMapper.dtoToModel(questionDto));
+
+        Iterable<QuestionTag> questionTags = questionTagMapper.dtosToModels(questionDto.getQuestionTags());
+
+        question = questionTagService.saveQuestionTags(question.getId(), questionTags);
+
+        return questionMapper.modelToDto(question);
+
     }
+
 
     @ExceptionHandler({JsonProcessingException.class, IOException.class})
     public ResponseEntity<?> handleAllException(Exception e) throws IOException {
