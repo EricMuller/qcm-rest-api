@@ -5,6 +5,8 @@ import com.emu.apps.qcm.services.QuestionService;
 import com.emu.apps.qcm.services.QuestionnaireService;
 import com.emu.apps.qcm.services.QuestionnaireTagService;
 import com.emu.apps.qcm.services.entity.questionnaires.Questionnaire;
+import com.emu.apps.qcm.services.entity.questionnaires.QuestionnaireQuestion;
+import com.emu.apps.qcm.services.entity.questions.Question;
 import com.emu.apps.qcm.services.entity.tags.QuestionnaireTag;
 import com.emu.apps.qcm.services.repositories.specifications.questionnaire.QuestionnaireSpecification;
 import com.emu.apps.qcm.web.rest.dtos.FilterDto;
@@ -17,7 +19,6 @@ import com.emu.apps.qcm.web.rest.mappers.QuestionnaireTagMapper;
 import com.emu.apps.qcm.web.rest.utils.ExceptionUtil;
 import com.emu.apps.qcm.web.rest.utils.StringToFilter;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import io.swagger.annotations.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -32,7 +33,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.security.Principal;
-import java.util.HashSet;
 import java.util.List;
 
 @RestController
@@ -168,7 +168,23 @@ public class QuestionnaireRestController {
 
         FilterDto[] filterDtos = stringToFilter.getFilterDtos(filterString);
 
-        return questionnaireMapper.pageToDto(questionnairesService.findAllByPage(questionnaireSpecification.getFilter(filterDtos, principal), pageable));
+        return questionnaireMapper.pageToDto(questionnairesService.findAllByPage(questionnaireSpecification.getSpecifications(filterDtos, principal), pageable));
+    }
+
+    @ApiOperation(value = "Add Question", response = QuestionnaireDto.class, nickname = "addQuestion")
+    @RequestMapping(value = "/{id}/questions", method = RequestMethod.PUT)
+    @ResponseBody
+    public QuestionDto updateQuestionnaire(@PathVariable("id") @ApiParam(value = "ID of the Questionnaire") long id, @RequestBody QuestionDto questionDto) {
+
+
+        Questionnaire questionnaire = questionnairesService.findOne(id);
+        ExceptionUtil.assertFound(questionnaire, "Questionnaire Not found");
+        Question question = questionService.findOne(questionDto.getId());
+        ExceptionUtil.assertFound(question, "Question Not found");
+        questionnairesService.saveQuestionnaireQuestion(new QuestionnaireQuestion(questionnaire, question, 0L));
+
+        return questionDto;
+
     }
 
 

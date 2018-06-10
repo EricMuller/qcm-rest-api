@@ -20,9 +20,17 @@ import static org.springframework.data.jpa.domain.Specifications.where;
 public class QuestionnaireSpecification extends BaseSpecification<Questionnaire, FilterDto[]> {
 
 
+
+    private static final String TAG_ID ="tag_id";
+    private static final String TITLE ="title";
+    private static final String CREATED_BY ="createdBy";
+    private static final String ID ="id";
+
+
+
     private Long[] getTagIds(FilterDto[] filterDtos) {
-        return Arrays.stream(filterDtos).filter((filterDto -> "tag_id".equals(filterDto.getName())))
-                .map((t) -> t.getId()).toArray(it -> new Long[it]);
+        return Arrays.stream(filterDtos).filter((filterDto -> TAG_ID.equals(filterDto.getName())))
+                .map((t) -> Long.valueOf(t.getValue())).toArray(it -> new Long[it]);
     }
 
     private String getTitle(FilterDto[] filterDtos) {
@@ -30,7 +38,7 @@ public class QuestionnaireSpecification extends BaseSpecification<Questionnaire,
     }
 
     @Override
-    public Specification<Questionnaire> getFilter(final FilterDto[] filters, Principal principal) {
+    public Specification<Questionnaire> getSpecifications(final FilterDto[] filters, Principal principal) {
         return (root, query, cb) -> {
             query.distinct(true); //Important because of the join in the questionnaireTags specifications
             return
@@ -43,15 +51,15 @@ public class QuestionnaireSpecification extends BaseSpecification<Questionnaire,
     }
 
     private Specification<Questionnaire> questionnaireTitleContains(String title) {
-        return questionnaireAttributeContains("title", title);
+        return questionnaireAttributeContains(TITLE, title);
     }
 
     private Specification<Questionnaire> tagIdIn(Long[] ids) {
-        return tagAttributeIn("id", ids);
+        return tagAttributeIn(ID, ids);
     }
 
     private Specification<Questionnaire> questionnaireCreatdByEqual(String name) {
-        return questionnaireAttributeEquals("createdBy", name);
+        return questionnaireAttributeEquals(CREATED_BY, name);
     }
 
     private Specification<Questionnaire> questionnaireAttributeContains(String attribute, String value) {
@@ -81,7 +89,7 @@ public class QuestionnaireSpecification extends BaseSpecification<Questionnaire,
                 return null;
             }
             SetJoin<Questionnaire, QuestionnaireTag> questionnaireTags = root.joinSet("questionnaireTags", JoinType.INNER);
-            return questionnaireTags.join("tag").get("id").in(values);
+            return questionnaireTags.join("tag").get(ID).in(values);
         };
     }
 }

@@ -1,8 +1,11 @@
 package com.emu.apps.qcm.web.rest.utils;
 
 import com.emu.apps.qcm.web.rest.dtos.FilterDto;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -11,6 +14,8 @@ import java.util.stream.IntStream;
 
 @Service
 final public class StringToFilter {
+
+    protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     private StringToFilter() {
     }
@@ -24,7 +29,13 @@ final public class StringToFilter {
         if (StringUtils.isNoneEmpty(filterString)) {
             byte[] bytes = Base64.getDecoder().decode(filterString);
             if (!isEmpty(bytes)) {
-                filterDtos = new ObjectMapper().readValue(bytes, FilterDto[].class);
+                try {
+                    filterDtos = new ObjectMapper().readValue(bytes, FilterDto[].class);
+                }catch (JsonMappingException e){
+                    logger.error(String.valueOf(bytes));
+                    throw e;
+                }
+
             }
         }
         return filterDtos;

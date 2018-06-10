@@ -41,6 +41,9 @@ public class Question extends AuditableEntity<String> {
     @BatchSize(size = 20)
     private Set<QuestionTag> questionTags = new HashSet<>();
 
+    @OneToMany(mappedBy = "question")
+    private Set<QuestionnaireQuestion> questionnaireQuestions = new HashSet<>();
+
     public Question() {
     }
 
@@ -98,5 +101,13 @@ public class Question extends AuditableEntity<String> {
     @Override
     public int hashCode() {
         return super.hashCode();
+    }
+
+    public Set<QuestionnaireQuestion> getQuestionnaireQuestions() {
+        return questionnaireQuestions;
+    }
+
+    public void setQuestionnaireQuestions(Set<QuestionnaireQuestion> questionnaireQuestions) {
+        this.questionnaireQuestions = questionnaireQuestions;
     }
 }

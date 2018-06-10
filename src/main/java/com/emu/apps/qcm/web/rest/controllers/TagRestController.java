@@ -3,9 +3,12 @@ package com.emu.apps.qcm.web.rest.controllers;
 
 import com.emu.apps.qcm.services.TagService;
 import com.emu.apps.qcm.services.entity.tags.Tag;
+import com.emu.apps.qcm.services.repositories.specifications.tags.TagSpecification;
+import com.emu.apps.qcm.web.rest.dtos.FilterDto;
 import com.emu.apps.qcm.web.rest.dtos.SuggestDto;
 import com.emu.apps.qcm.web.rest.dtos.TagDto;
 import com.emu.apps.qcm.web.rest.mappers.TagMapper;
+import com.emu.apps.qcm.web.rest.utils.StringToFilter;
 import com.google.common.collect.Lists;
 import io.swagger.annotations.*;
 import org.apache.commons.lang3.StringUtils;
@@ -14,9 +17,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 
 /**
@@ -35,6 +41,12 @@ public class TagRestController {
     @Autowired
     private TagMapper tagMapper;
 
+    @Autowired
+    private StringToFilter stringToFilter;
+
+    @Autowired
+    private TagSpecification tagSpecification;
+
     @ApiOperation(value = "Find all Tags By Page", responseContainer = "List", response = TagDto.class, nickname = "getTags")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page", dataType = "integer", paramType = "query", value = "Results page you want to retrieve (0..N)"),
@@ -52,8 +64,12 @@ public class TagRestController {
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     @PreAuthorize("true")
-    public Page<TagDto> getTagsByPAge(Pageable pageable) {
-        return tagMapper.pageToDto(tagService.findAllByPage(pageable));
+    public Page<TagDto> getTagsByPAge(Principal principal, @RequestParam(value = "filters", required = false) String filterString, Pageable pageable) throws IOException {
+
+        FilterDto[] filterDtos = stringToFilter.getFilterDtos(filterString);
+        Specification<Tag> specifications = tagSpecification.getSpecifications(filterDtos, principal);
+
+        return tagMapper.pageToDto(tagService.findAllByPage(specifications, pageable));
     }
 
     @ApiOperation(value = "Find a tag by ID", response = TagDto.class, nickname = "getTagById")
@@ -90,5 +106,6 @@ public class TagRestController {
         }
         return suggestions;
     }
+
 
 }

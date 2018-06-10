@@ -72,7 +72,7 @@ public class QuestionRestController {
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     public Iterable<QuestionTagsDto> getQuestionsWithFilters(Principal principal, @RequestParam(value = "filters", required = false) String filterString, Pageable pageable) throws IOException {
         FilterDto[] filterDtos = stringToFilter.getFilterDtos(filterString);
-        return questionMapper.pageToPageTagDto(questionService.findAllByPage(questionSpecification.getFilter(filterDtos, principal), pageable));
+        return questionMapper.pageToPageTagDto(questionService.findAllByPage(questionSpecification.getSpecifications(filterDtos, principal), pageable));
     }
 
     @ApiOperation(value = "Find a question by ID", response = QuestionDto.class, nickname = "getQuestionById")

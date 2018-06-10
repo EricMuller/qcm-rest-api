@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,12 +55,12 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public Page<Tag> findAllByPage(Pageable pageable) {
-        return tagRepository.findAll(pageable);
+    public Page<Tag> findAllByPage(Specification<Tag> specifications, Pageable pageable) {
+        return tagRepository.findAll(specifications, pageable);
     }
 
     @Override
-    public Iterable<Tag> findByLibelleContaining(String libelle){
+    public Iterable<Tag> findByLibelleContaining(String libelle) {
         return tagRepository.findByLibelleContaining(libelle);
     }
 

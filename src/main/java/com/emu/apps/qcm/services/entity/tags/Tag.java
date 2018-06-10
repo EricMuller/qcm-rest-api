@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.services.entity.tags;
 
-import com.emu.apps.qcm.services.entity.common.RefEntity;
+import com.emu.apps.qcm.services.entity.common.AuditableEntity;
 import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.Column;
@@ -10,8 +10,8 @@ import javax.persistence.Table;
 
 @Entity
 @BatchSize(size = 20)
-@Table(indexes = { @Index(name = "IDX_TAG_LIBELLE_IDX", columnList = "libelle") })
-public class Tag extends RefEntity {
+@Table(indexes = {@Index(name = "IDX_TAG_LIBELLE_IDX", columnList = "libelle")})
+public class Tag extends AuditableEntity<String> {
 
     @Column
     private String libelle;

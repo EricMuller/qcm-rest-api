@@ -20,7 +20,7 @@ public class Decode64Test {
 //                new ObjectMapper().readValue(message, FilterDto[].class);
 //
 //        Arrays.stream(person).forEach((p) -> {
-//            System.out.println(p.getId());
+//            System.out.println(p.getValue());
 //        });
 
     }

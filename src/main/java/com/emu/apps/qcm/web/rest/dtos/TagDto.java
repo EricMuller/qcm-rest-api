@@ -8,29 +8,13 @@ import io.swagger.annotations.ApiModel;
  * Created by eric on 05/06/2017.
  */
 @ApiModel(value = "Tag")
-public class TagDto {
-
-    @JsonProperty("id")
-    private String id;
+public class TagDto extends EntityDto {
 
     @JsonProperty("libelle")
     private String libelle;
 
     public TagDto() {
-            //nope sonar
-    }
-
-    public TagDto(String id, String libelle) {
-        this.id = id;
-        this.libelle = libelle;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+        //nope sonar
     }
 
     public String getLibelle() {

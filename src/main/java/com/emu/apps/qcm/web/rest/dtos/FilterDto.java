@@ -11,21 +11,21 @@ public class FilterDto {
 
     @ApiModelProperty(notes = "Filter value")
     @JsonProperty("value")
-    private Long value;
+    private String value;
 
     public FilterDto() {
     }
 
-    public FilterDto(String name, Long value) {
+    public FilterDto(String name, String value) {
         this.name = name;
         this.value = value;
     }
 
-    public Long getId() {
+    public String getValue() {
         return value;
     }
 
-    public void setId(Long id) {
+    public void setValue(String id) {
         this.value = id;
     }
 

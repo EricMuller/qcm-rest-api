@@ -8,7 +8,7 @@ public abstract class BaseSpecification<T, U> {
 
     private final String wildcard = "%";
 
-    public abstract Specification<T> getFilter(U request, Principal principal);
+    public abstract Specification<T> getSpecifications(U request, Principal principal);
 
     protected String containsLowerCase(String searchField) {
         return wildcard + searchField.toLowerCase() + wildcard;

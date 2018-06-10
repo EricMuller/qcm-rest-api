@@ -100,9 +100,9 @@ public class QuestionnaireRepositoryTest {
         Tag tag = questionnaireFixture.findTagbyLibelle(questionnaireFixture.TAG_LIBELLE_4);
         Assertions.assertThat(tag).isNotNull();
 
-        FilterDto filterDto = new FilterDto("tag_id", tag.getId());
+        FilterDto filterDto = new FilterDto("tag_id", String.valueOf(tag.getId()));
 
-        Specification<Questionnaire> specification = questionnaireSpecification.getFilter(Arrays.asList(filterDto).toArray(new FilterDto[0]), new Principal() {
+        Specification<Questionnaire> specification = questionnaireSpecification.getSpecifications(Arrays.asList(filterDto).toArray(new FilterDto[0]), new Principal() {
             @Override
             public String getName() {
                 return ApplicationTest.USER_TEST;

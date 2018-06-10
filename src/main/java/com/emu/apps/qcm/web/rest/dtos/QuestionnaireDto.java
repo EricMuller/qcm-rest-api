@@ -1,5 +1,6 @@
 package com.emu.apps.qcm.web.rest.dtos;
 
+import com.emu.apps.qcm.services.entity.questionnaires.QuestionnaireQuestion;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
@@ -53,4 +54,5 @@ public class QuestionnaireDto extends EntityDto {
     public void setQuestionnaireTags(Set<QuestionnaireTagDto> questionnaireTags) {
         this.questionnaireTags = questionnaireTags;
     }
-}
+
+ }

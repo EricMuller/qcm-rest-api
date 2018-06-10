@@ -1,5 +1,6 @@
 package com.emu.apps.qcm.services.repositories.specifications.question;
 
+import com.emu.apps.qcm.services.entity.questionnaires.QuestionnaireQuestion;
 import com.emu.apps.qcm.services.entity.questions.Question;
 import com.emu.apps.qcm.services.entity.tags.QuestionTag;
 import com.emu.apps.qcm.services.repositories.specifications.BaseSpecification;
@@ -19,10 +20,20 @@ import static org.springframework.data.jpa.domain.Specifications.where;
 @Component
 public class QuestionSpecification extends BaseSpecification<Question, FilterDto[]> {
 
+    private static final String TAG_ID = "tag_id";
+    private static final String QUESTIONNAIRE_ID = "questionnaire_id";
+    private static final String TITLE = "title";
+    private static final String CREATED_BY = "createdBy";
+    private static final String ID = "id";
 
     private Long[] getTagIds(FilterDto[] filterDtos) {
-        return Arrays.stream(filterDtos).filter((filterDto -> "tag_id".equals(filterDto.getName())))
-                .map((t) -> t.getId()).toArray(it -> new Long[it]);
+        return Arrays.stream(filterDtos).filter((filterDto -> TAG_ID.equals(filterDto.getName())))
+                .map((t) -> Long.valueOf(t.getValue())).toArray(it -> new Long[it]);
+    }
+
+    private Long[] getQuestionnairesIds(FilterDto[] filterDtos) {
+        return Arrays.stream(filterDtos).filter((filterDto -> QUESTIONNAIRE_ID.equals(filterDto.getName())))
+                .map((t) -> Long.valueOf(t.getValue())).toArray(it -> new Long[it]);
     }
 
     private String getTitle(FilterDto[] filterDtos) {
@@ -30,28 +41,34 @@ public class QuestionSpecification extends BaseSpecification<Question, FilterDto
     }
 
     @Override
-    public Specification<Question> getFilter(final FilterDto[] filters, Principal principal) {
+    public Specification<Question> getSpecifications(final FilterDto[] filters, Principal principal) {
+
         return (root, query, cb) -> {
             query.distinct(true); //Important because of the join in the questionnaireTags specifications
             return
-                    where(questionTitleContains(getTitle(filters)))
-                            .and(tagIdIn(getTagIds(filters)))
-                            .and(questionCreatdByEqual(principal.getName())
+                    where(tagIdIn(getTagIds(filters)))
+                            .and(questionCreatdByEqual(principal.getName()))
+                            .and(questionnaireIdIn(getQuestionnairesIds(filters))
                             )
                             .toPredicate(root, query, cb);
         };
     }
 
     private Specification<Question> questionTitleContains(String title) {
-        return questionAttributeContains("title", title);
+        return questionAttributeContains(TITLE, title);
     }
 
+
     private Specification<Question> tagIdIn(Long[] ids) {
-        return tagAttributeIn("id", ids);
+        return tagAttributeIn(ID, ids);
+    }
+
+    private Specification<Question> questionnaireIdIn(Long[] ids) {
+        return questionnaireAttributeIn(ids);
     }
 
     private Specification<Question> questionCreatdByEqual(String name) {
-        return questionAttributeEquals("createdBy", name);
+        return questionAttributeEquals(CREATED_BY, name);
     }
 
     private Specification<Question> questionAttributeContains(String attribute, String value) {
@@ -81,7 +98,17 @@ public class QuestionSpecification extends BaseSpecification<Question, FilterDto
                 return null;
             }
             SetJoin<Question, QuestionTag> questionnaireTags = root.joinSet("questionTags", JoinType.INNER);
-            return questionnaireTags.join("tag").get("id").in(values);
+            return questionnaireTags.join("tag").get(attribute).in(values);
+        };
+    }
+
+    private Specification<Question> questionnaireAttributeIn( Long values[]) {
+        return (root, query, cb) -> {
+            if (ArrayUtils.isEmpty(values)) {
+                return null;
+            }
+            SetJoin<Question, QuestionnaireQuestion> questionnaireQuestions = root.joinSet("questionnaireQuestions", JoinType.INNER);
+            return questionnaireQuestions.get(ID).get("questionnaireId").in(values);
         };
     }
 }

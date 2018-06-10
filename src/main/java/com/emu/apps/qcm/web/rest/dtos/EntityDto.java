@@ -9,7 +9,7 @@ public abstract class EntityDto {
 
     @ApiModelProperty(notes = "The database generated product ID")
     @JsonProperty("id")
-    private Long id;
+    protected Long id;
 
     @JsonProperty("uuid")
     private  String uuid;
