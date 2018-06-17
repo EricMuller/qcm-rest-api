@@ -2,6 +2,7 @@ package com.emu.apps.qcm.services.impl.jpa;
 
 
 import com.emu.apps.qcm.services.*;
+import com.emu.apps.qcm.services.entity.Status;
 import com.emu.apps.qcm.services.entity.epics.Category;
 import com.emu.apps.qcm.services.entity.questionnaires.Questionnaire;
 import com.emu.apps.qcm.services.entity.questionnaires.QuestionnaireQuestion;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
 import java.util.Map;
 
 @Service
@@ -45,12 +47,12 @@ public class UploadServiceImpl implements UploadService {
     private QuestionnaireTagService questionnaireTagService;
 
     @Override
-    public void createQuestionnaires(String name, FileQuestionDto[] fileQuestionDtos) {
+    public void createQuestionnaires(String name, FileQuestionDto[] fileQuestionDtos, Principal principal) {
 
         Map<String, Questionnaire> questionnaireCacheMap = Maps.newHashMap();
         Map<String, Long> tagsCounterMap = Maps.newHashMap();
 
-       // Long maxPos = questionnaireService.getMaxPosition();
+        // Long maxPos = questionnaireService.getMaxPosition();
 
         //Tag tag = tagService.findOrCreateByLibelle("import");
 
@@ -62,7 +64,7 @@ public class UploadServiceImpl implements UploadService {
 
                 // Category category = categoryService.findOrCreateByLibelle(fileQuestionDto.getCategorie());
 
-                Tag tag = tagService.findOrCreateByLibelle(fileQuestionDto.getCategorie());
+                Tag tag = tagService.findOrCreateByLibelle(fileQuestionDto.getCategorie(), principal);
 
                 Long aLong = tagsCounterMap.containsKey(tag.getLibelle()) ? tagsCounterMap.get(tag.getLibelle()) : Long.valueOf(0);
                 tagsCounterMap.put(tag.getLibelle(), ++aLong);
@@ -70,7 +72,7 @@ public class UploadServiceImpl implements UploadService {
                 Question question = fileQuestionMapper.dtoToModel(fileQuestionDto);
                 question.setType(Type.FREE_TEXT);
                 // question.setPosition(categoryCounterMap.get(category.getLibelle()));
-
+                question.setStatus(Status.DRAFT);
                 Response response = new Response();
                 response.setResponse(fileQuestionDto.getResponse());
                 question.setResponses(Lists.newArrayList(response));
@@ -81,6 +83,7 @@ public class UploadServiceImpl implements UploadService {
                     questionnaire = new Questionnaire(name + "-" + fileQuestionDto.getCategorie());
                     questionnaire.setDescription(questionnaire.getTitle());
                     questionnaire.setCategory(category);
+                    questionnaire.setStatus(Status.DRAFT);
                     //questionnaire.setPosition(++maxPos);
                     questionnaire = questionnaireService.saveQuestionnaire(questionnaire);
 

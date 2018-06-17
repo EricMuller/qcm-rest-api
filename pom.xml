@@ -14,7 +14,7 @@
     <parent>
         <groupId>com.emu.apps.starter</groupId>
         <artifactId>spring-boot-starter-bom</artifactId>
-        <version>1.1</version>
+        <version>1.5.14.RELEASE</version>
     </parent>
 
     <scm>
@@ -75,17 +75,22 @@
             </exclusions>
         </dependency>
 
-        <!-- monitor -->
-        <!--<dependency>-->
-        <!--<groupId>org.springframework.boot</groupId>-->
-        <!--<artifactId>spring-boot-starter-actuator</artifactId>-->
-        <!--</dependency>-->
+         <!--monitor-->
+        <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
 
         <!-- spring dev tools -->
+        <!--<dependency>-->
+            <!--<groupId>org.springframework.boot</groupId>-->
+            <!--<artifactId>spring-boot-devtools</artifactId>-->
+            <!--<optional>true</optional>-->
+        <!--</dependency>-->
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <optional>true</optional>
+            <artifactId>spring-boot-starter-cache</artifactId>
         </dependency>
 
         <!-- security -->
@@ -103,6 +108,11 @@
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
         </dependency>
 
         <!-- pilotes -->
@@ -158,6 +168,7 @@
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
         </dependency>
+
 
     </dependencies>
 

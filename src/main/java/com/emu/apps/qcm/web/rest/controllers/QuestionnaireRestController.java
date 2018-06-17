@@ -1,6 +1,7 @@
 package com.emu.apps.qcm.web.rest.controllers;
 
 
+import com.emu.apps.qcm.metrics.Timer;
 import com.emu.apps.qcm.services.QuestionService;
 import com.emu.apps.qcm.services.QuestionnaireService;
 import com.emu.apps.qcm.services.QuestionnaireTagService;
@@ -9,6 +10,7 @@ import com.emu.apps.qcm.services.entity.questionnaires.QuestionnaireQuestion;
 import com.emu.apps.qcm.services.entity.questions.Question;
 import com.emu.apps.qcm.services.entity.tags.QuestionnaireTag;
 import com.emu.apps.qcm.services.repositories.specifications.questionnaire.QuestionnaireSpecification;
+import com.emu.apps.qcm.web.rest.caches.CacheName;
 import com.emu.apps.qcm.web.rest.dtos.FilterDto;
 import com.emu.apps.qcm.web.rest.dtos.QuestionDto;
 import com.emu.apps.qcm.web.rest.dtos.QuestionnaireDto;
@@ -24,6 +26,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -69,6 +74,8 @@ public class QuestionnaireRestController {
     @ApiOperation(value = "Find a currentQuestionnaire by ID", response = QuestionnaireDto.class, nickname = "getQuestionnaireById")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
+    @Timer
+    @Cacheable(cacheNames = CacheName.Names.QUESTIONNAIRE, key = "#id")
     public QuestionnaireDto getQuestionnaireById(@PathVariable("id") long id) {
         Questionnaire questionnaire = questionnairesService.findOne(id);
         ExceptionUtil.assertFound(questionnaire, String.valueOf(id));
@@ -78,6 +85,7 @@ public class QuestionnaireRestController {
     @ApiOperation(value = "Delete a currentQuestionnaire by ID", response = ResponseEntity.class, nickname = "deleteQuestionnaireById")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseBody
+    @CacheEvict(cacheNames = CacheName.Names.QUESTIONNAIRE, key = "#id")
     public ResponseEntity<Questionnaire> deleteQuestionnaireById(@PathVariable("id") long id) {
         Questionnaire questionnaire = questionnairesService.findOne(id);
         ExceptionUtil.assertFound(questionnaire, String.valueOf(id));
@@ -88,7 +96,9 @@ public class QuestionnaireRestController {
     @ApiOperation(value = "Update a currentQuestionnaire", response = QuestionnaireDto.class, nickname = "updateQuestionnaire")
     @RequestMapping(method = {RequestMethod.PUT})
     @ResponseBody
-    public QuestionnaireDto updateQuestionnaire(@RequestBody QuestionnaireDto questionnaireDto) {
+    @CachePut(cacheNames = CacheName.Names.QUESTIONNAIRE, condition = "#questionnaireDto != null", key = "#questionnaireDto.id")
+    @Timer
+    public QuestionnaireDto updateQuestionnaire(@RequestBody QuestionnaireDto questionnaireDto, Principal principal) {
 
         Questionnaire questionnaire = questionnairesService.findOne(questionnaireDto.getId());
 
@@ -96,7 +106,7 @@ public class QuestionnaireRestController {
 
         Iterable<QuestionnaireTag> questionnaireTags = questionnaireTagMapper.dtosToModels(questionnaireDto.getQuestionnaireTags());
 
-        questionnaire = questionnaireTagService.saveQuestionnaireTags(questionnaire.getId(), questionnaireTags);
+        questionnaire = questionnaireTagService.saveQuestionnaireTags(questionnaire.getId(), questionnaireTags, principal);
 
         return questionnaireMapper.modelToDto(questionnaire);
     }
@@ -104,13 +114,13 @@ public class QuestionnaireRestController {
     @ApiOperation(value = "Save a currentQuestionnaire", response = QuestionnaireDto.class, nickname = "saveQuestionnaire")
     @RequestMapping(method = {RequestMethod.POST})
     @ResponseBody
-    public QuestionnaireDto saveQuestionnaire(@RequestBody QuestionnaireDto questionnaireDto) {
+    public QuestionnaireDto saveQuestionnaire(@RequestBody QuestionnaireDto questionnaireDto, Principal principal) {
 
         Questionnaire questionnaire = questionnairesService.saveQuestionnaire(questionnaireMapper.dtoToModel(questionnaireDto));
 
         Iterable<QuestionnaireTag> questionnaireTags = questionnaireTagMapper.dtosToModels(questionnaireDto.getQuestionnaireTags());
 
-        questionnaire = questionnaireTagService.saveQuestionnaireTags(questionnaire.getId(), questionnaireTags);
+        questionnaire = questionnaireTagService.saveQuestionnaireTags(questionnaire.getId(), questionnaireTags, principal);
 
         return questionnaireMapper.modelToDto(questionnaire);
     }
@@ -164,6 +174,7 @@ public class QuestionnaireRestController {
     )
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
+    @Timer
     public Iterable<QuestionnaireDto> getQuestionnairesWithFilters(Principal principal, @RequestParam(value = "filters", required = false) String filterString, Pageable pageable) throws IOException {
 
         FilterDto[] filterDtos = stringToFilter.getFilterDtos(filterString);

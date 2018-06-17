@@ -1,5 +1,6 @@
 package com.emu.apps.qcm.services.impl.jpa;
 
+import com.emu.apps.qcm.metrics.Timer;
 import com.emu.apps.qcm.services.QuestionService;
 import com.emu.apps.qcm.services.entity.questions.Question;
 import com.emu.apps.qcm.services.entity.tags.QuestionTag;
@@ -10,6 +11,9 @@ import com.emu.apps.qcm.services.repositories.QuestionnaireQuestionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -34,19 +38,21 @@ public class QuestionServiceImpl implements QuestionService {
     @Autowired
     private QuestionnaireQuestionRepository questionnaireQuestionRepository;
 
-
     @Override
     @Transactional(readOnly = true)
+
     public Question findOne(Long id) {
         return questionRepository.findOne(id);
     }
 
     @Override
+    //@CacheEvict("question")
     public void deleteById(Long id) {
         questionRepository.delete(id);
     }
 
     @Override
+    //@CacheEvict("question")
     public Question saveQuestion(Question question) {
         return questionRepository.save(question);
     }
@@ -62,7 +68,7 @@ public class QuestionServiceImpl implements QuestionService {
         return questionRepository.findAll(specification, pageable);
     }
 
-    @Override
+
     @Transactional(readOnly = true)
     public Page<Question> findAllQuestionsTags(Pageable pageable) {
         return questionRepository.findAll(pageable);

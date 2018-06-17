@@ -18,6 +18,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
+
 @Component
 public class FixtureService {
 
@@ -64,8 +66,8 @@ public class FixtureService {
     }
 
     @Transactional(readOnly = true)
-    public Tag findTagbyLibelle(String Name) {
-        return tagRepository.findByLibelle(TAG_LIBELLE_4);
+    public Tag findTagbyLibelle(String Name, Principal principal) {
+        return tagRepository.findByLibelle(TAG_LIBELLE_4, principal.getName());
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)

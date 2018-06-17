@@ -18,7 +18,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface QuestionnaireRepository extends JpaRepository<Questionnaire, Long>, JpaSpecificationExecutor<Questionnaire> {
 
-    @Query("SELECT q.id as id, q.version as version,  q.dateCreation as date, q.title as title, q.description as description, q.category as category  from Questionnaire q  WHERE q.id = :id ")
+    @Query("SELECT q.id as id, q.version as version,  q.dateCreation as date, q.title as title, q.description as description, q.category as category ,q.status as status from Questionnaire q  WHERE q.id = :id ")
     QuestionnaireProjection findQuestionnaireById(@Param("id") Long questionnaireId);
 
     Iterable<QuestionnaireProjection> findByTitleContaining(String title);

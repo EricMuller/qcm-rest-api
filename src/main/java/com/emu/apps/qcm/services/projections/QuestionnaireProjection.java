@@ -1,6 +1,7 @@
 package com.emu.apps.qcm.services.projections;
 
 
+import com.emu.apps.qcm.services.entity.Status;
 import com.emu.apps.qcm.services.entity.epics.Category;
 import org.hibernate.annotations.Immutable;
 
@@ -18,6 +19,8 @@ public interface QuestionnaireProjection {
     String getTitle();
 
     Category getCategory();
+
+    Status getStatus();
 
     String getDescription();
 

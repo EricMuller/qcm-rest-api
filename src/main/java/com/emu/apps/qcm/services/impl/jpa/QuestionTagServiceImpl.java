@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
 import java.util.Objects;
 
 @Service
@@ -34,18 +35,18 @@ public class QuestionTagServiceImpl implements QuestionTagService {
 
     @Override
     // todo: to refacto with abstract entity
-    public Question saveQuestionTags(long questionId, Iterable<QuestionTag> questionTags) {
+    public Question saveQuestionTags(long questionId, Iterable<QuestionTag> questionTags, Principal principal) {
         Question question = questionRepository.findOne(questionId);
 
         question.getQuestionTags().clear();
 
         if (Objects.nonNull(questionTags)) {
             for (QuestionTag questionTag : questionTags) {
-                Tag tag ;
+                Tag tag;
                 if (Objects.nonNull(questionTag.getId().getTagId())) {
                     tag = tagService.findById(questionTag.getId().getTagId());
                 } else {
-                    tag = tagService.findOrCreateByLibelle(questionTag.getTag().getLibelle());
+                    tag = tagService.findOrCreateByLibelle(questionTag.getTag().getLibelle(), principal);
                 }
                 if (tag != null) {
                     QuestionTag newTag = new QuestionTagBuilder().setQuestion(question).setTag(tag).createQuestionnaireTag();

@@ -11,6 +11,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
 import java.util.Objects;
 
 /**
@@ -36,17 +37,17 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public Tag findOrCreateByLibelle(String libelle) {
-        Tag tag = tagRepository.findByLibelle(libelle);
+    public Tag findOrCreateByLibelle(String libelle, Principal principal) {
+        Tag tag = tagRepository.findByLibelle(libelle, principal.getName());
         if (Objects.isNull(tag)) {
             tag = save(new Tag(libelle, true));
         }
         return tag;
     }
 
-    @Override
-    public Tag findByLibelle(String libelle) {
-        return tagRepository.findByLibelle(libelle);
+
+    public Tag findByLibelle(String libelle, Principal principal) {
+        return tagRepository.findByLibelle(libelle, principal.getName());
     }
 
     @Override

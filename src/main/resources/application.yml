@@ -85,6 +85,7 @@ logging:
         org.hibernate.SQL: DEBUG
         org.hibernate.type.descriptor.sql: INFO
         com.emu.apps: WARN
+        org.keycloak.services: DEBUG
         org.springframework.aop.interceptor.PerformanceMonitorInterceptor: TRACE
 
 server:

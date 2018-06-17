@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @EnableAspectJAutoProxy
 @Aspect
 @Component
-public class AopConfiguration {
+public class TimerAopConfiguration {
 
     @Pointcut("@annotation(com.emu.apps.qcm.metrics.Timer))")
     public void timerAnnotations() {
@@ -38,7 +38,7 @@ public class AopConfiguration {
     @Bean
     public Advisor performanceMonitorAdvisor() {
         AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
-        pointcut.setExpression("com.emu.apps.qcm.metrics.AopConfiguration.monitor()");
+        pointcut.setExpression("com.emu.apps.qcm.metrics.TimerAopConfiguration.timerAnnotations()");
         return new DefaultPointcutAdvisor(pointcut, performanceMonitorInterceptor());
     }
 

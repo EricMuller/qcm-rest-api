@@ -1,6 +1,7 @@
 package com.emu.apps.qcm.services.entity.questions;
 
 
+import com.emu.apps.qcm.services.entity.Status;
 import com.emu.apps.qcm.services.entity.common.AuditableEntity;
 import com.emu.apps.qcm.services.entity.converters.BooleanTFConverter;
 import com.emu.apps.qcm.services.entity.questionnaires.QuestionnaireQuestion;
@@ -23,6 +24,7 @@ import java.util.Set;
         },
         subgraphs = @NamedSubgraph(name = "tags", attributeNodes = @NamedAttributeNode("tag")))
 @Table(indexes = { @Index(name = "IDX_QTO_CREATE_BY_IDX", columnList = "created_by") })
+
 public class Question extends AuditableEntity<String> {
 
     @Convert(converter = BooleanTFConverter.class)
@@ -37,11 +39,14 @@ public class Question extends AuditableEntity<String> {
     @Enumerated(EnumType.STRING)
     private Type type;
 
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.DRAFT;
+
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @BatchSize(size = 20)
+    @BatchSize(size = 100)
     private Set<QuestionTag> questionTags = new HashSet<>();
 
-    @OneToMany(mappedBy = "question")
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<QuestionnaireQuestion> questionnaireQuestions = new HashSet<>();
 
     public Question() {
@@ -92,6 +97,13 @@ public class Question extends AuditableEntity<String> {
         this.questionTags = questionTags;
     }
 
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 
     @Override
     public boolean equals(Object obj) {

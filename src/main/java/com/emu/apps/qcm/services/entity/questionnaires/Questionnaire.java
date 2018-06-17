@@ -1,5 +1,6 @@
 package com.emu.apps.qcm.services.entity.questionnaires;
 
+import com.emu.apps.qcm.services.entity.Status;
 import com.emu.apps.qcm.services.entity.common.AuditableEntity;
 import com.emu.apps.qcm.services.entity.epics.Category;
 import com.emu.apps.qcm.services.entity.tags.QuestionnaireTag;
@@ -29,6 +30,9 @@ public class Questionnaire extends AuditableEntity<String> {
 
     @Column(name = "LOCALE")
     private String locale;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     @OneToMany(mappedBy = "questionnaire", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<QuestionnaireQuestion> questionnaireQuestions = new HashSet<>();
@@ -93,5 +97,13 @@ public class Questionnaire extends AuditableEntity<String> {
 
     public void setQuestionnaireTags(Set<QuestionnaireTag> questionnaireTags) {
         this.questionnaireTags = questionnaireTags;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

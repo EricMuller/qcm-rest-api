@@ -95,19 +95,22 @@ public class QuestionnaireRepositoryTest {
     @Test
     public void findAllWithSpecification() {
 
-        questionnaireFixture.createQuestionQuestionnaireTag();
 
-        Tag tag = questionnaireFixture.findTagbyLibelle(questionnaireFixture.TAG_LIBELLE_4);
-        Assertions.assertThat(tag).isNotNull();
-
-        FilterDto filterDto = new FilterDto("tag_id", String.valueOf(tag.getId()));
-
-        Specification<Questionnaire> specification = questionnaireSpecification.getSpecifications(Arrays.asList(filterDto).toArray(new FilterDto[0]), new Principal() {
+        Principal principal = new Principal() {
             @Override
             public String getName() {
                 return ApplicationTest.USER_TEST;
             }
-        });
+        };
+
+        questionnaireFixture.createQuestionQuestionnaireTag();
+
+        Tag tag = questionnaireFixture.findTagbyLibelle(questionnaireFixture.TAG_LIBELLE_4, principal);
+        Assertions.assertThat(tag).isNotNull();
+
+        FilterDto filterDto = new FilterDto("tag_id", String.valueOf(tag.getId()));
+
+        Specification<Questionnaire> specification = questionnaireSpecification.getSpecifications(Arrays.asList(filterDto).toArray(new FilterDto[0]), principal);
 
         Page<Questionnaire> page = questionnaireRepository.findAll(specification, (Pageable) null);
         Assertions.assertThat(page).isNotNull();

@@ -1,5 +1,6 @@
 package com.emu.apps.qcm.web.rest.dtos;
 
+import com.emu.apps.qcm.services.entity.Status;
 import com.emu.apps.qcm.services.entity.questionnaires.QuestionnaireQuestion;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -22,6 +23,9 @@ public class QuestionnaireDto extends EntityDto {
 
     @JsonProperty("tags")
     private Set<QuestionnaireTagDto> questionnaireTags;
+
+    @JsonProperty("status")
+    private Status status;
 
     public String getTitle() {
         return title;
@@ -55,4 +59,12 @@ public class QuestionnaireDto extends EntityDto {
         this.questionnaireTags = questionnaireTags;
     }
 
- }
+    public Status getStatus() {
+
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+}

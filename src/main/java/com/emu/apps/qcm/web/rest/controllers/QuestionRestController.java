@@ -1,11 +1,13 @@
 package com.emu.apps.qcm.web.rest.controllers;
 
+import com.emu.apps.qcm.metrics.Timer;
 import com.emu.apps.qcm.services.QuestionService;
 import com.emu.apps.qcm.services.QuestionTagService;
 import com.emu.apps.qcm.services.entity.questions.Question;
 import com.emu.apps.qcm.services.entity.tags.QuestionTag;
 import com.emu.apps.qcm.services.repositories.specifications.question.QuestionSpecification;
 import com.emu.apps.qcm.web.rest.ApiVersion;
+import com.emu.apps.qcm.web.rest.caches.CacheName;
 import com.emu.apps.qcm.web.rest.dtos.FilterDto;
 import com.emu.apps.qcm.web.rest.dtos.MessageDto;
 import com.emu.apps.qcm.web.rest.dtos.QuestionDto;
@@ -19,11 +21,15 @@ import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.security.Principal;
 
@@ -70,6 +76,7 @@ public class QuestionRestController {
     }
     )
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
+    @Timer
     public Iterable<QuestionTagsDto> getQuestionsWithFilters(Principal principal, @RequestParam(value = "filters", required = false) String filterString, Pageable pageable) throws IOException {
         FilterDto[] filterDtos = stringToFilter.getFilterDtos(filterString);
         return questionMapper.pageToPageTagDto(questionService.findAllByPage(questionSpecification.getSpecifications(filterDtos, principal), pageable));
@@ -78,6 +85,8 @@ public class QuestionRestController {
     @ApiOperation(value = "Find a question by ID", response = QuestionDto.class, nickname = "getQuestionById")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
+    @Timer
+    @Cacheable(cacheNames = CacheName.Names.QUESTION, key = "#id")
     public QuestionDto getQuestionById(@PathVariable("id") long id) {
         return questionMapper.modelToDto(questionService.findOne(id));
     }
@@ -85,7 +94,8 @@ public class QuestionRestController {
     @ApiOperation(value = "Update a question", response = Question.class, nickname = "updateQuestion")
     @RequestMapping(method = RequestMethod.PUT)
     @ResponseBody
-    public QuestionDto updateQuestion(@RequestBody QuestionDto questionDto) {
+    @CachePut(cacheNames = CacheName.Names.QUESTION, condition = "#questionDto != null", key = "#questionDto.id")
+    public QuestionDto updateQuestion(@RequestBody @Valid QuestionDto questionDto,Principal principal) {
 
         Question question = questionService.findOne(questionDto.getId());
 
@@ -93,7 +103,7 @@ public class QuestionRestController {
 
         Iterable<QuestionTag> questionTags = questionTagMapper.dtosToModels(questionDto.getQuestionTags());
 
-        question = questionTagService.saveQuestionTags(question.getId(), questionTags);
+        question = questionTagService.saveQuestionTags(question.getId(), questionTags,principal);
 
         return questionMapper.modelToDto(question);
     }
@@ -101,13 +111,13 @@ public class QuestionRestController {
     @ApiOperation(value = "Save a question", response = QuestionDto.class, nickname = "saveQuestion")
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public QuestionDto saveQuestion(@RequestBody QuestionDto questionDto) {
+    public QuestionDto saveQuestion(@RequestBody QuestionDto questionDto, Principal principal) {
 
         Question question = questionService.saveQuestion(questionMapper.dtoToModel(questionDto));
 
         Iterable<QuestionTag> questionTags = questionTagMapper.dtosToModels(questionDto.getQuestionTags());
 
-        question = questionTagService.saveQuestionTags(question.getId(), questionTags);
+        question = questionTagService.saveQuestionTags(question.getId(), questionTags, principal);
 
         return questionMapper.modelToDto(question);
 
@@ -122,6 +132,7 @@ public class QuestionRestController {
     @ApiOperation(value = "Delete a question by ID", response = ResponseEntity.class, nickname = "deleteQuestionById")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseBody
+    @CacheEvict(cacheNames = CacheName.Names.QUESTION, condition = "#questionDto != null", key = "#questionDto.id")
     public ResponseEntity<Question> deleteQuestionnaireById(@PathVariable("id") long id) {
         Question question = questionService.findOne(id);
         ExceptionUtil.assertFound(question, String.valueOf(id));

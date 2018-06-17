@@ -19,16 +19,8 @@ public interface QuestionService {
 
     QuestionTag saveQuestionTag(QuestionTag questionTag);
 
-    @Timer
     Page<Question> findAllByPage(Specification<Question> specification, Pageable pageable);
 
-    @Timer
-    Page<Question> findAllQuestionsTags(Pageable pageable);
-
-    @Timer
     Page<QuestionResponseProjection> getQuestionsProjectionByQuestionnaireId(Long questionnaireId, Pageable pageable);
-
-    @Timer
-    Iterable<QuestionResponseProjection> getQuestionsProjectionByQuestionnaireId(Long questionnaireId);
 
 }

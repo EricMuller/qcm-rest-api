@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/v1/upload")
@@ -32,14 +33,14 @@ public class UploadRestController {
     @ResponseBody
     @Secured("ROLE_USER")
     @RequestMapping(value = "/{fileType}", method = RequestMethod.POST, headers = "Content-Type=multipart/form-data", produces = "application/json")
-    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file, @PathVariable("fileType") String fileType) throws IOException {
+    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file, @PathVariable("fileType") String fileType, Principal principal) throws IOException {
         try {
             logger.info(file.getOriginalFilename());
             ObjectMapper objectMapper = new ObjectMapper();
             final FileQuestionDto[] fileQuestionDtos = objectMapper.readValue(file.getInputStream(), FileQuestionDto[].class);
             String name = FilenameUtils.getBaseName(file.getOriginalFilename());
 
-            uploadService.createQuestionnaires(name, fileQuestionDtos);
+            uploadService.createQuestionnaires(name, fileQuestionDtos, principal);
 
         } catch (Exception e) {
             logger.error("err", e);
@@ -47,7 +48,6 @@ public class UploadRestController {
         }
         return new ResponseEntity<>(new MessageDto("Ok"), HttpStatus.OK);
     }
-
 
 
 }

@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
 import java.util.Objects;
 
 @Service
@@ -37,7 +38,7 @@ public class QuestionnaireTagServiceImpl implements QuestionnaireTagService {
     }
 
     @Transactional()
-    public Questionnaire saveQuestionnaireTags(long questionnaireId, Iterable<QuestionnaireTag> questionnaireTags) {
+    public Questionnaire saveQuestionnaireTags(long questionnaireId, Iterable<QuestionnaireTag> questionnaireTags, Principal principal) {
 
         Questionnaire questionnaire = questionnaireRepository.findOne(questionnaireId);
 
@@ -49,7 +50,7 @@ public class QuestionnaireTagServiceImpl implements QuestionnaireTagService {
                 if (Objects.nonNull(questionnaireTag.getId().getTagId())) {
                     tag = tagService.findById(questionnaireTag.getId().getTagId());
                 } else {
-                    tag = tagService.findOrCreateByLibelle(questionnaireTag.getTag().getLibelle());
+                    tag = tagService.findOrCreateByLibelle(questionnaireTag.getTag().getLibelle(), principal);
                 }
                 if (tag != null) {
                     QuestionnaireTag newTag = new QuestionnaireTagBuilder().setQuestionnaire(questionnaire).setTag(tag).createQuestionnaireTag();

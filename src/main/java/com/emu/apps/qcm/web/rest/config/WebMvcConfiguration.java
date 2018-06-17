@@ -1,6 +1,9 @@
 package com.emu.apps.qcm.web.rest.config;
 
+import org.springframework.context.MessageSource;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -22,5 +25,12 @@ public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
         // forward requests to index.html
         registry.addViewController("/static/").setViewName(
                 "forward:/static/index.html");
+    }
+
+    @Bean
+    public LocalValidatorFactoryBean validator(MessageSource messageSource) {
+        LocalValidatorFactoryBean validatorFactoryBean = new LocalValidatorFactoryBean();
+        validatorFactoryBean.setValidationMessageSource(messageSource);
+        return validatorFactoryBean;
     }
 }
