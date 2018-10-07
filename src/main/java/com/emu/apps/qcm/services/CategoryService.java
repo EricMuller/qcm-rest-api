@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.services;
 
-import com.emu.apps.qcm.services.entity.epics.Category;
+import com.emu.apps.qcm.services.entity.category.Category;
 
 public interface CategoryService {
 

@@ -8,7 +8,7 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/api/v1/categories")
+@RequestMapping(QcmVersion.API_V +"/categories")
 @Api(value = "categories-store", description = "All operations ", tags = "Categories")
 public interface CategoryRestApi {
     @ApiOperation(value = "Find a category by ID", response = CategoryDto.class, nickname = "getCategoryById")

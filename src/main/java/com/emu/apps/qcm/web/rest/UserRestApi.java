@@ -9,7 +9,7 @@ import java.security.Principal;
 import java.util.Map;
 
 @Api(value = "user-store", description = "All operations ", tags = "User")
-@RequestMapping("/api/v1/users/me")
+@RequestMapping(QcmVersion.API_V +"/users/me")
 public interface UserRestApi {
 
     @ApiOperation(value = "get Current user", response = Map.class, nickname = "getCurrentUser")

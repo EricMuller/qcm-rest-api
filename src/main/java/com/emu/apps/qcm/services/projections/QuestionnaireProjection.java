@@ -2,7 +2,7 @@ package com.emu.apps.qcm.services.projections;
 
 
 import com.emu.apps.qcm.services.entity.Status;
-import com.emu.apps.qcm.services.entity.epics.Category;
+import com.emu.apps.qcm.services.entity.category.Category;
 import org.hibernate.annotations.Immutable;
 
 import java.util.Date;

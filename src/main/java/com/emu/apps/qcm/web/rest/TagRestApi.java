@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.security.Principal;
 
-@RequestMapping("/api/v1/tags")
+@RequestMapping(QcmVersion.API_V +"/tags")
 @Api(value = "tag-store", description = "All operations ", tags = "Tag")
 public interface TagRestApi {
     @ApiOperation(value = "Find all Tags By Page", responseContainer = "List", response = TagDto.class, nickname = "getTags")

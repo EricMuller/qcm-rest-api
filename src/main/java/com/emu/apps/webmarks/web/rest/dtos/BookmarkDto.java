@@ -1,4 +1,4 @@
-package com.emu.apps.qcm.web.rest.dtos;
+package com.emu.apps.webmarks.web.rest.dtos;
 
 import io.swagger.annotations.*;
 

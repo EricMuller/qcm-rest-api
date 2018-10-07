@@ -1,8 +1,8 @@
-package com.emu.apps.qcm.web.rest.controllers;
+package com.emu.apps.webmarks.web.rest.controllers;
 
-import com.emu.apps.qcm.services.repositories.BookmarkJdbcRepository;
-import com.emu.apps.qcm.web.rest.BookmarkRestApi;
-import com.emu.apps.qcm.web.rest.dtos.BookmarkDto;
+import com.emu.apps.webmarks.services.repositories.BookmarkJdbcRepository;
+import com.emu.apps.webmarks.web.rest.BookmarkRestApi;
+import com.emu.apps.webmarks.web.rest.dtos.BookmarkDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

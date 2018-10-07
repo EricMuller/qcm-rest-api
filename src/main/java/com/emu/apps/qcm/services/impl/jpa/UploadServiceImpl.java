@@ -3,7 +3,7 @@ package com.emu.apps.qcm.services.impl.jpa;
 
 import com.emu.apps.qcm.services.*;
 import com.emu.apps.qcm.services.entity.Status;
-import com.emu.apps.qcm.services.entity.epics.Category;
+import com.emu.apps.qcm.services.entity.category.Category;
 import com.emu.apps.qcm.services.entity.questionnaires.Questionnaire;
 import com.emu.apps.qcm.services.entity.questionnaires.QuestionnaireQuestion;
 import com.emu.apps.qcm.services.entity.questions.Question;

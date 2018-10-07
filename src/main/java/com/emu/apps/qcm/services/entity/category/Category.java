@@ -1,4 +1,4 @@
-package com.emu.apps.qcm.services.entity.epics;
+package com.emu.apps.qcm.services.entity.category;
 
 import com.emu.apps.qcm.services.entity.common.RefEntity;
 

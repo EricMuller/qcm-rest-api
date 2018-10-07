@@ -2,7 +2,7 @@ package com.emu.apps.qcm.services.entity.questionnaires;
 
 import com.emu.apps.qcm.services.entity.Status;
 import com.emu.apps.qcm.services.entity.common.AuditableEntity;
-import com.emu.apps.qcm.services.entity.epics.Category;
+import com.emu.apps.qcm.services.entity.category.Category;
 import com.emu.apps.qcm.services.entity.tags.QuestionnaireTag;
 import org.hibernate.annotations.BatchSize;
 

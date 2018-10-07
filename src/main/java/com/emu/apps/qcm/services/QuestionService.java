@@ -1,7 +1,6 @@
 package com.emu.apps.qcm.services;
 
 
-import com.emu.apps.qcm.metrics.Timer;
 import com.emu.apps.qcm.services.entity.questions.Question;
 import com.emu.apps.qcm.services.entity.tags.QuestionTag;
 import com.emu.apps.qcm.services.projections.QuestionResponseProjection;

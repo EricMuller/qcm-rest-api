@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.security.Principal;
 
-@RequestMapping("/api/v1/questionnaires")
+@RequestMapping(QcmVersion.API_V +"/questionnaires")
 @Api(value = "questionnaire-store", description = "All operations ", tags = "Questionnaire")
 public interface QuestionnaireRestApi {
     @ApiOperation(value = "Find a currentQuestionnaire by ID", response = QuestionnaireDto.class, nickname = "getQuestionnaireById")

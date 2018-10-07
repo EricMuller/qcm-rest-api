@@ -1,6 +1,6 @@
-package com.emu.apps.qcm.web.rest;
+package com.emu.apps.webmarks.web.rest;
 
-import com.emu.apps.qcm.web.rest.dtos.BookmarkDto;
+import com.emu.apps.webmarks.web.rest.dtos.BookmarkDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -8,12 +8,11 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 
-@RequestMapping("/api/v0/bookmarks")
+@RequestMapping(WebmarksVersion.API_V + "/bookmarks")
 @Api(value = "bookmark-store", description = "Operations on bookmarks Store")
 public interface BookmarkRestApi {
 

@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.services.impl.jpa;
 
-import com.emu.apps.qcm.services.entity.epics.Category;
+import com.emu.apps.qcm.services.entity.category.Category;
 import com.emu.apps.qcm.services.repositories.CategoryRepository;
 import com.emu.apps.qcm.services.CategoryService;
 import org.slf4j.LoggerFactory;

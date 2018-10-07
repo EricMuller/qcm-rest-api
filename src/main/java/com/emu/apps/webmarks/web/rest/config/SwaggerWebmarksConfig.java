@@ -1,6 +1,6 @@
-package com.emu.apps.qcm.web.rest.config;
+package com.emu.apps.webmarks.web.rest.config;
 
-import com.emu.apps.qcm.web.rest.QcmVersion;
+import com.emu.apps.webmarks.web.rest.WebmarksVersion;
 import com.google.common.collect.Lists;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,7 +29,7 @@ import static springfox.documentation.builders.RequestHandlerSelectors.withClass
 @Configuration
 @EnableSwagger2
 @Import({springfox.documentation.spring.data.rest.configuration.SpringDataRestConfiguration.class})
-public class SwaggerConfig {
+public class SwaggerWebmarksConfig {
 
     @Bean
     SecurityConfiguration security() {
@@ -50,23 +50,18 @@ public class SwaggerConfig {
     }
 
     @Bean
-    public Docket productApiv1() {
+    public Docket bookmarkApiv1() {
 
         return new Docket(DocumentationType.SWAGGER_2)
-                .groupName(QcmVersion.API_V)
-//                .tags(new Tag("tags", "Repository for tags entities"))
+                .groupName(WebmarksVersion.API_V)
                 .select()
                 .apis(or(withClassAnnotation(RestController.class),        // business services
                         withClassAnnotation(RepositoryRestResource.class))
                 )
-                //RequestHandlerSelectors.basePackage("com.emu.apps.qcm"))
-//                .apis(RequestHandlerSelectors.any())
-                .paths(regex(QcmVersion.API_V + ".*"))
-//                .paths(PathSelectors.any())
-
+                .paths(regex(WebmarksVersion.API_V + ".*"))
                 .build()
                 .enable(true)
-                .apiInfo(metaData(QcmVersion.V))
+                .apiInfo(metaData(WebmarksVersion.V))
                 .produces(Collections.singleton("application/json"))
                 .securityContexts(Lists.newArrayList(securityContext()))
                 .securitySchemes(Lists.newArrayList(apiKey()));
@@ -87,7 +82,7 @@ public class SwaggerConfig {
                 .build();
     }
 
-    List <SecurityReference> defaultAuth() {
+    private List <SecurityReference> defaultAuth() {
 
         AuthorizationScope authorizationScope
                 = new AuthorizationScope("global", "accessEverything");
@@ -100,11 +95,11 @@ public class SwaggerConfig {
     private ApiInfo metaData(String version) {
 
         return new ApiInfo(
-                "QCM REST API",
+                "Webmarks REST API",
                 "",
                 version,
                 "Terms of service",
-                new Contact("Eric MULLER", "https://qcm-designer.com", "eric.pierre.muller@gmail.com"),
+                new Contact("Eric MULLER", "https://webmarks.net", "eric.pierre.muller@gmail.com"),
                 "Apache License Version 2.0",
                 "https://www.apache.org/licenses/LICENSE-2.0", Lists.newArrayList());
     }

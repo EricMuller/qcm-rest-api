@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.web.rest;
 
-import com.emu.apps.qcm.Application;
+import com.emu.apps.Application;
 import com.emu.apps.qcm.ApplicationTest;
 import com.emu.apps.qcm.services.FixtureService;
 import com.emu.apps.qcm.web.rest.dtos.QuestionDto;
@@ -69,18 +69,18 @@ public class QuestionRestControllerTest {
 
         questionDto.setResponses(Lists.newArrayList(responseDto));
 
-        final ResponseEntity<QuestionDto> response = restTemplate.exchange(createURLWithPort("/api/v1/questions/")
-                , HttpMethod.POST, new HttpEntity<>(questionDto, headers), QuestionDto.class);
+        final ResponseEntity <QuestionDto> response = restTemplate.exchange(createURLWithPort(QcmVersion.API_V + "/questions/")
+                , HttpMethod.POST, new HttpEntity <>(questionDto, headers), QuestionDto.class);
 
         assertThat(response.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
         assertThat(response.getBody().getId()).isNotNull();
         assertThat(response.getBody().getResponses()).isNotNull().isNotEmpty();
 
         // GET
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(createURLWithPort("/api/v1/questions/{id}"));
-        HttpEntity<?> entity = new HttpEntity<>(headers);
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(createURLWithPort(QcmVersion.API_V + "/questions/{id}"));
+        HttpEntity <?> entity = new HttpEntity <>(headers);
         // restTemplate.getForEntity(builder.build().encode().toUri(), QuestionDto.class);
-        final ResponseEntity<QuestionDto> responseGet = restTemplate.exchange(
+        final ResponseEntity <QuestionDto> responseGet = restTemplate.exchange(
                 builder.build().expand(response.getBody().getId()).encode().toUri(),
                 HttpMethod.GET,
                 entity,
@@ -97,8 +97,8 @@ public class QuestionRestControllerTest {
         // PUT
         first.setResponse(RESPONSE2);
 
-        final ResponseEntity<QuestionDto> responsePut = restTemplate.exchange(createURLWithPort("/api/v1/questions/")
-                , HttpMethod.PUT, new HttpEntity<>(responseDtoGet, headers), QuestionDto.class);
+        final ResponseEntity <QuestionDto> responsePut = restTemplate.exchange(createURLWithPort(QcmVersion.API_V + "/questions/")
+                , HttpMethod.PUT, new HttpEntity <>(responseDtoGet, headers), QuestionDto.class);
 
         assertThat(responsePut.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
 

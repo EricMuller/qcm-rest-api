@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.security.Principal;
 
 
-@RequestMapping("/api/v1/upload")
+@RequestMapping(QcmVersion.API_V +"/upload")
 @Api(value = "upload-store", description = "All operations ", tags = "Upload")
 public interface UploadRestApi {
     @ApiOperation(value = "upload a file", responseContainer = "ResponseEntity", response = MessageDto.class, tags = "Upload", nickname = "uploadFile")
