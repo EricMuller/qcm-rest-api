@@ -14,7 +14,7 @@
     <parent>
         <groupId>com.emu.apps.starter</groupId>
         <artifactId>spring-boot-starter-bom</artifactId>
-        <version>1.5.14.RELEASE</version>
+        <version>1.5.9.RELEASE</version>
     </parent>
 
     <scm>

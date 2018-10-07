@@ -1,10 +1,9 @@
 package com.emu.apps.qcm.web.rest.controllers;
 
 
-import com.emu.apps.qcm.web.rest.ApiVersion;
+import com.emu.apps.qcm.web.rest.SearchRestApi;
 import com.emu.apps.qcm.web.rest.dtos.QuestionDto;
 import com.google.common.collect.Lists;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -20,25 +19,14 @@ import org.springframework.web.bind.annotation.RestController;
  * Created by eric on 05/06/2017.
  */
 @RestController
-@RequestMapping(ApiVersion.V1 + SearchRestController.URL)
-@Api(value = "search-store", description = "All operations ", tags = "Search")
-public class SearchRestController {
+public class SearchRestController implements SearchRestApi {
 
     public static final String URL = "/search";
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
-    @ApiOperation(value = "Search Questions bY criteria Criteria", responseContainer = "List", response = QuestionDto.class, nickname = "searchQuestionsByCriteria", tags = "Search")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved list"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
-    }
-    )
-    @RequestMapping(value = "/questions", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public Iterable<QuestionDto> searchQuestionsByCriteria(String libelle) {
+    @Override
+    public Iterable <QuestionDto> searchQuestionsByCriteria(String libelle) {
         return Lists.newArrayList();
     }
 

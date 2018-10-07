@@ -12,7 +12,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication // @Configuration  @ComponentScan @EnableAutoConfiguration
 @EnableScheduling
 // @EnableGlobalMethodSecurity(securedEnabled = false, prePostEnabled = false)
-@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
+//@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 @ComponentScan("com.emu.apps")
 @EnableCaching
 public class Application {

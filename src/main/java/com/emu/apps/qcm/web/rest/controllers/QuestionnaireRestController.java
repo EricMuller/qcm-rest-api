@@ -10,6 +10,7 @@ import com.emu.apps.qcm.services.entity.questionnaires.QuestionnaireQuestion;
 import com.emu.apps.qcm.services.entity.questions.Question;
 import com.emu.apps.qcm.services.entity.tags.QuestionnaireTag;
 import com.emu.apps.qcm.services.repositories.specifications.questionnaire.QuestionnaireSpecification;
+import com.emu.apps.qcm.web.rest.QuestionnaireRestApi;
 import com.emu.apps.qcm.web.rest.caches.CacheName;
 import com.emu.apps.qcm.web.rest.dtos.FilterDto;
 import com.emu.apps.qcm.web.rest.dtos.QuestionDto;
@@ -41,9 +42,7 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/questionnaires")
-@Api(value = "questionnaire-store", description = "All operations ", tags = "Questionnaire")
-public class QuestionnaireRestController {
+public class QuestionnaireRestController implements QuestionnaireRestApi {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -71,6 +70,7 @@ public class QuestionnaireRestController {
     @Autowired
     private StringToFilter stringToFilter;
 
+    @Override
     @ApiOperation(value = "Find a currentQuestionnaire by ID", response = QuestionnaireDto.class, nickname = "getQuestionnaireById")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
@@ -82,6 +82,7 @@ public class QuestionnaireRestController {
         return questionnaireMapper.modelToDto(questionnaire);
     }
 
+    @Override
     @ApiOperation(value = "Delete a currentQuestionnaire by ID", response = ResponseEntity.class, nickname = "deleteQuestionnaireById")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseBody
@@ -93,6 +94,7 @@ public class QuestionnaireRestController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @Override
     @ApiOperation(value = "Update a currentQuestionnaire", response = QuestionnaireDto.class, nickname = "updateQuestionnaire")
     @RequestMapping(method = {RequestMethod.PUT})
     @ResponseBody
@@ -111,6 +113,7 @@ public class QuestionnaireRestController {
         return questionnaireMapper.modelToDto(questionnaire);
     }
 
+    @Override
     @ApiOperation(value = "Save a currentQuestionnaire", response = QuestionnaireDto.class, nickname = "saveQuestionnaire")
     @RequestMapping(method = {RequestMethod.POST})
     @ResponseBody
@@ -125,6 +128,7 @@ public class QuestionnaireRestController {
         return questionnaireMapper.modelToDto(questionnaire);
     }
 
+    @Override
     @ApiOperation(value = "Find all questions by QuestionnaireID", nickname = "getQuestionsProjectionByQuestionnaireId")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page", dataType = "integer", paramType = "query", value = "Results page you want to retrieve (0..N)"),
@@ -138,6 +142,7 @@ public class QuestionnaireRestController {
         return questionMapper.pageQuestionResponseProjectionToDto(questionService.getQuestionsProjectionByQuestionnaireId(id, pageable));
     }
 
+    @Override
     @ApiOperation(value = "Find suggestions ", responseContainer = "List", response = SuggestDto.class, nickname = "getSuggestions")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully retrieved list"),
@@ -157,6 +162,7 @@ public class QuestionnaireRestController {
         return suggestions;
     }
 
+    @Override
     @ApiOperation(value = "Find all questionnaires By Page", nickname = "getQuestionnaires")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "filters", dataType = "String", paramType = "query", value = "base64 encoded string"),
@@ -182,6 +188,7 @@ public class QuestionnaireRestController {
         return questionnaireMapper.pageToDto(questionnairesService.findAllByPage(questionnaireSpecification.getSpecifications(filterDtos, principal), pageable));
     }
 
+    @Override
     @ApiOperation(value = "Add Question", response = QuestionnaireDto.class, nickname = "addQuestion")
     @RequestMapping(value = "/{id}/questions", method = RequestMethod.PUT)
     @ResponseBody

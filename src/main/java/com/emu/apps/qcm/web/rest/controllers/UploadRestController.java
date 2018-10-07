@@ -1,6 +1,7 @@
 package com.emu.apps.qcm.web.rest.controllers;
 
 import com.emu.apps.qcm.services.UploadService;
+import com.emu.apps.qcm.web.rest.UploadRestApi;
 import com.emu.apps.qcm.web.rest.dtos.FileQuestionDto;
 import com.emu.apps.qcm.web.rest.dtos.MessageDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,19 +21,14 @@ import java.io.IOException;
 import java.security.Principal;
 
 @RestController
-@RequestMapping("/api/v1/upload")
-@Api(value = "upload-store", description = "All operations ", tags = "Upload")
-public class UploadRestController {
+public class UploadRestController implements UploadRestApi {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private UploadService uploadService;
 
-    @ApiOperation(value = "upload a file", responseContainer = "ResponseEntity", response = MessageDto.class, tags = "Upload", nickname = "uploadFile")
-    @ResponseBody
-    @Secured("ROLE_USER")
-    @RequestMapping(value = "/{fileType}", method = RequestMethod.POST, headers = "Content-Type=multipart/form-data", produces = "application/json")
+    @Override
     public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file, @PathVariable("fileType") String fileType, Principal principal) throws IOException {
         try {
             logger.info(file.getOriginalFilename());

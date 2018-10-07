@@ -6,8 +6,7 @@ import com.emu.apps.qcm.services.QuestionTagService;
 import com.emu.apps.qcm.services.entity.questions.Question;
 import com.emu.apps.qcm.services.entity.tags.QuestionTag;
 import com.emu.apps.qcm.services.repositories.specifications.question.QuestionSpecification;
-import com.emu.apps.qcm.web.rest.ApiVersion;
-import com.emu.apps.qcm.web.rest.caches.CacheName;
+import com.emu.apps.qcm.web.rest.QuestionRestApi;
 import com.emu.apps.qcm.web.rest.dtos.FilterDto;
 import com.emu.apps.qcm.web.rest.dtos.MessageDto;
 import com.emu.apps.qcm.web.rest.dtos.QuestionDto;
@@ -17,13 +16,9 @@ import com.emu.apps.qcm.web.rest.mappers.QuestionTagMapper;
 import com.emu.apps.qcm.web.rest.utils.ExceptionUtil;
 import com.emu.apps.qcm.web.rest.utils.StringToFilter;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,10 +31,9 @@ import java.security.Principal;
 /**
  * Created by eric on 05/06/2017.
  */
+
 @RestController
-@RequestMapping(ApiVersion.V1 + "/questions")
-@Api(value = "questions-store", description = "All operations ", tags = "Question")
-public class QuestionRestController {
+public class QuestionRestController implements QuestionRestApi {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -61,41 +55,21 @@ public class QuestionRestController {
     @Autowired
     private StringToFilter stringToFilter;
 
-    @ApiOperation(value = "Find all questions  by Page", responseContainer = "List", response = QuestionDto.class, nickname = "getTagsByPAge")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "page", dataType = "integer", paramType = "query", value = "Results page you want to retrieve (0..N)"),
-            @ApiImplicitParam(name = "size", dataType = "integer", paramType = "query", value = "Number of records per page."),
-            @ApiImplicitParam(name = "sort", allowMultiple = true, dataType = "string", paramType = "query",
-                    value = "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.")
-    })
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved list"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
-    }
-    )
-    @RequestMapping(method = RequestMethod.GET, produces = "application/json")
+    @Override
     @Timer
     public Iterable<QuestionTagsDto> getQuestionsWithFilters(Principal principal, @RequestParam(value = "filters", required = false) String filterString, Pageable pageable) throws IOException {
         FilterDto[] filterDtos = stringToFilter.getFilterDtos(filterString);
         return questionMapper.pageToPageTagDto(questionService.findAllByPage(questionSpecification.getSpecifications(filterDtos, principal), pageable));
     }
 
-    @ApiOperation(value = "Find a question by ID", response = QuestionDto.class, nickname = "getQuestionById")
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    @ResponseBody
-    @Timer
-    @Cacheable(cacheNames = CacheName.Names.QUESTION, key = "#id")
+
+    @Override
     public QuestionDto getQuestionById(@PathVariable("id") long id) {
         return questionMapper.modelToDto(questionService.findOne(id));
     }
 
-    @ApiOperation(value = "Update a question", response = Question.class, nickname = "updateQuestion")
-    @RequestMapping(method = RequestMethod.PUT)
-    @ResponseBody
-    @CachePut(cacheNames = CacheName.Names.QUESTION, condition = "#questionDto != null", key = "#questionDto.id")
-    public QuestionDto updateQuestion(@RequestBody @Valid QuestionDto questionDto,Principal principal) {
+    @Override
+    public QuestionDto updateQuestion(@RequestBody @Valid QuestionDto questionDto, Principal principal) {
 
         Question question = questionService.findOne(questionDto.getId());
 
@@ -108,9 +82,7 @@ public class QuestionRestController {
         return questionMapper.modelToDto(question);
     }
 
-    @ApiOperation(value = "Save a question", response = QuestionDto.class, nickname = "saveQuestion")
-    @RequestMapping(method = RequestMethod.POST)
-    @ResponseBody
+    @Override
     public QuestionDto saveQuestion(@RequestBody QuestionDto questionDto, Principal principal) {
 
         Question question = questionService.saveQuestion(questionMapper.dtoToModel(questionDto));
@@ -123,16 +95,12 @@ public class QuestionRestController {
 
     }
 
-
     @ExceptionHandler({JsonProcessingException.class, IOException.class})
     public ResponseEntity<?> handleAllException(Exception e) throws IOException {
         return new ResponseEntity<>(new MessageDto(e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
-    @ApiOperation(value = "Delete a question by ID", response = ResponseEntity.class, nickname = "deleteQuestionById")
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    @ResponseBody
-    @CacheEvict(cacheNames = CacheName.Names.QUESTION, condition = "#questionDto != null", key = "#questionDto.id")
+    @Override
     public ResponseEntity<Question> deleteQuestionnaireById(@PathVariable("id") long id) {
         Question question = questionService.findOne(id);
         ExceptionUtil.assertFound(question, String.valueOf(id));
