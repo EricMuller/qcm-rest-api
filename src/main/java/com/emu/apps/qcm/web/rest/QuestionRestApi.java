@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.web.rest;
 
-import com.emu.apps.qcm.metrics.Timer;
-import com.emu.apps.qcm.services.entity.questions.Question;
+import com.emu.apps.shared.metrics.Timer;
+import com.emu.apps.qcm.services.jpa.entity.questions.Question;
 import com.emu.apps.qcm.web.rest.caches.CacheName;
 import com.emu.apps.qcm.web.rest.dtos.QuestionDto;
 import com.emu.apps.qcm.web.rest.dtos.question.QuestionTagsDto;

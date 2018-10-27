@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.web.mappers;
 
-import com.emu.apps.qcm.services.entity.questions.Question;
+import com.emu.apps.qcm.services.jpa.entity.questions.Question;
 import com.emu.apps.qcm.web.rest.dtos.QuestionDto;
 import com.emu.apps.qcm.web.rest.dtos.QuestionTagDto;
 import com.emu.apps.qcm.web.rest.mappers.QuestionMapper;

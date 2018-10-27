@@ -1,8 +1,8 @@
 package com.emu.apps.qcm.web.rest.dtos;
 
 
-import com.emu.apps.qcm.services.entity.Status;
-import com.emu.apps.qcm.services.entity.questions.Type;
+import com.emu.apps.qcm.services.jpa.entity.Status;
+import com.emu.apps.qcm.services.jpa.entity.questions.Type;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 

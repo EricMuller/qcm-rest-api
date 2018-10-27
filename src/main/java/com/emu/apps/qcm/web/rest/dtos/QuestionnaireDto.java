@@ -1,7 +1,6 @@
 package com.emu.apps.qcm.web.rest.dtos;
 
-import com.emu.apps.qcm.services.entity.Status;
-import com.emu.apps.qcm.services.entity.questionnaires.QuestionnaireQuestion;
+import com.emu.apps.qcm.services.jpa.entity.Status;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;

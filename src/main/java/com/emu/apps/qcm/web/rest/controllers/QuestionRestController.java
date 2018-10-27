@@ -1,11 +1,11 @@
 package com.emu.apps.qcm.web.rest.controllers;
 
-import com.emu.apps.qcm.metrics.Timer;
+import com.emu.apps.shared.metrics.Timer;
 import com.emu.apps.qcm.services.QuestionService;
 import com.emu.apps.qcm.services.QuestionTagService;
-import com.emu.apps.qcm.services.entity.questions.Question;
-import com.emu.apps.qcm.services.entity.tags.QuestionTag;
-import com.emu.apps.qcm.services.repositories.specifications.question.QuestionSpecification;
+import com.emu.apps.qcm.services.jpa.entity.questions.Question;
+import com.emu.apps.qcm.services.jpa.entity.tags.QuestionTag;
+import com.emu.apps.qcm.services.jpa.repositories.specifications.question.QuestionSpecification;
 import com.emu.apps.qcm.web.rest.QuestionRestApi;
 import com.emu.apps.qcm.web.rest.dtos.FilterDto;
 import com.emu.apps.qcm.web.rest.dtos.MessageDto;
@@ -13,8 +13,8 @@ import com.emu.apps.qcm.web.rest.dtos.QuestionDto;
 import com.emu.apps.qcm.web.rest.dtos.question.QuestionTagsDto;
 import com.emu.apps.qcm.web.rest.mappers.QuestionMapper;
 import com.emu.apps.qcm.web.rest.mappers.QuestionTagMapper;
-import com.emu.apps.qcm.web.rest.utils.ExceptionUtil;
-import com.emu.apps.qcm.web.rest.utils.StringToFilter;
+import com.emu.apps.shared.web.rest.utils.ExceptionUtil;
+import com.emu.apps.qcm.web.rest.dtos.utils.DtoUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,12 +53,12 @@ public class QuestionRestController implements QuestionRestApi {
     private QuestionSpecification questionSpecification;
 
     @Autowired
-    private StringToFilter stringToFilter;
+    private DtoUtil dtoUtil;
 
     @Override
     @Timer
     public Iterable<QuestionTagsDto> getQuestionsWithFilters(Principal principal, @RequestParam(value = "filters", required = false) String filterString, Pageable pageable) throws IOException {
-        FilterDto[] filterDtos = stringToFilter.getFilterDtos(filterString);
+        FilterDto[] filterDtos = dtoUtil.stringToFilterDtos(filterString);
         return questionMapper.pageToPageTagDto(questionService.findAllByPage(questionSpecification.getSpecifications(filterDtos, principal), pageable));
     }
 
@@ -96,7 +96,7 @@ public class QuestionRestController implements QuestionRestApi {
     }
 
     @ExceptionHandler({JsonProcessingException.class, IOException.class})
-    public ResponseEntity<?> handleAllException(Exception e) throws IOException {
+    public ResponseEntity<?> handleAllException(Exception e) {
         return new ResponseEntity<>(new MessageDto(e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 

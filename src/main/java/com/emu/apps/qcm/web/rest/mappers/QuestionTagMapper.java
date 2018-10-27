@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.web.rest.mappers;
 
-import com.emu.apps.qcm.services.entity.tags.QuestionTag;
+import com.emu.apps.qcm.services.jpa.entity.tags.QuestionTag;
 import com.emu.apps.qcm.web.rest.dtos.QuestionTagDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

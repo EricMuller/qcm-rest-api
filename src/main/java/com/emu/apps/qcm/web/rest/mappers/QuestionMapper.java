@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.web.rest.mappers;
 
-import com.emu.apps.qcm.services.entity.questions.Question;
-import com.emu.apps.qcm.services.projections.QuestionResponseProjection;
+import com.emu.apps.qcm.services.jpa.entity.questions.Question;
+import com.emu.apps.qcm.services.jpa.projections.QuestionResponseProjection;
 import com.emu.apps.qcm.web.rest.dtos.QuestionDto;
 import com.emu.apps.qcm.web.rest.dtos.question.QuestionTagsDto;
 import org.mapstruct.Mapper;

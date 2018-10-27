@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.services;
 
-import com.emu.apps.qcm.services.entity.category.Category;
+import com.emu.apps.qcm.services.jpa.entity.category.Category;
 
 public interface CategoryService {
 
@@ -13,6 +13,5 @@ public interface CategoryService {
     Category findOrCreateByLibelle(String libelle);
 
     Iterable<Category> findAll();
-
 
 }

@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.services;
 
 
-import com.emu.apps.qcm.services.entity.UserProfile;
+import com.emu.apps.qcm.services.jpa.entity.UserProfile;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

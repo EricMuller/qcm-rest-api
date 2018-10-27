@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.web.rest.mappers;
 
 
-import com.emu.apps.qcm.services.entity.tags.Tag;
+import com.emu.apps.qcm.services.jpa.entity.tags.Tag;
 import com.emu.apps.qcm.web.rest.dtos.SuggestDto;
 import com.emu.apps.qcm.web.rest.dtos.TagDto;
 import org.mapstruct.Mapper;

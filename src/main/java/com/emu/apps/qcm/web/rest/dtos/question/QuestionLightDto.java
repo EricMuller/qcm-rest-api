@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.web.rest.dtos.question;
 
 
-import com.emu.apps.qcm.services.entity.questions.Type;
+import com.emu.apps.qcm.services.jpa.entity.questions.Type;
 import com.emu.apps.qcm.web.rest.dtos.EntityDto;
 import io.swagger.annotations.ApiModel;
 

@@ -4,11 +4,11 @@ package com.emu.apps.qcm.web.rest.controllers;
 import com.emu.apps.qcm.services.QuestionService;
 import com.emu.apps.qcm.services.QuestionnaireService;
 import com.emu.apps.qcm.services.QuestionnaireTagService;
-import com.emu.apps.qcm.services.entity.questionnaires.Questionnaire;
-import com.emu.apps.qcm.services.entity.questionnaires.QuestionnaireQuestion;
-import com.emu.apps.qcm.services.entity.questions.Question;
-import com.emu.apps.qcm.services.entity.tags.QuestionnaireTag;
-import com.emu.apps.qcm.services.repositories.specifications.questionnaire.QuestionnaireSpecification;
+import com.emu.apps.qcm.services.jpa.entity.questionnaires.Questionnaire;
+import com.emu.apps.qcm.services.jpa.entity.questionnaires.QuestionnaireQuestion;
+import com.emu.apps.qcm.services.jpa.entity.questions.Question;
+import com.emu.apps.qcm.services.jpa.entity.tags.QuestionnaireTag;
+import com.emu.apps.qcm.services.jpa.repositories.specifications.questionnaire.QuestionnaireSpecification;
 import com.emu.apps.qcm.web.rest.QuestionnaireRestApi;
 import com.emu.apps.qcm.web.rest.dtos.FilterDto;
 import com.emu.apps.qcm.web.rest.dtos.QuestionDto;
@@ -17,8 +17,8 @@ import com.emu.apps.qcm.web.rest.dtos.SuggestDto;
 import com.emu.apps.qcm.web.rest.mappers.QuestionMapper;
 import com.emu.apps.qcm.web.rest.mappers.QuestionnaireMapper;
 import com.emu.apps.qcm.web.rest.mappers.QuestionnaireTagMapper;
-import com.emu.apps.qcm.web.rest.utils.ExceptionUtil;
-import com.emu.apps.qcm.web.rest.utils.StringToFilter;
+import com.emu.apps.shared.web.rest.utils.ExceptionUtil;
+import com.emu.apps.qcm.web.rest.dtos.utils.DtoUtil;
 import com.google.common.collect.Lists;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
@@ -65,7 +65,7 @@ public class QuestionnaireRestController implements QuestionnaireRestApi {
     private QuestionnaireSpecification questionnaireSpecification;
 
     @Autowired
-    private StringToFilter stringToFilter;
+    private DtoUtil dtoUtil;
 
     @Override
     public QuestionnaireDto getQuestionnaireById(@PathVariable("id") long id) {
@@ -125,7 +125,7 @@ public class QuestionnaireRestController implements QuestionnaireRestApi {
     @Override
     public Iterable <QuestionnaireDto> getQuestionnairesWithFilters(Principal principal, @RequestParam(value = "filters", required = false) String filterString, Pageable pageable) throws IOException {
 
-        FilterDto[] filterDtos = stringToFilter.getFilterDtos(filterString);
+        FilterDto[] filterDtos = dtoUtil.stringToFilterDtos(filterString);
 
         return questionnaireMapper.pageToDto(questionnairesService.findAllByPage(questionnaireSpecification.getSpecifications(filterDtos, principal), pageable));
     }

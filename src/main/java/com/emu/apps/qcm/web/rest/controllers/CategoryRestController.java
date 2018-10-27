@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.web.rest.controllers;
 
 import com.emu.apps.qcm.services.CategoryService;
-import com.emu.apps.qcm.services.entity.category.Category;
+import com.emu.apps.qcm.services.jpa.entity.category.Category;
 import com.emu.apps.qcm.web.rest.CategoryRestApi;
 import com.emu.apps.qcm.web.rest.dtos.CategoryDto;
 import com.emu.apps.qcm.web.rest.dtos.MessageDto;
@@ -20,7 +20,6 @@ import java.io.IOException;
  * Created by eric on 05/06/2017.
  */
 @RestController
-
 public class CategoryRestController implements CategoryRestApi {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
@@ -50,7 +49,7 @@ public class CategoryRestController implements CategoryRestApi {
     }
 
     @ExceptionHandler({JsonProcessingException.class, IOException.class})
-    public ResponseEntity<?> handleAllException(Exception e) throws IOException {
+    public ResponseEntity<?> handleAllException(Exception e)  {
         return new ResponseEntity<>(new MessageDto(e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 

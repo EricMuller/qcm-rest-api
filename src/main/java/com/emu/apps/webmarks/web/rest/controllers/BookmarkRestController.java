@@ -1,6 +1,6 @@
 package com.emu.apps.webmarks.web.rest.controllers;
 
-import com.emu.apps.webmarks.services.repositories.BookmarkJdbcRepository;
+import com.emu.apps.webmarks.services.jdbc.repositories.BookmarkJdbcRepository;
 import com.emu.apps.webmarks.web.rest.BookmarkRestApi;
 import com.emu.apps.webmarks.web.rest.dtos.BookmarkDto;
 import org.slf4j.Logger;
