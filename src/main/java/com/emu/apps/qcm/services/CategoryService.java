@@ -2,11 +2,13 @@ package com.emu.apps.qcm.services;
 
 import com.emu.apps.qcm.services.jpa.entity.category.Category;
 
+import java.util.Optional;
+
 public interface CategoryService {
 
     Category save(Category epic);
 
-    Category findById(Long id);
+    Optional<Category> findById(Long id);
 
     Category findByLibelle(String libelle);
 

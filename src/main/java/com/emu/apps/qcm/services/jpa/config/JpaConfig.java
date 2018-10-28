@@ -9,15 +9,17 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @Configuration
 @EnableJpaAuditing(auditorAwareRef = "auditorAware", dateTimeProviderRef="dateTimeProvider")
-@Profile(value = {"keycloak"})
+//@Profile(value = {"keycloak"})
 public class JpaConfig {
     @Bean
-    public AuditorAware<String> auditorAware() {
+    public AuditorAware <String> auditorAware() {
         return new AuditorAwareImpl();
     }
 
     @Bean
     DateTimeProvider dateTimeProvider(DateTimeService dateTimeService) {
-        return new AuditingDateTimeProvider(dateTimeService);
+        {
+            return new AuditingDateTimeProvider();
+        }
     }
 }

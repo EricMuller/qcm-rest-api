@@ -17,17 +17,16 @@ import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger.web.ApiKeyVehicle;
 import springfox.documentation.swagger.web.SecurityConfiguration;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 
 import java.util.Collections;
 import java.util.List;
 
-import static com.google.common.base.Predicates.or;
 import static springfox.documentation.builders.PathSelectors.regex;
 import static springfox.documentation.builders.RequestHandlerSelectors.withClassAnnotation;
 
 @Configuration
-@EnableSwagger2
+@EnableSwagger2WebMvc
 @Import({springfox.documentation.spring.data.rest.configuration.SpringDataRestConfiguration.class})
 public class SwaggerWebmarksConfig {
 
@@ -55,9 +54,7 @@ public class SwaggerWebmarksConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName(WebmarksVersion.API_V)
                 .select()
-                .apis(or(withClassAnnotation(RestController.class),        // business services
-                        withClassAnnotation(RepositoryRestResource.class))
-                )
+                .apis(withClassAnnotation(RestController.class))
                 .paths(regex(WebmarksVersion.API_V + ".*"))
                 .build()
                 .enable(true)
@@ -95,7 +92,7 @@ public class SwaggerWebmarksConfig {
     private ApiInfo metaData(String version) {
 
         return new ApiInfo(
-                "Webmarks REST API",
+                "Webmarks Rest API",
                 "",
                 version,
                 "Terms of service",

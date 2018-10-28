@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.security.Principal;
 
 
-@RequestMapping(QcmVersion.API_V + "/questions")
+@RequestMapping(QcmVersion.API_V1 + "/questions")
 @Api(value = "questions-store", description = "All operations ", tags = "Question")
 public interface QuestionRestApi {
     @ApiOperation(value = "Find all questions  by Page", responseContainer = "List", response = QuestionDto.class, nickname = "getTagsByPAge")

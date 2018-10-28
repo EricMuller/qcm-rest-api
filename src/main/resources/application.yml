@@ -1,124 +1,46 @@
 info:
-  application-name: qcm
-  metrics.autoconfig : affiche un rapport montrant les objets pouvant bénéficier de la configuration automatique et ceux qui le sont ou ne le sont pas (voir exemple)
-  metrics.beans : affiche la liste des beans Spring (voir exemple)
-  metrics.configprops : affiche la liste de la configuration externalisée de votre application les @ConfigurationProperties(voir exemple)
-  metrics.dump : effectue un dump des threads  (voir exemple)
-  metrics.env : affiche toutes les propriétés chargées par Spring environnement ou non (voir exemple)
-  metrics.info : affiche des informations que vous spécifiez dans un fichier application.properties (vide par défaut)
-  metrics.health : montre l'état de l'application (voir exemple)
-  metrics.metrics : différentes métriques liées à l'application (voir exemple)
-  metrics.mappings : toutes les URL accessibles, recense les @RequestMapping(voir exemple)
-  metrics.trace : affiche les logs de l'application, par défaut les requêtes HTTP (voir exemple)
-
-#resources:
-#    cache-period: 604800 # one week, in seconds
-#    chain:
-#      cache: true
-#      gzipped: true
-#      enabled: true
-#    static-locations: classpath:/static/dist/
-app:
-
-security:
-  jwt:
-    prefix: Bearer
-    http-header-name: Authorization
-
-  oauth2:
-    client:
-      client-id: acme
-      client-secret: acmesecret
-      access-token-uri: http://localhost:8080/oauth/token
-      user-authorization-uri: http://localhost:8080/oauth/authorize
-      scope: read,write
-      auto-approve-scopes: '.*'
-    resource:
-      user-info-uri: http://localhost:8080/me
-
-github:
-  client:
-    clientId: Iv1.acbf7009a5610786
-    clientSecret: 90186ec1737e015cfe7ad3ca4fb58a69a5b272ba
-    accessTokenUri: https://github.com/login/oauth/access_token
-    userAuthorizationUri: https://github.com/login/oauth/authorize
-    clientAuthenticationScheme: form
-  resource:
-    userInfoUri: https://api.github.com/user
-
-webmarks:
-  client:
-    clientId: client_id
-    clientSecret: client_secret
-    accessTokenUri: https://oauth2.webmarks.net/login/oauth2/token/
-    userAuthorizationUri: https://oauth2.webmarks.net/login/oauth2/authorize
-    clientAuthenticationScheme: form
-    scope:
-          - profile
-          - bookmarks
-  resource:
-    userInfoUri: https://oauth2.webmarks.net/api/v1/accounts/me/
-
-#  https://console.developers.google.com
-google:
-    client:
-       clientId: 289272653750-j8jb7d0ctoqh2d8bqmipag54sr5f1o1m.apps.googleusercontent.com
-       clientSecret: fJ8HOZBKsJy8O2BPNv24RZfp
-       accessTokenUri: https://www.googleapis.com/oauth2/v4/token
-       userAuthorizationUri: https://accounts.google.com/o/oauth2/v2/auth
-       clientAuthenticationScheme: form
-       scope:
-        - openid
-        - email
-        - profile
-    resource:
-       userInfoUri: https://www.googleapis.com/oauth2/v3/userinfo
-       preferTokenInfo: true
+  application-name: qcm-designer-api
 
 logging:
-    # file: logs/application-debug.LOGGER
-    level:
-        root: WARN
-        org.springframework.web: ERROR
-        org.springframework.security: INFO
-        org.hibernate: WARN
-        org.hibernate.SQL: DEBUG
-        org.hibernate.type.descriptor.sql: INFO
-        com.emu.apps: WARN
-        org.keycloak.services: DEBUG
-        org.springframework.aop.interceptor.PerformanceMonitorInterceptor: TRACE
-
-server:
-    address: 127.0.0.1
-    port: 8080
-
-management:
-   context-path: /metrics
-   address: 127.0.0.1
-   port: 9010
-   security:
-       enabled: false
-
-jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
-    generate-ddl: true
-    show-sql: true
-    properties:
-        format_sql: true
-    hibernate:
-        ddl-auto: create-drop
-
-#datasource:
-#    url: jdbc:h2:file:~/h2/app_db;DB_CLOSE_ON_EXIT=FALSE
-#    username: sa
-#    password:
-#    driverClassName: org.h2.Driver
-#
+  # file: logs/application-debug.LOGGER
+  level:
+    root: WARN
+    org.springframework.web: ERROR
+    org.springframework.security: INFO
+    org.hibernate: WARN
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql: WARN
+    com.emu.apps: WARN
+    org.keycloak.services: DEBUG
+    org.springframework.aop.interceptor.PerformanceMonitorInterceptor: TRACE
 
 spring:
-    jpa:
-        database-platform: org.hibernate.dialect.H2Dialect
-        generate-ddl: false
-        show-sql: true
-    application:
-        name: qcm-service
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    generate-ddl: false
+    show-sql: false
+  application:
+    name: qcm-service
+  liquibase:
+    change-log: classpath:liquibase-changeLog.xml
+
+#
+#management:
+
+#    server:
+#        context-path: /metrics
+#        address: 127.0.0.1
+#        port: 9010
+#        security:
+#            enabled: false
+#
+#   endpoints:
+#       web:
+#          exposure:
+#              include: "*"
+#   endpoint:
+#       health:
+#          show-details: ALWAYS
+
+
+

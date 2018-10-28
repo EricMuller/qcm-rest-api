@@ -8,7 +8,7 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @SuppressWarnings("serial")
@@ -27,12 +27,12 @@ public abstract class AuditableEntity<U> extends AbstractPersistable<Long> {
     @Column(name = "created_date", nullable = false, updatable = false)
     @CreatedDate
     //  @Temporal(TIMESTAMP)
-    protected Date dateCreation;
+    protected LocalDateTime dateCreation;
 
     @Column(name = "modified_date")
     @LastModifiedDate
     //  @Temporal(TIMESTAMP)
-    protected Date dateModification;
+    protected LocalDateTime dateModification;
 
     @Column(unique = true, name = "uuid", nullable = false)
     protected String uuid = UUID.randomUUID().toString().toUpperCase();
@@ -72,19 +72,19 @@ public abstract class AuditableEntity<U> extends AbstractPersistable<Long> {
         super.setId(id);
     }
 
-    public Date getDateCreation() {
+    public LocalDateTime getDateCreation() {
         return dateCreation;
     }
 
-    public void setDateCreation(Date dateCreation) {
+    public void setDateCreation(LocalDateTime dateCreation) {
         this.dateCreation = dateCreation;
     }
 
-    public Date getDateModification() {
+    public LocalDateTime getDateModification() {
         return dateModification;
     }
 
-    public void setDateModification(Date dateModification) {
+    public void setDateModification(LocalDateTime dateModification) {
         this.dateModification = dateModification;
     }
 

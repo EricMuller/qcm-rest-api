@@ -2,13 +2,14 @@ package com.emu.apps.qcm.web.security;
 
 import com.emu.apps.qcm.ApplicationTest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 
-@Configuration
+@TestConfiguration
 @EnableWebSecurity
 class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -16,6 +17,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeRequests()
                 .anyRequest().authenticated();
+
 
         httpSecurity.csrf().disable().authorizeRequests();
 
@@ -27,6 +29,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         authenticationManagerBuilder.inMemoryAuthentication()
+                .passwordEncoder(NoOpPasswordEncoder.getInstance())
                 .withUser(ApplicationTest.USER_TEST).password(ApplicationTest.USER_PASSWORD).roles("USER");
     }
 

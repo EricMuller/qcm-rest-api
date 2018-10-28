@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.web.rest;
 
-import com.emu.apps.Application;
+import com.emu.apps.qcm.Application;
 import com.emu.apps.qcm.ApplicationTest;
 import com.emu.apps.qcm.services.FixtureService;
 import com.emu.apps.qcm.web.rest.dtos.QuestionDto;
@@ -10,9 +10,9 @@ import com.google.common.collect.Lists;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.*;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -26,7 +26,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles(value = "test")
-public class QuestionRestControllerTest {
+public class QuestionRestControllerIntegrationTest {
 
     private static final String QUESTION = "c'est quoi la meilleure maniere ?";
 
@@ -69,7 +69,7 @@ public class QuestionRestControllerTest {
 
         questionDto.setResponses(Lists.newArrayList(responseDto));
 
-        final ResponseEntity <QuestionDto> response = restTemplate.exchange(createURLWithPort(QcmVersion.API_V + "/questions/")
+        final ResponseEntity <QuestionDto> response = restTemplate.exchange(createURLWithPort(QcmVersion.API_V1 + "/questions/")
                 , HttpMethod.POST, new HttpEntity <>(questionDto, headers), QuestionDto.class);
 
         assertThat(response.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
@@ -77,7 +77,7 @@ public class QuestionRestControllerTest {
         assertThat(response.getBody().getResponses()).isNotNull().isNotEmpty();
 
         // GET
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(createURLWithPort(QcmVersion.API_V + "/questions/{id}"));
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(createURLWithPort(QcmVersion.API_V1 + "/questions/{id}"));
         HttpEntity <?> entity = new HttpEntity <>(headers);
         // restTemplate.getForEntity(builder.build().encode().toUri(), QuestionDto.class);
         final ResponseEntity <QuestionDto> responseGet = restTemplate.exchange(
@@ -97,7 +97,7 @@ public class QuestionRestControllerTest {
         // PUT
         first.setResponse(RESPONSE2);
 
-        final ResponseEntity <QuestionDto> responsePut = restTemplate.exchange(createURLWithPort(QcmVersion.API_V + "/questions/")
+        final ResponseEntity <QuestionDto> responsePut = restTemplate.exchange(createURLWithPort(QcmVersion.API_V1+"/questions/")
                 , HttpMethod.PUT, new HttpEntity <>(responseDtoGet, headers), QuestionDto.class);
 
         assertThat(responsePut.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);

@@ -16,6 +16,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 /**
  * Created by eric on 05/06/2017.
  */
@@ -37,13 +39,13 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     @Transactional(readOnly = true)
 
-    public Question findOne(Long id) {
-        return questionRepository.findOne(id);
+    public Optional<Question> findById(Long id) {
+        return questionRepository.findById(id);
     }
 
     @Override
     public void deleteById(Long id) {
-        questionRepository.delete(id);
+        questionRepository.deleteById(id);
     }
 
     @Override

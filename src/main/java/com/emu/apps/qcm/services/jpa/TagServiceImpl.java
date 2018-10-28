@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Created by eric on 14/06/2017.
@@ -32,9 +33,10 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public Tag findById(Long id) {
-        return tagRepository.findOne(id);
+    public Optional<Tag> findById(Long id) {
+        return tagRepository.findById(id);
     }
+
 
     @Override
     public Tag findOrCreateByLibelle(String libelle, Principal principal) {

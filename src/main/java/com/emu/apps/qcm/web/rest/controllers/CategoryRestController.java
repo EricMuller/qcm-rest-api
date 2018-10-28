@@ -33,8 +33,9 @@ public class CategoryRestController implements CategoryRestApi {
 
     @Override
     public CategoryDto getCategory(@PathVariable("id") Long id) {
-        return categoryMapper.modelToDto(categoryService.findById(id));
+        return categoryMapper.modelToDto(categoryService.findById(id).orElse(null));
     }
+
 
     @Override
     public Iterable<CategoryDto> getCategories() {

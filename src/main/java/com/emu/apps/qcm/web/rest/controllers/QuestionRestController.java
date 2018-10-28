@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Optional;
 
 /**
  * Created by eric on 05/06/2017.
@@ -65,13 +66,13 @@ public class QuestionRestController implements QuestionRestApi {
 
     @Override
     public QuestionDto getQuestionById(@PathVariable("id") long id) {
-        return questionMapper.modelToDto(questionService.findOne(id));
+        return questionMapper.modelToDto(questionService.findById(id).orElse(null));
     }
 
     @Override
     public QuestionDto updateQuestion(@RequestBody @Valid QuestionDto questionDto, Principal principal) {
 
-        Question question = questionService.findOne(questionDto.getId());
+        Question question = questionService.findById(questionDto.getId()).orElse(null);
 
         question = questionService.saveQuestion(questionMapper.dtoToModel(question, questionDto));
 
@@ -101,11 +102,11 @@ public class QuestionRestController implements QuestionRestApi {
     }
 
     @Override
-    public ResponseEntity<Question> deleteQuestionnaireById(@PathVariable("id") long id) {
-        Question question = questionService.findOne(id);
-        ExceptionUtil.assertFound(question, String.valueOf(id));
+    public ResponseEntity <Question> deleteQuestionnaireById(@PathVariable("id") long id) {
+        Optional<Question> questionOptional = questionService.findById(id);
+        ExceptionUtil.assertFound(questionOptional, String.valueOf(id));
         questionService.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity <>(HttpStatus.NO_CONTENT);
     }
 
 }

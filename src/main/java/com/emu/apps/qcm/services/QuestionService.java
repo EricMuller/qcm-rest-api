@@ -8,11 +8,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.util.Optional;
+
 public interface QuestionService {
+
+    Optional<Question> findById(Long id);
 
     void deleteById(Long id);
 
-    Question findOne(Long id);
+//    Question findById(Long id);
 
     Question saveQuestion(Question question);
 
@@ -21,5 +25,4 @@ public interface QuestionService {
     Page<Question> findAllByPage(Specification<Question> specification, Pageable pageable);
 
     Page<QuestionResponseProjection> getQuestionsProjectionByQuestionnaireId(Long questionnaireId, Pageable pageable);
-
 }

@@ -37,9 +37,10 @@ public class QuestionRepositoryTest {
     public void findOne() {
         Question question = fixture.createQuestion();
         Assert.assertNotNull(question.getId());
-        Question newQuestion = questionRepository.findOne(question.getId());
-        Assert.assertNotNull(question.getId());
-        Assert.assertEquals(FixtureService.QUESTION_QUESTION_1, newQuestion.getQuestion());
+        Optional<Question> newQuestion = questionRepository.findById(question.getId());
+        Assert.assertNotNull(newQuestion.orElse(null));
+        Assert.assertNotNull(newQuestion.orElse(null).getId());
+        Assert.assertEquals(FixtureService.QUESTION_QUESTION_1, newQuestion.get().getQuestion());
         //Assert.assertEquals(RESPONSE, newQuestion.getResponse());
     }
 
@@ -48,9 +49,13 @@ public class QuestionRepositoryTest {
     public void findOneLazyInitializationException() {
         Question question = fixture.createQuestion();
         Assert.assertNotNull(question.getId());
-        Question newQuestion = questionRepository.findOne(question.getId());
+        Optional<Question> newQuestion = questionRepository.findById(question.getId());
 
-        Assertions.assertThat(newQuestion.getQuestionTags()).isNotEmpty();
+        Assertions.assertThat(newQuestion.orElse(null)).isNotNull();
+
+        Assertions.assertThat(newQuestion.get().getQuestionTags()).isNotEmpty();
+
+
     }
 
     @Test

@@ -56,7 +56,7 @@ public class TagRestController implements TagRestApi {
 
     @Override
     public TagDto getTagById(@PathVariable("id") Long id) {
-        return tagMapper.modelToDto(tagService.findById(id));
+        return tagMapper.modelToDto(tagService.findById(id).orElse(null));
     }
 
     @Override

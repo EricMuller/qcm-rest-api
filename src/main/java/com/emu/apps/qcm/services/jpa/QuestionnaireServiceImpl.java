@@ -30,14 +30,15 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     @Override
     @Transactional()
     public void deleteById(long id) {
-        questionnaireRepository.delete(id);
+        questionnaireRepository.deleteById(id);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Questionnaire findOne(long id) {
-        return questionnaireRepository.findOne(id);
+        return questionnaireRepository.findById(id).orElse(null);
     }
+
 
     @Override
     @Transactional(readOnly = true)

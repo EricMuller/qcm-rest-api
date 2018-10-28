@@ -1,15 +1,17 @@
 
 
-jpa:
-    generate-ddl: false
-    show-sql: true
-    properties:
-              format_sql: true
-
 keycloak:
   enabled: false
 
+spring:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    generate-ddl: false
+    show-sql: false
+    hibernate:
+      ddl-auto: create-drop
+  application:
+    name: qcm-service
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.xml
 
-management:
-  security:
-    enabled: false

@@ -19,7 +19,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -48,8 +50,9 @@ public class QuestionnaireRepositoryTest {
 
         Questionnaire q = questionnaireFixture.createQuestionQuestionnaireTag();
 
-        Questionnaire questionnaire = questionnaireRepository.findOne(q.getId());
+        Questionnaire questionnaire = questionnaireRepository.findById(q.getId()).orElse(null);
 
+        Assert.assertNotNull(questionnaire);
         Assert.assertNotNull(questionnaire.getId());
         Assert.assertNotNull(questionnaire.getCategory());
         Assert.assertEquals(questionnaire.getCategory().getLibelle(), FixtureService.CATEGORIE_LIBELLE);
@@ -112,7 +115,9 @@ public class QuestionnaireRepositoryTest {
 
         Specification<Questionnaire> specification = questionnaireSpecification.getSpecifications(Arrays.asList(filterDto).toArray(new FilterDto[0]), principal);
 
-        Page<Questionnaire> page = questionnaireRepository.findAll(specification, (Pageable) null);
+        Pageable pageable = PageRequest.of(0, 3, Sort.by("id"));
+
+        Page<Questionnaire> page = questionnaireRepository.findAll(specification, pageable);
         Assertions.assertThat(page).isNotNull();
 
         Assertions.assertThat(page.getNumberOfElements()).isEqualTo(1);

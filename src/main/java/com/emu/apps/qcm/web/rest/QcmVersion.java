@@ -4,6 +4,6 @@ public interface QcmVersion {
 
     String V = "1";
 
-    String API_V = "/qcm/api/v" + V;
+    String API_V1 = "/qcm/api/v" + V;
 
 }

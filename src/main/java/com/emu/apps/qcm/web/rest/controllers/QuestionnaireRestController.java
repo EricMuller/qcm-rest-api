@@ -14,11 +14,11 @@ import com.emu.apps.qcm.web.rest.dtos.FilterDto;
 import com.emu.apps.qcm.web.rest.dtos.QuestionDto;
 import com.emu.apps.qcm.web.rest.dtos.QuestionnaireDto;
 import com.emu.apps.qcm.web.rest.dtos.SuggestDto;
+import com.emu.apps.qcm.web.rest.dtos.utils.DtoUtil;
 import com.emu.apps.qcm.web.rest.mappers.QuestionMapper;
 import com.emu.apps.qcm.web.rest.mappers.QuestionnaireMapper;
 import com.emu.apps.qcm.web.rest.mappers.QuestionnaireTagMapper;
 import com.emu.apps.shared.web.rest.utils.ExceptionUtil;
-import com.emu.apps.qcm.web.rest.dtos.utils.DtoUtil;
 import com.google.common.collect.Lists;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
@@ -136,7 +136,7 @@ public class QuestionnaireRestController implements QuestionnaireRestApi {
 
         Questionnaire questionnaire = questionnairesService.findOne(id);
         ExceptionUtil.assertFound(questionnaire, "Questionnaire Not found");
-        Question question = questionService.findOne(questionDto.getId());
+        Question question = questionService.findById(questionDto.getId()).orElse(null);
         ExceptionUtil.assertFound(question, "Question Not found");
         questionnairesService.saveQuestionnaireQuestion(new QuestionnaireQuestion(questionnaire, question, 0L));
 

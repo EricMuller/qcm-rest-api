@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 /**
  * Created by eric on 14/06/2017.
  */
@@ -24,8 +26,8 @@ public class EpicServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category findById(Long id) {
-        return epicRepository.findOne(id);
+    public Optional<Category> findById(Long id) {
+        return epicRepository.findById(id);
     }
 
     @Override

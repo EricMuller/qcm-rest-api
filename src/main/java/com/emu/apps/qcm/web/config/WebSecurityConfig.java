@@ -1,5 +1,6 @@
-package com.emu.apps.qcm.web.security;
+package com.emu.apps.qcm.web.config;
 
+import com.emu.apps.qcm.web.rest.QcmVersion;
 import org.keycloak.adapters.KeycloakConfigResolver;
 import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
 import org.keycloak.adapters.springsecurity.KeycloakSecurityComponents;
@@ -22,7 +23,7 @@ import org.springframework.security.web.authentication.session.SessionAuthentica
 @EnableWebSecurity
 @ComponentScan(basePackageClasses = KeycloakSecurityComponents.class)
 @Profile(value = {"keycloak"})
-class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
+class WebSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
 
     /**
      * Registers the KeycloakAuthenticationProvider with the authentication manager.
@@ -53,7 +54,7 @@ class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
         super.configure(http);
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api*").hasRole("user")
+                .antMatchers(QcmVersion.API_V1+"*").hasRole("user")
                 .anyRequest().permitAll();
     }
 

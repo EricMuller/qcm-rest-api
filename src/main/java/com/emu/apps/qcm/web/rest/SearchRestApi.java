@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-@RequestMapping(QcmVersion.API_V+ SearchRestController.URL)
+@RequestMapping(QcmVersion.API_V1 + SearchRestController.URL)
 @Api(value = "search-store", description = "All operations ", tags = "Search")
 public interface SearchRestApi {
     @ApiOperation(value = "Search Questions bY criteria Criteria", responseContainer = "List", response = QuestionDto.class, nickname = "searchQuestionsByCriteria", tags = "Search")

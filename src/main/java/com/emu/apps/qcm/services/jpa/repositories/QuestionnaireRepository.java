@@ -12,6 +12,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 /**
  * Created by eric on 05/06/2017.
  */
@@ -28,7 +30,7 @@ public interface QuestionnaireRepository extends JpaRepository<Questionnaire, Lo
 
     @Override
     @EntityGraph(value = "Questionnaire.questionnaireTags")
-    Questionnaire findOne(Long id);
+    Optional<Questionnaire> findById(Long id);
 
     @Override
     Page<Questionnaire> findAll(Specification<Questionnaire> specification, Pageable pageable);

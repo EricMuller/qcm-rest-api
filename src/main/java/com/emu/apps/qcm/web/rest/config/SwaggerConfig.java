@@ -5,7 +5,6 @@ import com.google.common.collect.Lists;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.core.mapping.RepositoryDetectionStrategy;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
@@ -17,17 +16,16 @@ import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger.web.ApiKeyVehicle;
 import springfox.documentation.swagger.web.SecurityConfiguration;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 
 import java.util.Collections;
 import java.util.List;
 
-import static com.google.common.base.Predicates.or;
 import static springfox.documentation.builders.PathSelectors.regex;
 import static springfox.documentation.builders.RequestHandlerSelectors.withClassAnnotation;
 
 @Configuration
-@EnableSwagger2
+@EnableSwagger2WebMvc
 @Import({springfox.documentation.spring.data.rest.configuration.SpringDataRestConfiguration.class})
 public class SwaggerConfig {
 
@@ -53,15 +51,13 @@ public class SwaggerConfig {
     public Docket productApiv1() {
 
         return new Docket(DocumentationType.SWAGGER_2)
-                .groupName(QcmVersion.API_V)
+                .groupName(QcmVersion.API_V1)
 //                .tags(new Tag("tags", "Repository for tags entities"))
                 .select()
-                .apis(or(withClassAnnotation(RestController.class),        // business services
-                        withClassAnnotation(RepositoryRestResource.class))
-                )
+                .apis(withClassAnnotation(RestController.class))
                 //RequestHandlerSelectors.basePackage("com.emu.apps.qcm"))
 //                .apis(RequestHandlerSelectors.any())
-                .paths(regex(QcmVersion.API_V + ".*"))
+                .paths(regex(QcmVersion.API_V1 + ".*"))
 //                .paths(PathSelectors.any())
 
                 .build()
@@ -100,7 +96,7 @@ public class SwaggerConfig {
     private ApiInfo metaData(String version) {
 
         return new ApiInfo(
-                "QCM REST API",
+                "QCM Rest API",
                 "",
                 version,
                 "Terms of service",

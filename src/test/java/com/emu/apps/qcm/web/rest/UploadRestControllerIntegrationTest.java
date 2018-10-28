@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.web.rest;
 
-import com.emu.apps.Application;
+import com.emu.apps.qcm.Application;
 import com.emu.apps.qcm.ApplicationTest;
 import com.emu.apps.qcm.web.rest.dtos.PageDto;
 import com.emu.apps.qcm.web.rest.dtos.QuestionnaireDto;
@@ -8,9 +8,9 @@ import com.google.common.collect.Iterables;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.*;
 import org.springframework.test.context.ActiveProfiles;
@@ -28,7 +28,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles(value = "test")
-public class UploadRestControllerTest {
+public class UploadRestControllerIntegrationTest {
 
     @LocalServerPort
     private int port;
@@ -62,12 +62,12 @@ public class UploadRestControllerTest {
         String token = new String(Base64.getEncoder().encode((ApplicationTest.USER_TEST + ":" + ApplicationTest.USER_PASSWORD).getBytes()));
         authHeaders.add(HttpHeaders.AUTHORIZATION, "Basic " + token);
 
-        final ResponseEntity <String> response = restTemplate.exchange(createURLWithPort(QcmVersion.API_V + "/upload/questionnaire"), HttpMethod.POST,
+        final ResponseEntity <String> response = restTemplate.exchange(createURLWithPort(QcmVersion.API_V1 + "/upload/questionnaire"), HttpMethod.POST,
                 new HttpEntity <>(map, authHeaders), String.class);
         assertThat(response.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
 
 
-        final ResponseEntity <PageQuestionnaireDto> responseGet = restTemplate.exchange(createURLWithPort(QcmVersion.API_V + "/questionnaires/"), HttpMethod.GET,
+        final ResponseEntity <PageQuestionnaireDto> responseGet = restTemplate.exchange(createURLWithPort(QcmVersion.API_V1 + "/questionnaires/"), HttpMethod.GET,
                 new HttpEntity <>(null, authHeaders), PageQuestionnaireDto.class);
 
         List <QuestionnaireDto> questionnaireDtos = responseGet.getBody().getContent();

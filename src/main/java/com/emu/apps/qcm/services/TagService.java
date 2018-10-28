@@ -6,20 +6,20 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.security.Principal;
+import java.util.Optional;
 
 public interface TagService {
 
 
     Tag save(Tag tag);
 
-    Tag findById(Long id);
+    Optional<Tag> findById(Long id);
 
-    Tag findOrCreateByLibelle(String libelle, Principal principal);
+    Tag  findOrCreateByLibelle(String libelle, Principal principal);
 
     Iterable<Tag> findAll();
 
     Page<Tag> findAllByPage(Specification<Tag> specifications, Pageable pageable);
 
     Iterable<Tag> findByLibelleContaining(String libelle);
-
 }

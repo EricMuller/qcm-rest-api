@@ -1,17 +1,17 @@
 
 ---
 spring:
-    profiles: brix
+    profiles: brix-maria
     jpa:
         # open-in-view: false
-        database-platform: org.hibernate.dialect.PostgreSQLDialect
+        database-platform: org.hibernate.dialect.MariaDBDialect
         generate-ddl: false
-        show-sql: true
+        show-sql: false
         hibernate:
-          # #dll-auto: none
-             ddl-auto: update
-             #ddl-auto: create-drop
-             dialect: org.hibernate.dialect.PostgreSQLDialect
+             dll-auto: none
+             # ddl-auto: update
+             # ddl-auto: create-drop
+             dialect: org.hibernate.dialect.MariaDBDialect
              properties:
                  hibernate:
                      enable_lazy_load_no_trans: false
@@ -36,7 +36,7 @@ spring:
                           mode: ENABLE_SELECTIVE
 
     datasource:
-        driverClassName: org.postgresql.Driver
-        url: jdbc:postgresql://192.168.1.100:5432/qcm
-        username: mynotes
-        password: mynotes
+        driverClassName: org.mariadb.jdbc.Driver
+        url: jdbc:mysql://192.168.1.100:3306/qcm
+        username: webdev
+        password: webdev
