@@ -221,10 +221,14 @@
 
     <repositories>
         <repository>
-            <id>webmarks.net</id>
-            <name>webmarks Repository</name>
-            <url>https://webmarks.net/repository</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <id>central</id>
+            <name>webmarks-public</name>
+            <url>https://nexus.webmarks.net/nexus/repository/webmarks-public/</url>
         </repository>
     </repositories>
+
 
 </project>
