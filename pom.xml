@@ -23,6 +23,17 @@
         <developerConnection>scm:git:git@github.com:EricMuller/qcm-designer-api.git</developerConnection>
     </scm>
 
+    <repositories>
+        <repository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <id>webmarks-public</id>
+            <name>webmarks-public</name>
+            <url>https://nexus.webmarks.net/nexus/repository/webmarks-public/</url>
+        </repository>
+    </repositories>
+
     <properties>
         <sonar.host.url>http://brix:9000</sonar.host.url>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -73,6 +84,16 @@
                     <artifactId>hibernate-core</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
         </dependency>
 
          <!--monitor-->
@@ -219,16 +240,6 @@
         </plugins>
     </build>
 
-    <repositories>
-        <repository>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <id>central</id>
-            <name>webmarks-public</name>
-            <url>https://nexus.webmarks.net/nexus/repository/webmarks-public/</url>
-        </repository>
-    </repositories>
 
 
 </project>
