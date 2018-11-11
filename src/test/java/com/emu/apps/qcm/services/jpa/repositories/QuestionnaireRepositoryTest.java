@@ -1,6 +1,7 @@
 package com.emu.apps.qcm.services.jpa.repositories;
 
-import com.emu.apps.qcm.ApplicationTest;
+import com.emu.apps.Application;
+import com.emu.apps.ApplicationTest;
 import com.emu.apps.qcm.services.FixtureService;
 import com.emu.apps.qcm.services.jpa.entity.questionnaires.Questionnaire;
 import com.emu.apps.qcm.services.jpa.entity.questionnaires.QuestionnaireQuestion;
@@ -31,7 +32,7 @@ import java.security.Principal;
 import java.util.Arrays;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = {Application.class})
 @ActiveProfiles(value = "test")
 public class QuestionnaireRepositoryTest {
 
@@ -113,11 +114,11 @@ public class QuestionnaireRepositoryTest {
 
         FilterDto filterDto = new FilterDto("tag_id", String.valueOf(tag.getId()));
 
-        Specification<Questionnaire> specification = questionnaireSpecification.getSpecifications(Arrays.asList(filterDto).toArray(new FilterDto[0]), principal);
+        Specification <Questionnaire> specification = questionnaireSpecification.getSpecifications(Arrays.asList(filterDto).toArray(new FilterDto[0]), principal);
 
         Pageable pageable = PageRequest.of(0, 3, Sort.by("id"));
 
-        Page<Questionnaire> page = questionnaireRepository.findAll(specification, pageable);
+        Page <Questionnaire> page = questionnaireRepository.findAll(specification, pageable);
         Assertions.assertThat(page).isNotNull();
 
         Assertions.assertThat(page.getNumberOfElements()).isEqualTo(1);

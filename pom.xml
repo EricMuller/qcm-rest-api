@@ -37,7 +37,7 @@
     <properties>
         <sonar.host.url>http://brix:9000</sonar.host.url>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <start-class>com.emu.apps.qcm.Application</start-class>
+        <start-class>com.emu.apps.Application</start-class>
         <sonar.language>java</sonar.language>
     </properties>
 
@@ -70,11 +70,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.keycloak</groupId>
-            <artifactId>keycloak-spring-boot-starter</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-ehcache</artifactId>
             <version>5.2.12.Final</version>
@@ -96,25 +91,31 @@
             <artifactId>hibernate-entitymanager</artifactId>
         </dependency>
 
-         <!--monitor-->
+        <!--monitor-->
         <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-actuator</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-
-        <!-- spring dev tools -->
-        <!--<dependency>-->
-            <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot-devtools</artifactId>-->
-            <!--<optional>true</optional>-->
-        <!--</dependency>-->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-cache</artifactId>
         </dependency>
 
+        <!--spring dev tools-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
+        </dependency>
+
         <!-- security -->
+
+        <dependency>
+            <groupId>org.keycloak</groupId>
+            <artifactId>keycloak-spring-boot-starter</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
@@ -126,6 +127,7 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- json -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
@@ -146,7 +148,7 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>1.4.196</version>
-            <scope>runtime</scope>
+            <scope>test</scope>
         </dependency>
 
         <!-- mapper -->
@@ -179,13 +181,14 @@
         </dependency>
 
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
+        </dependency>
+
+        <!-- apache -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-collections4 -->
@@ -195,15 +198,20 @@
             <artifactId>commons-io</artifactId>
         </dependency>
 
-
     </dependencies>
 
     <build>
+
         <plugins>
             <!-- mapper -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
             </plugin>
 
             <!-- spring-boot- -->
@@ -213,18 +221,15 @@
 
                 <configuration>
                     <addResources>true</addResources>
-                    <executable>true</executable>
-                    <embeddedLaunchScriptProperties>
-                        <useStartStopDaemon>false</useStartStopDaemon>
-                    </embeddedLaunchScriptProperties>
-                    <jvmArguments>-Xmx512m -Xms256m</jvmArguments>
+                    <executable>false</executable>
+                    <mainClass>com.emu.apps.Application</mainClass>
+                    <additionalProperties>
+                        <encoding.source>UTF-8</encoding.source>
+                        <encoding.reporting>UTF-8</encoding.reporting>
+                        <java.source>${java.source.version}</java.source>
+                        <java.target>${java.target.version}</java.target>
+                    </additionalProperties>
                 </configuration>
-
-            </plugin>
-            <!-- test ?? -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-site-plugin</artifactId>
             </plugin>
 
             <plugin>
@@ -237,9 +242,30 @@
                 <artifactId>maven-surefire-plugin</artifactId>
             </plugin>
 
+            <plugin>
+                <groupId>ch.acanda.maven</groupId>
+                <artifactId>spring-banner-plugin</artifactId>
+                <version>1.0</version>
+                <executions>
+                    <execution>
+                        <id>generate-spring-banner</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <text>${project.name} ${project.version}</text>
+                    <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+                    <filename>banner.txt</filename>
+                    <includeInfo>true</includeInfo>
+                    <info>Spring Boot ${spring.boot.version} (${maven.build.timestamp})</info>
+                    <color>default</color>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
-
-
 
 </project>

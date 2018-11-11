@@ -16,8 +16,6 @@ public interface QuestionService {
 
     void deleteById(Long id);
 
-//    Question findById(Long id);
-
     Question saveQuestion(Question question);
 
     QuestionTag saveQuestionTag(QuestionTag questionTag);

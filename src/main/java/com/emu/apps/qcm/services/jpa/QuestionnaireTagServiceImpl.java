@@ -9,7 +9,7 @@ import com.emu.apps.qcm.services.jpa.entity.tags.QuestionnaireTagBuilder;
 import com.emu.apps.qcm.services.jpa.entity.tags.Tag;
 import com.emu.apps.qcm.services.jpa.repositories.QuestionnaireRepository;
 import com.emu.apps.qcm.services.jpa.repositories.QuestionnaireTagRepository;
-import com.emu.apps.shared.web.rest.utils.ExceptionUtil;
+import com.emu.apps.shared.web.rest.exceptions.utils.ExceptionUtil;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

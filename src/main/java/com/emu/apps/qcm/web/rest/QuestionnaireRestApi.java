@@ -1,11 +1,11 @@
 package com.emu.apps.qcm.web.rest;
 
-import com.emu.apps.shared.metrics.Timer;
 import com.emu.apps.qcm.services.jpa.entity.questionnaires.Questionnaire;
 import com.emu.apps.qcm.web.rest.caches.CacheName;
 import com.emu.apps.qcm.web.rest.dtos.QuestionDto;
 import com.emu.apps.qcm.web.rest.dtos.QuestionnaireDto;
 import com.emu.apps.qcm.web.rest.dtos.SuggestDto;
+import com.emu.apps.shared.metrics.Timer;
 import io.swagger.annotations.*;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -13,14 +13,13 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.security.Principal;
 
-@RequestMapping(QcmVersion.API_V1 +"/questionnaires")
-@Api(value = "questionnaire-store", description = "All operations ", tags = "Questionnaire")
+@RequestMapping(QcmApi.API_V1 +"/questionnaires")
+@Api(value = "questionnaire-store", description = "All operations ", tags = "Questionnaires")
 public interface QuestionnaireRestApi {
     @ApiOperation(value = "Find a currentQuestionnaire by ID", response = QuestionnaireDto.class, nickname = "getQuestionnaireById")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -68,7 +67,6 @@ public interface QuestionnaireRestApi {
     )
     @RequestMapping(value = "/suggest", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    @PreAuthorize("true")
     Iterable<SuggestDto> getSuggestions(@RequestParam("queryText") String queryText);
 
     @ApiOperation(value = "Find all questionnaires By Page", nickname = "getQuestionnaires")

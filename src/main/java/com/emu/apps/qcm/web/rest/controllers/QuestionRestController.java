@@ -13,7 +13,7 @@ import com.emu.apps.qcm.web.rest.dtos.QuestionDto;
 import com.emu.apps.qcm.web.rest.dtos.question.QuestionTagsDto;
 import com.emu.apps.qcm.web.rest.mappers.QuestionMapper;
 import com.emu.apps.qcm.web.rest.mappers.QuestionTagMapper;
-import com.emu.apps.shared.web.rest.utils.ExceptionUtil;
+import com.emu.apps.shared.web.rest.exceptions.utils.ExceptionUtil;
 import com.emu.apps.qcm.web.rest.dtos.utils.DtoUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;

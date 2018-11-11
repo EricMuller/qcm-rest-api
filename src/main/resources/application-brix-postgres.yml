@@ -4,10 +4,14 @@ spring:
     profiles: brix-postgres
     jpa:
         # open-in-view: false
-        database-platform: org.hibernate.dialect.PostgreSQLDialect
+        # database-platform: org.hibernate.dialect.PostgreSQLDialect
+        database: default
         generate-ddl: false
-        show-sql: false
+        show-sql: true
+
         hibernate:
+             naming:
+                 physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
              dll-auto: none
              # ddl-auto: update
              # ddl-auto: create-drop
@@ -35,8 +39,37 @@ spring:
                      sharedCache:
                           mode: ENABLE_SELECTIVE
 
+            hibernate:
+                current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
+                hikari:
+                    maximumPoolSize: 30
+
     datasource:
-        driverClassName: org.postgresql.Driver
+        type: com.zaxxer.hikari.HikariDataSource
         url: jdbc:postgresql://192.168.1.100:5432/qcm
+        driverClassName: org.postgresql.Driver
         username: mynotes
         password: mynotes
+        hikari:
+                url: jdbc:postgresql://192.168.1.100:5432/qcm
+                pool-name: qcm-hikari-pool
+                autoCommit: false
+                connection-test-query: SELECT 1
+                idleTimeout: 20000
+                minimum-idle: 1
+                maximumPoolSize: 5
+
+        histo:
+            type: com.zaxxer.hikari.HikariDataSource
+            url: jdbc:postgresql://192.168.1.100:5432/qcm
+            driverClassName: org.postgresql.Driver
+            username: mynotes
+            password: mynotes
+            hikari:
+                url: jdbc:postgresql://192.168.1.100:5432/qcm
+                pool-name: qcm-hikari-pool
+                autoCommit: false
+                connection-test-query: SELECT 1
+                idleTimeout: 20000
+                minimum-idle: 1
+                maximumPoolSize: 5

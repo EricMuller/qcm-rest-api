@@ -5,10 +5,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping(QcmVersion.API_V1 +"/categories")
+@RequestMapping(QcmApi.API_V1 +"/categories")
 @Api(value = "categories-store", description = "All operations ", tags = "Categories")
 public interface CategoryRestApi {
     @ApiOperation(value = "Find a category by ID", response = CategoryDto.class, nickname = "getCategoryById")
@@ -26,7 +25,6 @@ public interface CategoryRestApi {
     )
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    @PreAuthorize("true")
     Iterable<CategoryDto> getCategories();
 
     @ApiOperation(value = "save a Category", response = CategoryDto.class, nickname = "saveCategory")

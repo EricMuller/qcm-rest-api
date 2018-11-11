@@ -6,13 +6,15 @@ logging:
   level:
     root: WARN
     org.springframework.web: ERROR
-    org.springframework.security: INFO
+    org.springframework.security: WARN
     org.hibernate: WARN
-    org.hibernate.SQL: DEBUG
-    org.hibernate.type.descriptor.sql: WARN
+    org.hibernate.SQL: INFO
+    org.hibernate.type.descriptor.sql: INFO
     com.emu.apps: WARN
     org.keycloak.services: DEBUG
     org.springframework.aop.interceptor.PerformanceMonitorInterceptor: TRACE
+    com.zaxxer.hikari.pool.HikariPool: DEBUG
+    com.zaxxer.hikari: DEBUG
 
 spring:
   jpa:

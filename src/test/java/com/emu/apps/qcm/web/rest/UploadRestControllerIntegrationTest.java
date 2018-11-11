@@ -1,9 +1,10 @@
 package com.emu.apps.qcm.web.rest;
 
-import com.emu.apps.qcm.Application;
-import com.emu.apps.qcm.ApplicationTest;
+import com.emu.apps.Application;
+import com.emu.apps.ApplicationTest;
 import com.emu.apps.qcm.web.rest.dtos.PageDto;
 import com.emu.apps.qcm.web.rest.dtos.QuestionnaireDto;
+import com.emu.apps.qcm.web.security.WebSecurityTestConfig;
 import com.google.common.collect.Iterables;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,7 +14,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.*;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -26,8 +27,8 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles(value = "test")
+@TestPropertySource("classpath:application-test.properties")
+@SpringBootTest(classes = {Application.class, WebSecurityTestConfig.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class UploadRestControllerIntegrationTest {
 
     @LocalServerPort
@@ -62,12 +63,12 @@ public class UploadRestControllerIntegrationTest {
         String token = new String(Base64.getEncoder().encode((ApplicationTest.USER_TEST + ":" + ApplicationTest.USER_PASSWORD).getBytes()));
         authHeaders.add(HttpHeaders.AUTHORIZATION, "Basic " + token);
 
-        final ResponseEntity <String> response = restTemplate.exchange(createURLWithPort(QcmVersion.API_V1 + "/upload/questionnaire"), HttpMethod.POST,
+        final ResponseEntity <String> response = restTemplate.exchange(createURLWithPort(QcmApi.API_V1 + "/upload/questionnaire"), HttpMethod.POST,
                 new HttpEntity <>(map, authHeaders), String.class);
         assertThat(response.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
 
 
-        final ResponseEntity <PageQuestionnaireDto> responseGet = restTemplate.exchange(createURLWithPort(QcmVersion.API_V1 + "/questionnaires/"), HttpMethod.GET,
+        final ResponseEntity <PageQuestionnaireDto> responseGet = restTemplate.exchange(createURLWithPort(QcmApi.API_V1 + "/questionnaires/"), HttpMethod.GET,
                 new HttpEntity <>(null, authHeaders), PageQuestionnaireDto.class);
 
         List <QuestionnaireDto> questionnaireDtos = responseGet.getBody().getContent();

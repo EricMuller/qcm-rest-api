@@ -18,7 +18,7 @@ import com.emu.apps.qcm.web.rest.dtos.utils.DtoUtil;
 import com.emu.apps.qcm.web.rest.mappers.QuestionMapper;
 import com.emu.apps.qcm.web.rest.mappers.QuestionnaireMapper;
 import com.emu.apps.qcm.web.rest.mappers.QuestionnaireTagMapper;
-import com.emu.apps.shared.web.rest.utils.ExceptionUtil;
+import com.emu.apps.shared.web.rest.exceptions.utils.ExceptionUtil;
 import com.google.common.collect.Lists;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
