@@ -1,6 +1,7 @@
 package com.emu.apps.qcm.web.config;
 
 
+import com.emu.apps.qcm.web.rest.QcmApi;
 import org.keycloak.adapters.KeycloakConfigResolver;
 import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
 import org.keycloak.adapters.springsecurity.KeycloakSecurityComponents;
@@ -109,7 +110,7 @@ class WebSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
                 .addFilterBefore(keycloakPreAuthActionsFilter(), LogoutFilter.class)
                 .addFilterBefore(keycloakAuthenticationProcessingFilter(), X509AuthenticationFilter.class)
                 .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint()).and().authorizeRequests()
-                .antMatchers("/qcm/**").authenticated().anyRequest().permitAll() ;
+                .antMatchers(QcmApi.API_V1 + ".*").authenticated().anyRequest().permitAll() ;
 
     }
 
