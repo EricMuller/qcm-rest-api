@@ -7,7 +7,7 @@ spring:
         # database-platform: org.hibernate.dialect.PostgreSQLDialect
         database: default
         generate-ddl: false
-        show-sql: true
+        show-sql: false
 
         hibernate:
              naming:

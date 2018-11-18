@@ -17,7 +17,6 @@ import com.emu.apps.qcm.web.rest.mappers.FileQuestionMapper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,29 +27,33 @@ import java.util.Map;
 @Transactional
 public class UploadServiceImpl implements UploadService {
 
-    @Autowired
-    private QuestionnaireService questionnaireService;
+    private final CategoryService categoryService;
 
-    @Autowired
-    private TagService tagService;
+    private final FileQuestionMapper fileQuestionMapper;
 
-    @Autowired
-    private CategoryService categoryService;
+    private final QuestionnaireService questionnaireService;
 
-    @Autowired
-    private QuestionService questionService;
+    private final QuestionService questionService;
 
-    @Autowired
-    private FileQuestionMapper fileQuestionMapper;
+    private final QuestionnaireTagService questionnaireTagService;
 
-    @Autowired
-    private QuestionnaireTagService questionnaireTagService;
+    private final TagService tagService;
+
+    public UploadServiceImpl(QuestionnaireService questionnaireService, TagService tagService, CategoryService categoryService, QuestionService questionService, FileQuestionMapper fileQuestionMapper, QuestionnaireTagService questionnaireTagService) {
+        this.questionnaireService = questionnaireService;
+        this.tagService = tagService;
+        this.categoryService = categoryService;
+        this.questionService = questionService;
+        this.fileQuestionMapper = fileQuestionMapper;
+        this.questionnaireTagService = questionnaireTagService;
+    }
+
 
     @Override
     public void createQuestionnaires(String name, FileQuestionDto[] fileQuestionDtos, Principal principal) {
 
-        Map<String, Questionnaire> questionnaireCacheMap = Maps.newHashMap();
-        Map<String, Long> tagsCounterMap = Maps.newHashMap();
+        Map <String, Questionnaire> questionnaireCacheMap = Maps.newHashMap();
+        Map <String, Long> tagsCounterMap = Maps.newHashMap();
 
         // Long maxPos = questionnaireService.getMaxPosition();
 

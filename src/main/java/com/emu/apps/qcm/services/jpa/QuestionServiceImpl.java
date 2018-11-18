@@ -25,21 +25,24 @@ import java.util.Optional;
 @Transactional()
 public class QuestionServiceImpl implements QuestionService {
 
-    protected final Logger logger = LoggerFactory.getLogger(getClass());
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+
+    private final QuestionRepository questionRepository;
+
+    private final QuestionTagRepository questionTagCrudRepository;
+
+    private final QuestionnaireQuestionRepository questionnaireQuestionRepository;
 
     @Autowired
-    private QuestionRepository questionRepository;
-
-    @Autowired
-    private QuestionTagRepository questionTagCrudRepository;
-
-    @Autowired
-    private QuestionnaireQuestionRepository questionnaireQuestionRepository;
+    public QuestionServiceImpl(QuestionRepository questionRepository, QuestionTagRepository questionTagCrudRepository, QuestionnaireQuestionRepository questionnaireQuestionRepository) {
+        this.questionRepository = questionRepository;
+        this.questionTagCrudRepository = questionTagCrudRepository;
+        this.questionnaireQuestionRepository = questionnaireQuestionRepository;
+    }
 
     @Override
     @Transactional(readOnly = true)
-
-    public Optional<Question> findById(Long id) {
+    public Optional <Question> findById(Long id) {
         return questionRepository.findById(id);
     }
 
@@ -60,22 +63,22 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<Question> findAllByPage(Specification<Question> specification, Pageable pageable) {
+    public Page <Question> findAllByPage(Specification <Question> specification, Pageable pageable) {
         return questionRepository.findAll(specification, pageable);
     }
 
     @Transactional(readOnly = true)
-    public Page<Question> findAllQuestionsTags(Pageable pageable) {
+    public Page <Question> findAllQuestionsTags(Pageable pageable) {
         return questionRepository.findAll(pageable);
     }
 
     @Transactional(readOnly = true)
-    public Page<QuestionResponseProjection> getQuestionsProjectionByQuestionnaireId(Long questionnaireId, Pageable pageable) {
+    public Page <QuestionResponseProjection> getQuestionsProjectionByQuestionnaireId(Long questionnaireId, Pageable pageable) {
         return questionnaireQuestionRepository.findQuestionsByQuestionnaireId(questionnaireId, pageable);
     }
 
     @Transactional(readOnly = true)
-    public Iterable<QuestionResponseProjection> getQuestionsProjectionByQuestionnaireId(Long questionnaireId) {
+    public Iterable <QuestionResponseProjection> getQuestionsProjectionByQuestionnaireId(Long questionnaireId) {
         return questionnaireQuestionRepository.findQuestionsByQuestionnaireId(questionnaireId);
     }
 }

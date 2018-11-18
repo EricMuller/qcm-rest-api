@@ -73,7 +73,6 @@ public class QcmDataSourceConfig {
         properties.put("hibernate.dialect", env.getProperty("spring.jpa.properties.hibernate.dialect"));
         properties.put("hibernate.show_sql", env.getProperty("spring.jpa.show-sql"));
         properties.put("hibernate.format_sql", env.getProperty("spring.jpa.properties.hibernate.format_sql"));
-        properties.put("hibernate.format_sql", env.getProperty("spring.jpa.properties.hibernate.format_sql"));
         properties.put("hibernate.connection.autocommit", "false");
         //tells Hibernate that the underlying JDBC Connections already disabled the auto-commit mode.
         properties.put("hibernate.connection.provider_disables_autocommit", "false");

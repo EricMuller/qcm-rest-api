@@ -6,10 +6,10 @@ logging:
   level:
     root: WARN
     org.springframework.web: ERROR
-    org.springframework.security: WARN
+    org.springframework.security: DEBUG
     org.hibernate: WARN
-    org.hibernate.SQL: INFO
-    org.hibernate.type.descriptor.sql: INFO
+    org.hibernate.SQL: WARN
+    org.hibernate.type.descriptor.sql: WARN
     com.emu.apps: WARN
     org.keycloak.services: DEBUG
     org.springframework.aop.interceptor.PerformanceMonitorInterceptor: TRACE
@@ -21,10 +21,14 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     generate-ddl: false
     show-sql: false
+    hibernate:
+      id:
+        new_generator_mappings: true
+
   application:
     name: qcm-service
-  liquibase:
-    change-log: classpath:liquibase-changeLog.xml
+#  liquibase:
+#    change-log: classpath:liquibase-changeLog.xml
 
 #
 #management:

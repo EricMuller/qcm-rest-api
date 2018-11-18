@@ -14,12 +14,14 @@ import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger.web.ApiKeyVehicle;
 import springfox.documentation.swagger.web.SecurityConfiguration;
+import springfox.documentation.swagger.web.SecurityConfigurationBuilder;
 import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static springfox.documentation.builders.PathSelectors.regex;
 import static springfox.documentation.builders.RequestHandlerSelectors.withClassAnnotation;
@@ -31,7 +33,17 @@ public class SwaggerQcmConfig {
 
     @Bean
     SecurityConfiguration security() {
-        return new SecurityConfiguration(null, null, null, null, null, ApiKeyVehicle.HEADER, "Authorization", null);
+
+        Map <String, Object> additionalQueryStringParams = new HashMap <>();
+        additionalQueryStringParams.put("Authorization", "Bearer xxxxx");
+
+        return SecurityConfigurationBuilder.builder()
+                .clientId("qcm-swagger-ui")
+                .realm("qcm")
+                .appName("swagger-ui")
+                .additionalQueryStringParams(additionalQueryStringParams)
+                .build();
+
     }
 
     @Bean
@@ -52,45 +64,37 @@ public class SwaggerQcmConfig {
 
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName(QcmApi.API_V1)
-//                .tags(new Tag("tags", "Repository for tags entities"))
                 .select()
                 .apis(withClassAnnotation(RestController.class))
-                //RequestHandlerSelectors.basePackage("com.emu.apps.qcm"))
-//                .apis(RequestHandlerSelectors.any())
                 .paths(regex(QcmApi.API_V1 + ".*"))
-//                .paths(PathSelectors.any())
-
                 .build()
                 .enable(true)
                 .apiInfo(metaData(QcmApi.VERSION))
                 .produces(Collections.singleton("application/json"))
-                .securityContexts(Lists.newArrayList(securityContext()))
-                .securitySchemes(Lists.newArrayList(apiKey()));
+                .securityContexts(Lists.newArrayList(buildSecurityContext()))
+                .securitySchemes(Lists.newArrayList(buildSecurityScheme()));
 
     }
 
 
-    private ApiKey apiKey() {
-
+    private ApiKey buildSecurityScheme() {
         return new ApiKey("Authorization", "Authorization", "header");
     }
 
-    private SecurityContext securityContext() {
-
+    private SecurityContext buildSecurityContext() {
         return SecurityContext.builder()
                 .securityReferences(defaultAuth())
-                .forPaths(regex("/anyPath.*"))
+                .forPaths(regex(QcmApi.API_V1 + ".*"))
                 .build();
     }
 
-    List <SecurityReference> defaultAuth() {
+    private List <SecurityReference> defaultAuth() {
 
         AuthorizationScope authorizationScope
                 = new AuthorizationScope("global", "accessEverything");
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
         authorizationScopes[0] = authorizationScope;
-        return Lists.newArrayList(
-                new SecurityReference("AUTHORIZATION", authorizationScopes));
+        return Lists.newArrayList(new SecurityReference("Authorization", authorizationScopes));
     }
 
     private ApiInfo metaData(String version) {
@@ -104,4 +108,5 @@ public class SwaggerQcmConfig {
                 "Apache License Version 2.0",
                 "https://www.apache.org/licenses/LICENSE-2.0", Lists.newArrayList());
     }
+
 }

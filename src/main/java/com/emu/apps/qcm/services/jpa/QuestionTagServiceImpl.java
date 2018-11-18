@@ -20,14 +20,19 @@ import java.util.Optional;
 @Transactional()
 public class QuestionTagServiceImpl implements QuestionTagService {
 
-    @Autowired
-    private QuestionRepository questionRepository;
+    private final QuestionRepository questionRepository;
+
+    private final QuestionTagRepository questionTagRepository;
+
+    private final TagService tagService;
 
     @Autowired
-    private QuestionTagRepository questionTagRepository;
+    public QuestionTagServiceImpl(QuestionRepository questionRepository, QuestionTagRepository questionTagRepository, TagService tagService) {
+        this.questionRepository = questionRepository;
+        this.questionTagRepository = questionTagRepository;
+        this.tagService = tagService;
+    }
 
-    @Autowired
-    private TagService tagService;
 
     @Override
     public QuestionTag saveQuestionTag(QuestionTag questionTag) {
@@ -36,8 +41,8 @@ public class QuestionTagServiceImpl implements QuestionTagService {
 
     @Override
     // todo: to refacto with abstract entity
-    public Question saveQuestionTags(long questionId, Iterable<QuestionTag> questionTags, Principal principal) {
-        Optional<Question> questionOptional = questionRepository.findById(questionId);
+    public Question saveQuestionTags(long questionId, Iterable <QuestionTag> questionTags, Principal principal) {
+        Optional <Question> questionOptional = questionRepository.findById(questionId);
 
         Question question = questionOptional.orElse(null);
         if (Objects.nonNull(question)) {

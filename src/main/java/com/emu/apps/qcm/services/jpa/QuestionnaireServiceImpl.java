@@ -21,11 +21,15 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
 
     protected final org.slf4j.Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private QuestionnaireRepository questionnaireRepository;
+    private final QuestionnaireRepository questionnaireRepository;
+
+    private final QuestionnaireQuestionRepository questionnaireQuestionRepository;
 
     @Autowired
-    private QuestionnaireQuestionRepository questionnaireQuestionRepository;
+    public QuestionnaireServiceImpl(QuestionnaireRepository questionnaireRepository, QuestionnaireQuestionRepository questionnaireQuestionRepository) {
+        this.questionnaireRepository = questionnaireRepository;
+        this.questionnaireQuestionRepository = questionnaireQuestionRepository;
+    }
 
     @Override
     @Transactional()
@@ -67,4 +71,5 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     public Page<Questionnaire> findAllByPage(Specification<Questionnaire> specification, Pageable pageable) {
         return questionnaireRepository.findAll(specification, pageable);
     }
+
 }

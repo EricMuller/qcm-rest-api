@@ -24,14 +24,18 @@ public class QuestionnaireTagServiceImpl implements QuestionnaireTagService {
 
     protected final org.slf4j.Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private QuestionnaireTagRepository questionnaireTagRepository;
+    private final QuestionnaireTagRepository questionnaireTagRepository;
+
+    private final QuestionnaireRepository questionnaireRepository;
+
+    private final TagService tagService;
 
     @Autowired
-    private QuestionnaireRepository questionnaireRepository;
-
-    @Autowired
-    private TagService tagService;
+    public QuestionnaireTagServiceImpl(QuestionnaireTagRepository questionnaireTagRepository, QuestionnaireRepository questionnaireRepository, TagService tagService) {
+        this.questionnaireTagRepository = questionnaireTagRepository;
+        this.questionnaireRepository = questionnaireRepository;
+        this.tagService = tagService;
+    }
 
     @Override
     public QuestionnaireTag saveQuestionnaireTag(QuestionnaireTag questionnaireTag) {
@@ -39,11 +43,11 @@ public class QuestionnaireTagServiceImpl implements QuestionnaireTagService {
     }
 
     @Transactional()
-    public Questionnaire saveQuestionnaireTags(long questionnaireId, Iterable<QuestionnaireTag> questionnaireTags, Principal principal) {
+    public Questionnaire saveQuestionnaireTags(long questionnaireId, Iterable <QuestionnaireTag> questionnaireTags, Principal principal) {
 
         Questionnaire questionnaire = questionnaireRepository.findById(questionnaireId).orElse(null);
 
-        ExceptionUtil.assertFound(questionnaire,"Questionnaire not found");
+        ExceptionUtil.assertFound(questionnaire, "Questionnaire not found");
 
         questionnaire.getQuestionnaireTags().clear();
 

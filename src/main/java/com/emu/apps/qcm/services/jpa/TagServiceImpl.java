@@ -3,6 +3,7 @@ package com.emu.apps.qcm.services.jpa;
 import com.emu.apps.qcm.services.TagService;
 import com.emu.apps.qcm.services.jpa.entity.tags.Tag;
 import com.emu.apps.qcm.services.jpa.repositories.TagRepository;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,10 +23,15 @@ import java.util.Optional;
 @Transactional
 public class TagServiceImpl implements TagService {
 
-    protected final org.slf4j.Logger log = LoggerFactory.getLogger(getClass());
+    protected final Logger log = LoggerFactory.getLogger(getClass());
+
+    private final TagRepository tagRepository;
 
     @Autowired
-    private TagRepository tagRepository;
+    public TagServiceImpl(TagRepository tagRepository) {
+        this.tagRepository = tagRepository;
+    }
+
 
     @Override
     public Tag save(Tag tag) {
