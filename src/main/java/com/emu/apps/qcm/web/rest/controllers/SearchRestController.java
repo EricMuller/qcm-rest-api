@@ -4,14 +4,8 @@ package com.emu.apps.qcm.web.rest.controllers;
 import com.emu.apps.qcm.web.rest.SearchRestApi;
 import com.emu.apps.qcm.web.rest.dtos.QuestionDto;
 import com.google.common.collect.Lists;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -23,7 +17,7 @@ public class SearchRestController implements SearchRestApi {
 
     public static final String URL = "/search";
 
-    protected final Logger logger = LoggerFactory.getLogger(getClass());
+    private static final Logger LOGGER = LoggerFactory.getLogger(SearchRestController.class);
 
     @Override
     public Iterable <QuestionDto> searchQuestionsByCriteria(String libelle) {

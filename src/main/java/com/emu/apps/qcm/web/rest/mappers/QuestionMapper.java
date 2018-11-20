@@ -11,28 +11,29 @@ import org.mapstruct.Mappings;
 import org.springframework.data.domain.Page;
 
 @Mapper(componentModel = "spring", uses = {CategoryMapper.class, QuestionTagMapper.class, ResponseMapper.class})
-public abstract class QuestionMapper {
+public interface QuestionMapper {
 
     @Mapping(target = "questionTags", ignore = true)
-    public abstract Question dtoToModel(QuestionDto questionDto);
-    @Mappings ({
-        @Mapping(target = "questionTags", ignore = true),
-        @Mapping(target = "uuid", ignore = true),
-        @Mapping(target = "dateCreation", ignore = true),
+    Question dtoToModel(QuestionDto questionDto);
+
+    @Mappings({
+            @Mapping(target = "questionTags", ignore = true),
+            @Mapping(target = "uuid", ignore = true),
+            @Mapping(target = "dateCreation", ignore = true),
     })
-    public abstract Question dtoToModel(@MappingTarget Question question, QuestionDto questionDto);
+    Question dtoToModel(@MappingTarget Question question, QuestionDto questionDto);
 
-    public abstract QuestionDto modelToDto(Question question);
+    QuestionDto modelToDto(Question question);
 
-    public abstract QuestionTagsDto modelToPageTagDto(Question question);
+    QuestionTagsDto modelToPageTagDto(Question question);
 
-    public abstract QuestionDto questionResponseProjectionToDto(QuestionResponseProjection questionProjection);
+    QuestionDto questionResponseProjectionToDto(QuestionResponseProjection questionProjection);
 
-    public Page<QuestionDto> pageQuestionResponseProjectionToDto(Page<QuestionResponseProjection> page) {
+    default Page <QuestionDto> pageQuestionResponseProjectionToDto(Page <QuestionResponseProjection> page) {
         return page.map(this::questionResponseProjectionToDto);
     }
 
-    public Page<QuestionTagsDto> pageToPageTagDto(Page<Question> page) {
+    default Page <QuestionTagsDto> pageToPageTagDto(Page <Question> page) {
         return page.map(this::modelToPageTagDto);
     }
 

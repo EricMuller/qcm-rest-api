@@ -75,7 +75,10 @@ public class QcmDataSourceConfig {
         properties.put("hibernate.format_sql", env.getProperty("spring.jpa.properties.hibernate.format_sql"));
         properties.put("hibernate.connection.autocommit", "false");
         //tells Hibernate that the underlying JDBC Connections already disabled the auto-commit mode.
-        properties.put("hibernate.connection.provider_disables_autocommit", "false");
+        properties.put("hibernate.connection.provider_disables_autocommit", "true");
+
+        properties.put("hibernate.id.new_generator_mappings","true");
+        properties.put("hibernate.use-new-id-generator-mappings","true");
         return properties;
     }
 

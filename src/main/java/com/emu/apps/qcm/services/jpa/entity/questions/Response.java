@@ -2,11 +2,21 @@ package com.emu.apps.qcm.services.jpa.entity.questions;
 
 import com.emu.apps.qcm.services.jpa.entity.common.AuditableEntity;
 import com.emu.apps.qcm.services.jpa.entity.converters.BooleanTFConverter;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
+@Getter @Setter @NoArgsConstructor
 public class Response extends AuditableEntity<String> {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "response_generator")
+    @SequenceGenerator(name="response_generator", sequenceName = "response_seq", allocationSize=50)
+    @Column(name = "id", updatable = false, nullable = false)
+    private Long id;
 
     @Column(name = "RESPONSE", nullable = false, length = 32672)
     private String response;
@@ -18,28 +28,8 @@ public class Response extends AuditableEntity<String> {
     @Convert(converter = BooleanTFConverter.class)
     private Boolean good;
 
-    public Response() {
-        //
-    }
-
-    public Response(Type type, String response) {
+    public Response(String response) {
         this.response = response;
-    }
-
-    public String getResponse() {
-        return response;
-    }
-
-    public void setResponse(String response) {
-        this.response = response;
-    }
-
-    public Long getNumber() {
-        return number;
-    }
-
-    public void setNumber(Long number) {
-        this.number = number;
     }
 
     @Override
@@ -47,11 +37,5 @@ public class Response extends AuditableEntity<String> {
         return String.format("Response[id=%d,  response='%s']", getId(), response);
     }
 
-    public Boolean getGood() {
-        return good;
-    }
 
-    public void setGood(Boolean good) {
-        this.good = good;
-    }
 }

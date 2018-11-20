@@ -1,7 +1,8 @@
-package com.emu.apps.qcm.web.rest;
+package com.emu.apps.qcm.web.rest.controllers;
 
 import com.emu.apps.Application;
 import com.emu.apps.ApplicationTest;
+import com.emu.apps.qcm.web.rest.QcmApi;
 import com.emu.apps.qcm.web.rest.dtos.PageDto;
 import com.emu.apps.qcm.web.rest.dtos.QuestionnaireDto;
 import com.emu.apps.qcm.web.security.WebSecurityTestConfig;
@@ -55,7 +56,7 @@ public class UploadRestControllerIntegrationTest {
     @Test
     public void shouldUploadFile() {
 
-        ClassPathResource resource = new ClassPathResource("javaquestions2017.json", getClass());
+        ClassPathResource resource = new ClassPathResource("javaquestions2017.json");
         MultiValueMap <String, Object> map = new LinkedMultiValueMap <>();
         map.add("file", resource);
 

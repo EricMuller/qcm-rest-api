@@ -31,19 +31,23 @@ import java.util.List;
 
 public class TagRestController implements TagRestApi {
 
-    protected final Logger logger = LoggerFactory.getLogger(getClass());
+    protected static final Logger logger = LoggerFactory.getLogger(TagRestController.class);
+
+    private final TagService tagService;
+
+    private final TagMapper tagMapper;
+
+    private final DtoUtil dtoUtil;
+
+    private final TagSpecification tagSpecification;
 
     @Autowired
-    private TagService tagService;
-
-    @Autowired
-    private TagMapper tagMapper;
-
-    @Autowired
-    private DtoUtil dtoUtil;
-
-    @Autowired
-    private TagSpecification tagSpecification;
+    public TagRestController(TagService tagService, TagMapper tagMapper, DtoUtil dtoUtil, TagSpecification tagSpecification) {
+        this.tagService = tagService;
+        this.tagMapper = tagMapper;
+        this.dtoUtil = dtoUtil;
+        this.tagSpecification = tagSpecification;
+    }
 
     @Override
     public Page<TagDto> getTagsByPAge(Principal principal, @RequestParam(value = "filters", required = false) String filterString, Pageable pageable) throws IOException {
@@ -74,6 +78,5 @@ public class TagRestController implements TagRestApi {
         }
         return suggestions;
     }
-
 
 }

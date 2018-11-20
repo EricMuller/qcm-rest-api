@@ -1,9 +1,9 @@
 package com.emu.apps.qcm.web.rest;
 
-public interface QcmApi {
+public class QcmApi {
 
-    String VERSION = "1";
+    public static final String VERSION = "1";
 
-    String API_V1 = "/qcm/api/v" + VERSION;
+    public static final String API_V1 = "/qcm/api/v" + VERSION;
 
 }

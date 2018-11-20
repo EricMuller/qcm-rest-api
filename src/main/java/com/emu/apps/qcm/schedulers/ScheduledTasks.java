@@ -28,7 +28,7 @@ public class ScheduledTasks {
     /*
     public void cronJob() {
         int jobId = counter.incrementAndGet();
-        logger.info("Job " + new Date() + ", jobId:  {}", jobId);
+        LOGGER.info("Job " + new Date() + ", jobId:  {}", jobId);
     }
     */
 }

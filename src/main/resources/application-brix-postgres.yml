@@ -4,19 +4,22 @@ spring:
     profiles: brix-postgres
     jpa:
         # open-in-view: false
-        # database-platform: org.hibernate.dialect.PostgreSQLDialect
-        database: default
+        database-platform: org.hibernate.dialect.PostgreSQLDialect
+        #database: default
         generate-ddl: false
         show-sql: false
 
         hibernate:
-             naming:
-                 physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
-             dll-auto: none
-             # ddl-auto: update
-             # ddl-auto: create-drop
-             dialect: org.hibernate.dialect.PostgreSQLDialect
-             properties:
+#            id:
+            use-new-id-generator-mappings: true
+            #naming:
+#                 physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+            #    physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+            dll-auto: none
+            #ddl-auto: update
+            #ddl-auto: create-drop
+            dialect: org.hibernate.dialect.PostgreSQLDialect
+            properties:
                  hibernate:
                      enable_lazy_load_no_trans: false
                      generate_statistics: true
@@ -27,7 +30,7 @@ spring:
                          batch_size: 20
                          batch_versioned_data: true
 
-             cache:
+            cache:
                  use_second_level_cache: false
                  use_query_cache: false
                  region:

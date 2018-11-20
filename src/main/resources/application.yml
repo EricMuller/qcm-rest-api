@@ -6,24 +6,22 @@ logging:
   level:
     root: WARN
     org.springframework.web: ERROR
-    org.springframework.security: DEBUG
+    org.springframework.security: WARN
     org.hibernate: WARN
-    org.hibernate.SQL: WARN
-    org.hibernate.type.descriptor.sql: WARN
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql: DEBUG
     com.emu.apps: WARN
-    org.keycloak.services: DEBUG
+    org.keycloak.services: WARN
     org.springframework.aop.interceptor.PerformanceMonitorInterceptor: TRACE
-    com.zaxxer.hikari.pool.HikariPool: DEBUG
-    com.zaxxer.hikari: DEBUG
+    com.zaxxer.hikari.pool.HikariPool: INFO
+    com.zaxxer.hikari: INFO
 
 spring:
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     generate-ddl: false
     show-sql: false
-    hibernate:
-      id:
-        new_generator_mappings: true
+
 
   application:
     name: qcm-service

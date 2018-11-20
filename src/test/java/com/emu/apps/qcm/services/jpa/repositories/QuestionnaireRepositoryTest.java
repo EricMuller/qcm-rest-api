@@ -56,17 +56,17 @@ public class QuestionnaireRepositoryTest {
         Assert.assertNotNull(questionnaire);
         Assert.assertNotNull(questionnaire.getId());
         Assert.assertNotNull(questionnaire.getCategory());
-        Assert.assertEquals(questionnaire.getCategory().getLibelle(), FixtureService.CATEGORIE_LIBELLE);
+        Assert.assertEquals(FixtureService.CATEGORIE_LIBELLE, questionnaire.getCategory().getLibelle());
         Assert.assertNotNull(questionnaire.getDescription());
-        Assert.assertEquals(questionnaire.getDescription(), FixtureService.QUESTIONNAIRE_DESC);
+        Assert.assertEquals(FixtureService.QUESTIONNAIRE_DESC, questionnaire.getDescription());
 
-        Assert.assertEquals(questionnaire.getQuestionnaireQuestions().size(), 2);
+        Assert.assertEquals(2, questionnaire.getQuestionnaireQuestions().size());
 
         QuestionnaireQuestion questionnaireQuestion1 = Iterables.getFirst(questionnaire.getQuestionnaireQuestions(), null);
 
         Assert.assertNotNull(questionnaireQuestion1);
         Assert.assertNotNull(questionnaireQuestion1.getQuestion());
-        Assert.assertEquals(questionnaireQuestion1.getQuestion().getResponses().size(), 2);
+        Assert.assertEquals(2, questionnaireQuestion1.getQuestion().getResponses().size());
 
         Response response1 = Iterables.getFirst(questionnaireQuestion1.getQuestion().getResponses(), null);
         Assert.assertEquals(FixtureService.RESPONSE_RESPONSE_1, response1.getResponse());
@@ -91,21 +91,16 @@ public class QuestionnaireRepositoryTest {
 
         Assert.assertNotNull(questionnaire.getId());
         Assert.assertNotNull(questionnaire.getCategory());
-        Assert.assertEquals(questionnaire.getCategory().getLibelle(), FixtureService.CATEGORIE_LIBELLE);
+        Assert.assertEquals(FixtureService.CATEGORIE_LIBELLE, questionnaire.getCategory().getLibelle());
         Assert.assertNotNull(questionnaire.getDescription());
-        Assert.assertEquals(questionnaire.getDescription(), FixtureService.QUESTIONNAIRE_DESC);
+        Assert.assertEquals(FixtureService.QUESTIONNAIRE_DESC, questionnaire.getDescription());
     }
 
     @Test
     public void findAllWithSpecification() {
 
 
-        Principal principal = new Principal() {
-            @Override
-            public String getName() {
-                return ApplicationTest.USER_TEST;
-            }
-        };
+        Principal principal = () -> ApplicationTest.USER_TEST;
 
         questionnaireFixture.createQuestionQuestionnaireTag();
 

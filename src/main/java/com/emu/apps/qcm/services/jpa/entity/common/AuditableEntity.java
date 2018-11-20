@@ -4,17 +4,17 @@ import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.AbstractPersistable;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @SuppressWarnings("serial")
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class AuditableEntity<U> extends AbstractPersistable<Long> {
+public abstract class AuditableEntity<U> implements Serializable {
 
     @Column(name = "created_by")
     @CreatedBy
@@ -22,23 +22,25 @@ public abstract class AuditableEntity<U> extends AbstractPersistable<Long> {
 
     @Column(name = "modified_by")
     @LastModifiedBy
-    protected U lastModifiedBy;
+    private U lastModifiedBy;
 
+    // @Temporal(TIMESTAMP)
     @Column(name = "created_date", nullable = false, updatable = false)
     @CreatedDate
-    //  @Temporal(TIMESTAMP)
-    protected LocalDateTime dateCreation;
+    private LocalDateTime dateCreation;
 
+    //  @Temporal(TIMESTAMP)
     @Column(name = "modified_date")
     @LastModifiedDate
-    //  @Temporal(TIMESTAMP)
-    protected LocalDateTime dateModification;
+    private LocalDateTime dateModification;
 
     @Column(unique = true, name = "uuid", nullable = false)
-    protected String uuid = UUID.randomUUID().toString().toUpperCase();
+    private String uuid = UUID.randomUUID().toString().toUpperCase();
 
     @Version
     private Long version;
+
+    public abstract Long getId();
 
     public String getUuid() {
         return uuid;
@@ -59,17 +61,6 @@ public abstract class AuditableEntity<U> extends AbstractPersistable<Long> {
 
     public void setVersion(Long version) {
         this.version = version;
-    }
-
-    // mapstruct issue
-    @Override
-    public Long getId() {
-        return super.getId();
-    }
-
-    @Override
-    public void setId(Long id) {
-        super.setId(id);
     }
 
     public LocalDateTime getDateCreation() {

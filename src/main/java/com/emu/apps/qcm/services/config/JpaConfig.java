@@ -15,9 +15,7 @@ public class JpaConfig {
     }
 
     @Bean
-    DateTimeProvider dateTimeProvider(DateTimeService dateTimeService) {
-        {
+    DateTimeProvider dateTimeProvider() {
             return new AuditingDateTimeProvider();
-        }
     }
 }

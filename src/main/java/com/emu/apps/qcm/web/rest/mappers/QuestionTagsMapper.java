@@ -6,25 +6,14 @@ import org.mapstruct.Mapper;
 import org.springframework.data.domain.Page;
 
 @Mapper(componentModel = "spring", uses = {CategoryMapper.class, QuestionTagMapper.class})
-public abstract class QuestionTagsMapper {
+public interface QuestionTagsMapper {
 
 
-    public  abstract QuestionTagsDto modelToDTo(Question question);
+    QuestionTagsDto modelToDTo(Question question);
 
-    public Page<QuestionTagsDto> pageQuestionResponseProjectionToDto(Page<Question> page) {
+    default Page<QuestionTagsDto> pageQuestionResponseProjectionToDto(Page<Question> page) {
         return page.map(this::modelToDTo);
     }
-
-
-//    @Named("responseWithOutResponse")
-//    @Mapping(target = "response", ignore = true)
-//    public  abstract ResponseDto modelToDtoWithoutStringResponse(Response response);
-//
-//    @Named("questionWithOutResponse")
-//    @Mapping(target = "responses", qualifiedByName = "responseWithOutResponse")
-//    public  abstract QuestionDto modelToDtoWithoutStringResponse(QuestionResponseProjection question);
-
-
 
 
 }

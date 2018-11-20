@@ -10,22 +10,22 @@ import org.mapstruct.Mappings;
 import org.springframework.data.domain.Page;
 
 @Mapper(componentModel = "spring")
-public abstract class TagMapper {
+public interface TagMapper {
 
-    public abstract TagDto modelToDto(Tag tag);
+    TagDto modelToDto(Tag tag);
 
-    public abstract Tag dtoToModel(TagDto tagDto);
+    Tag dtoToModel(TagDto tagDto);
 
-    public abstract Iterable<TagDto> modelsToDtos(Iterable<Tag> tags);
+    Iterable <TagDto> modelsToDtos(Iterable <Tag> tags);
 
-    public Page<TagDto> pageToDto(Page<Tag> page) {
+    default Page <TagDto> pageToDto(Page <Tag> page) {
         return page.map(this::modelToDto);
     }
 
     @Mappings({
             @Mapping(target = "fieldName", constant = "TagId"),
     })
-    public abstract SuggestDto modelToSuggestDto(Tag tag);
+    SuggestDto modelToSuggestDto(Tag tag);
 
-    public abstract Iterable<SuggestDto> modelsToSugestDtos(Iterable<Tag> tags);
+    Iterable <SuggestDto> modelsToSugestDtos(Iterable <Tag> tags);
 }

@@ -22,15 +22,19 @@ import java.security.Principal;
 @RestController
 public class UploadRestController implements UploadRestApi {
 
-    protected final Logger logger = LoggerFactory.getLogger(getClass());
+    protected static final Logger LOGGER = LoggerFactory.getLogger(UploadRestController.class);
+
+    private final UploadService uploadService;
 
     @Autowired
-    private UploadService uploadService;
+    public UploadRestController(UploadService uploadService) {
+        this.uploadService = uploadService;
+    }
 
     @Override
     public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file, @PathVariable("fileType") String fileType, Principal principal) throws IOException {
         try {
-            logger.info(file.getOriginalFilename());
+            LOGGER.info(file.getOriginalFilename());
             ObjectMapper objectMapper = new ObjectMapper();
             final FileQuestionDto[] fileQuestionDtos = objectMapper.readValue(file.getInputStream(), FileQuestionDto[].class);
             String name = FilenameUtils.getBaseName(file.getOriginalFilename());
@@ -38,7 +42,7 @@ public class UploadRestController implements UploadRestApi {
             uploadService.createQuestionnaires(name, fileQuestionDtos, principal);
 
         } catch (Exception e) {
-            logger.error("err", e);
+            LOGGER.error("err", e);
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(new MessageDto("Ok"), HttpStatus.OK);

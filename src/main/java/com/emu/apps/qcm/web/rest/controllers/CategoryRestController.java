@@ -12,7 +12,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
@@ -22,13 +25,17 @@ import java.io.IOException;
 @RestController
 public class CategoryRestController implements CategoryRestApi {
 
-    protected final Logger logger = LoggerFactory.getLogger(getClass());
+    protected static final Logger LOGGER = LoggerFactory.getLogger(CategoryRestController.class);
+
+    private final CategoryService categoryService;
+
+    private final CategoryMapper categoryMapper;
 
     @Autowired
-    private CategoryService categoryService;
-
-    @Autowired
-    private CategoryMapper categoryMapper;
+    public CategoryRestController(CategoryService categoryService, CategoryMapper categoryMapper) {
+        this.categoryService = categoryService;
+        this.categoryMapper = categoryMapper;
+    }
 
 
     @Override
@@ -38,9 +45,8 @@ public class CategoryRestController implements CategoryRestApi {
 
 
     @Override
-    public Iterable<CategoryDto> getCategories() {
+    public Iterable <CategoryDto> getCategories() {
         return categoryMapper.modelsToDtos(categoryService.findAll());
-
     }
 
     @Override
@@ -50,8 +56,8 @@ public class CategoryRestController implements CategoryRestApi {
     }
 
     @ExceptionHandler({JsonProcessingException.class, IOException.class})
-    public ResponseEntity<?> handleAllException(Exception e)  {
-        return new ResponseEntity<>(new MessageDto(e.getMessage()), HttpStatus.BAD_REQUEST);
+    public ResponseEntity <?> handleAllException(Exception e) {
+        return new ResponseEntity <>(new MessageDto(e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
 }

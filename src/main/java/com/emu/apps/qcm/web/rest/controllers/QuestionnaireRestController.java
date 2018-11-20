@@ -22,8 +22,6 @@ import com.emu.apps.shared.web.rest.exceptions.utils.ExceptionUtil;
 import com.google.common.collect.Lists;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,31 +39,37 @@ import java.util.List;
 @RestController
 public class QuestionnaireRestController implements QuestionnaireRestApi {
 
-    protected final Logger logger = LoggerFactory.getLogger(getClass());
+    private final QuestionnaireService questionnairesService;
+
+    private final QuestionnaireMapper questionnaireMapper;
+
+    private final QuestionMapper questionMapper;
+
+    private final QuestionService questionService;
+
+    private final QuestionnaireTagService questionnaireTagService;
+
+    private final QuestionnaireTagMapper questionnaireTagMapper;
+
+    private final QuestionnaireSpecification questionnaireSpecification;
+
+    private final DtoUtil dtoUtil;
 
     @Autowired
-    private QuestionnaireService questionnairesService;
+    public QuestionnaireRestController(QuestionnaireService questionnairesService, QuestionnaireMapper questionnaireMapper,
+                                       QuestionMapper questionMapper, QuestionService questionService,
+                                       QuestionnaireTagService questionnaireTagService, QuestionnaireTagMapper questionnaireTagMapper,
+                                       QuestionnaireSpecification questionnaireSpecification, DtoUtil dtoUtil) {
+        this.questionnairesService = questionnairesService;
+        this.questionnaireMapper = questionnaireMapper;
+        this.questionMapper = questionMapper;
+        this.questionService = questionService;
+        this.questionnaireTagService = questionnaireTagService;
+        this.questionnaireTagMapper = questionnaireTagMapper;
+        this.questionnaireSpecification = questionnaireSpecification;
+        this.dtoUtil = dtoUtil;
+    }
 
-    @Autowired
-    private QuestionnaireMapper questionnaireMapper;
-
-    @Autowired
-    private QuestionMapper questionMapper;
-
-    @Autowired
-    private QuestionService questionService;
-
-    @Autowired
-    private QuestionnaireTagService questionnaireTagService;
-
-    @Autowired
-    private QuestionnaireTagMapper questionnaireTagMapper;
-
-    @Autowired
-    private QuestionnaireSpecification questionnaireSpecification;
-
-    @Autowired
-    private DtoUtil dtoUtil;
 
     @Override
     public QuestionnaireDto getQuestionnaireById(@PathVariable("id") long id) {
@@ -132,7 +136,6 @@ public class QuestionnaireRestController implements QuestionnaireRestApi {
 
     @Override
     public QuestionDto updateQuestionnaire(@PathVariable("id") @ApiParam(value = "ID of the Questionnaire") long id, @RequestBody QuestionDto questionDto) {
-
 
         Questionnaire questionnaire = questionnairesService.findOne(id);
         ExceptionUtil.assertFound(questionnaire, "Questionnaire Not found");

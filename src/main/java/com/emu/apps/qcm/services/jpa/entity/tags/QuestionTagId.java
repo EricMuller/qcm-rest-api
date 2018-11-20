@@ -1,11 +1,18 @@
 package com.emu.apps.qcm.services.jpa.entity.tags;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
+@Getter
+@Setter
+@NoArgsConstructor
 public class QuestionTagId implements Serializable {
 
     @Column(name = "question_id")
@@ -14,27 +21,8 @@ public class QuestionTagId implements Serializable {
     @Column(name = "tag_id")
     private Long tagId;
 
-    public QuestionTagId() {
-    }
-
     public QuestionTagId(Long entityId, Long tagId) {
         this.questionId = entityId;
-        this.tagId = tagId;
-    }
-
-    public Long getQuestionId() {
-        return questionId;
-    }
-
-    public void setQuestionId(Long questionId) {
-        this.questionId = questionId;
-    }
-
-    public Long getTagId() {
-        return tagId;
-    }
-
-    public void setTagId(Long tagId) {
         this.tagId = tagId;
     }
 

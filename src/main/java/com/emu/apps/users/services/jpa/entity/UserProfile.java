@@ -5,8 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -14,6 +13,12 @@ import java.util.Date;
 
 @Entity
 public class UserProfile extends AuditableEntity<String> implements UserDetails {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "profile_generator")
+    @SequenceGenerator(name="profile_generator", sequenceName = "profile_seq", allocationSize=50)
+    @Column(name = "id", updatable = false, nullable = false)
+    private Long id;
 
     @Column(nullable = false, unique = true)
     private String username;
@@ -174,5 +179,14 @@ public class UserProfile extends AuditableEntity<String> implements UserDetails 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singleton(new SimpleGrantedAuthority("NO_ROLE"));
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

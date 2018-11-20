@@ -7,8 +7,6 @@ import com.emu.apps.qcm.services.jpa.projections.QuestionResponseProjection;
 import com.emu.apps.qcm.services.jpa.repositories.QuestionRepository;
 import com.emu.apps.qcm.services.jpa.repositories.QuestionTagRepository;
 import com.emu.apps.qcm.services.jpa.repositories.QuestionnaireQuestionRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,8 +22,6 @@ import java.util.Optional;
 @Service
 @Transactional()
 public class QuestionServiceImpl implements QuestionService {
-
-    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final QuestionRepository questionRepository;
 

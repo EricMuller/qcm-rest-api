@@ -8,8 +8,6 @@ import com.google.common.collect.Lists;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
@@ -22,10 +20,6 @@ import java.util.List;
 @SpringBootTest
 @ActiveProfiles(value = "test")
 public class QuestionnaireQuestionRepositoryTest {
-
-    private static final String SPLIT = "######################################################################";
-
-    protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private FixtureService questionnaireFixture;
@@ -41,7 +35,6 @@ public class QuestionnaireQuestionRepositoryTest {
     public void findQuestionsByQuestionnaireId() {
 
         Questionnaire questionnaire = questionnaireFixture.createQuestionQuestionnaireTag();
-        logger.error(SPLIT);
 
         Iterable<QuestionResponseProjection> questions = questionnaireQuestionRepository.findQuestionsByQuestionnaireId(questionnaire.getId());
         Assertions.assertThat(questions).isNotEmpty();
@@ -58,7 +51,6 @@ public class QuestionnaireQuestionRepositoryTest {
     public void findQuestionsByQuestionnaireIds() {
 
         Questionnaire questionnaire = questionnaireFixture.createQuestionQuestionnaireTag();
-        logger.error(SPLIT);
 
         List<Long> longListTag = Lists.newArrayList();
         tagRepository.findAll().forEach( (tag) -> longListTag.add(tag.getId()));

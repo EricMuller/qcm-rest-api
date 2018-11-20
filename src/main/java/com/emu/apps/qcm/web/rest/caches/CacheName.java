@@ -4,14 +4,15 @@ public enum CacheName {
     QUESTION(Names.QUESTION),
     QUESTIONNAIRE(Names.QUESTIONNAIRE);
 
-    String libelle;
+    private String libelle;
 
-    CacheName(String libelle) {
-        this.libelle = libelle;
+    CacheName(String aLibelle) {
+        this.libelle = aLibelle;
     }
 
     public class Names {
         public static final String QUESTION = "QUESTION";
+
         public static final String QUESTIONNAIRE = "QUESTIONNAIRE";
     }
 

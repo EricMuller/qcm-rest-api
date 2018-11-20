@@ -6,10 +6,6 @@ import com.google.common.collect.Lists;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
-import org.springframework.data.rest.core.mapping.RepositoryDetectionStrategy;
-import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
-import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
@@ -33,17 +29,6 @@ public class SwaggerUsersConfig {
     @Bean
     SecurityConfiguration security() {
         return new SecurityConfiguration(null, null, null, null, null, ApiKeyVehicle.HEADER, "Authorization", null);
-    }
-
-    @Bean
-    public RepositoryRestConfigurer repositoryRestConfigurer() {
-        return new RepositoryRestConfigurerAdapter() {
-
-            @Override
-            public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
-                config.setRepositoryDetectionStrategy(RepositoryDetectionStrategy.RepositoryDetectionStrategies.ANNOTATED);
-            }
-        };
     }
 
     @Bean

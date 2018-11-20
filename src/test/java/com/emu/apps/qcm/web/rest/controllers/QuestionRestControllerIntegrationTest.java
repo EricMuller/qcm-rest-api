@@ -1,13 +1,15 @@
-package com.emu.apps.qcm.web.rest;
+package com.emu.apps.qcm.web.rest.controllers;
 
 import com.emu.apps.Application;
 import com.emu.apps.ApplicationTest;
 import com.emu.apps.qcm.services.FixtureService;
+import com.emu.apps.qcm.web.rest.QcmApi;
 import com.emu.apps.qcm.web.rest.dtos.QuestionDto;
 import com.emu.apps.qcm.web.rest.dtos.ResponseDto;
 import com.emu.apps.qcm.web.security.WebSecurityTestConfig;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import org.assertj.core.api.Java6Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,8 +23,6 @@ import org.springframework.web.client.RestOperations;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Base64;
-
-import static org.assertj.core.api.Java6Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @TestPropertySource("classpath:application-test.properties")
@@ -73,9 +73,9 @@ public class QuestionRestControllerIntegrationTest {
         final ResponseEntity <QuestionDto> response = restTemplate.exchange(createURLWithPort(QcmApi.API_V1 + "/questions/")
                 , HttpMethod.POST, new HttpEntity <>(questionDto, headers), QuestionDto.class);
 
-        assertThat(response.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
-        assertThat(response.getBody().getId()).isNotNull();
-        assertThat(response.getBody().getResponses()).isNotNull().isNotEmpty();
+        Java6Assertions.assertThat(response.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
+        Java6Assertions.assertThat(response.getBody().getId()).isNotNull();
+        Java6Assertions.assertThat(response.getBody().getResponses()).isNotNull().isNotEmpty();
 
         // GET
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(createURLWithPort(QcmApi.API_V1 + "/questions/{id}"));
@@ -88,11 +88,11 @@ public class QuestionRestControllerIntegrationTest {
                 QuestionDto.class);
 
         QuestionDto responseDtoGet = response.getBody();
-        assertThat(responseGet.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
-        assertThat(responseDtoGet.getResponses()).isNotNull().isNotEmpty();
+        Java6Assertions.assertThat(responseGet.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
+        Java6Assertions.assertThat(responseDtoGet.getResponses()).isNotNull().isNotEmpty();
         ResponseDto first = Iterables.getFirst(responseDtoGet.getResponses(), null);
-        assertThat(first).isNotNull();
-        assertThat(first.getResponse()).isNotNull().isEqualTo(RESPONSE);
+        Java6Assertions.assertThat(first).isNotNull();
+        Java6Assertions.assertThat(first.getResponse()).isNotNull().isEqualTo(RESPONSE);
 
 
         // PUT
@@ -101,13 +101,13 @@ public class QuestionRestControllerIntegrationTest {
         final ResponseEntity <QuestionDto> responsePut = restTemplate.exchange(createURLWithPort(QcmApi.API_V1 + "/questions/")
                 , HttpMethod.PUT, new HttpEntity <>(responseDtoGet, headers), QuestionDto.class);
 
-        assertThat(responsePut.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
+        Java6Assertions.assertThat(responsePut.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
 
-        assertThat(responsePut.getBody().getId()).isNotNull();
-        assertThat(responsePut.getBody().getResponses()).isNotNull().isNotEmpty();
+        Java6Assertions.assertThat(responsePut.getBody().getId()).isNotNull();
+        Java6Assertions.assertThat(responsePut.getBody().getResponses()).isNotNull().isNotEmpty();
         first = Iterables.getFirst(response.getBody().getResponses(), null);
-        assertThat(first).isNotNull();
-        assertThat(first.getResponse()).isNotNull().isEqualTo(RESPONSE2);
+        Java6Assertions.assertThat(first).isNotNull();
+        Java6Assertions.assertThat(first.getResponse()).isNotNull().isEqualTo(RESPONSE2);
 
     }
 

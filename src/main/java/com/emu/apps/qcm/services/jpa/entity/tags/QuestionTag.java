@@ -1,6 +1,9 @@
 package com.emu.apps.qcm.services.jpa.entity.tags;
 
 import com.emu.apps.qcm.services.jpa.entity.questions.Question;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -8,6 +11,9 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "question_tag")
+@Getter
+@Setter
+@NoArgsConstructor
 public class QuestionTag implements Serializable {
 
     @EmbeddedId
@@ -21,38 +27,10 @@ public class QuestionTag implements Serializable {
     @JoinColumn(name = "tag_id", insertable = false, updatable = false)
     private Tag tag;
 
-    public QuestionTag() {
-    }
-
     public QuestionTag(Question question, Tag tag) {
         this.id = new QuestionTagId(question.getId(), tag.getId());
         this.tag = tag;
         this.question = question;
-    }
-
-    public Question getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(Question question) {
-        this.question = question;
-    }
-
-
-    public QuestionTagId getId() {
-        return id;
-    }
-
-    public void setId(QuestionTagId id) {
-        this.id = id;
-    }
-
-    public Tag getTag() {
-        return tag;
-    }
-
-    public void setTag(Tag tag) {
-        this.tag = tag;
     }
 
     @Override
@@ -65,7 +43,6 @@ public class QuestionTag implements Serializable {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(id);
     }
 }

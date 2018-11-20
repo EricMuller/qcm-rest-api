@@ -1,17 +1,26 @@
 package com.emu.apps.qcm.services.jpa.entity.tags;
 
 import com.emu.apps.qcm.services.jpa.entity.common.AuditableEntity;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.BatchSize;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Index;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @BatchSize(size = 20)
 @Table(indexes = {@Index(name = "IDX_TAG_LIBELLE_IDX", columnList = "libelle")})
+@Getter
+@Setter
+@NoArgsConstructor
 public class Tag extends AuditableEntity<String> {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tag_generator")
+    @SequenceGenerator(name="tag_generator", sequenceName = "tag_seq", allocationSize=50)
+    @Column(name = "id", updatable = false, nullable = false)
+    private Long id;
 
     @Column
     private String libelle;
@@ -19,27 +28,8 @@ public class Tag extends AuditableEntity<String> {
     @Column
     private boolean publique;
 
-    public Tag() {
-    }
-
     public Tag(String libelle, boolean publique) {
         this.libelle = libelle;
-        this.publique = publique;
-    }
-
-    public String getLibelle() {
-        return libelle;
-    }
-
-    public void setLibelle(String libelle) {
-        this.libelle = libelle;
-    }
-
-    public boolean isPublique() {
-        return publique;
-    }
-
-    public void setPublique(boolean publique) {
         this.publique = publique;
     }
 

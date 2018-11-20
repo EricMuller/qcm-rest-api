@@ -7,8 +7,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
 @Mapper(componentModel = "spring", uses = {CategoryMapper.class})
-public interface
-QuestionnaireTagMapper {
+public interface QuestionnaireTagMapper {
 
     @Mappings({
             @Mapping(source = "tag.id", target = "id"),

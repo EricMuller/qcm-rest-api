@@ -1,11 +1,18 @@
 package com.emu.apps.qcm.services.jpa.entity.questionnaires;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
+@Getter
+@Setter
+@NoArgsConstructor
 public class QuestionnaireQuestionId implements Serializable {
 
     @Column(name = "questionnaire_id")
@@ -14,28 +21,9 @@ public class QuestionnaireQuestionId implements Serializable {
     @Column(name = "question_id")
     private Long questionId;
 
-    public QuestionnaireQuestionId() {
-    }
-
     public QuestionnaireQuestionId(Long questionId, Long tagId) {
         this.questionnaireId = questionId;
         this.questionId = tagId;
-    }
-
-    public Long getQuestionnaireId() {
-        return questionnaireId;
-    }
-
-    public void setQuestionnaireId(Long questionnaireId) {
-        this.questionnaireId = questionnaireId;
-    }
-
-    public Long getQuestionId() {
-        return questionId;
-    }
-
-    public void setQuestionId(Long questionId) {
-        this.questionId = questionId;
     }
 
     @Override
