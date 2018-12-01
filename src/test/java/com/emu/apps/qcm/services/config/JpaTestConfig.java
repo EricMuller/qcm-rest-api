@@ -13,7 +13,7 @@ import java.util.Optional;
 @Configuration
 @EnableJpaAuditing(auditorAwareRef = "auditorAware", dateTimeProviderRef = "dateTimeProvider")
 @Profile(value = {"test"})
-public class JpaConfig {
+public class JpaTestConfig {
     @Bean
     public AuditorAware auditorAware() {
         return () -> Optional.of(ApplicationTest.USER_TEST);

@@ -1,278 +1,297 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.emu.apps.qcm</groupId>
-    <artifactId>qcm-designer-api</artifactId>
-    <version>2.0.0-SNAPSHOT</version>
+	<groupId>com.emu.apps.qcm</groupId>
+	<artifactId>qcm-designer-api</artifactId>
+	<version>2.0.0-SNAPSHOT</version>
 
-    <name>Qcm designer API</name>
-    <description>Qcm designer API</description>
-    <url>https://github.com/EricMuller/qcm-designer-api</url>
+	<name>Qcm designer API</name>
+	<description>Qcm designer API</description>
+	<url>https://github.com/EricMuller/qcm-designer-api</url>
 
-    <parent>
-        <groupId>com.emu.apps.starter</groupId>
-        <artifactId>spring-boot-starter-bom</artifactId>
-        <version>2.0.0-SNAPSHOT</version>
-    </parent>
+	<parent>
+		<groupId>com.emu.apps.starter</groupId>
+		<artifactId>spring-boot-starter-bom</artifactId>
+		<version>2.0.0-SNAPSHOT</version>
+	</parent>
 
-    <scm>
-        <url>https://github.com/EricMuller/qcm-designer-api</url>
-        <connection>scm:git:git://github.com/EricMuller/qcm-designer-api.git</connection>
-        <developerConnection>scm:git:git@github.com:EricMuller/qcm-designer-api.git</developerConnection>
-    </scm>
+	<scm>
+		<url>https://github.com/EricMuller/qcm-designer-api</url>
+		<connection>scm:git:git://github.com/EricMuller/qcm-designer-api.git</connection>
+		<developerConnection>scm:git:git@github.com:EricMuller/qcm-designer-api.git</developerConnection>
+	</scm>
 
-    <repositories>
-        <repository>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <id>webmarks-public</id>
-            <name>webmarks-public</name>
-            <url>https://nexus.webmarks.net/nexus/repository/webmarks-public/</url>
-        </repository>
-    </repositories>
+	<repositories>
+		<repository>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<id>webmarks-public</id>
+			<name>webmarks-public</name>
+			<url>https://nexus.webmarks.net/nexus/repository/webmarks-public/</url>
+		</repository>
+	</repositories>
 
-    <properties>
-        <sonar.host.url>http://brix:9000</sonar.host.url>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <start-class>com.emu.apps.Application</start-class>
-        <sonar.language>java</sonar.language>
-    </properties>
+	<properties>
+		<sonar.host.url>http://brix:9000</sonar.host.url>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<start-class>com.emu.apps.Application</start-class>
+		<sonar.language>java</sonar.language>
+	</properties>
 
-    <dependencies>
+	<dependencies>
 
-        <!-- spring -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
+		<!-- spring -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-cache</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-cache</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-ehcache</artifactId>
-            <version>5.2.12.Final</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.hibernate</groupId>
-                    <artifactId>hibernate-core</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-ehcache</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.hibernate</groupId>
+					<artifactId>hibernate-core</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+		</dependency>
 
-        <!--monitor-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
+		<!--monitor -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
 
 
-        <!--spring dev tools-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <optional>true</optional>
-        </dependency>
+		<!--spring dev tools -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<optional>true</optional>
+		</dependency>
 
-        <!-- security -->
+		<!-- security -->
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>org.keycloak</groupId>
-            <artifactId>keycloak-spring-boot-starter</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.keycloak</groupId>
+			<artifactId>keycloak-spring-boot-starter</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>org.keycloak</groupId>
-            <artifactId>keycloak-spring-security-adapter</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.keycloak</groupId>
+			<artifactId>keycloak-spring-security-adapter</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-test</artifactId>
-            <scope>test</scope>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
+		</dependency>
 
-        <!-- json -->
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt</artifactId>
-        </dependency>
+		<!-- json -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jsr310</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+		</dependency>
 
-        <!-- pilotes -->
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-        </dependency>
+		<!-- pilotes -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>1.4.196</version>
-            <scope>test</scope>
-        </dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>1.4.196</version>
+			<scope>test</scope>
+		</dependency>
 
-        <!-- mapper -->
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct</artifactId>
-        </dependency>
+		<!-- mapper -->
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+		</dependency>
 
-        <!-- swagger -->
-        <!--http://localhost:8080/swagger-ui.html#/-->
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-        </dependency>
+		<!-- swagger -->
+		<!--http://localhost:8080/swagger-ui.html#/ -->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-data-rest</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-data-rest</artifactId>
+		</dependency>
 
-        <!-- client rest -->
-        <dependency>
-            <groupId>com.sun.jersey</groupId>
-            <artifactId>jersey-client</artifactId>
-        </dependency>
+		<!-- client rest -->
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-client</artifactId>
+		</dependency>
 
-        <!-- guava -->
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-        </dependency>
+		<!-- guava -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+		</dependency>
 
-        <!-- tools -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-        </dependency>
+		<!-- tools -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-collections4 -->
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-collections4 -->
 
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
 
-    </dependencies>
+	</dependencies>
 
-    <build>
+	<build>
 
-        <plugins>
-            <!-- mapper -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-            </plugin>
+		<plugins>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-            </plugin>
+			<!-- mapper -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>${project.build.directory}/generated-sources/annotations/</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+			</plugin>
 
-            <!-- spring-boot- -->
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <addResources>true</addResources>
-                    <executable>false</executable>
-                    <mainClass>com.emu.apps.Application</mainClass>
-                    <additionalProperties>
-                        <encoding.source>UTF-8</encoding.source>
-                        <encoding.reporting>UTF-8</encoding.reporting>
-                        <java.source>${java.source.version}</java.source>
-                        <java.target>${java.target.version}</java.target>
-                    </additionalProperties>
-                </configuration>
-            </plugin>
+			<!-- spring-boot- -->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<addResources>true</addResources>
+					<executable>false</executable>
+					<mainClass>com.emu.apps.Application</mainClass>
+					<additionalProperties>
+						<encoding.source>UTF-8</encoding.source>
+						<encoding.reporting>UTF-8</encoding.reporting>
+						<java.source>${java.source.version}</java.source>
+						<java.target>${java.target.version}</java.target>
+					</additionalProperties>
+				</configuration>
+			</plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-            </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+			</plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-            </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+			</plugin>
 
-            <plugin>
-                <groupId>ch.acanda.maven</groupId>
-                <artifactId>spring-banner-plugin</artifactId>
-                <version>1.0</version>
-                <executions>
-                    <execution>
-                        <id>generate-spring-banner</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <text>${project.name} ${project.version}</text>
-                    <outputDirectory>${project.build.outputDirectory}</outputDirectory>
-                    <filename>banner.txt</filename>
-                    <includeInfo>true</includeInfo>
-                    <info>Spring Boot ${spring.boot.version} (${maven.build.timestamp})</info>
-                    <color>default</color>
-                </configuration>
-            </plugin>
 
-        </plugins>
-    </build>
+			<!-- <plugin> -->
+			<!-- <groupId>ch.acanda.maven</groupId> -->
+			<!-- <artifactId>spring-banner-plugin</artifactId> -->
+			<!-- <version>1.0</version> -->
+			<!-- <executions> -->
+			<!-- <execution> -->
+			<!-- <id>generate-spring-banner</id> -->
+			<!-- <phase>generate-resources</phase> -->
+			<!-- <goals> -->
+			<!-- <goal>generate</goal> -->
+			<!-- </goals> -->
+			<!-- </execution> -->
+			<!-- </executions> -->
+			<!-- <configuration> -->
+			<!-- <text>${project.name} ${project.version}</text> -->
+			<!-- <outputDirectory>${project.build.outputDirectory}</outputDirectory> -->
+			<!-- <filename>banner.txt</filename> -->
+			<!-- <includeInfo>true</includeInfo> -->
+			<!-- <info>Spring Boot ${spring.boot.version} (${maven.build.timestamp})</info> -->
+			<!-- <color>default</color> -->
+			<!-- </configuration> -->
+			<!-- </plugin> -->
+
+		</plugins>
+	</build>
 
 </project>

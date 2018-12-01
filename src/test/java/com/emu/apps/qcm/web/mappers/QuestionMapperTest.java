@@ -15,7 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {QuestionMapperImpl.class, QuestionTagMapperImpl.class, ResponseMapperImpl.class})
+@SpringBootTest(classes = { QuestionMapperImpl.class, QuestionTagMapperImpl.class, ResponseMapperImpl.class})
 public class QuestionMapperTest {
 
     @Autowired
