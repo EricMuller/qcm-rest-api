@@ -1,24 +1,22 @@
 package com.emu.apps.qcm.web.rest.dtos;
 
-import io.swagger.annotations.*;
+import io.swagger.annotations.ApiModel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Created by eric on 14/06/2017.
  */
 @ApiModel(value = "Message")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class MessageDto {
 
     String message;
 
-    public MessageDto(String message) {
-        this.message = message;
-    }
 
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
 }

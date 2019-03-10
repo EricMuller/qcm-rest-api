@@ -2,7 +2,15 @@ package com.emu.apps.qcm.web.rest.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class FilterDto {
 
     @ApiModelProperty(notes = "Filter name ")
@@ -13,27 +21,5 @@ public class FilterDto {
     @JsonProperty("value")
     private String value;
 
-    public FilterDto() {
-    }
 
-    public FilterDto(String name, String value) {
-        this.name = name;
-        this.value = value;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String id) {
-        this.value = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

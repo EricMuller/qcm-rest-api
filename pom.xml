@@ -267,30 +267,6 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 			</plugin>
 
-
-			<!-- <plugin> -->
-			<!-- <groupId>ch.acanda.maven</groupId> -->
-			<!-- <artifactId>spring-banner-plugin</artifactId> -->
-			<!-- <version>1.0</version> -->
-			<!-- <executions> -->
-			<!-- <execution> -->
-			<!-- <id>generate-spring-banner</id> -->
-			<!-- <phase>generate-resources</phase> -->
-			<!-- <goals> -->
-			<!-- <goal>generate</goal> -->
-			<!-- </goals> -->
-			<!-- </execution> -->
-			<!-- </executions> -->
-			<!-- <configuration> -->
-			<!-- <text>${project.name} ${project.version}</text> -->
-			<!-- <outputDirectory>${project.build.outputDirectory}</outputDirectory> -->
-			<!-- <filename>banner.txt</filename> -->
-			<!-- <includeInfo>true</includeInfo> -->
-			<!-- <info>Spring Boot ${spring.boot.version} (${maven.build.timestamp})</info> -->
-			<!-- <color>default</color> -->
-			<!-- </configuration> -->
-			<!-- </plugin> -->
-
 		</plugins>
 	</build>
 

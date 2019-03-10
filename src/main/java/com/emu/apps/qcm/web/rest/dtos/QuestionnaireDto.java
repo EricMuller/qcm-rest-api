@@ -4,11 +4,19 @@ import com.emu.apps.qcm.services.jpa.entity.Status;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Set;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @ApiModel(value = "Questionnaire")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class QuestionnaireDto extends EntityDto {
 
     @JsonProperty("title")
@@ -26,44 +34,6 @@ public class QuestionnaireDto extends EntityDto {
     @JsonProperty("status")
     private Status status;
 
-    public String getTitle() {
-        return title;
-    }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public CategoryDto getCategory() {
-        return category;
-    }
-
-    public void setCategory(CategoryDto category) {
-        this.category = category;
-    }
-
-    public Set<QuestionnaireTagDto> getQuestionnaireTags() {
-        return questionnaireTags;
-    }
-
-    public void setQuestionnaireTags(Set<QuestionnaireTagDto> questionnaireTags) {
-        this.questionnaireTags = questionnaireTags;
-    }
-
-    public Status getStatus() {
-
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
 }

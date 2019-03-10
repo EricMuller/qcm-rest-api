@@ -37,12 +37,10 @@ public class CategoryRestController implements CategoryRestApi {
         this.categoryMapper = categoryMapper;
     }
 
-
     @Override
     public CategoryDto getCategory(@PathVariable("id") Long id) {
         return categoryMapper.modelToDto(categoryService.findById(id).orElse(null));
     }
-
 
     @Override
     public Iterable <CategoryDto> getCategories() {
@@ -50,9 +48,9 @@ public class CategoryRestController implements CategoryRestApi {
     }
 
     @Override
-    public CategoryDto saveCategory(@RequestBody CategoryDto epicDto) {
-        Category epic = categoryMapper.dtoToModel(epicDto);
-        return categoryMapper.modelToDto(categoryService.save(epic));
+    public CategoryDto saveCategory(@RequestBody CategoryDto categoryDto) {
+        Category category = categoryMapper.dtoToModel(categoryDto);
+        return categoryMapper.modelToDto(categoryService.save(category));
     }
 
     @ExceptionHandler({JsonProcessingException.class, IOException.class})

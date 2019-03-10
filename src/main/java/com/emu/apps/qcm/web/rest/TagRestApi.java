@@ -36,7 +36,7 @@ public interface TagRestApi {
     @ResponseBody
     TagDto getTagById(@PathVariable("id") Long id);
 
-    @ApiOperation(value = "Save a currentQuestionnaire", response = TagDto.class, nickname = "saveTag")
+    @ApiOperation(value = "Save a current Tag", response = TagDto.class, nickname = "saveTag")
     @RequestMapping(method = {RequestMethod.PUT, RequestMethod.POST})
     @ResponseBody
     TagDto saveTag(@RequestBody TagDto tagDto);

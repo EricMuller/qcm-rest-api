@@ -2,8 +2,16 @@ package com.emu.apps.qcm.web.rest.dtos;
 
 
 import io.swagger.annotations.ApiModel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @ApiModel(value = "Suggest")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class SuggestDto {
 
     private String fieldName;
@@ -11,33 +19,5 @@ public class SuggestDto {
     private String libelle;
 
     private Long id;
-
-    public SuggestDto() {
-    }
-
-    public String getLibelle() {
-        return libelle;
-    }
-
-    public void setLibelle(String libelle) {
-        this.libelle = libelle;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getFieldName() {
-        return fieldName;
-    }
-
-    public void setFieldName(String fieldName) {
-        this.fieldName = fieldName;
-    }
-
 
 }
