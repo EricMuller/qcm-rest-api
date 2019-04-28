@@ -3,7 +3,7 @@
 [![N|Solid](https://cdn.travis-ci.org/images/favicon-076a22660830dc325cc8ed70e7146a59.png)](https://travis-ci.org/) 
 
 
-[![Build Status](https://travis-ci.com/EricMuller/qcm-designer-api.svg?branch=master)](https://travis-ci.org/EricMuller/qcm-designer-api)
+[![Build Status](https://travis-ci.com/EricMuller/qcm-designer-api.svg?branch=master)](https://travis-ci.com/EricMuller/qcm-designer-api)
 
  
 
