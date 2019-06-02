@@ -35,7 +35,7 @@ qcm-designer-api uses a number of open source projects to work properly:
 
 ### Installation
 
-qcm-designer-api requires [MAVEN](https://nodejs.org/) v3.3+ to run.
+qcm-designer-api requires [MAVEN](https://maven.apache.org/) v3.3+ to run.
 
 Install the dependencies and devDependencies and start the server.
 
