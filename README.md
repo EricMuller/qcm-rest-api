@@ -52,7 +52,13 @@ http://127.0.0.1:8080/swagger-ui.html#/
 
 ### Deploy
 
-[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)](https://qcm-designer-api.herokuapp.com/swagger-ui.html#)
+
+
+```sh
+$ curl https://qcm-designer-api.herokuapp.com/ ...
+
+```
 
 ### Todos
 
