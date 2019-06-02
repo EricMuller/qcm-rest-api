@@ -2,10 +2,9 @@
 
 [![N|Solid](https://cdn.travis-ci.org/images/favicon-076a22660830dc325cc8ed70e7146a59.png)](https://travis-ci.org/) 
 
-
 [![Build Status](https://travis-ci.com/EricMuller/qcm-designer-api.svg?branch=master)](https://travis-ci.com/EricMuller/qcm-designer-api)
 
- 
+[![Known Vulnerabilities](https://snyk.io/test/github/EricMuller/qcm-designer-api/badge.svg)](https://snyk.io/test/github/EricMuller/qcm-designer-api)
 
 qcm-designer-api is a sample QCM Rest API.
 
@@ -30,7 +29,8 @@ qcm-designer-api uses a number of open source projects to work properly:
 * [Maven] - the build system
 * [Springfox] - Automated JSON API documentation for API's built with Spring
 * [Travis] - Test and Deploy with Confidence
-
+* [Snyk] - Finding & fixing vulnerabilities in your dependencies
+* [Heroku] - Fully managed container-based cloud platform, with integrated data services. 
 
 
 ### Installation

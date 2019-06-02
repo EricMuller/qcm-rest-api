@@ -15,36 +15,6 @@ logging:
     org.springframework.aop.interceptor.PerformanceMonitorInterceptor: TRACE
     com.zaxxer.hikari.pool.HikariPool: INFO
     com.zaxxer.hikari: INFO
-
-spring:
-  jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
-    generate-ddl: false
-    show-sql: false
-
-
-  application:
-    name: qcm-service
-#  liquibase:
-#    change-log: classpath:liquibase-changeLog.xml
-
-#
-#management:
-
-#    server:
-#        context-path: /metrics
-#        address: 127.0.0.1
-#        port: 9010
-#        security:
-#            enabled: false
-#
-#   endpoints:
-#       web:
-#          exposure:
-#              include: "*"
-#   endpoint:
-#       health:
-#          show-details: ALWAYS
-
+    org.springframework.boot.web.embedded.tomcat.TomcatWebServer: INFO
 
 

@@ -10,7 +10,7 @@ import com.emu.apps.qcm.web.rest.dtos.FilterDto;
 import com.emu.apps.qcm.web.rest.dtos.MessageDto;
 import com.emu.apps.qcm.web.rest.dtos.QuestionDto;
 import com.emu.apps.qcm.web.rest.dtos.question.QuestionTagsDto;
-import com.emu.apps.qcm.web.rest.dtos.utils.DtoUtil;
+import com.emu.apps.qcm.web.rest.dtos.utils.FilterUtil;
 import com.emu.apps.qcm.web.rest.mappers.QuestionMapper;
 import com.emu.apps.qcm.web.rest.mappers.QuestionTagMapper;
 import com.emu.apps.shared.metrics.Timer;
@@ -48,11 +48,11 @@ public class QuestionRestController implements QuestionRestApi {
 
     private final QuestionSpecification questionSpecification;
 
-    private final DtoUtil dtoUtil;
+    private final FilterUtil dtoUtil;
 
     @Autowired
     public QuestionRestController(QuestionService questionService, QuestionMapper questionMapper, QuestionTagService questionTagService,
-                                  QuestionTagMapper questionTagMapper, QuestionSpecification questionSpecification, DtoUtil dtoUtil) {
+                                  QuestionTagMapper questionTagMapper, QuestionSpecification questionSpecification, FilterUtil dtoUtil) {
         this.questionService = questionService;
         this.questionMapper = questionMapper;
         this.questionTagService = questionTagService;

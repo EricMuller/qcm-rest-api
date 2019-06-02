@@ -254,6 +254,7 @@
 						<java.source>${java.source.version}</java.source>
 						<java.target>${java.target.version}</java.target>
 					</additionalProperties>
+
 				</configuration>
 			</plugin>
 

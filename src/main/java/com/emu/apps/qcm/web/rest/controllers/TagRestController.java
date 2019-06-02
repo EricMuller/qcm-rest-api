@@ -9,7 +9,7 @@ import com.emu.apps.qcm.web.rest.dtos.FilterDto;
 import com.emu.apps.qcm.web.rest.dtos.SuggestDto;
 import com.emu.apps.qcm.web.rest.dtos.TagDto;
 import com.emu.apps.qcm.web.rest.mappers.TagMapper;
-import com.emu.apps.qcm.web.rest.dtos.utils.DtoUtil;
+import com.emu.apps.qcm.web.rest.dtos.utils.FilterUtil;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -37,22 +37,22 @@ public class TagRestController implements TagRestApi {
 
     private final TagMapper tagMapper;
 
-    private final DtoUtil dtoUtil;
+    private final FilterUtil filterUtil;
 
     private final TagSpecification tagSpecification;
 
     @Autowired
-    public TagRestController(TagService tagService, TagMapper tagMapper, DtoUtil dtoUtil, TagSpecification tagSpecification) {
+    public TagRestController(TagService tagService, TagMapper tagMapper, FilterUtil dtoUtil, TagSpecification tagSpecification) {
         this.tagService = tagService;
         this.tagMapper = tagMapper;
-        this.dtoUtil = dtoUtil;
+        this.filterUtil = dtoUtil;
         this.tagSpecification = tagSpecification;
     }
 
     @Override
     public Page<TagDto> getTagsByPAge(Principal principal, @RequestParam(value = "filters", required = false) String filterString, Pageable pageable) throws IOException {
 
-        FilterDto[] filterDtos = dtoUtil.stringToFilterDtos(filterString);
+        FilterDto[] filterDtos = filterUtil.stringToFilterDtos(filterString);
         Specification<Tag> specifications = tagSpecification.getSpecifications(filterDtos, principal);
 
         return tagMapper.pageToDto(tagService.findAllByPage(specifications, pageable));

@@ -13,11 +13,11 @@ import java.util.Base64;
 import java.util.stream.IntStream;
 
 @Service
-final public class DtoUtil {
+final public class FilterUtil {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private DtoUtil() {
+    private FilterUtil() {
     }
 
     private  boolean isEmpty(final byte[] data) {
