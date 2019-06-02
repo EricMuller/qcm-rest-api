@@ -11,10 +11,10 @@ qcm-designer-api is a sample QCM Rest API.
 
 You can also:
   
-  - Create some Question.
-  - Create some Questionaire. 
-  - Create some Tag .
-  - Upload Question from json files.
+  - Create some Questions.
+  - Create some Questionnaires. 
+  - Create some Tags.
+  - Upload Questions from json files.
 
 ### Tech
 
