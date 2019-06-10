@@ -7,28 +7,16 @@ import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.concurrent.atomic.AtomicInteger;
 
 
 @Component
 public class ScheduledTasks {
 
-    private static final Logger log = LoggerFactory.getLogger(ScheduledTasks.class);
-
-    private AtomicInteger counter = new AtomicInteger(0);
-
-    private  final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+    private static final Logger LOGGER = LoggerFactory.getLogger(ScheduledTasks.class);
 
     @Scheduled(fixedRate = 30000)
     public void reportCurrentTime() {
-        log.info("The time is now {}", dateFormat.format(new Date()));
+        LOGGER.info("The time is now {}", new SimpleDateFormat("HH:mm:ss").format(new Date()));
     }
 
-    //@Scheduled(cron = "*/2 * * * * *")
-    /*
-    public void cronJob() {
-        int jobId = counter.incrementAndGet();
-        LOGGER.info("Job " + new Date() + ", jobId:  {}", jobId);
-    }
-    */
 }

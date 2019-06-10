@@ -19,15 +19,17 @@ public class TimerAopConfiguration {
 
     @Pointcut("@annotation(com.emu.apps.shared.metrics.Timer))")
     public void timerAnnotations() {
+        // Do nothing.
     }
 
     @Pointcut("execution(public !void org.springframework.data.repository.Repository+.*(..))")
     public void repositoryMethods() {
+        // Do nothing.
     }
 
     @Pointcut("repositoryMethods() || timerAnnotations()")
     public void monitor() {
-
+        // Do nothing.
     }
 
     @Bean

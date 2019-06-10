@@ -23,6 +23,8 @@ import static springfox.documentation.builders.RequestHandlerSelectors.withClass
 @Import({springfox.documentation.spring.data.rest.configuration.SpringDataRestConfiguration.class})
 public class SwaggerQcmConfig {
 
+    private static final String AUTHORIZATION ="Authorization";
+
     @Bean
     public Docket productApiv1() {
 
@@ -42,7 +44,7 @@ public class SwaggerQcmConfig {
 
 
     private ApiKey buildSecurityScheme() {
-        return new ApiKey("Authorization", "Authorization", "header");
+        return new ApiKey(AUTHORIZATION, AUTHORIZATION, "header");
     }
 
     private SecurityContext buildSecurityContext() {
@@ -58,7 +60,7 @@ public class SwaggerQcmConfig {
                 = new AuthorizationScope("global", "accessEverything");
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
         authorizationScopes[0] = authorizationScope;
-        return Lists.newArrayList(new SecurityReference("Authorization", authorizationScopes));
+        return Lists.newArrayList(new SecurityReference(AUTHORIZATION, authorizationScopes));
     }
 
     private ApiInfo metaData(String version) {

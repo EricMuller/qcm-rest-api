@@ -43,25 +43,27 @@ public class QuestionnaireTagServiceImpl implements QuestionnaireTagService {
     }
 
     @Transactional()
-    public Questionnaire saveQuestionnaireTags(long questionnaireId, Iterable <QuestionnaireTag> questionnaireTags, Principal principal) {
+    public Questionnaire saveQuestionnaireTags(long questionnaireId, Iterable<QuestionnaireTag> questionnaireTags, Principal principal) {
 
         Questionnaire questionnaire = questionnaireRepository.findById(questionnaireId).orElse(null);
 
         ExceptionUtil.assertFound(questionnaire, "Questionnaire not found");
 
-        questionnaire.getQuestionnaireTags().clear();
+        if (Objects.nonNull(questionnaire)) {
+            questionnaire.getQuestionnaireTags().clear();
 
-        if (Objects.nonNull(questionnaireTags)) {
-            for (QuestionnaireTag questionnaireTag : questionnaireTags) {
-                Tag tag;
-                if (Objects.nonNull(questionnaireTag.getId().getTagId())) {
-                    tag = tagService.findById(questionnaireTag.getId().getTagId()).orElse(null);
-                } else {
-                    tag = tagService.findOrCreateByLibelle(questionnaireTag.getTag().getLibelle(), principal);
-                }
-                if (tag != null) {
-                    QuestionnaireTag newTag = new QuestionnaireTagBuilder().setQuestionnaire(questionnaire).setTag(tag).createQuestionnaireTag();
-                    questionnaire.getQuestionnaireTags().add(questionnaireTagRepository.save(newTag));
+            if (Objects.nonNull(questionnaireTags)) {
+                for (QuestionnaireTag questionnaireTag : questionnaireTags) {
+                    Tag tag;
+                    if (Objects.nonNull(questionnaireTag.getId().getTagId())) {
+                        tag = tagService.findById(questionnaireTag.getId().getTagId()).orElse(null);
+                    } else {
+                        tag = tagService.findOrCreateByLibelle(questionnaireTag.getTag().getLibelle(), principal);
+                    }
+                    if (tag != null) {
+                        QuestionnaireTag newTag = new QuestionnaireTagBuilder().setQuestionnaire(questionnaire).setTag(tag).createQuestionnaireTag();
+                        questionnaire.getQuestionnaireTags().add(questionnaireTagRepository.save(newTag));
+                    }
                 }
             }
         }

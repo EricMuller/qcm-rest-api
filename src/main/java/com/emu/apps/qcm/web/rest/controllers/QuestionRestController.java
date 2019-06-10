@@ -103,7 +103,7 @@ public class QuestionRestController implements QuestionRestApi {
     }
 
     @ExceptionHandler({JsonProcessingException.class, IOException.class})
-    public ResponseEntity <?> handleAllException(Exception e) {
+    public ResponseEntity <MessageDto> handleAllException(Exception e) {
         return new ResponseEntity <>(new MessageDto(e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 

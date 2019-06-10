@@ -35,7 +35,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
      */
     @ExceptionHandler({Exception.class})
     @ResponseBody
-    public ResponseEntity<?> handleAnyException(Exception e) {
+    public ResponseEntity<Object> handleAnyException(Exception e) {
         ExceptionMessage exceptionMessage = new ExceptionMessageBuilder()
         .setStatus(INTERNAL_SERVER_ERROR.value())
         .setException(INTERNAL_SERVER_ERROR.getReasonPhrase())

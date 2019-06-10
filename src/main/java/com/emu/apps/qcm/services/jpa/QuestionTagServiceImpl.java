@@ -40,7 +40,6 @@ public class QuestionTagServiceImpl implements QuestionTagService {
     }
 
     @Override
-    // todo: to refacto with abstract entity
     public Question saveQuestionTags(long questionId, Iterable <QuestionTag> questionTags, Principal principal) {
         Optional <Question> questionOptional = questionRepository.findById(questionId);
 

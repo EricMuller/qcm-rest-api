@@ -7,7 +7,7 @@
 	<artifactId>qcm-rest-api</artifactId>
 	<version>2.0.0-SNAPSHOT</version>
 
-	<name>Qcm designer API</name>
+	<name>Qcm Rest API</name>
 	<description>Qcm Rest API</description>
 	<url>https://github.com/EricMuller/qcm-rest-api</url>
 

@@ -9,13 +9,4 @@ public interface ResponseMapper {
 
     ResponseDto modelToDto(Response response);
 
-
-//    @Named("responseWithOutResponse")
-//    @Mapping(target = "response", ignore = true)
-//    public  abstract ResponseDto modelToDtoWithoutStringResponse(Response response);
-//
-//    @Named("questionWithOutResponse")
-//    @Mapping(target = "responses", qualifiedByName = "responseWithOutResponse")
-//    public  abstract QuestionDto modelToDtoWithoutStringResponse(QuestionResponseProjection question);
-
 }

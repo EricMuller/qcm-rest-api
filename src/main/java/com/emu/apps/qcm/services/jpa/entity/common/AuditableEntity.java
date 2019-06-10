@@ -14,7 +14,7 @@ import java.util.UUID;
 @SuppressWarnings("serial")
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class AuditableEntity<U> implements Serializable {
+public abstract class AuditableEntity<U extends Serializable> implements Serializable {
 
     @Column(name = "created_by")
     @CreatedBy

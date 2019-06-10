@@ -1,5 +1,7 @@
 package com.emu.apps.qcm.services.jpa.entity.common;
 
-public interface ID {
+import java.io.Serializable;
+
+public interface ID extends Serializable {
     public Long getId() ;
 }

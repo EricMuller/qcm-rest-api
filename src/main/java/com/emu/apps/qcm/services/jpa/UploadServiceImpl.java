@@ -52,20 +52,14 @@ public class UploadServiceImpl implements UploadService {
     @Override
     public void createQuestionnaires(String name, FileQuestionDto[] fileQuestionDtos, Principal principal) {
 
-        Map <String, Questionnaire> questionnaireCacheMap = Maps.newHashMap();
-        Map <String, Long> tagsCounterMap = Maps.newHashMap();
-
-        // Long maxPos = questionnaireService.getMaxPosition();
-
-        //Tag tag = tagService.findOrCreateByLibelle("import");
+        Map<String, Questionnaire> questionnaireCacheMap = Maps.newHashMap();
+        Map<String, Long> tagsCounterMap = Maps.newHashMap();
 
         Category category = categoryService.findOrCreateByLibelle("Java");
 
         for (FileQuestionDto fileQuestionDto : fileQuestionDtos) {
 
             if (StringUtils.isNotEmpty(fileQuestionDto.getCategorie())) {
-
-                // Category category = categoryService.findOrCreateByLibelle(fileQuestionDto.getCategorie());
 
                 Tag tag = tagService.findOrCreateByLibelle(fileQuestionDto.getCategorie(), principal);
 
@@ -74,7 +68,7 @@ public class UploadServiceImpl implements UploadService {
 
                 Question question = fileQuestionMapper.dtoToModel(fileQuestionDto);
                 question.setType(Type.FREE_TEXT);
-                // question.setPosition(categoryCounterMap.get(category.getLibelle()));
+
                 question.setStatus(Status.DRAFT);
                 Response response = new Response();
                 response.setResponse(fileQuestionDto.getResponse());
@@ -87,16 +81,12 @@ public class UploadServiceImpl implements UploadService {
                     questionnaire.setDescription(questionnaire.getTitle());
                     questionnaire.setCategory(category);
                     questionnaire.setStatus(Status.DRAFT);
-                    //questionnaire.setPosition(++maxPos);
                     questionnaire = questionnaireService.saveQuestionnaire(questionnaire);
-
                     questionnaireCacheMap.put(tag.getLibelle(), questionnaire);
                 }
 
-                // question.setPosition(0L);
                 question = questionService.saveQuestion(question);
 
-                //question.setQuestionnaire(questionnaire);
                 Long position = tagsCounterMap.get(tag.getLibelle());
 
                 questionnaireService.saveQuestionnaireQuestion(new QuestionnaireQuestion(questionnaire, question, position));

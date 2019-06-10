@@ -7,8 +7,6 @@ import com.emu.apps.qcm.web.rest.dtos.CategoryDto;
 import com.emu.apps.qcm.web.rest.dtos.MessageDto;
 import com.emu.apps.qcm.web.rest.mappers.CategoryMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +23,6 @@ import java.io.IOException;
 @RestController
 public class CategoryRestController implements CategoryRestApi {
 
-    protected static final Logger LOGGER = LoggerFactory.getLogger(CategoryRestController.class);
 
     private final CategoryService categoryService;
 
@@ -54,7 +51,7 @@ public class CategoryRestController implements CategoryRestApi {
     }
 
     @ExceptionHandler({JsonProcessingException.class, IOException.class})
-    public ResponseEntity <?> handleAllException(Exception e) {
+    public ResponseEntity <MessageDto> handleAllException(Exception e) {
         return new ResponseEntity <>(new MessageDto(e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 

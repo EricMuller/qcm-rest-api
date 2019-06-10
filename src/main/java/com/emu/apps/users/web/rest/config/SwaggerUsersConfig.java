@@ -26,9 +26,11 @@ import static springfox.documentation.builders.RequestHandlerSelectors.withClass
 @Import({springfox.documentation.spring.data.rest.configuration.SpringDataRestConfiguration.class})
 public class SwaggerUsersConfig {
 
+    private static final String AUTHORIZATION = "Authorization";
+
     @Bean
     SecurityConfiguration security() {
-        return new SecurityConfiguration(null, null, null, null, null, ApiKeyVehicle.HEADER, "Authorization", null);
+        return new SecurityConfiguration(null, null, null, null, null, ApiKeyVehicle.HEADER, AUTHORIZATION, null);
     }
 
     @Bean
@@ -48,7 +50,7 @@ public class SwaggerUsersConfig {
 
 
     private ApiKey apiKey() {
-        return new ApiKey("Authorization", "Authorization", "header");
+        return new ApiKey(AUTHORIZATION, AUTHORIZATION, "header");
     }
 
     private SecurityContext securityContext() {
@@ -58,12 +60,12 @@ public class SwaggerUsersConfig {
                 .build();
     }
 
-    private List <SecurityReference> defaultAuth() {
+    private List<SecurityReference> defaultAuth() {
         AuthorizationScope authorizationScope
                 = new AuthorizationScope("global", "accessEverything");
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
         authorizationScopes[0] = authorizationScope;
-        return Lists.newArrayList(new SecurityReference("AUTHORIZATION", authorizationScopes));
+        return Lists.newArrayList(new SecurityReference(AUTHORIZATION, authorizationScopes));
     }
 
     private ApiInfo metaData(String version) {
