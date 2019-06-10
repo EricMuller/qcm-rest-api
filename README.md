@@ -1,11 +1,11 @@
-# qcm-designer-api
+# qcm-rest-api
  
 
-[![Build Status](https://travis-ci.com/EricMuller/qcm-designer-api.svg?branch=master)](https://travis-ci.com/EricMuller/qcm-designer-api) [![Known Vulnerabilities](https://snyk.io/test/github/EricMuller/qcm-designer-api/badge.svg)](https://snyk.io/test/github/EricMuller/qcm-designer-api)
+[![Build Status](https://travis-ci.com/EricMuller/qcm-rest-api.svg?branch=master)](https://travis-ci.com/EricMuller/qcm-rest-api) [![Known Vulnerabilities](https://snyk.io/test/github/EricMuller/qcm-rest-api/badge.svg)](https://snyk.io/test/github/EricMuller/qcm-rest-api)
 
 
 
-qcm-designer-api is a sample QCM Rest API.
+qcm-rest-api is a sample QCM Rest API.
 
 
 You can also:
@@ -17,7 +17,7 @@ You can also:
 
 ### Tech
 
-qcm-designer-api uses a number of open source projects to work properly:
+qcm-rest-api uses a number of open source projects to work properly:
 
 
 * [SpringBoot] - Create stand-alone backend Spring applications
@@ -34,12 +34,12 @@ qcm-designer-api uses a number of open source projects to work properly:
 
 ### Installation
 
-qcm-designer-api requires [MAVEN](https://maven.apache.org/) v3.3+ to run.
+qcm-rest-api requires [MAVEN](https://maven.apache.org/) v3.3+ to run.
 
 Install the dependencies and devDependencies and start the server.
 
 ```sh
-$ cd qcm-designer-api
+$ cd qcm-rest-api
 $ maven clean install
 $ maven spring-boot:run
 ```
@@ -52,11 +52,12 @@ http://127.0.0.1:8080/swagger-ui.html#/
 
 ### Deploy
 
-[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)](https://qcm-designer-api.herokuapp.com/swagger-ui.html#)
+<a href="https://qcm-rest-api.herokuapp.com/swagger-ui.html#" target="_blank">![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)</a>
+
 
 
 ```sh
-$ curl https://qcm-designer-api.herokuapp.com/ ...
+$ curl https://qcm-rest-api.herokuapp.com/ ...
 
 ```
 
@@ -67,6 +68,8 @@ $ curl https://qcm-designer-api.herokuapp.com/ ...
 
 License
 ----
-[![License](http://img.shields.io/:license-apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
+[![License](http://img.shields.io/:license-mit-blue.svg)](https://opensource.org/licenses/mit-license.php)
 
-Code is under the [Apache Licence v2](https://www.apache.org/licenses/LICENSE-2.0.txt).
+
+
+Code is under the [MIT Licence ](https://opensource.org/licenses/mit-license.php).
