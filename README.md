@@ -25,11 +25,13 @@ qcm-rest-api uses a number of open source projects to work properly:
 * [MapStruct] - code generator that greatly simplifies the implementation of mappings between Java bean types  
 * [keycloak] - an open source identity and access management solution
 * [Lombok] - Never write another getter or equals method again
+* [SpringFoxSwagger] - Automated JSON API documentation for API's built with Spring
 * [Maven] - the build system
-* [Springfox] - Automated JSON API documentation for API's built with Spring
 * [Travis] - Test and Deploy with Confidence [![N|Solid](https://cdn.travis-ci.org/images/favicon-076a22660830dc325cc8ed70e7146a59.png)](https://travis-ci.org/)
 * [Snyk] - Finding & fixing vulnerabilities in your dependencies
 * [Heroku] - Fully managed container-based cloud platform, with integrated data services. 
+* [JaCoCo] - JaCoCo is a free code coverage library for Java,.
+* [SonarQube] - SonarQube is an open-source platform for continuous inspection of code quality.
 
 
 ### Installation
