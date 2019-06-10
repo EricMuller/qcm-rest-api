@@ -13,3 +13,7 @@ deploy:
   on:
     repo: EricMuller/qcm-rest-api
 
+cache:
+  directories:
+    - .autoconf
+    - $HOME/.m2

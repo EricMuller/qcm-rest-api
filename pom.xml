@@ -23,6 +23,11 @@
 		<developerConnection>scm:git:git@github.com:EricMuller/qcm-rest-api.git</developerConnection>
 	</scm>
 
+	<issueManagement>
+		<system>GitHub Issue Tracker</system>
+		<url>https://github.com/EricMuller/qcm-rest-api/issues</url>
+	</issueManagement>
+
 	<repositories>
 		<repository>
 			<snapshots>
