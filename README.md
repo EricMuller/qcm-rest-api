@@ -4,7 +4,6 @@
 [![Build Status](https://travis-ci.com/EricMuller/qcm-rest-api.svg?branch=master)](https://travis-ci.com/EricMuller/qcm-rest-api) [![Known Vulnerabilities](https://snyk.io/test/github/EricMuller/qcm-rest-api/badge.svg)](https://snyk.io/test/github/EricMuller/qcm-rest-api)
 
 
-
 qcm-rest-api is a sample QCM Rest API.
 
 
@@ -19,20 +18,21 @@ You can also:
 
 qcm-rest-api uses a number of open source projects to work properly:
 
-
 * [SpringBoot] - Create stand-alone backend Spring applications
 * [Spring Data JPA]  - provides repository support for the Java Persistence API (JPA)
 * [MapStruct] - code generator that greatly simplifies the implementation of mappings between Java bean types  
 * [keycloak] - an open source identity and access management solution
 * [Lombok] - Never write another getter or equals method again
 * [SpringFoxSwagger] - Automated JSON API documentation for API's built with Spring
-* [Maven] - the build system
-* [Travis] - Test and Deploy with Confidence [![N|Solid](https://cdn.travis-ci.org/images/favicon-076a22660830dc325cc8ed70e7146a59.png)](https://travis-ci.org/)
-* [Snyk] - Finding & fixing vulnerabilities in your dependencies
-* [Heroku] - Fully managed container-based cloud platform, with integrated data services. 
 * [JaCoCo] - JaCoCo is a free code coverage library for Java,.
-* [SonarQube] - SonarQube is an open-source platform for continuous inspection of code quality.
 
+### Continuous integration
+
+* [Maven] - the build system
+* [Travis] - Test and Deploy with Confidence [travis-ci](https://travis-ci.com/)
+* [SonarQube] - SonarQube on [sonarcloud.io](https://sonarcloud.io/about) is an open-source platform for continuous inspection of code quality.
+* [Heroku] - Fully managed container-based cloud platform, with integrated data services. [heroku.com](https://www.heroku.com)
+* [Snyk] - Finding & fixing vulnerabilities in your dependencies. [snyk.io](https://snyk.io)
 
 ### Installation
 
