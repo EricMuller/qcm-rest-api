@@ -1,10 +1,10 @@
-# qcm-rest-api
+# OpenQcm Api
  
 
 [![Build Status](https://travis-ci.com/EricMuller/qcm-rest-api.svg?branch=master)](https://travis-ci.com/EricMuller/qcm-rest-api)[![License](http://img.shields.io/:license-mit-blue.svg)](https://opensource.org/licenses/mit-license.php)[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=com.emu.apps.qcm%3Aqcm-rest-api&metric=alert_status)](https://sonarcloud.io/dashboard/index/com.emu.apps.qcm:qcm-rest-api) [![Known Vulnerabilities](https://snyk.io/test/github/EricMuller/qcm-rest-api/badge.svg)](https://snyk.io/test/github/EricMuller/qcm-rest-api)[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/2888/badge)](https://bestpractices.coreinfrastructure.org/projects/2888) 
 
 
-qcm-rest-api is a sample QCM Rest API.
+OpenQcm api is a sample QCM Rest API.
 
 
 You can also:
@@ -47,7 +47,7 @@ qcm-rest-api uses a number of open source projects to work properly:
 
 ### Installation
 
-qcm-rest-api requires [MAVEN](https://maven.apache.org/) v3.3+ to run.
+OpenQcm Api requires [MAVEN](https://maven.apache.org/) v3.3+ to run.
 
 Install the dependencies and devDependencies and start the server.
 
@@ -78,8 +78,8 @@ $ curl https://qcm-rest-api.herokuapp.com/ ...
 ### Todos
 
  - Write MORE features
- - Add Night Mode
-
+ -
+ 
 ### License
 
 
