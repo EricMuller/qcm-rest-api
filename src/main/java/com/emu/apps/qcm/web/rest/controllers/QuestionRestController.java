@@ -32,7 +32,7 @@ import java.util.Optional;
 /**
  * Created by eric on 05/06/2017.
  */
-
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 public class QuestionRestController implements QuestionRestApi {
 
