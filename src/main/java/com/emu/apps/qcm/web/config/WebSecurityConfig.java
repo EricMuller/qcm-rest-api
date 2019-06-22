@@ -124,7 +124,8 @@ class WebSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.csrf().disable().
+        http.cors().and()
+                .csrf().disable().
                 sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 //                .sessionAuthenticationStrategy(sessionAuthenticationStrategy())
                 .and()
@@ -135,7 +136,7 @@ class WebSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(QcmApi.API_V1 + "/**").authenticated()
                 .antMatchers(UserApi.API_V1 + "/**").authenticated()
-                .anyRequest().permitAll()   ;
+                .anyRequest().permitAll();
 
     }
 
