@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.security.Principal;
 
+@CrossOrigin
 @RequestMapping(QcmApi.API_V1 +"/questionnaires")
 @Api(value = "questionnaire-store", description = "All operations ", tags = "Questionnaires")
 public interface QuestionnaireRestApi {

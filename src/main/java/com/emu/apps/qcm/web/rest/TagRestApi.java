@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.security.Principal;
 
+@CrossOrigin
 @RequestMapping(QcmApi.API_V1 +"/tags")
 @Api(value = "tag-store", description = "All operations ", tags = "Tags")
 public interface TagRestApi {

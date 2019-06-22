@@ -17,7 +17,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.security.Principal;
 
-
+@CrossOrigin
 @RequestMapping(QcmApi.API_V1 + "/questions")
 @Api(value = "questions-store", description = "All operations ", tags = "Questions")
 public interface QuestionRestApi {

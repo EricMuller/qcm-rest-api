@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @RequestMapping(QcmApi.API_V1 +"/categories")
 @Api(value = "categories-store", description = "All operations ", tags = "Categories")
 public interface CategoryRestApi {
