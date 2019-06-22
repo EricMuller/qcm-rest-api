@@ -35,6 +35,7 @@ public class QuestionnaireSpecification extends BaseSpecification<Questionnaire,
                 .map(t -> Long.valueOf(t.getValue())).toArray(it -> new Long[it]);
     }
 
+    @SuppressWarnings("squid:S1172")
     private String getTitle(FilterDto[] filterDtos) {
         return null;
     }

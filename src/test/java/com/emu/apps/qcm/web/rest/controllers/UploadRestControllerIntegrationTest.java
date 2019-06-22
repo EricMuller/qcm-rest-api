@@ -49,9 +49,6 @@ public class UploadRestControllerIntegrationTest {
         return "http://localhost:" + port + uri;
     }
 
-    @Test
-    public void name() {
-    }
 
     @Test
     public void shouldUploadFile() {

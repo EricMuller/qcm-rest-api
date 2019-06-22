@@ -38,11 +38,11 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     @ResponseBody
     public ResponseEntity<Object> handleAnyException(Exception e) {
         ExceptionMessage exceptionMessage = new ExceptionMessageBuilder()
-        .setStatus(INTERNAL_SERVER_ERROR.value())
-        .setException(INTERNAL_SERVER_ERROR.getReasonPhrase())
-        .setError(e.getClass().getName())
-        .setTimestamp(LocalDate.now())
-        .setMessage(e.getMessage()).createExceptionMessage();
+                .setStatus(INTERNAL_SERVER_ERROR.value())
+                .setException(INTERNAL_SERVER_ERROR.getReasonPhrase())
+                .setError(e.getClass().getName())
+                .setTimestamp(LocalDate.now())
+                .setMessage(e.getMessage()).createExceptionMessage();
 
         return errorResponse(exceptionMessage, INTERNAL_SERVER_ERROR);
     }
@@ -56,11 +56,11 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     public ResponseEntity handleMiscFailures(Throwable t) {
 
         ExceptionMessage exceptionMessage = new ExceptionMessageBuilder()
-        .setStatus(BAD_REQUEST.value())
-        .setError(BAD_REQUEST.getReasonPhrase())
-        .setException(t.getClass().getName())
-        .setTimestamp(LocalDate.now())
-        .setMessage(t.getMessage()).createExceptionMessage();
+                .setStatus(BAD_REQUEST.value())
+                .setError(BAD_REQUEST.getReasonPhrase())
+                .setException(t.getClass().getName())
+                .setTimestamp(LocalDate.now())
+                .setMessage(t.getMessage()).createExceptionMessage();
 
         return errorResponse(exceptionMessage, BAD_REQUEST);
     }
@@ -74,19 +74,19 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     public ResponseEntity handleConflict(Exception ex) {
 
         ExceptionMessage response = new ExceptionMessageBuilder()
-        .setStatus(CONFLICT.value())
-        .setError(CONFLICT.getReasonPhrase())
-        .setException(ex.getClass().getName())
-        .setMessage(ex.getMessage())
-        .setTimestamp(LocalDate.now()).createExceptionMessage();
+                .setStatus(CONFLICT.value())
+                .setError(CONFLICT.getReasonPhrase())
+                .setException(ex.getClass().getName())
+                .setMessage(ex.getMessage())
+                .setTimestamp(LocalDate.now()).createExceptionMessage();
 
         return errorResponse(response, CONFLICT);
     }
 
     protected ResponseEntity<Object> errorResponse(ExceptionMessage response,
-                                                             HttpStatus status) {
+                                                   HttpStatus status) {
         if (Objects.nonNull(response)) {
-            LOG.error("error caught: " + response.toString());
+            LOG.error("error caught: {}", response.toString());
             return response(response, status);
         } else {
             LOG.error("unknown error caught in RESTController, {}", status);
@@ -110,12 +110,12 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
                         fieldError.getDefaultMessage())).collect(Collectors.toList());
 
         ExceptionMessage response = new ExceptionMessageBuilder()
-        .setStatus(BAD_REQUEST.value())
-        .setError(BAD_REQUEST.getReasonPhrase())
-        .setException(ex.getClass().getName())
-        .setTimestamp(LocalDate.now())
-        .setMessage(ex.getMessage())
-        .setErrors(fieldErrors).createExceptionMessage();
+                .setStatus(BAD_REQUEST.value())
+                .setError(BAD_REQUEST.getReasonPhrase())
+                .setException(ex.getClass().getName())
+                .setTimestamp(LocalDate.now())
+                .setMessage(ex.getMessage())
+                .setErrors(fieldErrors).createExceptionMessage();
         return errorResponse(response, BAD_REQUEST);
 
     }

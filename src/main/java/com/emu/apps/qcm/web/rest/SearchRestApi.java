@@ -3,10 +3,7 @@ package com.emu.apps.qcm.web.rest;
 import com.emu.apps.qcm.web.rest.controllers.SearchRestController;
 import com.emu.apps.qcm.web.rest.dtos.QuestionDto;
 import io.swagger.annotations.*;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
 @RequestMapping(QcmApi.API_V1 + SearchRestController.URL)
@@ -23,7 +20,7 @@ public interface SearchRestApi {
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     }
     )
-    @RequestMapping(value = "/questions", method = RequestMethod.GET, produces = "application/json")
+    @GetMapping(value = "/questions", produces = "application/json")
     @ResponseBody
     Iterable<QuestionDto> searchQuestionsByCriteria(String libelle);
 }

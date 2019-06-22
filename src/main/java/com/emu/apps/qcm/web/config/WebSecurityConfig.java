@@ -54,7 +54,7 @@ class WebSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
      * instead of the default keycloak.json
      */
     @Bean
-    public KeycloakConfigResolver KeycloakConfigResolver() {
+    public KeycloakConfigResolver keycloakConfigResolver() {
         return new KeycloakSpringBootConfigResolver();
     }
 

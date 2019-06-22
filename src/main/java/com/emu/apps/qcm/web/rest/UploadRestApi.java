@@ -21,6 +21,6 @@ import java.security.Principal;
 public interface UploadRestApi {
     @ApiOperation(value = "upload a file", responseContainer = "ResponseEntity", response = MessageDto.class, tags = "Upload", nickname = "uploadFile")
     @ResponseBody
-    @RequestMapping(value = "/{fileType}", method = RequestMethod.POST, headers = "Content-Type=multipart/form-data", produces = "application/json")
+    @PostMapping(value = "/{fileType}", headers = "Content-Type=multipart/form-data", produces = "application/json")
     ResponseEntity <MessageDto> uploadFile(@RequestParam("file") MultipartFile file, @PathVariable("fileType") String fileType, Principal principal) throws IOException;
 }

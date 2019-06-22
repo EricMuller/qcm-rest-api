@@ -6,8 +6,7 @@ import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.servlet.ModelAndView;
@@ -36,7 +35,7 @@ public class AppErrorController implements ErrorController {
      * @param request
      * @return
      */
-    @RequestMapping(value = ERROR_PATH, produces = "text/html", method = RequestMethod.GET)
+    @GetMapping(value = ERROR_PATH, produces = "text/html")
     public ModelAndView errorHtml(HttpServletRequest request) {
         ServletWebRequest servletWebRequest = new ServletWebRequest(request);
         return new ModelAndView("/errors/error", getErrorAttributes(servletWebRequest, false));
@@ -48,7 +47,7 @@ public class AppErrorController implements ErrorController {
      * @param request
      * @return
      */
-    @RequestMapping(value = ERROR_PATH, method = RequestMethod.GET)
+    @GetMapping(value = ERROR_PATH)
     @ResponseBody
     public ResponseEntity <Map <String, Object>> error(HttpServletRequest request) {
         ServletWebRequest servletWebRequest = new ServletWebRequest(request);

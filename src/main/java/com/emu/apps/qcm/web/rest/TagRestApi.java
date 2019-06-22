@@ -31,12 +31,12 @@ public interface TagRestApi {
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     }
     )
-    @RequestMapping(method = RequestMethod.GET, produces = "application/json")
+    @GetMapping(produces = "application/json")
     @ResponseBody
     Page<TagDto> getTagsByPAge(Principal principal, @RequestParam(value = "filters", required = false) String filterString, Pageable pageable) throws IOException;
 
     @ApiOperation(value = "Find a tag by ID", response = TagDto.class, nickname = "getTagById")
-    @RequestMapping(value = "{id}", method = RequestMethod.GET)
+    @GetMapping(value = "{id}")
     @ResponseBody
     TagDto getTagById(@PathVariable("id") Long id);
 
@@ -53,7 +53,7 @@ public interface TagRestApi {
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     }
     )
-    @RequestMapping(value = "/suggest", method = RequestMethod.GET, produces = "application/json")
+    @GetMapping(value = "/suggest",  produces = "application/json")
     @ResponseBody
     Iterable<SuggestDto> getSuggestions(@RequestParam("queryText") String queryText);
 }

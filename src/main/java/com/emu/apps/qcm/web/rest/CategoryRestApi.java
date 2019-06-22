@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 })
 public interface CategoryRestApi {
     @ApiOperation(value = "Find a category by ID", response = CategoryDto.class, nickname = "getCategoryById")
-    @RequestMapping(value = "{id}", method = RequestMethod.GET)
+    @GetMapping(value = "{id}")
     @ResponseBody
     CategoryDto getCategory(@PathVariable("id") Long id);
 
@@ -24,12 +24,12 @@ public interface CategoryRestApi {
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     }
     )
-    @RequestMapping(method = RequestMethod.GET, produces = "application/json")
+    @GetMapping( produces = "application/json")
     @ResponseBody
     Iterable<CategoryDto> getCategories();
 
     @ApiOperation(value = "save a Category", response = CategoryDto.class, nickname = "saveCategory")
-    @RequestMapping(method = RequestMethod.POST)
+    @PostMapping
     @ResponseBody
     CategoryDto saveCategory(@RequestBody CategoryDto epicDto);
 }

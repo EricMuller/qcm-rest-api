@@ -53,13 +53,14 @@ public class QuestionnaireRestController implements QuestionnaireRestApi {
 
     private final QuestionnaireSpecification questionnaireSpecification;
 
-    private final FilterUtil filterUtil;
+    @Autowired
+    private FilterUtil filterUtil;
 
     @Autowired
     public QuestionnaireRestController(QuestionnaireService questionnairesService, QuestionnaireMapper questionnaireMapper,
                                        QuestionMapper questionMapper, QuestionService questionService,
                                        QuestionnaireTagService questionnaireTagService, QuestionnaireTagMapper questionnaireTagMapper,
-                                       QuestionnaireSpecification questionnaireSpecification, FilterUtil dtoUtil) {
+                                       QuestionnaireSpecification questionnaireSpecification) {
         this.questionnairesService = questionnairesService;
         this.questionnaireMapper = questionnaireMapper;
         this.questionMapper = questionMapper;
@@ -67,7 +68,6 @@ public class QuestionnaireRestController implements QuestionnaireRestApi {
         this.questionnaireTagService = questionnaireTagService;
         this.questionnaireTagMapper = questionnaireTagMapper;
         this.questionnaireSpecification = questionnaireSpecification;
-        this.filterUtil = dtoUtil;
     }
 
 
@@ -79,11 +79,11 @@ public class QuestionnaireRestController implements QuestionnaireRestApi {
     }
 
     @Override
-    public ResponseEntity <Questionnaire> deleteQuestionnaireById(@PathVariable("id") long id) {
+    public ResponseEntity<Questionnaire> deleteQuestionnaireById(@PathVariable("id") long id) {
         Questionnaire questionnaire = questionnairesService.findOne(id);
         ExceptionUtil.assertFound(questionnaire, String.valueOf(id));
         questionnairesService.deleteById(id);
-        return new ResponseEntity <>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @Override
@@ -93,7 +93,7 @@ public class QuestionnaireRestController implements QuestionnaireRestApi {
 
         questionnaire = questionnairesService.saveQuestionnaire(questionnaireMapper.dtoToModel(questionnaire, questionnaireDto));
 
-        Iterable <QuestionnaireTag> questionnaireTags = questionnaireTagMapper.dtosToModels(questionnaireDto.getQuestionnaireTags());
+        Iterable<QuestionnaireTag> questionnaireTags = questionnaireTagMapper.dtosToModels(questionnaireDto.getQuestionnaireTags());
 
         questionnaire = questionnaireTagService.saveQuestionnaireTags(questionnaire.getId(), questionnaireTags, principal);
 
@@ -105,7 +105,7 @@ public class QuestionnaireRestController implements QuestionnaireRestApi {
 
         Questionnaire questionnaire = questionnairesService.saveQuestionnaire(questionnaireMapper.dtoToModel(questionnaireDto));
 
-        Iterable <QuestionnaireTag> questionnaireTags = questionnaireTagMapper.dtosToModels(questionnaireDto.getQuestionnaireTags());
+        Iterable<QuestionnaireTag> questionnaireTags = questionnaireTagMapper.dtosToModels(questionnaireDto.getQuestionnaireTags());
 
         questionnaire = questionnaireTagService.saveQuestionnaireTags(questionnaire.getId(), questionnaireTags, principal);
 
@@ -113,13 +113,13 @@ public class QuestionnaireRestController implements QuestionnaireRestApi {
     }
 
     @Override
-    public Page <QuestionDto> getQuestionsByByQuestionnaireId(@PathVariable("id") @ApiParam(value = "ID of the Questionnaire") long id, Pageable pageable) {
+    public Page<QuestionDto> getQuestionsByByQuestionnaireId(@PathVariable("id") @ApiParam(value = "ID of the Questionnaire") long id, Pageable pageable) {
         return questionMapper.pageQuestionResponseProjectionToDto(questionService.getQuestionsProjectionByQuestionnaireId(id, pageable));
     }
 
     @Override
-    public Iterable <SuggestDto> getSuggestions(@RequestParam("queryText") String queryText) {
-        final List <SuggestDto> suggestions = Lists.newArrayList();
+    public Iterable<SuggestDto> getSuggestions(@RequestParam("queryText") String queryText) {
+        final List<SuggestDto> suggestions = Lists.newArrayList();
         if (StringUtils.isNoneEmpty(queryText)) {
             questionnaireMapper.modelsToSuggestDtos(questionnairesService.findByTitleContaining(queryText)).forEach(suggestions::add);
         }
@@ -127,7 +127,7 @@ public class QuestionnaireRestController implements QuestionnaireRestApi {
     }
 
     @Override
-    public Iterable <QuestionnaireDto> getQuestionnairesWithFilters(Principal principal, @RequestParam(value = "filters", required = false) String filterString, Pageable pageable) throws IOException {
+    public Iterable<QuestionnaireDto> getQuestionnairesWithFilters(Principal principal, @RequestParam(value = "filters", required = false) String filterString, Pageable pageable) throws IOException {
 
         FilterDto[] filterDtos = filterUtil.stringToFilterDtos(filterString);
 

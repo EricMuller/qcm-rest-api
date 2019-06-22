@@ -5,8 +5,8 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.SwaggerDefinition;
 import io.swagger.annotations.Tag;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.security.Principal;
 import java.util.Map;
@@ -20,6 +20,6 @@ import java.util.Map;
 public interface UserRestApi {
 
     @ApiOperation(value = "get Current user", response = Map.class, nickname = "getCurrentUser")
-    @RequestMapping(method = RequestMethod.GET, produces = "application/json")
+    @GetMapping(produces = "application/json")
     Map <String, String> user(Principal principal);
 }
