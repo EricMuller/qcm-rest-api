@@ -6,8 +6,8 @@ import org.springframework.data.repository.NoRepositoryBean;
 import java.io.Serializable;
 
 @NoRepositoryBean
-public interface SimpleJpaBulkRepository<T, Id extends Serializable>
-  extends JpaRepository<T, Id> {
+public interface SimpleJpaBulkRepository<T, I extends Serializable>
+  extends JpaRepository<T, I> {
 
   void bulkSave(Iterable<T> entities, int batchSize);
 }

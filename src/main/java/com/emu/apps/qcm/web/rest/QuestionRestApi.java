@@ -19,7 +19,10 @@ import java.security.Principal;
 
 @CrossOrigin
 @RequestMapping(QcmApi.API_V1 + "/questions")
-@Api(value = "questions-store", description = "All operations ", tags = "Questions")
+@Api(value = "questions-store",  tags = "Questions")
+@SwaggerDefinition(tags = {
+        @Tag(name = "Questions", description = "All operations ")
+})
 public interface QuestionRestApi {
     @ApiOperation(value = "Find all questions  by Page", responseContainer = "List", response = QuestionDto.class, nickname = "getTagsByPAge")
     @ApiImplicitParams({
@@ -35,30 +38,30 @@ public interface QuestionRestApi {
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     }
     )
-    @RequestMapping(method = RequestMethod.GET, produces = "application/json")
+    @GetMapping(produces = "application/json")
     @Timer
     Iterable<QuestionTagsDto> getQuestionsWithFilters(Principal principal, @RequestParam(value = "filters", required = false) String filterString, Pageable pageable) throws IOException;
 
     @ApiOperation(value = "Find a question by ID", response = QuestionDto.class, nickname = "getQuestionById")
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @GetMapping(value = "/{id}")
     @ResponseBody
     @Timer
     @Cacheable(cacheNames = CacheName.Names.QUESTION, key = "#id")
     QuestionDto getQuestionById(@PathVariable("id") long id);
 
     @ApiOperation(value = "Update a question", response = Question.class, nickname = "updateQuestion")
-    @RequestMapping(method = RequestMethod.PUT)
+    @PutMapping
     @ResponseBody
     @CachePut(cacheNames = CacheName.Names.QUESTION, condition = "#questionDto != null", key = "#questionDto.id")
     QuestionDto updateQuestion(@RequestBody @Valid QuestionDto questionDto, Principal principal);
 
     @ApiOperation(value = "Save a question", response = QuestionDto.class, nickname = "saveQuestion")
-    @RequestMapping(method = RequestMethod.POST)
+    @PostMapping
     @ResponseBody
     QuestionDto saveQuestion(@RequestBody QuestionDto questionDto, Principal principal);
 
     @ApiOperation(value = "Delete a question by ID", response = ResponseEntity.class, nickname = "deleteQuestionById")
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/{id}")
     @ResponseBody
     @CacheEvict(cacheNames = CacheName.Names.QUESTION, condition = "#questionDto != null", key = "#questionDto.id")
     ResponseEntity<Question> deleteQuestionnaireById(@PathVariable("id") long id);

@@ -2,10 +2,7 @@ package com.emu.apps.qcm.web.rest;
 
 import com.emu.apps.qcm.web.rest.controllers.SearchRestController;
 import com.emu.apps.qcm.web.rest.dtos.QuestionDto;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,7 +10,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @CrossOrigin
 @RequestMapping(QcmApi.API_V1 + SearchRestController.URL)
-@Api(value = "search-store", description = "All operations ", tags = "Search")
+@Api(value = "search-store", tags = "Search")
+@SwaggerDefinition(tags = {
+        @Tag(name = "Search", description = "All operations ")
+})
 public interface SearchRestApi {
     @ApiOperation(value = "Search Questions bY criteria Criteria", responseContainer = "List", response = QuestionDto.class, nickname = "searchQuestionsByCriteria", tags = "Search")
     @ApiResponses(value = {

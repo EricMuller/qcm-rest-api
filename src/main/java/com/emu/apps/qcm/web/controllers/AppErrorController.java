@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Basic Controller which is called for unhandled errors
@@ -22,7 +23,7 @@ import java.util.Map;
 public class AppErrorController implements ErrorController {
 
 
-    private final static String ERROR_PATH = "/error";
+    private static final  String ERROR_PATH = "/error";
 
 
     @Autowired
@@ -72,7 +73,7 @@ public class AppErrorController implements ErrorController {
         if (parameter == null) {
             return false;
         }
-        return !"false".equals(parameter.toLowerCase());
+        return !"false".equalsIgnoreCase(parameter);
     }
 
     private Map <String, Object> getErrorAttributes(ServletWebRequest servletWebRequest,
@@ -83,11 +84,8 @@ public class AppErrorController implements ErrorController {
     private HttpStatus getStatus(HttpServletRequest request) {
         Integer statusCode = (Integer) request
                 .getAttribute("javax.servlet.error.status_code");
-        if (statusCode != null) {
-            try {
+        if (Objects.nonNull(statusCode)) {
                 return HttpStatus.valueOf(statusCode);
-            } catch (Exception ex) {
-            }
         }
         return HttpStatus.INTERNAL_SERVER_ERROR;
     }

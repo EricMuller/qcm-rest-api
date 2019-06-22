@@ -12,7 +12,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 
-public class SimpleJpaBulkRepositoryImpl<T extends AuditableEntity, ID extends Serializable> extends SimpleJpaRepository<T, ID> implements SimpleJpaBulkRepository<T, ID> {
+public class SimpleJpaBulkRepositoryImpl<T extends AuditableEntity, I extends Serializable> extends SimpleJpaRepository<T, I> implements SimpleJpaBulkRepository<T, I> {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -25,7 +25,7 @@ public class SimpleJpaBulkRepositoryImpl<T extends AuditableEntity, ID extends S
     }
 
     public void bulkSave(Iterable<T> entities, int batchSize) {
-        logger.warn("batchsize:" + String.valueOf(batchSize));
+
         int i = 0;
         for (T entity : entities) {
             persistOrMerge(entity);

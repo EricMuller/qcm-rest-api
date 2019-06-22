@@ -24,12 +24,12 @@ public abstract class AuditableEntity<U extends Serializable> implements Seriali
     @LastModifiedBy
     private U lastModifiedBy;
 
-    // @Temporal(TIMESTAMP)
+    @SuppressWarnings("squid:S3437")
     @Column(name = "created_date", nullable = false, updatable = false)
     @CreatedDate
     private LocalDateTime dateCreation;
 
-    //  @Temporal(TIMESTAMP)
+    @SuppressWarnings("squid:S3437")
     @Column(name = "modified_date")
     @LastModifiedDate
     private LocalDateTime dateModification;

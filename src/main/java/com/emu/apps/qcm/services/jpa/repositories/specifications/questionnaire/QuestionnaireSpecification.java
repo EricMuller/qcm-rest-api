@@ -14,23 +14,25 @@ import javax.persistence.criteria.SetJoin;
 import java.security.Principal;
 import java.util.Arrays;
 
-import static org.springframework.data.jpa.domain.Specifications.where;
+import static org.springframework.data.jpa.domain.Specification.where;
+
 
 @Component
 public class QuestionnaireSpecification extends BaseSpecification<Questionnaire, FilterDto[]> {
 
 
+    private static final String TAG_ID = "tag_id";
 
-    private static final String TAG_ID ="tag_id";
-    private static final String TITLE ="title";
-    private static final String CREATED_BY ="createdBy";
-    private static final String ID ="id";
+    private static final String TITLE = "title";
 
+    private static final String CREATED_BY = "createdBy";
+
+    private static final String ID = "id";
 
 
     private Long[] getTagIds(FilterDto[] filterDtos) {
         return Arrays.stream(filterDtos).filter((filterDto -> TAG_ID.equals(filterDto.getName())))
-                .map((t) -> Long.valueOf(t.getValue())).toArray(it -> new Long[it]);
+                .map(t -> Long.valueOf(t.getValue())).toArray(it -> new Long[it]);
     }
 
     private String getTitle(FilterDto[] filterDtos) {
@@ -55,7 +57,7 @@ public class QuestionnaireSpecification extends BaseSpecification<Questionnaire,
     }
 
     private Specification<Questionnaire> tagIdIn(Long[] ids) {
-        return tagAttributeIn(ID, ids);
+        return tagAttributeIn(ids);
     }
 
     private Specification<Questionnaire> questionnaireCreatdByEqual(String name) {
@@ -83,7 +85,7 @@ public class QuestionnaireSpecification extends BaseSpecification<Questionnaire,
         };
     }
 
-    private Specification<Questionnaire> tagAttributeIn(String attribute, Long values[]) {
+    private Specification<Questionnaire> tagAttributeIn(Long[] values) {
         return (root, query, cb) -> {
             if (ArrayUtils.isEmpty(values)) {
                 return null;

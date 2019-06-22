@@ -1,15 +1,15 @@
 package com.emu.apps.qcm.web.rest;
 
 import com.emu.apps.qcm.web.rest.dtos.CategoryDto;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
 @RequestMapping(QcmApi.API_V1 +"/categories")
-@Api(value = "categories-store", description = "All operations ", tags = "Categories")
+@Api(value = "categories-store", tags = "Categories")
+@SwaggerDefinition(tags = {
+        @Tag(name = "Categories", description = "All operations ")
+})
 public interface CategoryRestApi {
     @ApiOperation(value = "Find a category by ID", response = CategoryDto.class, nickname = "getCategoryById")
     @RequestMapping(value = "{id}", method = RequestMethod.GET)

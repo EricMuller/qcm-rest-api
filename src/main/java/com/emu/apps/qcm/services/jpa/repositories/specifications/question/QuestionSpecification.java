@@ -15,29 +15,27 @@ import javax.persistence.criteria.SetJoin;
 import java.security.Principal;
 import java.util.Arrays;
 
-import static org.springframework.data.jpa.domain.Specifications.where;
+import static org.springframework.data.jpa.domain.Specification.where;
 
 @Component
 public class QuestionSpecification extends BaseSpecification<Question, FilterDto[]> {
 
     private static final String TAG_ID = "tag_id";
+
     private static final String QUESTIONNAIRE_ID = "questionnaire_id";
-    private static final String TITLE = "title";
+
     private static final String CREATED_BY = "createdBy";
+
     private static final String ID = "id";
 
     private Long[] getTagIds(FilterDto[] filterDtos) {
         return Arrays.stream(filterDtos).filter((filterDto -> TAG_ID.equals(filterDto.getName())))
-                .map((t) -> Long.valueOf(t.getValue())).toArray(it -> new Long[it]);
+                .map(t -> Long.valueOf(t.getValue())).toArray(it -> new Long[it]);
     }
 
     private Long[] getQuestionnairesIds(FilterDto[] filterDtos) {
         return Arrays.stream(filterDtos).filter((filterDto -> QUESTIONNAIRE_ID.equals(filterDto.getName())))
-                .map((t) -> Long.valueOf(t.getValue())).toArray(it -> new Long[it]);
-    }
-
-    private String getTitle(FilterDto[] filterDtos) {
-        return null;
+                .map(t -> Long.valueOf(t.getValue())).toArray(it -> new Long[it]);
     }
 
     @Override
@@ -54,11 +52,6 @@ public class QuestionSpecification extends BaseSpecification<Question, FilterDto
         };
     }
 
-    private Specification<Question> questionTitleContains(String title) {
-        return questionAttributeContains(TITLE, title);
-    }
-
-
     private Specification<Question> tagIdIn(Long[] ids) {
         return tagAttributeIn(ID, ids);
     }
@@ -71,18 +64,6 @@ public class QuestionSpecification extends BaseSpecification<Question, FilterDto
         return questionAttributeEquals(CREATED_BY, name);
     }
 
-    private Specification<Question> questionAttributeContains(String attribute, String value) {
-        return (root, query, cb) -> {
-            if (StringUtils.isEmpty(value)) {
-                return null;
-            }
-            return cb.like(
-                    cb.lower(root.get(attribute)),
-                    containsLowerCase(value)
-            );
-        };
-    }
-
     private Specification<Question> questionAttributeEquals(String attribute, String value) {
         return (root, query, cb) -> {
             if (StringUtils.isEmpty(value)) {
@@ -92,7 +73,7 @@ public class QuestionSpecification extends BaseSpecification<Question, FilterDto
         };
     }
 
-    private Specification<Question> tagAttributeIn(String attribute, Long values[]) {
+    private Specification<Question> tagAttributeIn(String attribute, Long[] values) {
         return (root, query, cb) -> {
             if (ArrayUtils.isEmpty(values)) {
                 return null;
@@ -102,7 +83,7 @@ public class QuestionSpecification extends BaseSpecification<Question, FilterDto
         };
     }
 
-    private Specification<Question> questionnaireAttributeIn( Long values[]) {
+    private Specification<Question> questionnaireAttributeIn(Long[] values) {
         return (root, query, cb) -> {
             if (ArrayUtils.isEmpty(values)) {
                 return null;

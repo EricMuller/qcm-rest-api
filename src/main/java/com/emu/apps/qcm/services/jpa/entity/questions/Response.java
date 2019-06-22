@@ -18,6 +18,7 @@ public class Response extends AuditableEntity<String> {
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
+    @SuppressWarnings("squid:S1700")
     @Column(name = "RESPONSE", nullable = false, length = 32672)
     private String response;
 

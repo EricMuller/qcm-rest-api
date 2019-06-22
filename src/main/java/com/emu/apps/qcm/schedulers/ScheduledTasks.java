@@ -16,7 +16,9 @@ public class ScheduledTasks {
 
     @Scheduled(fixedRate = 30000)
     public void reportCurrentTime() {
-        LOGGER.info("The time is now {}", new SimpleDateFormat("HH:mm:ss").format(new Date()));
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info("The time is now {}", new SimpleDateFormat("HH:mm:ss").format(new Date()));
+        }
     }
 
 }

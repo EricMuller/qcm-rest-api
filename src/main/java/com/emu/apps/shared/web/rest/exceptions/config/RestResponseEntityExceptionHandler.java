@@ -22,13 +22,14 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.*;
 
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
-    private static final Logger log = LoggerFactory.getLogger(RestResponseEntityExceptionHandler.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RestResponseEntityExceptionHandler.class);
 
     /**
      * Catch all for any other exceptions...
@@ -84,17 +85,17 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     protected ResponseEntity<Object> errorResponse(ExceptionMessage response,
                                                              HttpStatus status) {
-        if (null != response) {
-            log.error("error caught: " + response.toString());
+        if (Objects.nonNull(response)) {
+            LOG.error("error caught: " + response.toString());
             return response(response, status);
         } else {
-            log.error("unknown error caught in RESTController, {}", status);
+            LOG.error("unknown error caught in RESTController, {}", status);
             return response(null, status);
         }
     }
 
     protected <T> ResponseEntity<T> response(T body, HttpStatus status) {
-        log.debug("Responding with a status of {}", status);
+        LOG.debug("Responding with a status of {}", status);
         return new ResponseEntity<>(body, new HttpHeaders(), status);
     }
 

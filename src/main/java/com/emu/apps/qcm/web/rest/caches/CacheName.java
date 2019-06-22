@@ -11,6 +11,10 @@ public enum CacheName {
     }
 
     public class Names {
+        private Names() {
+            //nop
+        }
+
         public static final String QUESTION = "QUESTION";
 
         public static final String QUESTIONNAIRE = "QUESTIONNAIRE";

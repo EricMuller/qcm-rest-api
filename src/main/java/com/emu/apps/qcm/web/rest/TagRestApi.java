@@ -12,7 +12,10 @@ import java.security.Principal;
 
 @CrossOrigin
 @RequestMapping(QcmApi.API_V1 +"/tags")
-@Api(value = "tag-store", description = "All operations ", tags = "Tags")
+@Api(value = "tag-store", tags = "Tags")
+@SwaggerDefinition(tags = {
+        @Tag(name = "Tags", description = "All operations ")
+})
 public interface TagRestApi {
     @ApiOperation(value = "Find all Tags By Page", responseContainer = "List", response = TagDto.class, nickname = "getTags")
     @ApiImplicitParams({

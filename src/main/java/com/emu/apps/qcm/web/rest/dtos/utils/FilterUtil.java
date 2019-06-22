@@ -13,14 +13,14 @@ import java.util.Base64;
 import java.util.stream.IntStream;
 
 @Service
-final public class FilterUtil {
+public final class FilterUtil {
 
-    protected final Logger logger = LoggerFactory.getLogger(getClass());
+    private static final Logger LOGGER = LoggerFactory.getLogger(FilterUtil.class);
 
     private FilterUtil() {
     }
 
-    private  boolean isEmpty(final byte[] data) {
+    private boolean isEmpty(final byte[] data) {
         return IntStream.range(0, data.length).parallel().allMatch(i -> data[i] == 0);
     }
 
@@ -31,8 +31,8 @@ final public class FilterUtil {
             if (!isEmpty(bytes)) {
                 try {
                     filterDtos = new ObjectMapper().readValue(bytes, FilterDto[].class);
-                }catch (JsonMappingException e){
-                    logger.error(String.valueOf(bytes));
+                } catch (JsonMappingException e) {
+                    LOGGER.error(String.valueOf(bytes));
                     throw e;
                 }
 

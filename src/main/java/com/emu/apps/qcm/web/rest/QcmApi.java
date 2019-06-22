@@ -1,6 +1,10 @@
 package com.emu.apps.qcm.web.rest;
 
-public class QcmApi {
+public final class QcmApi {
+
+    private QcmApi() {
+        //nop
+    }
 
     public static final String VERSION = "1";
 

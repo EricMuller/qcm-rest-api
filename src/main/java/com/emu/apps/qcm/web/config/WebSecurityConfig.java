@@ -102,25 +102,6 @@ class WebSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
         return new NullAuthenticatedSessionStrategy();
     }
 
-//    public void configure(WebSecurity web) throws Exception {
-//        web.ignoring()
-//                .antMatchers(HttpMethod.OPTIONS, "/**")
-//                .antMatchers("/assets/**{png|json|ttf|js|css|html}")
-//                .antMatchers("/app/**/*.{png|json|ttf|js|css|html}")
-//                .antMatchers("/resources/**/*.{png|json|ttf|js|css|html}")
-//                .antMatchers("/META-INF/**/*.{png|json|ttf|js|css|html}")
-//                .antMatchers("/bower_components/**")
-//                .antMatchers("/i18n/**")
-//                .antMatchers("/content/**")
-//                .antMatchers("/test/**")
-//                .antMatchers("/api/v2", "/api/v2/docs")
-//                .antMatchers("/api/v2/user/systemuser/password/set")
-//                .antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources",
-//                        "/configuration/security", "/configuration/**", "/swagger-ui.html", "/webjars/**")
-//                .antMatchers("/h2-console/**");
-//    }
-
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 

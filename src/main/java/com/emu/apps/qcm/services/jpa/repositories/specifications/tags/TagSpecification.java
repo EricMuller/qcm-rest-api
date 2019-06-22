@@ -11,35 +11,32 @@ import java.security.Principal;
 import java.util.Arrays;
 import java.util.Optional;
 
-import static org.springframework.data.jpa.domain.Specifications.where;
+import static org.springframework.data.jpa.domain.Specification.where;
+
 
 @Component
 public class TagSpecification extends BaseSpecification<Tag, FilterDto[]> {
 
     private static final String FIRST_LETTER = "firstLetter";
+
     private static final String LIBELLE = "libelle";
+
     private static final String CREATED_BY = "createdBy";
 
     private Optional<String> getLetter(FilterDto[] filterDtos) {
 
         return Arrays.stream(filterDtos).
                 filter((filterDto -> FIRST_LETTER.equals(filterDto.getName())))
-                .map((filter) -> filter.getValue())
+                .map(FilterDto::getValue)
                 .findFirst();
 
     }
 
     @Override
     public Specification<Tag> getSpecifications(final FilterDto[] filters, Principal principal) {
-        return (root, query, cb) -> {
-            return where(tagLibelleStartBy(getLetter(filters)))
-                    .and(tagCreatdByEqual(principal.getName())
-                    ).toPredicate(root, query, cb);
-        };
-    }
-
-    private Specification<Tag> tagLibelleContains(String title) {
-        return tagAttributeContains(LIBELLE, title);
+        return (root, query, cb) -> where(tagLibelleStartBy(getLetter(filters)))
+                .and(tagCreatdByEqual(principal.getName())
+                ).toPredicate(root, query, cb);
     }
 
     private Specification<Tag> tagCreatdByEqual(String name) {
@@ -51,17 +48,6 @@ public class TagSpecification extends BaseSpecification<Tag, FilterDto[]> {
     }
 
 
-    private Specification<Tag> tagAttributeContains(String attribute, String value) {
-        return (root, query, cb) -> {
-            if (StringUtils.isEmpty(value)) {
-                return null;
-            }
-            return cb.like(
-                    cb.lower(root.get(attribute)),
-                    containsLowerCase(value)
-            );
-        };
-    }
 
     private Specification<Tag> tagAttributeStartWith(String attribute, Optional<String> value) {
         return (root, query, cb) -> {

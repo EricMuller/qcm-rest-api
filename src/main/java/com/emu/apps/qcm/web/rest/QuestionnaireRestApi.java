@@ -20,30 +20,33 @@ import java.security.Principal;
 
 @CrossOrigin
 @RequestMapping(QcmApi.API_V1 +"/questionnaires")
-@Api(value = "questionnaire-store", description = "All operations ", tags = "Questionnaires")
+@Api(value = "questionnaire-store", tags = "Questionnaires")
+@SwaggerDefinition(tags = {
+        @Tag(name = "Questionnaires", description = "All operations ")
+})
 public interface QuestionnaireRestApi {
     @ApiOperation(value = "Find a currentQuestionnaire by ID", response = QuestionnaireDto.class, nickname = "getQuestionnaireById")
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @GetMapping(value = "/{id}")
     @ResponseBody
     @Timer
     @Cacheable(cacheNames = CacheName.Names.QUESTIONNAIRE, key = "#id")
     QuestionnaireDto getQuestionnaireById(@PathVariable("id") long id);
 
     @ApiOperation(value = "Delete a currentQuestionnaire by ID", response = ResponseEntity.class, nickname = "deleteQuestionnaireById")
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/{id}")
     @ResponseBody
     @CacheEvict(cacheNames = CacheName.Names.QUESTIONNAIRE, key = "#id")
     ResponseEntity<Questionnaire> deleteQuestionnaireById(@PathVariable("id") long id);
 
     @ApiOperation(value = "Update a currentQuestionnaire", response = QuestionnaireDto.class, nickname = "updateQuestionnaire")
-    @RequestMapping(method = {RequestMethod.PUT})
+    @PutMapping
     @ResponseBody
     @CachePut(cacheNames = CacheName.Names.QUESTIONNAIRE, condition = "#questionnaireDto != null", key = "#questionnaireDto.id")
     @Timer
     QuestionnaireDto updateQuestionnaire(@RequestBody QuestionnaireDto questionnaireDto, Principal principal);
 
     @ApiOperation(value = "Save a currentQuestionnaire", response = QuestionnaireDto.class, nickname = "saveQuestionnaire")
-    @RequestMapping(method = {RequestMethod.POST})
+    @PostMapping
     @ResponseBody
     QuestionnaireDto saveQuestionnaire(@RequestBody QuestionnaireDto questionnaireDto, Principal principal);
 
@@ -54,7 +57,7 @@ public interface QuestionnaireRestApi {
             @ApiImplicitParam(name = "sort", allowMultiple = true, dataType = "string", paramType = "query",
                     value = "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.")
     })
-    @RequestMapping(value = "/{id:[\\d]+}/questions", method = RequestMethod.GET)
+    @GetMapping(value = "/{id:[\\d]+}/questions")
     @ResponseBody
     Page<QuestionDto> getQuestionsByByQuestionnaireId(@PathVariable("id") @ApiParam(value = "ID of the Questionnaire") long id, Pageable pageable);
 
@@ -66,7 +69,7 @@ public interface QuestionnaireRestApi {
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     }
     )
-    @RequestMapping(value = "/suggest", method = RequestMethod.GET, produces = "application/json")
+    @GetMapping(value = "/suggest", produces = "application/json")
     @ResponseBody
     Iterable<SuggestDto> getSuggestions(@RequestParam("queryText") String queryText);
 
@@ -86,12 +89,12 @@ public interface QuestionnaireRestApi {
     }
     )
     @ResponseBody
-    @RequestMapping(method = RequestMethod.GET, produces = "application/json")
+    @GetMapping(produces = "application/json")
     @Timer
     Iterable<QuestionnaireDto> getQuestionnairesWithFilters(Principal principal, @RequestParam(value = "filters", required = false) String filterString, Pageable pageable) throws IOException;
 
     @ApiOperation(value = "Add Question", response = QuestionnaireDto.class, nickname = "addQuestion")
-    @RequestMapping(value = "/{id}/questions", method = RequestMethod.PUT)
+    @PutMapping(value = "/{id}/questions")
     @ResponseBody
     QuestionDto updateQuestionnaire(@PathVariable("id") @ApiParam(value = "ID of the Questionnaire") long id, @RequestBody QuestionDto questionDto);
 }

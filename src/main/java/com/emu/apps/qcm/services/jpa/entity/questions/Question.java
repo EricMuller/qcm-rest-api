@@ -39,6 +39,7 @@ public class Question extends AuditableEntity<String> {
     @Convert(converter = BooleanTFConverter.class)
     private Boolean mandatory;
 
+    @SuppressWarnings("squid:S1700")
     @Column(name = "question", nullable = false, length = 1024)
     private String question;
 
