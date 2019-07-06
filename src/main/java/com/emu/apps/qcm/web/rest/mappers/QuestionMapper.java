@@ -4,13 +4,11 @@ import com.emu.apps.qcm.services.jpa.entity.questions.Question;
 import com.emu.apps.qcm.services.jpa.projections.QuestionResponseProjection;
 import com.emu.apps.qcm.web.rest.dtos.QuestionDto;
 import com.emu.apps.qcm.web.rest.dtos.question.QuestionTagsDto;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.Mappings;
+import org.mapstruct.*;
 import org.springframework.data.domain.Page;
 
-@Mapper(componentModel = "spring", uses = {CategoryMapper.class, QuestionTagMapper.class, ResponseMapper.class})
+@Mapper(componentModel = "spring", uses = {CategoryMapper.class, QuestionTagMapper.class, ResponseMapper.class}
+        ,unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface QuestionMapper {
 
     @Mapping(target = "questionTags", ignore = true)

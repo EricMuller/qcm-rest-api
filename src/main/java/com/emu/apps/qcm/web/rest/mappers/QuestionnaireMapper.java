@@ -5,14 +5,12 @@ import com.emu.apps.qcm.services.jpa.entity.questionnaires.Questionnaire;
 import com.emu.apps.qcm.services.jpa.projections.QuestionnaireProjection;
 import com.emu.apps.qcm.web.rest.dtos.QuestionnaireDto;
 import com.emu.apps.qcm.web.rest.dtos.SuggestDto;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.Mappings;
+import org.mapstruct.*;
 import org.springframework.data.domain.Page;
 
 
-@Mapper(componentModel = "spring", uses = {CategoryMapper.class, QuestionnaireTagMapper.class})
+@Mapper(componentModel = "spring", uses = {CategoryMapper.class, QuestionnaireTagMapper.class}
+        ,unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface QuestionnaireMapper {
 
     QuestionnaireDto modelToDto(Questionnaire questionnaire);

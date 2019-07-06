@@ -29,7 +29,8 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @TestPropertySource("classpath:application-test.properties")
-@SpringBootTest(classes = {Application.class, WebSecurityTestConfig.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = {Application.class, WebSecurityTestConfig.class}
+, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class UploadRestControllerIntegrationTest {
 
     @LocalServerPort

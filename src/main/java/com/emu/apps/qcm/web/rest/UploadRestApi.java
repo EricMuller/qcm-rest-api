@@ -14,9 +14,9 @@ import java.security.Principal;
 
 @CrossOrigin
 @RequestMapping(QcmApi.API_V1 +"/upload")
-@Api(value = "upload-store",tags = {"Upload Resource"})
+@Api(value = "upload-store",tags = {"Upload"})
 @SwaggerDefinition(tags = {
-        @Tag(name = "Upload Resource", description = "All operations ")
+        @Tag(name = "Upload", description = "All operations ")
 })
 public interface UploadRestApi {
     @ApiOperation(value = "upload a file", responseContainer = "ResponseEntity", response = MessageDto.class, tags = "Upload", nickname = "uploadFile")

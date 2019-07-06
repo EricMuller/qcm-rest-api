@@ -7,9 +7,11 @@ import com.emu.apps.qcm.web.rest.dtos.TagDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
+import org.mapstruct.ReportingPolicy;
 import org.springframework.data.domain.Page;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring"
+        ,unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface TagMapper {
 
     TagDto modelToDto(Tag tag);

@@ -7,7 +7,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 
 @TestConfiguration
 @EnableWebSecurity
@@ -26,11 +25,13 @@ public class WebSecurityTestConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic();
     }
 
+
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         authenticationManagerBuilder.inMemoryAuthentication()
-                .passwordEncoder(NoOpPasswordEncoder.getInstance())
-                .withUser(ApplicationTest.USER_TEST).password(ApplicationTest.USER_PASSWORD).roles("USER");
+                .withUser(ApplicationTest.USER_TEST)
+                .password("{noop}" + ApplicationTest.USER_PASSWORD)
+                .roles("USER");
     }
 
 
