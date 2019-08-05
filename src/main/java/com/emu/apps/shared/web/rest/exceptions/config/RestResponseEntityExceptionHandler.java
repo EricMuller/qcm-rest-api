@@ -86,7 +86,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     protected ResponseEntity<Object> errorResponse(ExceptionMessage response,
                                                    HttpStatus status) {
         if (Objects.nonNull(response)) {
-            LOG.error("error caught: {}", response.toString());
+            LOG.error("error caught: {}", response);
             return response(response, status);
         } else {
             LOG.error("unknown error caught in RESTController, {}", status);

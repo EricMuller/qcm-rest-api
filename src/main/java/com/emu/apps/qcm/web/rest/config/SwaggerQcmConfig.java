@@ -70,9 +70,9 @@ public class SwaggerQcmConfig {
                 "",
                 version,
                 "Terms of service",
-                new Contact("Eric MULLER", "https://qcm-designer.com", "eric.pierre.muller@gmail.com"),
-                "Apache License Version 2.0",
-                "https://www.apache.org/licenses/LICENSE-2.0", Lists.newArrayList());
+                new Contact("Eric MULLER", "https://qcm-rest-api.herokuapp.com/swagger-ui.html#", "eric.pierre.muller@gmail.com"),
+                "MIT License",
+                "https://opensource.org/licenses/mit-license.php", Lists.newArrayList());
     }
 
 }

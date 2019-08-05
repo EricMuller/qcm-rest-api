@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.services.jpa.repositories;
 
 import com.emu.apps.Application;
-import com.emu.apps.ApplicationTest;
+import com.emu.apps.H2TestProfileJPAConfig;
 import com.emu.apps.qcm.services.FixtureService;
 import com.emu.apps.qcm.services.jpa.entity.questionnaires.Questionnaire;
 import com.emu.apps.qcm.services.jpa.entity.questionnaires.QuestionnaireQuestion;
@@ -100,7 +100,7 @@ public class QuestionnaireRepositoryTest {
     public void findAllWithSpecification() {
 
 
-        Principal principal = () -> ApplicationTest.USER_TEST;
+        Principal principal = () -> H2TestProfileJPAConfig.USER_TEST;
 
         questionnaireFixture.createQuestionQuestionnaireTag();
 

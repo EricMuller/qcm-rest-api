@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.web.rest.controllers;
 
 import com.emu.apps.Application;
-import com.emu.apps.ApplicationTest;
+import com.emu.apps.H2TestProfileJPAConfig;
 import com.emu.apps.qcm.web.rest.QcmApi;
 import com.emu.apps.qcm.web.rest.dtos.PageDto;
 import com.emu.apps.qcm.web.rest.dtos.QuestionnaireDto;
@@ -59,7 +59,7 @@ public class UploadRestControllerIntegrationTest {
         map.add("file", resource);
 
         MultiValueMap <String, String> authHeaders = new LinkedMultiValueMap();
-        String token = new String(Base64.getEncoder().encode((ApplicationTest.USER_TEST + ":" + ApplicationTest.USER_PASSWORD).getBytes()));
+        String token = new String(Base64.getEncoder().encode((H2TestProfileJPAConfig.USER_TEST + ":" + H2TestProfileJPAConfig.USER_PASSWORD).getBytes()));
         authHeaders.add(HttpHeaders.AUTHORIZATION, "Basic " + token);
 
         final ResponseEntity <String> response = restTemplate.exchange(createURLWithPort(QcmApi.API_V1 + "/upload/questionnaire"), HttpMethod.POST,

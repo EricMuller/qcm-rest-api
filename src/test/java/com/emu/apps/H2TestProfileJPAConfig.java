@@ -21,6 +21,9 @@ import static java.util.Collections.singletonMap;
 @EnableJpaRepositories(basePackages = {"com.emu.apps"})
 @EnableTransactionManagement
 public class H2TestProfileJPAConfig {
+
+    public static final String USER_TEST = "user";
+    public static final String USER_PASSWORD = "password";
  
     @Bean
     @Profile("test")

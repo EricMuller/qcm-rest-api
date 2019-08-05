@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.services.config;
 
-import com.emu.apps.ApplicationTest;
+import com.emu.apps.H2TestProfileJPAConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -16,7 +16,7 @@ import java.util.Optional;
 public class JpaTestConfig {
     @Bean
     public AuditorAware auditorAware() {
-        return () -> Optional.of(ApplicationTest.USER_TEST);
+        return () -> Optional.of(H2TestProfileJPAConfig.USER_TEST);
     }
 
     @Bean

@@ -4,23 +4,20 @@ import com.emu.apps.qcm.services.jpa.entity.tags.QuestionnaireTag;
 import com.emu.apps.qcm.web.rest.dtos.QuestionnaireTagDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring", uses = {CategoryMapper.class}
-        ,unmappedTargetPolicy = ReportingPolicy.IGNORE)
+        , unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface QuestionnaireTagMapper {
 
-    @Mappings({
-            @Mapping(source = "tag.id", target = "id"),
-            @Mapping(source = "tag.libelle", target = "libelle"),
-    })
+
+    @Mapping(source = "tag.id", target = "id")
+    @Mapping(source = "tag.libelle", target = "libelle")
     QuestionnaireTagDto dtoToModel(QuestionnaireTag questionnaireTag);
 
-    @Mappings({
-            @Mapping(source = "id", target = "id.tagId"),
-            @Mapping(source = "libelle", target = "tag.libelle"),
-    })
+
+    @Mapping(source = "id", target = "id.tagId")
+    @Mapping(source = "libelle", target = "tag.libelle")
     QuestionnaireTag dtoToModel(QuestionnaireTagDto questionnaireTagDto);
 
     Iterable<QuestionnaireTag> dtosToModels(Iterable<QuestionnaireTagDto> questionnaireTagDtos);

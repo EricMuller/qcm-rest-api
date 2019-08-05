@@ -15,14 +15,13 @@ import java.util.Set;
 
 @Entity
 
-@NamedEntityGraphs({
-        @NamedEntityGraph(name = "Questionnaire.questionnaireTags",
-                attributeNodes = {
-                        @NamedAttributeNode(value = "questionnaireTags", subgraph = "tags")
-                },
-                subgraphs = @NamedSubgraph(name = "tags", attributeNodes = @NamedAttributeNode("tag")))
-})
-@Table(indexes = { @Index(name = "IDX_QTE_CREATE_BY_IDX", columnList = "created_by") })
+
+@NamedEntityGraph(name = "Questionnaire.questionnaireTags",
+        attributeNodes = {
+                @NamedAttributeNode(value = "questionnaireTags", subgraph = "tags")
+        },
+        subgraphs = @NamedSubgraph(name = "tags", attributeNodes = @NamedAttributeNode("tag")))
+@Table(indexes = {@Index(name = "IDX_QTE_CREATE_BY_IDX", columnList = "created_by")})
 @Getter
 @Setter
 @NoArgsConstructor
@@ -30,7 +29,7 @@ public class Questionnaire extends AuditableEntity<String> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "questionnaire_generator")
-    @SequenceGenerator(name="questionnaire_generator", sequenceName = "questionnaire_seq", allocationSize=50)
+    @SequenceGenerator(name = "questionnaire_generator", sequenceName = "questionnaire_seq", allocationSize = 50)
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 

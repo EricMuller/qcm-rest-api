@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.web.security;
 
-import com.emu.apps.ApplicationTest;
+import com.emu.apps.H2TestProfileJPAConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -29,8 +29,8 @@ public class WebSecurityTestConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         authenticationManagerBuilder.inMemoryAuthentication()
-                .withUser(ApplicationTest.USER_TEST)
-                .password("{noop}" + ApplicationTest.USER_PASSWORD)
+                .withUser(H2TestProfileJPAConfig.USER_TEST)
+                .password("{noop}" + H2TestProfileJPAConfig.USER_PASSWORD)
                 .roles("USER");
     }
 
