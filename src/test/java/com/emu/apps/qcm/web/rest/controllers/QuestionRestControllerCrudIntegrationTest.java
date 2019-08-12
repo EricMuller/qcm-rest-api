@@ -8,9 +8,7 @@ import com.emu.apps.qcm.web.rest.dtos.ResponseDto;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.http.*;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -20,8 +18,7 @@ import java.util.Arrays;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
 
-@RunWith(SpringRunner.class)
-public class QuestionRestControllerCrudIntegrationTest extends RestControllerIntegrationTest {
+public class QuestionRestControllerCrudIntegrationTest extends SpringBootWebTestCase {
 
     private static final String QUESTIONS_URI = QcmApi.API_V1 + "/questions/";
 

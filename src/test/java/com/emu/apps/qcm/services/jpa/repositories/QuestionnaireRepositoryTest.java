@@ -1,9 +1,8 @@
 package com.emu.apps.qcm.services.jpa.repositories;
 
-import com.emu.apps.Application;
 import com.emu.apps.H2TestProfileJPAConfig;
 import com.emu.apps.qcm.services.FixtureService;
-import com.emu.apps.qcm.services.FixtureTest;
+import com.emu.apps.qcm.services.SpringBootTestCase;
 import com.emu.apps.qcm.services.jpa.entity.questionnaires.Questionnaire;
 import com.emu.apps.qcm.services.jpa.entity.questionnaires.QuestionnaireQuestion;
 import com.emu.apps.qcm.services.jpa.entity.questions.Question;
@@ -18,7 +17,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,9 +24,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = {Application.class})
-public class QuestionnaireRepositoryTest extends FixtureTest {
+public class QuestionnaireRepositoryTest extends SpringBootTestCase {
 
     @Autowired
     private QuestionnaireRepository questionnaireRepository;
@@ -37,9 +33,9 @@ public class QuestionnaireRepositoryTest extends FixtureTest {
     @Transactional
     public void findOne() {
 
-        Questionnaire q = fixtureService.createOneQuestionnaireWithTwoQuestionTags();
+        Questionnaire questionnaire1 = getFixtureService().createOneQuestionnaireWithTwoQuestionTags();
 
-        Questionnaire questionnaire = questionnaireRepository.findById(q.getId()).orElse(null);
+        Questionnaire questionnaire = questionnaireRepository.findById(questionnaire1.getId()).orElse(null);
 
         Assert.assertNotNull(questionnaire);
         Assert.assertNotNull(questionnaire.getId());
@@ -73,7 +69,7 @@ public class QuestionnaireRepositoryTest extends FixtureTest {
     @Test
     public void findQuestionnaireById() {
 
-        Questionnaire q = fixtureService.createOneQuestionnaireWithTwoQuestionTags();
+        Questionnaire q = getFixtureService().createOneQuestionnaireWithTwoQuestionTags();
 
         QuestionnaireProjection questionnaire = questionnaireRepository.findQuestionnaireById(q.getId());
 
@@ -88,9 +84,9 @@ public class QuestionnaireRepositoryTest extends FixtureTest {
     public void findAllWithSpecification() {
 
 
-        fixtureService.createOneQuestionnaireWithTwoQuestionTags();
+        getFixtureService().createOneQuestionnaireWithTwoQuestionTags();
 
-        Tag tag = fixtureService.findTagbyLibelle(fixtureService.QUESTIONNAIRE_TAG_LIBELLE_1, getPrincipal());
+        Tag tag = getFixtureService().findTagbyLibelle(getFixtureService().QUESTIONNAIRE_TAG_LIBELLE_1, getPrincipal());
         Assertions.assertThat(tag).isNotNull();
 
         QuestionnaireSpecificationBuilder questionnaireSpecificationBuilder = new QuestionnaireSpecificationBuilder();

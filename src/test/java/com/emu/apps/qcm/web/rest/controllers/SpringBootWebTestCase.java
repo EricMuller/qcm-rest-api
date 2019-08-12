@@ -3,6 +3,7 @@ package com.emu.apps.qcm.web.rest.controllers;
 import com.emu.apps.Application;
 import com.emu.apps.H2TestProfileJPAConfig;
 import com.emu.apps.qcm.web.security.WebSecurityTestConfig;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -10,13 +11,15 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Base64;
 
+@RunWith(SpringRunner.class)
 @TestPropertySource("classpath:application-test.properties")
 @SpringBootTest(classes = {Application.class, WebSecurityTestConfig.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class RestControllerIntegrationTest {
+public class SpringBootWebTestCase {
 
     @LocalServerPort
     private int port;
@@ -41,10 +44,12 @@ public class RestControllerIntegrationTest {
         return headers;
     }
 
-
     public RestTemplate getRestTemplate() {
         return testRestTemplate.getRestTemplate();
     }
 
+    protected String createURLWithPort(String uri) {
+        return "http://localhost:" + port + uri;
+    }
 }
 

@@ -13,7 +13,7 @@ import static org.springframework.data.jpa.domain.Specification.where;
 @Component
 public final class QuestionnaireSpecificationBuilder extends BaseSpecification<Questionnaire> {
 
-    private static final String TITLE = "title";
+    private static final String TITLE_FIELD = "title";
 
     private String title;
 
@@ -45,7 +45,7 @@ public final class QuestionnaireSpecificationBuilder extends BaseSpecification<Q
     @Override
     public Specification<Questionnaire> build() {
 
-        Specification where = where(fieldContains(TITLE, title)
+        Specification where = where(fieldContains(TITLE_FIELD, title)
                 .and(fieldEquals(CREATED_BY, principal))
                 .and(questionnaireTagsIdIn(tagIds))); //
 
