@@ -1,7 +1,6 @@
 package com.emu.apps.qcm.services.jpa.specifications;
 
 import com.emu.apps.qcm.services.jpa.entity.tags.Tag;
-import com.emu.apps.shared.parsers.rsql.Criteria;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
@@ -9,7 +8,7 @@ import static org.springframework.data.jpa.domain.Specification.where;
 
 
 @Component
-public final class TagSpecificationBuilder extends BaseSpecification<Tag, Criteria[]> {
+public final class TagSpecificationBuilder extends BaseSpecification<Tag> {
 
     private String letter;
 
@@ -29,6 +28,7 @@ public final class TagSpecificationBuilder extends BaseSpecification<Tag, Criter
         return this;
     }
 
+    @Override
     public Specification<Tag> build() {
         return (root, query, cb) -> where(fieldStartWith(LIBELLE, letter))
                 .and(fieldEquals(CREATED_BY, principal)

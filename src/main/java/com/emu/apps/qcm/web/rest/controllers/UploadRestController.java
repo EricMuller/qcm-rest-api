@@ -34,7 +34,7 @@ public class UploadRestController implements UploadRestApi {
     @Override
     public ResponseEntity<MessageDto> uploadFile(@RequestParam("file") MultipartFile file, @PathVariable("fileType") String fileType, Principal principal) throws IOException {
         try {
-            LOGGER.info(file.getOriginalFilename());
+
             ObjectMapper objectMapper = new ObjectMapper();
             final FileQuestionDto[] fileQuestionDtos = objectMapper.readValue(file.getInputStream(), FileQuestionDto[].class);
             String name = FilenameUtils.getBaseName(file.getOriginalFilename());

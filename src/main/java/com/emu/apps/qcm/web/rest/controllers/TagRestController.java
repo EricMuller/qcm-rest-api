@@ -5,13 +5,10 @@ import com.emu.apps.qcm.services.TagService;
 import com.emu.apps.qcm.services.jpa.entity.tags.Tag;
 import com.emu.apps.qcm.services.jpa.specifications.TagSpecificationBuilder;
 import com.emu.apps.qcm.web.rest.TagRestApi;
-import com.emu.apps.qcm.web.rest.dtos.SuggestDto;
 import com.emu.apps.qcm.web.rest.dtos.TagDto;
 import com.emu.apps.qcm.web.rest.mappers.TagMapper;
 import com.emu.apps.shared.parsers.rsql.Criteria;
 import com.emu.apps.shared.parsers.rsql.RequestUtil;
-import com.google.common.collect.Lists;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.security.Principal;
-import java.util.List;
 import java.util.Optional;
 
 /**

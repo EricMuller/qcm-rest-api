@@ -5,19 +5,17 @@ import com.emu.apps.qcm.services.jpa.projections.QuestionnaireProjection;
 import com.emu.apps.qcm.web.rest.dtos.SuggestDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring"
-        ,unmappedTargetPolicy = ReportingPolicy.IGNORE)
+        , unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface SuggestMapper {
 
-    @Mappings({
-            @Mapping(target = "fieldName", constant = "TagId"),
-    })
+
+    @Mapping(target = "fieldName", constant = "TagId")
     SuggestDto modelToSuggestDto(Tag tag);
 
-    Iterable <SuggestDto> modelsToSugestDtos(Iterable <Tag> tags);
+    Iterable<SuggestDto> modelsToSugestDtos(Iterable<Tag> tags);
 
     @Mapping(source = "question.title", target = "libelle")
     @Mapping(target = "fieldName", constant = "questionnaireId")

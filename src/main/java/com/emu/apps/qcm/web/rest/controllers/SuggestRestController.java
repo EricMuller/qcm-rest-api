@@ -31,6 +31,7 @@ public class SuggestRestController implements SuggestRestApi {
     }
 
     @Override
+    @SuppressWarnings("squid:CommentedOutCodeLine")
     public Iterable<SuggestDto> getSuggestions(@RequestParam("queryText") String queryText) {
         final List<SuggestDto> suggestions = Lists.newArrayList();
         if (StringUtils.isNoneEmpty(queryText)) {

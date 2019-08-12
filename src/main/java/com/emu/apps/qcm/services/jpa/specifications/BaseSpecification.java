@@ -4,7 +4,7 @@ import com.emu.apps.qcm.services.jpa.entity.tags.Tag;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.jpa.domain.Specification;
 
-public abstract class BaseSpecification<T, U> {
+public abstract class BaseSpecification<T> {
 
     private static final String WILDCARD = "%";
 

@@ -4,7 +4,6 @@ import com.emu.apps.qcm.services.jpa.entity.questionnaires.Questionnaire;
 import com.emu.apps.qcm.web.rest.caches.CacheName;
 import com.emu.apps.qcm.web.rest.dtos.QuestionDto;
 import com.emu.apps.qcm.web.rest.dtos.QuestionnaireDto;
-import com.emu.apps.qcm.web.rest.dtos.SuggestDto;
 import com.emu.apps.shared.metrics.Timer;
 import io.swagger.annotations.*;
 import org.springframework.cache.annotation.CacheEvict;
