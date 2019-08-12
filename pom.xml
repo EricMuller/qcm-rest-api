@@ -263,7 +263,6 @@
 						<encoding.reporting>UTF-8</encoding.reporting>
 						<release>${maven.compiler.release}</release>
 					</additionalProperties>
-
 				</configuration>
 			</plugin>
 

@@ -3,13 +3,13 @@ package com.emu.apps.qcm.web.rest.controllers;
 
 import com.emu.apps.qcm.services.TagService;
 import com.emu.apps.qcm.services.jpa.entity.tags.Tag;
-import com.emu.apps.qcm.services.jpa.repositories.specifications.tags.TagSpecification;
+import com.emu.apps.qcm.services.jpa.specifications.TagSpecificationBuilder;
 import com.emu.apps.qcm.web.rest.TagRestApi;
-import com.emu.apps.qcm.web.rest.dtos.FilterDto;
 import com.emu.apps.qcm.web.rest.dtos.SuggestDto;
 import com.emu.apps.qcm.web.rest.dtos.TagDto;
 import com.emu.apps.qcm.web.rest.mappers.TagMapper;
-import com.emu.apps.qcm.web.rest.dtos.utils.FilterUtil;
+import com.emu.apps.shared.parsers.rsql.Criteria;
+import com.emu.apps.shared.parsers.rsql.RequestUtil;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -17,12 +17,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by eric on 05/06/2017.
@@ -37,25 +40,25 @@ public class TagRestController implements TagRestApi {
 
     private final TagMapper tagMapper;
 
-    private final FilterUtil filterUtil;
-
-    private final TagSpecification tagSpecification;
-
     @Autowired
-    public TagRestController(TagService tagService, TagMapper tagMapper, FilterUtil dtoUtil, TagSpecification tagSpecification) {
+    public TagRestController(TagService tagService, TagMapper tagMapper) {
         this.tagService = tagService;
         this.tagMapper = tagMapper;
-        this.filterUtil = dtoUtil;
-        this.tagSpecification = tagSpecification;
+
     }
 
     @Override
-    public Page<TagDto> getTagsByPAge(Principal principal, @RequestParam(value = "filters", required = false) String filterString, Pageable pageable) throws IOException {
+    public Page<TagDto> getTagsByPAge(@RequestParam(value = "search", required = false) String search, Pageable pageable, Principal principal) throws IOException {
 
-        FilterDto[] filterDtos = filterUtil.stringToFilterDtos(filterString);
-        Specification<Tag> specifications = tagSpecification.getSpecifications(filterDtos, principal);
+        Criteria[] criterias = RequestUtil.toCriteria(search);
+        Optional<String> firstLetter = RequestUtil.getAttribute("firstLetter", criterias);
 
-        return tagMapper.pageToDto(tagService.findAllByPage(specifications, pageable));
+        TagSpecificationBuilder tagSpecificationBuilder = new TagSpecificationBuilder()
+                .setPrincipal(principal.getName())
+                .setLetter(firstLetter.isPresent() ? firstLetter.get() : null);
+
+
+        return tagMapper.pageToDto(tagService.findAllByPage(tagSpecificationBuilder.build(), pageable));
     }
 
     @Override
@@ -70,13 +73,7 @@ public class TagRestController implements TagRestApi {
     }
 
 
-    @Override
-    public Iterable<SuggestDto> getSuggestions(@RequestParam("queryText") String queryText) {
-        final List<SuggestDto> suggestions = Lists.newArrayList();
-        if (StringUtils.isNoneEmpty(queryText)) {
-            tagMapper.modelsToSugestDtos(tagService.findByLibelleContaining(queryText)).forEach(suggestions::add);
-        }
-        return suggestions;
-    }
+
+
 
 }

@@ -1,6 +1,5 @@
 package com.emu.apps.qcm.web.rest;
 
-import com.emu.apps.qcm.web.rest.dtos.SuggestDto;
 import com.emu.apps.qcm.web.rest.dtos.TagDto;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Page;
@@ -33,7 +32,7 @@ public interface TagRestApi {
     )
     @GetMapping(produces = "application/json")
     @ResponseBody
-    Page<TagDto> getTagsByPAge(Principal principal, @RequestParam(value = "filters", required = false) String filterString, Pageable pageable) throws IOException;
+    Page<TagDto> getTagsByPAge(@RequestParam(value = "search", required = false) String search, Pageable pageable, Principal principal ) throws IOException;
 
     @ApiOperation(value = "Find a tag by ID", response = TagDto.class, nickname = "getTagById")
     @GetMapping(value = "{id}")
@@ -45,15 +44,4 @@ public interface TagRestApi {
     @ResponseBody
     TagDto saveTag(@RequestBody TagDto tagDto);
 
-    @ApiOperation(value = "Find suggestions", responseContainer = "List", response = SuggestDto.class, nickname = "getSuggestions")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved list"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
-    }
-    )
-    @GetMapping(value = "/suggest",  produces = "application/json")
-    @ResponseBody
-    Iterable<SuggestDto> getSuggestions(@RequestParam("queryText") String queryText);
 }

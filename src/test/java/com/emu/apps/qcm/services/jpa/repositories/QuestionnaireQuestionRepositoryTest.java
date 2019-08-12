@@ -1,6 +1,7 @@
 package com.emu.apps.qcm.services.jpa.repositories;
 
 import com.emu.apps.qcm.services.FixtureService;
+import com.emu.apps.qcm.services.FixtureTest;
 import com.emu.apps.qcm.services.jpa.entity.questionnaires.Questionnaire;
 import com.emu.apps.qcm.services.jpa.projections.QuestionResponseProjection;
 import com.google.common.collect.Iterables;
@@ -11,18 +12,13 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles(value = "test")
-public class QuestionnaireQuestionRepositoryTest {
-
-    @Autowired
-    private FixtureService questionnaireFixture;
+public class QuestionnaireQuestionRepositoryTest extends FixtureTest {
 
     @Autowired
     private QuestionnaireQuestionRepository questionnaireQuestionRepository;
@@ -30,11 +26,10 @@ public class QuestionnaireQuestionRepositoryTest {
     @Autowired
     private TagRepository tagRepository;
 
-
     @Test
     public void findQuestionsByQuestionnaireId() {
 
-        Questionnaire questionnaire = questionnaireFixture.createQuestionQuestionnaireTag();
+        Questionnaire questionnaire = fixtureService.createOneQuestionnaireWithTwoQuestionTags();
 
         Iterable<QuestionResponseProjection> questions = questionnaireQuestionRepository.findQuestionsByQuestionnaireId(questionnaire.getId());
         Assertions.assertThat(questions).isNotEmpty();
@@ -50,7 +45,7 @@ public class QuestionnaireQuestionRepositoryTest {
     @Test
     public void findQuestionsByQuestionnaireIds() {
 
-        Questionnaire questionnaire = questionnaireFixture.createQuestionQuestionnaireTag();
+        Questionnaire questionnaire = fixtureService.createOneQuestionnaireWithTwoQuestionTags();
 
         List<Long> longListTag = Lists.newArrayList();
         tagRepository.findAll().forEach( (tag) -> longListTag.add(tag.getId()));

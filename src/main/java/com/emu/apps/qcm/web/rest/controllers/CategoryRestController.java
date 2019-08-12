@@ -23,7 +23,6 @@ import java.io.IOException;
 @RestController
 public class CategoryRestController implements CategoryRestApi {
 
-
     private final CategoryService categoryService;
 
     private final CategoryMapper categoryMapper;

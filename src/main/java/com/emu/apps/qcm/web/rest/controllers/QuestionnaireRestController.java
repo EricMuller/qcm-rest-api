@@ -8,20 +8,15 @@ import com.emu.apps.qcm.services.jpa.entity.questionnaires.Questionnaire;
 import com.emu.apps.qcm.services.jpa.entity.questionnaires.QuestionnaireQuestion;
 import com.emu.apps.qcm.services.jpa.entity.questions.Question;
 import com.emu.apps.qcm.services.jpa.entity.tags.QuestionnaireTag;
-import com.emu.apps.qcm.services.jpa.repositories.specifications.questionnaire.QuestionnaireSpecification;
+import com.emu.apps.qcm.services.jpa.specifications.QuestionnaireSpecificationBuilder;
 import com.emu.apps.qcm.web.rest.QuestionnaireRestApi;
-import com.emu.apps.qcm.web.rest.dtos.FilterDto;
 import com.emu.apps.qcm.web.rest.dtos.QuestionDto;
 import com.emu.apps.qcm.web.rest.dtos.QuestionnaireDto;
-import com.emu.apps.qcm.web.rest.dtos.SuggestDto;
-import com.emu.apps.qcm.web.rest.dtos.utils.FilterUtil;
 import com.emu.apps.qcm.web.rest.mappers.QuestionMapper;
 import com.emu.apps.qcm.web.rest.mappers.QuestionnaireMapper;
 import com.emu.apps.qcm.web.rest.mappers.QuestionnaireTagMapper;
 import com.emu.apps.shared.web.rest.exceptions.utils.ExceptionUtil;
-import com.google.common.collect.Lists;
 import io.swagger.annotations.ApiParam;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,9 +27,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
 import java.security.Principal;
-import java.util.List;
 
 @RestController
 public class QuestionnaireRestController implements QuestionnaireRestApi {
@@ -51,23 +44,17 @@ public class QuestionnaireRestController implements QuestionnaireRestApi {
 
     private final QuestionnaireTagMapper questionnaireTagMapper;
 
-    private final QuestionnaireSpecification questionnaireSpecification;
-
-    @Autowired
-    private FilterUtil filterUtil;
 
     @Autowired
     public QuestionnaireRestController(QuestionnaireService questionnairesService, QuestionnaireMapper questionnaireMapper,
                                        QuestionMapper questionMapper, QuestionService questionService,
-                                       QuestionnaireTagService questionnaireTagService, QuestionnaireTagMapper questionnaireTagMapper,
-                                       QuestionnaireSpecification questionnaireSpecification) {
+                                       QuestionnaireTagService questionnaireTagService, QuestionnaireTagMapper questionnaireTagMapper) {
         this.questionnairesService = questionnairesService;
         this.questionnaireMapper = questionnaireMapper;
         this.questionMapper = questionMapper;
         this.questionService = questionService;
         this.questionnaireTagService = questionnaireTagService;
         this.questionnaireTagMapper = questionnaireTagMapper;
-        this.questionnaireSpecification = questionnaireSpecification;
     }
 
 
@@ -113,25 +100,23 @@ public class QuestionnaireRestController implements QuestionnaireRestApi {
     }
 
     @Override
-    public Page<QuestionDto> getQuestionsByByQuestionnaireId(@PathVariable("id") @ApiParam(value = "ID of the Questionnaire") long id, Pageable pageable) {
+    public Page<QuestionDto> getQuestionsByQuestionnaireId(@PathVariable("id") @ApiParam(value = "ID of the Questionnaire") long id, Pageable pageable) {
         return questionMapper.pageQuestionResponseProjectionToDto(questionService.getQuestionsProjectionByQuestionnaireId(id, pageable));
     }
 
-    @Override
-    public Iterable<SuggestDto> getSuggestions(@RequestParam("queryText") String queryText) {
-        final List<SuggestDto> suggestions = Lists.newArrayList();
-        if (StringUtils.isNoneEmpty(queryText)) {
-            questionnaireMapper.modelsToSuggestDtos(questionnairesService.findByTitleContaining(queryText)).forEach(suggestions::add);
-        }
-        return suggestions;
-    }
 
     @Override
-    public Iterable<QuestionnaireDto> getQuestionnairesWithFilters(Principal principal, @RequestParam(value = "filters", required = false) String filterString, Pageable pageable) throws IOException {
+    public Iterable<QuestionnaireDto> getQuestionnaires(@RequestParam(value = "tag_id", required = false) Long[] tagIds,
+                                                        Pageable pageable, Principal principal)  {
 
-        FilterDto[] filterDtos = filterUtil.stringToFilterDtos(filterString);
 
-        return questionnaireMapper.pageToDto(questionnairesService.findAllByPage(questionnaireSpecification.getSpecifications(filterDtos, principal), pageable));
+        QuestionnaireSpecificationBuilder specificationBuilder = new QuestionnaireSpecificationBuilder();
+
+        specificationBuilder.setPrincipal(principal.getName());
+        specificationBuilder.setTagIds(tagIds);
+
+        return questionnaireMapper.pageToDto(questionnairesService.findAllByPage(
+                specificationBuilder.build(), pageable));
     }
 
     @Override
@@ -143,9 +128,8 @@ public class QuestionnaireRestController implements QuestionnaireRestApi {
         ExceptionUtil.assertFound(question, "Question Not found");
         questionnairesService.saveQuestionnaireQuestion(new QuestionnaireQuestion(questionnaire, question, 0L));
 
-        return questionDto;
+        return questionMapper.modelToDto(question);
 
     }
-
 
 }

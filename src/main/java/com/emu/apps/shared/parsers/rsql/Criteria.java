@@ -1,4 +1,4 @@
-package com.emu.apps.qcm.web.rest.dtos;
+package com.emu.apps.shared.parsers.rsql;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
@@ -11,15 +11,18 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class FilterDto {
+public class Criteria {
 
-    @ApiModelProperty(notes = "Filter name ")
+    @ApiModelProperty(notes = "Criteria name")
     @JsonProperty("name")
     private String name;
 
-    @ApiModelProperty(notes = "Filter value")
+    @ApiModelProperty(notes = "Criteria Operation")
+    @JsonProperty("operation")
+    private Operator operation;
+
+    @ApiModelProperty(notes = "Criteria value")
     @JsonProperty("value")
     private String value;
-
 
 }

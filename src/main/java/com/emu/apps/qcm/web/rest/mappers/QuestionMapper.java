@@ -37,5 +37,4 @@ public interface QuestionMapper {
         return page.map(this::modelToPageTagDto);
     }
 
-
 }

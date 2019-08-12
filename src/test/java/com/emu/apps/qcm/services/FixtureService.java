@@ -31,34 +31,43 @@ public class FixtureService {
 
     public static final String RESPONSE_RESPONSE_2 = "a cool response 2";
 
-    public static final String TAG_LIBELLE_1 = "Tag1";
+    public static final String QUESTION_TAG_LIBELLE_1 = "Tag1";
 
-    public static final String TAG_LIBELLE_2 = "Tag2";
+    public static final String QUESTION_TAG_LIBELLE_2 = "Tag2";
 
-    public static final String TAG_LIBELLE_3 = "Tag3";
+    public static final String QUESTION_TAG_LIBELLE_3 = "Tag3";
 
-    public static final String TAG_LIBELLE_4 = "Tag45";
+    public static final String QUESTIONNAIRE_TAG_LIBELLE_1 = "Tag10";
 
     public static final String CATEGORIE_LIBELLE = "Categ lib";
 
     public static final String QUESTIONNAIRE_TITLE = "Questionnaire";
 
     public static final String QUESTIONNAIRE_DESC = "Questionnaire desc";
+
     protected final Logger logger = LoggerFactory.getLogger(getClass());
+
     @Autowired
     private QuestionRepository questionRepository;
+
     @Autowired
     private TagRepository tagRepository;
+
     @Autowired
     private QuestionTagRepository questionTagRepository;
+
     @Autowired
     private QuestionnaireRepository questionnaireJpaRepository;
+
     @Autowired
     private QuestionnaireQuestionRepository questionnaireQuestionRepository;
+
     @Autowired
     private CategoryRepository epicRepository;
+
     @Autowired
     private ResponseRepository responseCrudRepository;
+
     @Autowired
     private QuestionnaireTagRepository questionnaireTagRepository;
 
@@ -66,12 +75,12 @@ public class FixtureService {
     }
 
     @Transactional(readOnly = true)
-    public Tag findTagbyLibelle(String Name, Principal principal) {
-        return tagRepository.findByLibelle(TAG_LIBELLE_4, principal.getName());
+    public Tag findTagbyLibelle(String name, Principal principal) {
+        return tagRepository.findByLibelle(name, principal.getName());
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public Questionnaire createQuestionQuestionnaireTag() {
+    public Questionnaire createOneQuestionnaireWithTwoQuestionTags() {
 
         responseCrudRepository.deleteAll();
         questionTagRepository.deleteAll();
@@ -94,49 +103,52 @@ public class FixtureService {
         questionnaire.setCategory(epic);
         questionnaire = questionnaireJpaRepository.save(questionnaire);
 
-        Response response = new Response();
-        response.setNumber(1l);
-        response.setResponse(RESPONSE_RESPONSE_1);
-        responseCrudRepository.save(response);
+        Response response1 = new Response();
+        response1.setNumber(1l);
+        response1.setResponse(RESPONSE_RESPONSE_1);
+        response1 = responseCrudRepository.save(response1);
 
         Response response2 = new Response();
         response2.setNumber(2l);
         response2.setResponse(RESPONSE_RESPONSE_2);
-        responseCrudRepository.save(response2);
+        response2 = responseCrudRepository.save(response2);
 
         //question 1
-        Question question = new Question();
-        question.setQuestion(QUESTION_QUESTION_1);
-        question.setType(Type.FREE_TEXT);
+        Question question1 = new Question();
+        question1.setQuestion(QUESTION_QUESTION_1);
+        question1.setType(Type.FREE_TEXT);
 
         // question.setQuestionnaire(questionnaire);
-        question.setResponses(Lists.newArrayList(response, response2));
-        questionRepository.save(question);
+        question1.setResponses(Lists.newArrayList(response1, response2));
+        question1 = questionRepository.save(question1);
 
         //question 2
         Question question2 = new Question();
         question2.setQuestion(QUESTION_QUESTION_2);
         question2.setType(Type.FREE_TEXT);
 
-        questionRepository.save(question2);
+        question2 = questionRepository.save(question2);
 
         //questionTag
-        Tag tag = tagRepository.save(new Tag(TAG_LIBELLE_1, false));
-        Tag tag2 = tagRepository.save(new Tag(TAG_LIBELLE_2, false));
+        Tag tag1 = tagRepository.save(new Tag(QUESTION_TAG_LIBELLE_1, false));
+        Tag tag2 = tagRepository.save(new Tag(QUESTION_TAG_LIBELLE_2, false));
 
-        questionTagRepository.save(new QuestionTag(question, tag));
-        questionTagRepository.save(new QuestionTag(question, tag2));
-        questionTagRepository.save(new QuestionTag(question2, tag));
+        questionTagRepository.save(new QuestionTag(question1, tag1));
+        questionTagRepository.save(new QuestionTag(question1, tag2));
+        questionTagRepository.save(new QuestionTag(question2, tag1));
         questionTagRepository.save(new QuestionTag(question2, tag2));
 
 
-        questionnaireQuestionRepository.save(new QuestionnaireQuestion(questionnaire, question, 1L));
+        questionnaireQuestionRepository.save(new QuestionnaireQuestion(questionnaire, question1, 1L));
 
         questionnaireQuestionRepository.save(new QuestionnaireQuestion(questionnaire, question2, 2L));
 
         //questionnaireTag
-        Tag tag4 = tagRepository.save(new Tag(TAG_LIBELLE_4, false));
-        questionnaireTagRepository.save(new QuestionnaireTagBuilder().setQuestionnaire(questionnaire).setTag(tag4).createQuestionnaireTag());
+        Tag questionnaireTag1 = tagRepository.save(new Tag(QUESTIONNAIRE_TAG_LIBELLE_1, false));
+        questionnaireTagRepository.save(new QuestionnaireTagBuilder()
+                .setQuestionnaire(questionnaire)
+                .setTag(questionnaireTag1)
+                .build());
 
 
         return questionnaire;
@@ -145,7 +157,7 @@ public class FixtureService {
 
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public Question createQuestion() {
+    public Question createQuestionsAndGetFirst() {
 
         questionnaireQuestionRepository.deleteAll();
         responseCrudRepository.deleteAll();
@@ -169,12 +181,12 @@ public class FixtureService {
         responseCrudRepository.save(response2);
 
         //question 1
-        Question question = new Question();
-        question.setQuestion(QUESTION_QUESTION_1);
-        question.setType(Type.FREE_TEXT);
+        Question question1 = new Question();
+        question1.setQuestion(QUESTION_QUESTION_1);
+        question1.setType(Type.FREE_TEXT);
 
-        question.setResponses(Lists.newArrayList(response, response2));
-        questionRepository.save(question);
+        question1.setResponses(Lists.newArrayList(response, response2));
+        questionRepository.save(question1);
 
         //question 2
         Question question2 = new Question();
@@ -184,17 +196,17 @@ public class FixtureService {
         questionRepository.save(question2);
 
         //questionTag
-        Tag tag = tagRepository.save(new Tag(TAG_LIBELLE_1, false));
-        Tag tag2 = tagRepository.save(new Tag(TAG_LIBELLE_2, false));
-        Tag tag3 = tagRepository.save(new Tag(TAG_LIBELLE_3, false));
+        Tag tag1 = tagRepository.save(new Tag(QUESTION_TAG_LIBELLE_1, false));
+        Tag tag2 = tagRepository.save(new Tag(QUESTION_TAG_LIBELLE_2, false));
+        Tag tag3 = tagRepository.save(new Tag(QUESTION_TAG_LIBELLE_3, false));
 
 
-        questionTagRepository.save(new QuestionTag(question, tag));
-        questionTagRepository.save(new QuestionTag(question, tag2));
-        questionTagRepository.save(new QuestionTag(question2, tag));
+        questionTagRepository.save(new QuestionTag(question1, tag1));
+        questionTagRepository.save(new QuestionTag(question1, tag2));
+        questionTagRepository.save(new QuestionTag(question2, tag1));
         questionTagRepository.save(new QuestionTag(question2, tag3));
 
-        return question;
+        return question1;
 
     }
 

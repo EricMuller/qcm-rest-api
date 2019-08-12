@@ -1,10 +1,9 @@
-# OpenQcm Api
- 
+# Qcm Api
 
 [![Build Status](https://travis-ci.com/EricMuller/qcm-rest-api.svg?branch=master)](https://travis-ci.com/EricMuller/qcm-rest-api)[![License](http://img.shields.io/:license-mit-blue.svg)](https://opensource.org/licenses/mit-license.php)[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=com.emu.apps.qcm%3Aqcm-rest-api&metric=alert_status)](https://sonarcloud.io/dashboard/index/com.emu.apps.qcm:qcm-rest-api) [![Known Vulnerabilities](https://snyk.io/test/github/EricMuller/qcm-rest-api/badge.svg)](https://snyk.io/test/github/EricMuller/qcm-rest-api)[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/2888/badge)](https://bestpractices.coreinfrastructure.org/projects/2888) 
 
 
-OpenQcm api is a sample QCM Rest API.
+Qcm api is a sample QCM Rest API.
 
 
 You can also:
@@ -77,8 +76,9 @@ $ curl https://qcm-rest-api.herokuapp.com/ ...
 
 ### Todos
 
- - Write MORE features
- -
+ - Write more features
+ - Add reactive mode with webflux
+ - Batch import with kafka
  
 ### License
 

@@ -92,7 +92,7 @@ public class UploadServiceImpl implements UploadService {
                 questionnaireService.saveQuestionnaireQuestion(new QuestionnaireQuestion(questionnaire, question, position));
 
                 questionService.saveQuestionTag(new QuestionTag(question, tag));
-                questionnaireTagService.saveQuestionnaireTag(new QuestionnaireTagBuilder().setQuestionnaire(questionnaire).setTag(tag).createQuestionnaireTag());
+                questionnaireTagService.saveQuestionnaireTag(new QuestionnaireTagBuilder().setQuestionnaire(questionnaire).setTag(tag).build());
 
             }
         }

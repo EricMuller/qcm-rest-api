@@ -1,10 +1,10 @@
 package com.emu.apps.qcm.web.rest;
 
-import com.emu.apps.shared.metrics.Timer;
 import com.emu.apps.qcm.services.jpa.entity.questions.Question;
 import com.emu.apps.qcm.web.rest.caches.CacheName;
 import com.emu.apps.qcm.web.rest.dtos.QuestionDto;
 import com.emu.apps.qcm.web.rest.dtos.question.QuestionTagsDto;
+import com.emu.apps.shared.metrics.Timer;
 import io.swagger.annotations.*;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.io.IOException;
 import java.security.Principal;
 
 @CrossOrigin
@@ -24,7 +23,7 @@ import java.security.Principal;
         @Tag(name = "Questions", description = "All operations ")
 })
 public interface QuestionRestApi {
-    @ApiOperation(value = "Find all questions  by Page", responseContainer = "List", response = QuestionDto.class, nickname = "getTagsByPAge")
+    @ApiOperation(value = "Find all questions  by Page", responseContainer = "List", response = QuestionDto.class, nickname = "getQuestions")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page", dataType = "integer", paramType = "query", value = "Results page you want to retrieve (0..N)"),
             @ApiImplicitParam(name = "size", dataType = "integer", paramType = "query", value = "Number of records per page."),
@@ -40,7 +39,9 @@ public interface QuestionRestApi {
     )
     @GetMapping(produces = "application/json")
     @Timer
-    Iterable<QuestionTagsDto> getQuestionsWithFilters(Principal principal, @RequestParam(value = "filters", required = false) String filterString, Pageable pageable) throws IOException;
+    public Iterable<QuestionTagsDto> getQuestions(@ApiParam(value = "Identifiant du tag") @RequestParam(value = "tag_id", required = false) Long[] tagIds,
+                                                  @ApiParam(value = "Identifiant du questionnaire") @RequestParam(value = "questionnaire_id", required = false) Long[] questionnaireIds,
+                                                  Pageable pageable, Principal principal)  ;
 
     @ApiOperation(value = "Find a question by ID", response = QuestionDto.class, nickname = "getQuestionById")
     @GetMapping(value = "/{id}")

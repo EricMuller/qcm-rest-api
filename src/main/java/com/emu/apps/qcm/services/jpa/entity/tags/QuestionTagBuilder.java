@@ -19,7 +19,7 @@ public class QuestionTagBuilder {
         return this;
     }
 
-    public QuestionTag createQuestionnaireTag() {
+    public QuestionTag build() {
         return new QuestionTag(question, tag);
     }
 }

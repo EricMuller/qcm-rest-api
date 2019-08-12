@@ -1,9 +1,12 @@
 package com.emu.apps.qcm.services.jpa.repositories;
 
 import com.emu.apps.qcm.services.FixtureService;
+import com.emu.apps.qcm.services.FixtureTest;
 import com.emu.apps.qcm.services.jpa.entity.questions.Question;
 import com.emu.apps.qcm.services.jpa.entity.questions.Response;
 import com.emu.apps.qcm.services.jpa.entity.tags.QuestionTag;
+import com.emu.apps.qcm.services.jpa.entity.tags.Tag;
+import com.emu.apps.qcm.services.jpa.specifications.QuestionSpecificationBuilder;
 import com.google.common.collect.Iterables;
 import org.assertj.core.api.Assertions;
 import org.hibernate.LazyInitializationException;
@@ -13,6 +16,10 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,18 +31,15 @@ import java.util.Set;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles(value = "test")
-public class QuestionRepositoryTest {
+public class QuestionRepositoryTest extends FixtureTest {
 
     @Autowired
     private QuestionRepository questionRepository;
 
-    @Autowired
-    private FixtureService fixture;
-
     @Test
     @Transactional
     public void findOne() {
-        Question question = fixture.createQuestion();
+        Question question = fixtureService.createQuestionsAndGetFirst();
         Assert.assertNotNull(question.getId());
         Optional<Question> newQuestion = questionRepository.findById(question.getId());
         Assert.assertNotNull(newQuestion.orElse(null));
@@ -47,7 +51,7 @@ public class QuestionRepositoryTest {
 
     @Test(expected = LazyInitializationException.class)
     public void findOneLazyInitializationException() {
-        Question question = fixture.createQuestion();
+        Question question = fixtureService.createQuestionsAndGetFirst();
         Assert.assertNotNull(question.getId());
         Optional<Question> newQuestion = questionRepository.findById(question.getId());
 
@@ -60,7 +64,7 @@ public class QuestionRepositoryTest {
 
     @Test
     public void findByIdAndFetchTags() {
-        Question question = fixture.createQuestion();
+        Question question = fixtureService.createQuestionsAndGetFirst();
 
         Question newQuestion = questionRepository.findByIdAndFetchTags(question.getId());
 
@@ -68,14 +72,14 @@ public class QuestionRepositoryTest {
         Assertions.assertThat(newQuestion.getQuestionTags()).isNotEmpty();
         Assertions.assertThat(newQuestion.getQuestionTags().size()).isEqualTo(2);
 
-        Optional<QuestionTag> optional = newQuestion.getQuestionTags().stream().filter(q -> FixtureService.TAG_LIBELLE_1.equals(q.getTag().getLibelle())).findFirst();
+        Optional<QuestionTag> optional = newQuestion.getQuestionTags().stream().filter(q -> FixtureService.QUESTION_TAG_LIBELLE_1.equals(q.getTag().getLibelle())).findFirst();
         Assertions.assertThat(optional.isPresent()).isTrue();
 
     }
 
     @Test(expected = LazyInitializationException.class)
     public void findByIdAndFetchTagsLazyInitializationException() {
-        Question question = fixture.createQuestion();
+        Question question = fixtureService.createQuestionsAndGetFirst();
 
         Question newQuestion = questionRepository.findByIdAndFetchTags(question.getId());
 
@@ -84,7 +88,7 @@ public class QuestionRepositoryTest {
 
     @Test
     public void findByIdAndFetchTagsAndResponses() {
-        Question question = fixture.createQuestion();
+        Question question = fixtureService.createQuestionsAndGetFirst();
 
         //test create
         Question newQuestion = questionRepository.findByIdAndFetchTagsAndResponses(question.getId());
@@ -95,7 +99,7 @@ public class QuestionRepositoryTest {
         Assertions.assertThat(newQuestion.getQuestionTags()).isNotEmpty();
         Assertions.assertThat(newQuestion.getQuestionTags().size()).isEqualTo(2);
 
-        Optional<QuestionTag> optional = newQuestion.getQuestionTags().stream().filter(q -> FixtureService.TAG_LIBELLE_1.equals(q.getTag().getLibelle())).findFirst();
+        Optional<QuestionTag> optional = newQuestion.getQuestionTags().stream().filter(q -> FixtureService.QUESTION_TAG_LIBELLE_1.equals(q.getTag().getLibelle())).findFirst();
         Assertions.assertThat(optional.isPresent()).isTrue();
 
         // responses
@@ -111,7 +115,7 @@ public class QuestionRepositoryTest {
     @Test
     public void findAllQuestionsTags() {
 
-        fixture.createQuestionQuestionnaireTag();
+        fixtureService.createOneQuestionnaireWithTwoQuestionTags();
 
         Page<Question> page = questionRepository.findAllQuestionsTags(null);
 
@@ -132,6 +136,28 @@ public class QuestionRepositoryTest {
 
         Assertions.assertThat(questionTag.getTag()).isNotNull();
 
+    }
+
+
+    @Test
+    public void findAllQuestions() {
+
+
+        fixtureService.createOneQuestionnaireWithTwoQuestionTags();
+
+        Tag tag1 = fixtureService.findTagbyLibelle(fixtureService.QUESTION_TAG_LIBELLE_1, getPrincipal());
+        Assertions.assertThat(tag1).isNotNull();
+
+        Specification<Question> specification = new QuestionSpecificationBuilder()
+                .setTagIds(new Long[]{tag1.getId()})
+                .setPrincipal(getPrincipal().getName()).build();
+
+        Pageable pageable = PageRequest.of(0, 3, Sort.by("id"));
+
+        Page<Question> page = questionRepository.findAll(specification, pageable);
+        Assertions.assertThat(page).isNotNull();
+
+        Assertions.assertThat(page.getNumberOfElements()).isEqualTo(2);
     }
 
 

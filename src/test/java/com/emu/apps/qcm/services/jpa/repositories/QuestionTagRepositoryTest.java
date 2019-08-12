@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.services.jpa.repositories;
 
-import com.emu.apps.qcm.services.FixtureService;
+import com.emu.apps.qcm.services.FixtureTest;
 import com.emu.apps.qcm.services.jpa.entity.questions.Question;
 import com.emu.apps.qcm.services.jpa.entity.tags.Tag;
 import org.assertj.core.api.Assertions;
@@ -14,18 +14,15 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles(value = "test")
-public class QuestionTagRepositoryTest {
+public class QuestionTagRepositoryTest extends FixtureTest {
 
     @Autowired
     private QuestionTagRepository questionTagRepository;
 
-    @Autowired
-    private FixtureService fixture;
-
     @Test
     public void findByQuestionId() {
 
-        Question question = fixture.createQuestion();
+        Question question = fixtureService.createQuestionsAndGetFirst();
 
         Iterable<Tag> tags = questionTagRepository.findByQuestionId(question.getId());
 

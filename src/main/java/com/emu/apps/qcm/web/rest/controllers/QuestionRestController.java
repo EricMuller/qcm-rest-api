@@ -4,20 +4,16 @@ import com.emu.apps.qcm.services.QuestionService;
 import com.emu.apps.qcm.services.QuestionTagService;
 import com.emu.apps.qcm.services.jpa.entity.questions.Question;
 import com.emu.apps.qcm.services.jpa.entity.tags.QuestionTag;
-import com.emu.apps.qcm.services.jpa.repositories.specifications.question.QuestionSpecification;
+import com.emu.apps.qcm.services.jpa.specifications.QuestionSpecificationBuilder;
 import com.emu.apps.qcm.web.rest.QuestionRestApi;
-import com.emu.apps.qcm.web.rest.dtos.FilterDto;
 import com.emu.apps.qcm.web.rest.dtos.MessageDto;
 import com.emu.apps.qcm.web.rest.dtos.QuestionDto;
 import com.emu.apps.qcm.web.rest.dtos.question.QuestionTagsDto;
-import com.emu.apps.qcm.web.rest.dtos.utils.FilterUtil;
 import com.emu.apps.qcm.web.rest.mappers.QuestionMapper;
 import com.emu.apps.qcm.web.rest.mappers.QuestionTagMapper;
 import com.emu.apps.shared.metrics.Timer;
 import com.emu.apps.shared.web.rest.exceptions.utils.ExceptionUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -35,8 +31,6 @@ import java.util.Optional;
 @RestController
 public class QuestionRestController implements QuestionRestApi {
 
-    protected static final Logger logger = LoggerFactory.getLogger(QuestionRestController.class);
-
     private final QuestionService questionService;
 
     private final QuestionMapper questionMapper;
@@ -45,27 +39,28 @@ public class QuestionRestController implements QuestionRestApi {
 
     private final QuestionTagMapper questionTagMapper;
 
-    private final QuestionSpecification questionSpecification;
-
-    private final FilterUtil dtoUtil;
-
     @Autowired
-    public QuestionRestController(QuestionService questionService, QuestionMapper questionMapper, QuestionTagService questionTagService,
-                                  QuestionTagMapper questionTagMapper, QuestionSpecification questionSpecification, FilterUtil dtoUtil) {
+    public QuestionRestController(QuestionService questionService, QuestionMapper questionMapper,
+                                  QuestionTagService questionTagService, QuestionTagMapper questionTagMapper) {
         this.questionService = questionService;
         this.questionMapper = questionMapper;
         this.questionTagService = questionTagService;
         this.questionTagMapper = questionTagMapper;
-        this.questionSpecification = questionSpecification;
-        this.dtoUtil = dtoUtil;
     }
-
 
     @Override
     @Timer
-    public Iterable <QuestionTagsDto> getQuestionsWithFilters(Principal principal, @RequestParam(value = "filters", required = false) String filterString, Pageable pageable) throws IOException {
-        FilterDto[] filterDtos = dtoUtil.stringToFilterDtos(filterString);
-        return questionMapper.pageToPageTagDto(questionService.findAllByPage(questionSpecification.getSpecifications(filterDtos, principal), pageable));
+    public Iterable<QuestionTagsDto> getQuestions(@RequestParam(value = "tag_id", required = false) Long[] tagIds,
+                                                  @RequestParam(value = "questionnaire_id", required = false) Long[] questionnaireIds,
+                                                  Pageable pageable, Principal principal)  {
+
+        QuestionSpecificationBuilder questionSpecificationBuilder = new QuestionSpecificationBuilder();
+
+        questionSpecificationBuilder.setPrincipal(principal.getName());
+        questionSpecificationBuilder.setQuestionnaireIds(questionnaireIds);
+        questionSpecificationBuilder.setTagIds(tagIds);
+
+        return questionMapper.pageToPageTagDto(questionService.findAllByPage(questionSpecificationBuilder.build(), pageable));
     }
 
 
@@ -81,7 +76,7 @@ public class QuestionRestController implements QuestionRestApi {
 
         question = questionService.saveQuestion(questionMapper.dtoToModel(question, questionDto));
 
-        Iterable <QuestionTag> questionTags = questionTagMapper.dtosToModels(questionDto.getQuestionTags());
+        Iterable<QuestionTag> questionTags = questionTagMapper.dtosToModels(questionDto.getQuestionTags());
 
         question = questionTagService.saveQuestionTags(question.getId(), questionTags, principal);
 
@@ -93,7 +88,7 @@ public class QuestionRestController implements QuestionRestApi {
 
         Question question = questionService.saveQuestion(questionMapper.dtoToModel(questionDto));
 
-        Iterable <QuestionTag> questionTags = questionTagMapper.dtosToModels(questionDto.getQuestionTags());
+        Iterable<QuestionTag> questionTags = questionTagMapper.dtosToModels(questionDto.getQuestionTags());
 
         question = questionTagService.saveQuestionTags(question.getId(), questionTags, principal);
 
@@ -102,16 +97,16 @@ public class QuestionRestController implements QuestionRestApi {
     }
 
     @ExceptionHandler({JsonProcessingException.class, IOException.class})
-    public ResponseEntity <MessageDto> handleAllException(Exception e) {
-        return new ResponseEntity <>(new MessageDto(e.getMessage()), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<MessageDto> handleAllException(Exception e) {
+        return new ResponseEntity<>(new MessageDto(e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
     @Override
-    public ResponseEntity <Question> deleteQuestionnaireById(@PathVariable("id") long id) {
-        Optional <Question> questionOptional = questionService.findById(id);
+    public ResponseEntity<Question> deleteQuestionnaireById(@PathVariable("id") long id) {
+        Optional<Question> questionOptional = questionService.findById(id);
         ExceptionUtil.assertFound(questionOptional, String.valueOf(id));
         questionService.deleteById(id);
-        return new ResponseEntity <>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

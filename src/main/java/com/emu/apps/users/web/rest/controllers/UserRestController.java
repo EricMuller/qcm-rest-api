@@ -12,15 +12,15 @@ import java.util.Objects;
 @RestController
 public class UserRestController implements UserRestApi {
 
-    @Value("{spring.profiles.active}")
-    private String profile;
+    @Value("${spring.profiles.active}")
+    private String profiles;
 
     @Override
     public Map<String, String> user(Principal principal) {
         Map<String, String> map = new LinkedHashMap<>();
         if (Objects.nonNull(principal)) {
             map.put("name", principal.getName());
-            map.put("profile", profile);
+            map.put("profiles", profiles);
         }
         return map;
     }

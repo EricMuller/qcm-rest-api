@@ -15,11 +15,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.security.Principal;
 
 @CrossOrigin
-@RequestMapping(QcmApi.API_V1 +"/questionnaires")
+@RequestMapping(QcmApi.API_V1 + "/questionnaires")
 @Api(value = "questionnaire-store", tags = "Questionnaires")
 @SwaggerDefinition(tags = {
         @Tag(name = "Questionnaires", description = "All operations ")
@@ -38,19 +37,19 @@ public interface QuestionnaireRestApi {
     @CacheEvict(cacheNames = CacheName.Names.QUESTIONNAIRE, key = "#id")
     ResponseEntity<Questionnaire> deleteQuestionnaireById(@PathVariable("id") long id);
 
-    @ApiOperation(value = "Update a currentQuestionnaire", response = QuestionnaireDto.class, nickname = "updateQuestionnaire")
+    @ApiOperation(value = "Update a current Questionnaire", response = QuestionnaireDto.class, nickname = "updateQuestionnaire")
     @PutMapping
     @ResponseBody
     @CachePut(cacheNames = CacheName.Names.QUESTIONNAIRE, condition = "#questionnaireDto != null", key = "#questionnaireDto.id")
     @Timer
     QuestionnaireDto updateQuestionnaire(@RequestBody QuestionnaireDto questionnaireDto, Principal principal);
 
-    @ApiOperation(value = "Save a currentQuestionnaire", response = QuestionnaireDto.class, nickname = "saveQuestionnaire")
+    @ApiOperation(value = "Save a current Questionnaire", response = QuestionnaireDto.class, nickname = "saveQuestionnaire")
     @PostMapping
     @ResponseBody
     QuestionnaireDto saveQuestionnaire(@RequestBody QuestionnaireDto questionnaireDto, Principal principal);
 
-    @ApiOperation(value = "Find all questions by QuestionnaireID", nickname = "getQuestionsProjectionByQuestionnaireId")
+    @ApiOperation(value = "Find all questions by Questionnaire Id", nickname = "getQuestionsProjectionByQuestionnaireId")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page", dataType = "integer", paramType = "query", value = "Results page you want to retrieve (0..N)"),
             @ApiImplicitParam(name = "size", dataType = "integer", paramType = "query", value = "Number of records per page."),
@@ -59,23 +58,12 @@ public interface QuestionnaireRestApi {
     })
     @GetMapping(value = "/{id:[\\d]+}/questions")
     @ResponseBody
-    Page<QuestionDto> getQuestionsByByQuestionnaireId(@PathVariable("id") @ApiParam(value = "ID of the Questionnaire") long id, Pageable pageable);
+    Page<QuestionDto> getQuestionsByQuestionnaireId(@PathVariable("id") @ApiParam(value = "Questionnaire Id") long id, Pageable pageable);
 
-    @ApiOperation(value = "Find suggestions ", responseContainer = "List", response = SuggestDto.class, nickname = "getSuggestions")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved list"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
-    }
-    )
-    @GetMapping(value = "/suggest", produces = "application/json")
-    @ResponseBody
-    Iterable<SuggestDto> getSuggestions(@RequestParam("queryText") String queryText);
+
 
     @ApiOperation(value = "Find all questionnaires By Page", nickname = "getQuestionnaires")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "filters", dataType = "String", paramType = "query", value = "base64 encoded string"),
             @ApiImplicitParam(name = "page", dataType = "integer", paramType = "query", value = "Results page you want to retrieve (0..N)"),
             @ApiImplicitParam(name = "size", dataType = "integer", paramType = "query", value = "Number of records per page."),
             @ApiImplicitParam(name = "sort", allowMultiple = true, dataType = "string", paramType = "query",
@@ -91,7 +79,8 @@ public interface QuestionnaireRestApi {
     @ResponseBody
     @GetMapping(produces = "application/json")
     @Timer
-    Iterable<QuestionnaireDto> getQuestionnairesWithFilters(Principal principal, @RequestParam(value = "filters", required = false) String filterString, Pageable pageable) throws IOException;
+    public Iterable<QuestionnaireDto> getQuestionnaires(@ApiParam(value = "Identifiant tag") @RequestParam(value = "tag_id", required = false) Long[] tagIds,
+                                                        Pageable pageable, Principal principal) ;
 
     @ApiOperation(value = "Add Question", response = QuestionnaireDto.class, nickname = "addQuestion")
     @PutMapping(value = "/{id}/questions")

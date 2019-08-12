@@ -61,7 +61,7 @@ public class QuestionnaireTagServiceImpl implements QuestionnaireTagService {
                         tag = tagService.findOrCreateByLibelle(questionnaireTag.getTag().getLibelle(), principal);
                     }
                     if (tag != null) {
-                        QuestionnaireTag newTag = new QuestionnaireTagBuilder().setQuestionnaire(questionnaire).setTag(tag).createQuestionnaireTag();
+                        QuestionnaireTag newTag = new QuestionnaireTagBuilder().setQuestionnaire(questionnaire).setTag(tag).build();
                         questionnaire.getQuestionnaireTags().add(questionnaireTagRepository.save(newTag));
                     }
                 }

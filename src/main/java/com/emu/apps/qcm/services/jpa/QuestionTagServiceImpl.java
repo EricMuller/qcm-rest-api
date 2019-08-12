@@ -56,7 +56,7 @@ public class QuestionTagServiceImpl implements QuestionTagService {
                         tag = tagService.findOrCreateByLibelle(questionTag.getTag().getLibelle(), principal);
                     }
                     if (Objects.nonNull(tag)) {
-                        QuestionTag newTag = new QuestionTagBuilder().setQuestion(question).setTag(tag).createQuestionnaireTag();
+                        QuestionTag newTag = new QuestionTagBuilder().setQuestion(question).setTag(tag).build();
                         question.getQuestionTags().add(questionTagRepository.save(newTag));
                     }
                 }
