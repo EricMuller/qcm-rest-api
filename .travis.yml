@@ -18,7 +18,7 @@ script:
 deploy:
   provider: heroku
   api_key:
-    secure: "483d9f20-0dc6-4600-87f7-971de7b1498c"
+    secure: "bdb4da63-99f2-4822-89de-40457dc3a287"
   app: qcm-rest-api
   on:
     repo: EricMuller/qcm-rest-api
