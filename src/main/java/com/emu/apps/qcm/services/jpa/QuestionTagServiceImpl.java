@@ -33,7 +33,6 @@ public class QuestionTagServiceImpl implements QuestionTagService {
         this.tagService = tagService;
     }
 
-
     @Override
     public QuestionTag saveQuestionTag(QuestionTag questionTag) {
         return questionTagRepository.save(questionTag);

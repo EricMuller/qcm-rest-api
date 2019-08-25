@@ -25,7 +25,7 @@ import java.util.Map;
 
 @Service
 @Transactional
-public class UploadServiceImpl implements UploadService {
+public class UploadServiceImpl implements FileImportService {
 
     private final CategoryService categoryService;
 
@@ -48,11 +48,10 @@ public class UploadServiceImpl implements UploadService {
         this.questionnaireTagService = questionnaireTagService;
     }
 
-
     @Override
     public void createQuestionnaires(String name, FileQuestionDto[] fileQuestionDtos, Principal principal) {
 
-        Map<String, Questionnaire> questionnaireCacheMap = Maps.newHashMap();
+        Map<String, Questionnaire> categorieQuestionnaireMap = Maps.newHashMap();
         Map<String, Long> tagsCounterMap = Maps.newHashMap();
 
         Category category = categoryService.findOrCreateByLibelle("Java");
@@ -61,10 +60,10 @@ public class UploadServiceImpl implements UploadService {
 
             if (StringUtils.isNotEmpty(fileQuestionDto.getCategorie())) {
 
-                Tag tag = tagService.findOrCreateByLibelle(fileQuestionDto.getCategorie(), principal);
+                Tag categorie = tagService.findOrCreateByLibelle(fileQuestionDto.getCategorie(), principal);
 
-                Long aLong = tagsCounterMap.containsKey(tag.getLibelle()) ? tagsCounterMap.get(tag.getLibelle()) : Long.valueOf(0);
-                tagsCounterMap.put(tag.getLibelle(), ++aLong);
+                Long aLong = tagsCounterMap.containsKey(categorie.getLibelle()) ? tagsCounterMap.get(categorie.getLibelle()) : Long.valueOf(0);
+                tagsCounterMap.put(categorie.getLibelle(), ++aLong);
 
                 Question question = fileQuestionMapper.dtoToModel(fileQuestionDto);
                 question.setType(Type.FREE_TEXT);
@@ -75,24 +74,24 @@ public class UploadServiceImpl implements UploadService {
                 question.setResponses(Lists.newArrayList(response));
 
                 // new questionnaire by tag
-                Questionnaire questionnaire = questionnaireCacheMap.get(tag.getLibelle());
+                Questionnaire questionnaire = categorieQuestionnaireMap.get(categorie.getLibelle());
                 if (questionnaire == null) {
                     questionnaire = new Questionnaire(name + "-" + fileQuestionDto.getCategorie());
                     questionnaire.setDescription(questionnaire.getTitle());
                     questionnaire.setCategory(category);
                     questionnaire.setStatus(Status.DRAFT);
                     questionnaire = questionnaireService.saveQuestionnaire(questionnaire);
-                    questionnaireCacheMap.put(tag.getLibelle(), questionnaire);
+                    categorieQuestionnaireMap.put(categorie.getLibelle(), questionnaire);
                 }
 
                 question = questionService.saveQuestion(question);
 
-                Long position = tagsCounterMap.get(tag.getLibelle());
+                Long position = tagsCounterMap.get(categorie.getLibelle());
 
                 questionnaireService.saveQuestionnaireQuestion(new QuestionnaireQuestion(questionnaire, question, position));
 
-                questionService.saveQuestionTag(new QuestionTag(question, tag));
-                questionnaireTagService.saveQuestionnaireTag(new QuestionnaireTagBuilder().setQuestionnaire(questionnaire).setTag(tag).build());
+                questionService.saveQuestionTag(new QuestionTag(question, categorie));
+                questionnaireTagService.saveQuestionnaireTag(new QuestionnaireTagBuilder().setQuestionnaire(questionnaire).setTag(categorie).build());
 
             }
         }

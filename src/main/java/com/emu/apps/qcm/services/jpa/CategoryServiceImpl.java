@@ -22,13 +22,13 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
 
     @Autowired
-    public CategoryServiceImpl(CategoryRepository epicRepository) {
-        this.categoryRepository = epicRepository;
+    public CategoryServiceImpl(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
     }
 
     @Override
-    public Category save(Category epic) {
-        return categoryRepository.save(epic);
+    public Category save(Category category) {
+        return categoryRepository.save(category);
     }
 
     @Override

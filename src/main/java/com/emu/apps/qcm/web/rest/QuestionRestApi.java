@@ -39,7 +39,7 @@ public interface QuestionRestApi {
     )
     @GetMapping(produces = "application/json")
     @Timer
-    public Iterable<QuestionTagsDto> getQuestions(@ApiParam(value = "Identifiant du tag") @RequestParam(value = "tag_id", required = false) Long[] tagIds,
+    Iterable<QuestionTagsDto> getQuestions(@ApiParam(value = "Identifiant du tag") @RequestParam(value = "tag_id", required = false) Long[] tagIds,
                                                   @ApiParam(value = "Identifiant du questionnaire") @RequestParam(value = "questionnaire_id", required = false) Long[] questionnaireIds,
                                                   Pageable pageable, Principal principal)  ;
 

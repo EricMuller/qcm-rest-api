@@ -31,9 +31,9 @@ public class UploadRestControllerIntegrationTest extends SpringBootWebTestCase {
         String token = new String(Base64.getEncoder().encode((H2TestProfileJPAConfig.USER_TEST + ":" + H2TestProfileJPAConfig.USER_PASSWORD).getBytes()));
         authHeaders.add(HttpHeaders.AUTHORIZATION, "Basic " + token);
 
-        final ResponseEntity<String> response = getRestTemplate().exchange(createURLWithPort(QcmApi.API_V1 + "/upload/questionnaire"), HttpMethod.POST,
+        final ResponseEntity<String> response = getRestTemplate().exchange(createURLWithPort(QcmApi.API_V1 + "/upload/json"), HttpMethod.POST,
                 new HttpEntity<>(map, authHeaders), String.class);
-        assertThat(response.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
+        assertThat(response.getStatusCode()).isEqualByComparingTo(HttpStatus.CREATED);
 
 
         final ResponseEntity<PageQuestionnaireDto> responseGet = getRestTemplate().exchange(createURLWithPort(QcmApi.API_V1 + "/questionnaires/"), HttpMethod.GET,

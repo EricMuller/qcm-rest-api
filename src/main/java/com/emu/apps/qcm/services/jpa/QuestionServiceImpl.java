@@ -30,9 +30,9 @@ public class QuestionServiceImpl implements QuestionService {
     private final QuestionnaireQuestionRepository questionnaireQuestionRepository;
 
     @Autowired
-    public QuestionServiceImpl(QuestionRepository questionRepository, QuestionTagRepository questionTagCrudRepository, QuestionnaireQuestionRepository questionnaireQuestionRepository) {
+    public QuestionServiceImpl(QuestionRepository questionRepository, QuestionTagRepository questionTagRepository, QuestionnaireQuestionRepository questionnaireQuestionRepository) {
         this.questionRepository = questionRepository;
-        this.questionTagCrudRepository = questionTagCrudRepository;
+        this.questionTagCrudRepository = questionTagRepository;
         this.questionnaireQuestionRepository = questionnaireQuestionRepository;
     }
 
