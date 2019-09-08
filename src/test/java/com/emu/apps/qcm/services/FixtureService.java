@@ -9,6 +9,7 @@ import com.emu.apps.qcm.services.jpa.entity.questions.Type;
 import com.emu.apps.qcm.services.jpa.entity.tags.QuestionTag;
 import com.emu.apps.qcm.services.jpa.entity.tags.QuestionnaireTagBuilder;
 import com.emu.apps.qcm.services.jpa.entity.tags.Tag;
+import com.emu.apps.qcm.services.jpa.entity.upload.Upload;
 import com.emu.apps.qcm.services.jpa.repositories.*;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
@@ -70,6 +71,9 @@ public class FixtureService {
 
     @Autowired
     private QuestionnaireTagRepository questionnaireTagRepository;
+
+    @Autowired
+    private UploadRepository uploadRepository;
 
     public FixtureService() {
     }
@@ -155,6 +159,12 @@ public class FixtureService {
 
     }
 
+    public Upload createUpload() {
+        Upload upload = new Upload();
+        upload.setFileName("fileName");
+        upload.setPathfileName("/data/");
+        return uploadRepository.save(upload);
+    }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Question createQuestionsAndGetFirst() {

@@ -47,7 +47,7 @@ public class QuestionnaireTagServiceImpl implements QuestionnaireTagService {
 
         Questionnaire questionnaire = questionnaireRepository.findById(questionnaireId).orElse(null);
 
-        ExceptionUtil.assertFound(questionnaire, "Questionnaire not found");
+        ExceptionUtil.assertIsPresent(questionnaire, "Questionnaire not found");
 
         if (Objects.nonNull(questionnaire)) {
             questionnaire.getQuestionnaireTags().clear();

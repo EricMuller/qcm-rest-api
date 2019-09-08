@@ -12,13 +12,13 @@ public final class ExceptionUtil {
         //nope
     }
 
-    public static <T extends AuditableEntity> void assertFound( T  entity, String message) {
+    public static <T extends AuditableEntity> void assertIsPresent(T  entity, String message) {
         if (Objects.isNull(entity)) {
             throw new ResourceNotFoundException(message);
         }
     }
 
-    public static void assertFound(Optional<? extends AuditableEntity> entity, String message) {
+    public static void assertIsPresent(Optional<? extends AuditableEntity> entity, String message) {
         if (!entity.isPresent()) {
             throw new ResourceNotFoundException(message);
         }

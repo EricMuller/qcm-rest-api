@@ -61,14 +61,14 @@ public class QuestionnaireRestController implements QuestionnaireRestApi {
     @Override
     public QuestionnaireDto getQuestionnaireById(@PathVariable("id") long id) {
         Questionnaire questionnaire = questionnairesService.findOne(id);
-        ExceptionUtil.assertFound(questionnaire, String.valueOf(id));
+        ExceptionUtil.assertIsPresent(questionnaire, String.valueOf(id));
         return questionnaireMapper.modelToDto(questionnaire);
     }
 
     @Override
     public ResponseEntity<Questionnaire> deleteQuestionnaireById(@PathVariable("id") long id) {
         Questionnaire questionnaire = questionnairesService.findOne(id);
-        ExceptionUtil.assertFound(questionnaire, String.valueOf(id));
+        ExceptionUtil.assertIsPresent(questionnaire, String.valueOf(id));
         questionnairesService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -123,9 +123,9 @@ public class QuestionnaireRestController implements QuestionnaireRestApi {
     public QuestionDto updateQuestionnaire(@PathVariable("id") @ApiParam(value = "ID of the Questionnaire") long id, @RequestBody QuestionDto questionDto) {
 
         Questionnaire questionnaire = questionnairesService.findOne(id);
-        ExceptionUtil.assertFound(questionnaire, "Questionnaire Not found");
+        ExceptionUtil.assertIsPresent(questionnaire, "Questionnaire Not found");
         Question question = questionService.findById(questionDto.getId()).orElse(null);
-        ExceptionUtil.assertFound(question, "Question Not found");
+        ExceptionUtil.assertIsPresent(question, "Question Not found");
         questionnairesService.saveQuestionnaireQuestion(new QuestionnaireQuestion(questionnaire, question, 0L));
 
         return questionMapper.modelToDto(question);

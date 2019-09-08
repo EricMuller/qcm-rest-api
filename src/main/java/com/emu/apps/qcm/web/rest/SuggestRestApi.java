@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
 @RequestMapping(QcmApi.API_V1 + "/suggest")
-@Api(value = "suggest-store", tags = "suggest")
+@Api(value = "suggest-store", tags = "Suggest")
 @SwaggerDefinition(tags = {
         @Tag(name = "Suggest", description = "All operations ")
 })

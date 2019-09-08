@@ -4,7 +4,6 @@ import com.emu.apps.H2TestProfileJPAConfig;
 import com.emu.apps.qcm.web.rest.QcmApi;
 import com.emu.apps.qcm.web.rest.dtos.PageDto;
 import com.emu.apps.qcm.web.rest.dtos.QuestionnaireDto;
-import com.google.common.collect.Iterables;
 import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.*;
@@ -12,13 +11,11 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import java.util.Base64;
-import java.util.List;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
 
 public class UploadRestControllerIntegrationTest extends SpringBootWebTestCase {
-
 
     @Test
     public void shouldUploadFile() {
@@ -36,15 +33,15 @@ public class UploadRestControllerIntegrationTest extends SpringBootWebTestCase {
         assertThat(response.getStatusCode()).isEqualByComparingTo(HttpStatus.CREATED);
 
 
-        final ResponseEntity<PageQuestionnaireDto> responseGet = getRestTemplate().exchange(createURLWithPort(QcmApi.API_V1 + "/questionnaires/"), HttpMethod.GET,
-                new HttpEntity<>(null, authHeaders), PageQuestionnaireDto.class);
-
-        List<QuestionnaireDto> questionnaireDtos = responseGet.getBody().getContent();
-
-        assertThat(responseGet.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
-        assertThat(questionnaireDtos).isNotNull().isNotEmpty();
-        QuestionnaireDto first = Iterables.getFirst(questionnaireDtos, null);
-        assertThat(first).isNotNull();
+//        final ResponseEntity<PageQuestionnaireDto> responseGet = getRestTemplate().exchange(createURLWithPort(QcmApi.API_V1 + "/questionnaires/"), HttpMethod.GET,
+//                new HttpEntity<>(null, authHeaders), PageQuestionnaireDto.class);
+//
+//        List<QuestionnaireDto> questionnaireDtos = responseGet.getBody().getContent();
+//
+//        assertThat(responseGet.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
+//        assertThat(questionnaireDtos).isNotNull().isNotEmpty();
+//        QuestionnaireDto first = Iterables.getFirst(questionnaireDtos, null);
+//        assertThat(first).isNotNull();
 
 
     }

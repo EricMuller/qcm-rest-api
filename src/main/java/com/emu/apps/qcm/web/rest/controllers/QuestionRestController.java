@@ -104,7 +104,7 @@ public class QuestionRestController implements QuestionRestApi {
     @Override
     public ResponseEntity<Question> deleteQuestionnaireById(@PathVariable("id") long id) {
         Optional<Question> questionOptional = questionService.findById(id);
-        ExceptionUtil.assertFound(questionOptional, String.valueOf(id));
+        ExceptionUtil.assertIsPresent(questionOptional, String.valueOf(id));
         questionService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

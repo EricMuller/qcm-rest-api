@@ -14,16 +14,16 @@ client.global.set("auth_token", "Bearer " + response.body.access_token);
 ###
 
 ###
-GET http://{{host}}:{{port}}/qcm/api/v1/questions
+GET http://{{host}}:{{port}}/qcm/api/v1/upload
+Accept: application/json
+Content-Type: application/json
+Authorization: {{auth_token}}
+
+
+###
+GET http://{{host}}:{{port}}/qcm/api/v1/upload/152/import
 Accept: application/json
 Content-Type: application/json
 Authorization: {{auth_token}}
 
 ###
-GET http://{{host}}:{{port}}/users/api/v1/users/me
-Accept: application/json
-Content-Type: application/json
-Authorization: {{auth_token}}
-
-###
-

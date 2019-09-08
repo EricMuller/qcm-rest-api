@@ -85,3 +85,27 @@ $ curl https://qcm-rest-api.herokuapp.com/ ...
 
 
 Code is under the [MIT Licence ](https://opensource.org/licenses/mit-license.php).
+
+
+### Some Technical Notes 
+
+
+[Date Format in REST API](http://apiux.com/2013/03/20/5-laws-api-dates-and-times/) 
+
+    The 5 laws of API dates and times in rest api:
+
+    - Law #1: Use ISO-8601 for your dates 
+    - Law #2: Accept any timezone
+    - Law #3: Store it in UTC
+    - Law #4: Return it in UTC
+    - Law #5: Don’t use time if you don’t need it
+
+
+
+[Google JSON Style Guide](https://google.github.io/styleguide/jsoncstyleguide.xml?showone=Property_Name_Format#Property_Name_Format) (recommendations for building JSON APIs at Google),
+
+     It recommends that:
+
+     - Property names must be camelCased, ASCII strings.
+
+     - The first character must be a letter, an underscore (_) or a dollar sign ($).

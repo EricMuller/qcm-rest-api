@@ -27,11 +27,11 @@ public abstract class EntityDto {
     private Long version;
 
     @ApiModelProperty(notes = "The  Creation Date record")
-    @JsonProperty("date_creation")
+    @JsonProperty("dateCreation")
     private Date dateCreation;
 
     @ApiModelProperty(notes = "The last Modification Date record")
-    @JsonProperty("date_modification")
+    @JsonProperty("dateModification")
     private Date dateModification;
 
 
