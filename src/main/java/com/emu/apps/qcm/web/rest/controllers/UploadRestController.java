@@ -84,13 +84,15 @@ public class UploadRestController implements UploadRestApi {
 
         try {
 
-            Optional<Upload> upload = uploadService.findById(uploadId);
-            ExceptionUtil.assertIsPresent(upload, String.valueOf(uploadId));
-            InputStream inputStream = new ByteArrayInputStream(upload.get().getData());
+            Optional<Upload> optionalUpload = uploadService.findById(uploadId);
+            if (optionalUpload.isPresent()) {
+                InputStream inputStream = new ByteArrayInputStream(optionalUpload.get().getData());
 
-            final FileQuestionDto[] fileQuestionDtos = new ObjectMapper().readValue(inputStream, FileQuestionDto[].class);
-            importService.createQuestionnaires(upload.get().getFileName(), fileQuestionDtos, principal);
-
+                final FileQuestionDto[] fileQuestionDtos = new ObjectMapper().readValue(inputStream, FileQuestionDto[].class);
+                importService.createQuestionnaires(optionalUpload.get().getFileName(), fileQuestionDtos, principal);
+            } else {
+                ExceptionUtil.raiseNoteFoundException(String.valueOf(uploadId));
+            }
         } catch (Exception e) {
             LOGGER.error("err", e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -101,8 +103,12 @@ public class UploadRestController implements UploadRestApi {
     @Override
     public ResponseEntity<Upload> deleteUploadById(long id) {
         Optional<Upload> optionalUpload = uploadService.findById(id);
-        ExceptionUtil.assertIsPresent(optionalUpload, String.valueOf(id));
-        uploadService.deleteById(optionalUpload.get().getId());
+
+        if (optionalUpload.isPresent()) {
+            uploadService.deleteById(optionalUpload.get().getId());
+        } else {
+            ExceptionUtil.raiseNoteFoundException(String.valueOf(id));
+        }
         return new ResponseEntity<>(optionalUpload.get(), HttpStatus.NO_CONTENT);
     }
 

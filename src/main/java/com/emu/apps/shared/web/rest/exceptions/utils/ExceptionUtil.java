@@ -23,4 +23,8 @@ public final class ExceptionUtil {
             throw new ResourceNotFoundException(message);
         }
     }
+    public static void raiseNoteFoundException(String message) {
+        new ResourceNotFoundException(message);
+    }
+
 }
