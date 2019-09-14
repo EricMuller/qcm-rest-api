@@ -22,14 +22,13 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.*;
 
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
-    private static final Logger LOG = LoggerFactory.getLogger(RestResponseEntityExceptionHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RestResponseEntityExceptionHandler.class);
 
     /**
      * Catch all for any other exceptions...
@@ -37,6 +36,9 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     @ExceptionHandler({Exception.class})
     @ResponseBody
     public ResponseEntity<Object> handleAnyException(Exception e) {
+
+        LOGGER.error("Exception caught: {}", e);
+
         ExceptionMessage exceptionMessage = new ExceptionMessageBuilder()
                 .setStatus(INTERNAL_SERVER_ERROR.value())
                 .setException(INTERNAL_SERVER_ERROR.getReasonPhrase())
@@ -44,16 +46,19 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
                 .setTimestamp(LocalDate.now())
                 .setMessage(e.getMessage()).createExceptionMessage();
 
-        return errorResponse(exceptionMessage, INTERNAL_SERVER_ERROR);
+        return response(exceptionMessage, INTERNAL_SERVER_ERROR);
     }
 
     /**
      * Handle failures commonly thrown from code
      */
-    @ExceptionHandler({InvocationTargetException.class, IllegalArgumentException.class, ClassCastException.class,
+    @ExceptionHandler({InvocationTargetException.class, IllegalArgumentException.class,
+            ClassCastException.class,
             ConversionFailedException.class})
     @ResponseBody
     public ResponseEntity handleMiscFailures(Throwable t) {
+
+        LOGGER.error("Misc Exception caught: {}", t);
 
         ExceptionMessage exceptionMessage = new ExceptionMessageBuilder()
                 .setStatus(BAD_REQUEST.value())
@@ -62,16 +67,19 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
                 .setTimestamp(LocalDate.now())
                 .setMessage(t.getMessage()).createExceptionMessage();
 
-        return errorResponse(exceptionMessage, BAD_REQUEST);
+        return response(exceptionMessage, BAD_REQUEST);
     }
 
     /**
      * Send a 409 Conflict in case of concurrent modification
      */
-    @ExceptionHandler({ObjectOptimisticLockingFailureException.class, OptimisticLockingFailureException.class,
+    @ExceptionHandler({ObjectOptimisticLockingFailureException.class,
+            OptimisticLockingFailureException.class,
             DataIntegrityViolationException.class})
     @ResponseBody
     public ResponseEntity handleConflict(Exception ex) {
+
+        LOGGER.error("Conflict Exception caught: {}", ex);
 
         ExceptionMessage response = new ExceptionMessageBuilder()
                 .setStatus(CONFLICT.value())
@@ -80,27 +88,18 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
                 .setMessage(ex.getMessage())
                 .setTimestamp(LocalDate.now()).createExceptionMessage();
 
-        return errorResponse(response, CONFLICT);
-    }
-
-    protected ResponseEntity<Object> errorResponse(ExceptionMessage response,
-                                                   HttpStatus status) {
-        if (Objects.nonNull(response)) {
-            LOG.error("error caught: {}", response);
-            return response(response, status);
-        } else {
-            LOG.error("unknown error caught in RESTController, {}", status);
-            return response(null, status);
-        }
+        return response(response, CONFLICT);
     }
 
     protected <T> ResponseEntity<T> response(T body, HttpStatus status) {
-        LOG.debug("Responding with a status of {}", status);
+        LOGGER.debug("Responding with a status of {}", status);
         return new ResponseEntity<>(body, new HttpHeaders(), status);
     }
 
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+                                                                  HttpHeaders headers, HttpStatus status,
+                                                                  WebRequest request) {
 
         List<FieldErrorMessage> fieldErrors = ex.getBindingResult().getFieldErrors().stream().map(fieldError ->
                 new FieldErrorMessage(
@@ -116,7 +115,8 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
                 .setTimestamp(LocalDate.now())
                 .setMessage(ex.getMessage())
                 .setErrors(fieldErrors).createExceptionMessage();
-        return errorResponse(response, BAD_REQUEST);
+
+        return response(response, BAD_REQUEST);
 
     }
 
