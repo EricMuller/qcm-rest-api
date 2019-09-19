@@ -1,9 +1,9 @@
-package com.emu.apps.qcm.web.rest;
+package com.emu.apps.qcm.web.reactive;
 
 import com.emu.apps.qcm.services.jpa.entity.questions.Question;
-import com.emu.apps.qcm.web.rest.caches.CacheName;
 import com.emu.apps.qcm.web.dtos.QuestionDto;
 import com.emu.apps.qcm.web.dtos.question.QuestionTagsDto;
+import com.emu.apps.qcm.web.rest.caches.CacheName;
 import com.emu.apps.shared.metrics.Timer;
 import io.swagger.annotations.*;
 import org.springframework.cache.annotation.CacheEvict;
@@ -12,17 +12,19 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
 import java.security.Principal;
 
 @CrossOrigin
-@RequestMapping(QcmApi.API_V1 + "/questions")
+@RequestMapping(QcmReactiveApi.API_V1 + "/questions")
 @Api(value = "questions-store",  tags = "Questions")
 @SwaggerDefinition(tags = {
         @Tag(name = "Questions", description = "All operations ")
 })
-public interface QuestionRestApi {
+public interface QuestionReactiveApi {
     @ApiOperation(value = "Find all questions  by Page", responseContainer = "List", response = QuestionDto.class, nickname = "getQuestions")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page", dataType = "integer", paramType = "query", value = "Results page you want to retrieve (0..N)"),
@@ -39,7 +41,7 @@ public interface QuestionRestApi {
     )
     @GetMapping(produces = "application/json")
     @Timer
-    Iterable<QuestionTagsDto> getQuestions(@ApiParam(value = "Identifiant du tag") @RequestParam(value = "tag_id", required = false) Long[] tagIds,
+    Flux<Iterable<QuestionTagsDto>> getQuestions(@ApiParam(value = "Identifiant du tag") @RequestParam(value = "tag_id", required = false) Long[] tagIds,
                                                   @ApiParam(value = "Identifiant du questionnaire") @RequestParam(value = "questionnaire_id", required = false) Long[] questionnaireIds,
                                                   Pageable pageable, Principal principal)  ;
 
@@ -48,22 +50,24 @@ public interface QuestionRestApi {
     @ResponseBody
     @Timer
     @Cacheable(cacheNames = CacheName.Names.QUESTION, key = "#id")
-    QuestionDto getQuestionById(@PathVariable("id") long id);
+    Mono<QuestionDto> getQuestionById(@PathVariable("id") long id);
 
     @ApiOperation(value = "Update a question", response = Question.class, nickname = "updateQuestion")
     @PutMapping
     @ResponseBody
     @CachePut(cacheNames = CacheName.Names.QUESTION, condition = "#questionDto != null", key = "#questionDto.id")
-    QuestionDto updateQuestion(@RequestBody @Valid QuestionDto questionDto, Principal principal);
+    Mono<QuestionDto> updateQuestion(@RequestBody @Valid QuestionDto questionDto, Principal principal);
 
     @ApiOperation(value = "Save a question", response = QuestionDto.class, nickname = "saveQuestion")
     @PostMapping
     @ResponseBody
-    QuestionDto saveQuestion(@RequestBody QuestionDto questionDto, Principal principal);
+    Mono<QuestionDto> saveQuestion(@RequestBody QuestionDto questionDto, Principal principal);
 
     @ApiOperation(value = "Delete a question by ID", response = ResponseEntity.class, nickname = "deleteQuestionById")
     @DeleteMapping(value = "/{id}")
     @ResponseBody
     @CacheEvict(cacheNames = CacheName.Names.QUESTION, condition = "#questionDto != null", key = "#questionDto.id")
-    ResponseEntity<Question> deleteQuestionnaireById(@PathVariable("id") long id);
+    Mono<ResponseEntity<Question>> deleteQuestionnaireById(@PathVariable("id") long id);
+
+
 }

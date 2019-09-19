@@ -1,8 +1,8 @@
 package com.emu.apps.qcm.web.rest;
 
 import com.emu.apps.qcm.services.jpa.entity.upload.Upload;
-import com.emu.apps.qcm.web.rest.dtos.MessageDto;
-import com.emu.apps.qcm.web.rest.dtos.UploadDto;
+import com.emu.apps.qcm.web.dtos.MessageDto;
+import com.emu.apps.qcm.web.dtos.UploadDto;
 import com.emu.apps.shared.metrics.Timer;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Pageable;

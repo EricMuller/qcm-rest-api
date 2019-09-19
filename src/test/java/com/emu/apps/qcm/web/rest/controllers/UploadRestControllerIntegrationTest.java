@@ -2,8 +2,8 @@ package com.emu.apps.qcm.web.rest.controllers;
 
 import com.emu.apps.H2TestProfileJPAConfig;
 import com.emu.apps.qcm.web.rest.QcmApi;
-import com.emu.apps.qcm.web.rest.dtos.PageDto;
-import com.emu.apps.qcm.web.rest.dtos.QuestionnaireDto;
+import com.emu.apps.qcm.web.dtos.PageDto;
+import com.emu.apps.qcm.web.dtos.QuestionnaireDto;
 import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.*;

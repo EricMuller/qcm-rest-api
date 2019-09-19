@@ -1,8 +1,8 @@
-package com.emu.apps.qcm.web.rest.mappers;
+package com.emu.apps.qcm.web.mappers;
 
 
 import com.emu.apps.qcm.services.jpa.entity.questions.Question;
-import com.emu.apps.qcm.web.rest.dtos.FileQuestionDto;
+import com.emu.apps.qcm.web.dtos.FileQuestionDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 

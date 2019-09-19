@@ -1,4 +1,4 @@
-package com.emu.apps.qcm.web.rest.dtos;
+package com.emu.apps.qcm.web.dtos;
 
 
 import com.emu.apps.qcm.services.jpa.entity.Status;

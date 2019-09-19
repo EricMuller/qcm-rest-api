@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.web.rest;
 
-import com.emu.apps.qcm.web.rest.dtos.CategoryDto;
+import com.emu.apps.qcm.web.dtos.CategoryDto;
 import io.swagger.annotations.*;
 import org.springframework.web.bind.annotation.*;
 

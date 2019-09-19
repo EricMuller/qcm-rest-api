@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.web.rest;
 
-import com.emu.apps.qcm.web.rest.dtos.TagDto;
+import com.emu.apps.qcm.web.dtos.TagDto;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

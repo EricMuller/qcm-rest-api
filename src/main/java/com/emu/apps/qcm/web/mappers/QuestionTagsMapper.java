@@ -1,7 +1,7 @@
-package com.emu.apps.qcm.web.rest.mappers;
+package com.emu.apps.qcm.web.mappers;
 
 import com.emu.apps.qcm.services.jpa.entity.questions.Question;
-import com.emu.apps.qcm.web.rest.dtos.question.QuestionTagsDto;
+import com.emu.apps.qcm.web.dtos.question.QuestionTagsDto;
 import org.mapstruct.Mapper;
 import org.springframework.data.domain.Page;
 

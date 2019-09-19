@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.services;
 
-import com.emu.apps.qcm.web.rest.dtos.FileQuestionDto;
+import com.emu.apps.qcm.web.dtos.FileQuestionDto;
 
 import java.security.Principal;
 

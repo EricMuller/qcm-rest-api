@@ -1,12 +1,8 @@
 package com.emu.apps.qcm.web.mappers;
 
 import com.emu.apps.qcm.services.jpa.entity.questions.Question;
-import com.emu.apps.qcm.web.rest.dtos.QuestionDto;
-import com.emu.apps.qcm.web.rest.dtos.QuestionTagDto;
-import com.emu.apps.qcm.web.rest.mappers.QuestionMapper;
-import com.emu.apps.qcm.web.rest.mappers.QuestionMapperImpl;
-import com.emu.apps.qcm.web.rest.mappers.QuestionTagMapperImpl;
-import com.emu.apps.qcm.web.rest.mappers.ResponseMapperImpl;
+import com.emu.apps.qcm.web.dtos.QuestionDto;
+import com.emu.apps.qcm.web.dtos.QuestionTagDto;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;

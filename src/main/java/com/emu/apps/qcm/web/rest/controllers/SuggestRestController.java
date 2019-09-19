@@ -3,8 +3,8 @@ package com.emu.apps.qcm.web.rest.controllers;
 
 import com.emu.apps.qcm.services.QuestionnaireService;
 import com.emu.apps.qcm.web.rest.SuggestRestApi;
-import com.emu.apps.qcm.web.rest.dtos.SuggestDto;
-import com.emu.apps.qcm.web.rest.mappers.SuggestMapper;
+import com.emu.apps.qcm.web.dtos.SuggestDto;
+import com.emu.apps.qcm.web.mappers.SuggestMapper;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

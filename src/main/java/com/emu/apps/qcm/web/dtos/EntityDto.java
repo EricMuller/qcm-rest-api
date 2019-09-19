@@ -1,4 +1,4 @@
-package com.emu.apps.qcm.web.rest.dtos;
+package com.emu.apps.qcm.web.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;

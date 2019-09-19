@@ -2,9 +2,9 @@ package com.emu.apps.qcm.web.rest.controllers;
 
 
 import com.emu.apps.qcm.web.rest.QcmApi;
-import com.emu.apps.qcm.web.rest.dtos.QuestionDto;
-import com.emu.apps.qcm.web.rest.dtos.QuestionTagDto;
-import com.emu.apps.qcm.web.rest.dtos.ResponseDto;
+import com.emu.apps.qcm.web.dtos.QuestionDto;
+import com.emu.apps.qcm.web.dtos.QuestionTagDto;
+import com.emu.apps.qcm.web.dtos.ResponseDto;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 import org.junit.Test;

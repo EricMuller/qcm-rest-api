@@ -1,8 +1,8 @@
-package com.emu.apps.qcm.web.rest.mappers;
+package com.emu.apps.qcm.web.mappers;
 
 
 import com.emu.apps.qcm.services.jpa.entity.tags.Tag;
-import com.emu.apps.qcm.web.rest.dtos.TagDto;
+import com.emu.apps.qcm.web.dtos.TagDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import org.springframework.data.domain.Page;

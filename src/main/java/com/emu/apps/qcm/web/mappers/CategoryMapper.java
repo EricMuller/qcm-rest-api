@@ -1,7 +1,7 @@
-package com.emu.apps.qcm.web.rest.mappers;
+package com.emu.apps.qcm.web.mappers;
 
 import com.emu.apps.qcm.services.jpa.entity.category.Category;
-import com.emu.apps.qcm.web.rest.dtos.CategoryDto;
+import com.emu.apps.qcm.web.dtos.CategoryDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 

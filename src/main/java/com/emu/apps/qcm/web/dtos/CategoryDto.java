@@ -1,4 +1,4 @@
-package com.emu.apps.qcm.web.rest.dtos;
+package com.emu.apps.qcm.web.dtos;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,15 +11,19 @@ import lombok.Setter;
 /**
  * Created by eric on 05/06/2017.
  */
-@ApiModel(value = "Tag")
+@ApiModel(value = "Category")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TagDto extends EntityDto {
+public class CategoryDto {
+
+    @JsonProperty("id")
+    private String id;
 
     @JsonProperty("libelle")
     private String libelle;
+
 
 
 }

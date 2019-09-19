@@ -5,18 +5,17 @@ import com.emu.apps.qcm.services.QuestionTagService;
 import com.emu.apps.qcm.services.jpa.entity.questions.Question;
 import com.emu.apps.qcm.services.jpa.entity.tags.QuestionTag;
 import com.emu.apps.qcm.services.jpa.specifications.QuestionSpecificationBuilder;
+import com.emu.apps.qcm.web.dtos.MessageDto;
+import com.emu.apps.qcm.web.dtos.QuestionDto;
+import com.emu.apps.qcm.web.dtos.question.QuestionTagsDto;
+import com.emu.apps.qcm.web.mappers.QuestionMapper;
+import com.emu.apps.qcm.web.mappers.QuestionTagMapper;
 import com.emu.apps.qcm.web.rest.QuestionRestApi;
-import com.emu.apps.qcm.web.rest.dtos.MessageDto;
-import com.emu.apps.qcm.web.rest.dtos.QuestionDto;
-import com.emu.apps.qcm.web.rest.dtos.question.QuestionTagsDto;
-import com.emu.apps.qcm.web.rest.mappers.QuestionMapper;
-import com.emu.apps.qcm.web.rest.mappers.QuestionTagMapper;
 import com.emu.apps.shared.metrics.Timer;
 import com.emu.apps.shared.web.rest.exceptions.utils.ExceptionUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -98,7 +97,7 @@ public class QuestionRestController implements QuestionRestApi {
 
     @ExceptionHandler({JsonProcessingException.class, IOException.class})
     public ResponseEntity<MessageDto> handleAllException(Exception e) {
-        return new ResponseEntity<>(new MessageDto(e.getMessage()), HttpStatus.BAD_REQUEST);
+        return  ResponseEntity.badRequest().body(new MessageDto(e.getMessage()));
     }
 
     @Override
@@ -106,7 +105,7 @@ public class QuestionRestController implements QuestionRestApi {
         Optional<Question> questionOptional = questionService.findById(id);
         ExceptionUtil.assertIsPresent(questionOptional, String.valueOf(id));
         questionService.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
 
 }

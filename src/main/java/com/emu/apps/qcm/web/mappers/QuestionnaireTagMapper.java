@@ -1,7 +1,7 @@
-package com.emu.apps.qcm.web.rest.mappers;
+package com.emu.apps.qcm.web.mappers;
 
 import com.emu.apps.qcm.services.jpa.entity.tags.QuestionnaireTag;
-import com.emu.apps.qcm.web.rest.dtos.QuestionnaireTagDto;
+import com.emu.apps.qcm.web.dtos.QuestionnaireTagDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;

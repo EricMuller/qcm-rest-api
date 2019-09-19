@@ -1,7 +1,7 @@
-package com.emu.apps.qcm.web.rest.dtos.question;
+package com.emu.apps.qcm.web.dtos.question;
 
 
-import com.emu.apps.qcm.web.rest.dtos.QuestionTagDto;
+import com.emu.apps.qcm.web.dtos.QuestionTagDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 

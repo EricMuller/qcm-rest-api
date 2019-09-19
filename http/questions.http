@@ -20,6 +20,12 @@ Content-Type: application/json
 Authorization: {{auth_token}}
 
 ###
+GET http://{{host}}:{{port}}//qcm/api/reactive/v1/questions
+Accept: application/json
+Content-Type: application/json
+Authorization: {{auth_token}}
+
+###
 GET http://{{host}}:{{port}}/users/api/v1/users/me
 Accept: application/json
 Content-Type: application/json
