@@ -33,7 +33,6 @@ qcm-rest-api uses a number of open source projects to work properly:
 * [MapStruct] - code generator that greatly simplifies the implementation of mappings between Java bean types  
 * [keycloak] - an open source identity and access management solution
 * [Lombok] - Never write another getter or equals method again
-* [SpringFoxSwagger] - Automated JSON API documentation for API's built with Spring
 * [JaCoCo] - JaCoCo is a free code coverage library for Java,.
 
 ### Continuous integration
@@ -43,6 +42,10 @@ qcm-rest-api uses a number of open source projects to work properly:
 * [SonarQube] - SonarQube on [sonarcloud.io](https://sonarcloud.io/about) is an open-source platform for continuous inspection of code quality.
 * [Heroku] - Fully managed container-based cloud platform, with integrated data services. [heroku.com](https://www.heroku.com)
 * [Snyk] - Finding & fixing vulnerabilities in your dependencies. [snyk.io](https://snyk.io)
+
+### Tooling
+
+* [SwaggerHub] - Collaborative platform where you can define your APIs using the OpenAPI Specification (https://app.swaggerhub.com)
 
 ### Installation
 
