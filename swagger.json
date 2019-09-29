@@ -219,7 +219,10 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/IterableQuestionnaireDto"
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/QuestionnaireDto"
+                  }
                 }
               }
             }
@@ -1272,27 +1275,6 @@
           }
         },
         "title" : "CategoryDto"
-      },
-      "IterableQuestionnaireDto" : {
-        "type" : "array",
-        "items" : {
-          "$ref" : "#/components/schemas/QuestionnaireDto"
-        },
-        "title" : "IterableQuestionnaireDto"
-      },
-      "IterableQuestionTagsDto" : {
-        "type" : "array",
-        "items" : {
-          "$ref" : "#/components/schemas/QuestionTagsDto"
-        },
-        "title" : "IterableQuestionTagsDto"
-      },
-      "IterableQuestionDto" : {
-        "type" : "array",
-        "items" : {
-          "$ref" : "#/components/schemas/QuestionDto"
-        },
-        "title" : "IterableQuestionDto"
       },
       "MessageDto" : {
         "type" : "object",
