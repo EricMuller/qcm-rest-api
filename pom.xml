@@ -223,6 +223,7 @@
                 <version>3.0.1</version>
                 <configuration>
                     <generateGitPropertiesFile>true</generateGitPropertiesFile>
+                    <failOnNoGitDirectory>false</failOnNoGitDirectory>
                 </configuration>
                 <executions>
                     <execution>
