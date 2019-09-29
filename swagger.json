@@ -219,10 +219,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "type" : "array",
-                  "items" : {
-                    "$ref" : "#/components/schemas/QuestionnaireDto"
-                  }
+                  "$ref" : "#/components/schemas/PageQuestionnaireDto"
                 }
               }
             }
@@ -858,7 +855,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/PageTag"
+                  "$ref" : "#/components/schemas/PageTagDto"
                 }
               }
             }
@@ -1302,6 +1299,53 @@
         },
         "title" : "Pageable"
       },
+      "PageQuestionnaireDto" : {
+        "type" : "object",
+        "properties" : {
+          "content" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/QuestionnaireDto"
+            }
+          },
+          "empty" : {
+            "type" : "boolean"
+          },
+          "first" : {
+            "type" : "boolean"
+          },
+          "last" : {
+            "type" : "boolean"
+          },
+          "number" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "numberOfElements" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "pageable" : {
+            "$ref" : "#/components/schemas/Pageable"
+          },
+          "size" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "sort" : {
+            "$ref" : "#/components/schemas/Sort"
+          },
+          "totalElements" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "totalPages" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        },
+        "title" : "PageQuestionnaireDto"
+      },
       "PageQuestionDto" : {
         "type" : "object",
         "properties" : {
@@ -1349,7 +1393,7 @@
         },
         "title" : "PageQuestionDto"
       },
-      "PageTag" : {
+      "PageTagDto" : {
         "type" : "object",
         "properties" : {
           "content" : {
@@ -1394,7 +1438,7 @@
             "format" : "int32"
           }
         },
-        "title" : "PageTag"
+        "title" : "PageTagDto"
       },
       "QuestionTagDto" : {
         "type" : "object",
