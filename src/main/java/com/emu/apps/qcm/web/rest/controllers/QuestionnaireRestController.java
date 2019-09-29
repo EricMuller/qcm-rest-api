@@ -9,14 +9,13 @@ import com.emu.apps.qcm.services.jpa.entity.questionnaires.QuestionnaireQuestion
 import com.emu.apps.qcm.services.jpa.entity.questions.Question;
 import com.emu.apps.qcm.services.jpa.entity.tags.QuestionnaireTag;
 import com.emu.apps.qcm.services.jpa.specifications.QuestionnaireSpecificationBuilder;
-import com.emu.apps.qcm.web.rest.QuestionnaireRestApi;
 import com.emu.apps.qcm.web.dtos.QuestionDto;
 import com.emu.apps.qcm.web.dtos.QuestionnaireDto;
 import com.emu.apps.qcm.web.mappers.QuestionMapper;
 import com.emu.apps.qcm.web.mappers.QuestionnaireMapper;
 import com.emu.apps.qcm.web.mappers.QuestionnaireTagMapper;
+import com.emu.apps.qcm.web.rest.QuestionnaireRestApi;
 import com.emu.apps.shared.web.rest.exceptions.utils.ExceptionUtil;
-import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
+
 
 @RestController
 public class QuestionnaireRestController implements QuestionnaireRestApi {
@@ -100,8 +100,10 @@ public class QuestionnaireRestController implements QuestionnaireRestApi {
     }
 
     @Override
-    public Page<QuestionDto> getQuestionsByQuestionnaireId(@PathVariable("id") @ApiParam(value = "ID of the Questionnaire") long id, Pageable pageable) {
+//    public Page<QuestionDto> getQuestionsByQuestionnaireId(@PathVariable("id") @ApiParam(value = "ID of the Questionnaire") long id, Pageable pageable) {
+    public Page<QuestionDto> getQuestionsByQuestionnaireId(@PathVariable("id") long id, Pageable pageable) {
         return questionMapper.pageQuestionResponseProjectionToDto(questionService.getQuestionsProjectionByQuestionnaireId(id, pageable));
+
     }
 
 
@@ -120,8 +122,8 @@ public class QuestionnaireRestController implements QuestionnaireRestApi {
     }
 
     @Override
-    public QuestionDto updateQuestionnaire(@PathVariable("id") @ApiParam(value = "ID of the Questionnaire") long id, @RequestBody QuestionDto questionDto) {
-
+//    public QuestionDto updateQuestionnaire(@PathVariable("id") @ApiParam(value = "ID of the Questionnaire") long id, @RequestBody QuestionDto questionDto) {
+        public QuestionDto updateQuestionnaire(@PathVariable("id") long id, @RequestBody QuestionDto questionDto) {
         Questionnaire questionnaire = questionnairesService.findOne(id);
         ExceptionUtil.assertIsPresent(questionnaire, "Questionnaire Not found");
         Question question = questionService.findById(questionDto.getId()).orElse(null);

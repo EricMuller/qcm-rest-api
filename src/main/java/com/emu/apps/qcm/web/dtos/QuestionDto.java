@@ -4,7 +4,6 @@ package com.emu.apps.qcm.web.dtos;
 import com.emu.apps.qcm.services.jpa.entity.Status;
 import com.emu.apps.qcm.services.jpa.entity.questions.Type;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +17,6 @@ import java.util.Set;
 /**
  * Created by eric on 05/06/2017.
  */
-@ApiModel(value = "Question")
 @Getter
 @Setter
 @NoArgsConstructor

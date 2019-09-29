@@ -1,7 +1,6 @@
 package com.emu.apps.shared.parsers.rsql;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,15 +12,15 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Criteria {
 
-    @ApiModelProperty(notes = "Criteria name")
+//    @ApiModelProperty(notes = "Criteria name")
     @JsonProperty("name")
     private String name;
 
-    @ApiModelProperty(notes = "Criteria Operation")
+//    @ApiModelProperty(notes = "Criteria Operation")
     @JsonProperty("operation")
     private Operator operation;
 
-    @ApiModelProperty(notes = "Criteria value")
+//    @ApiModelProperty(notes = "Criteria value")
     @JsonProperty("value")
     private String value;
 

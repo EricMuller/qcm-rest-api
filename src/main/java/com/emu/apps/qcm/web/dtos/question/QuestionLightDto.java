@@ -3,32 +3,23 @@ package com.emu.apps.qcm.web.dtos.question;
 
 import com.emu.apps.qcm.services.jpa.entity.questions.Type;
 import com.emu.apps.qcm.web.dtos.EntityDto;
-import io.swagger.annotations.ApiModel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Created by eric on 05/06/2017.
  */
-@ApiModel(value = "Question")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class QuestionLightDto extends EntityDto {
 
     private String question;
 
     private Type type;
 
-    public String getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(String question) {
-        this.question = question;
-    }
-
-    public Type getType() {
-        return type;
-    }
-
-    public void setType(Type type) {
-        this.type = type;
-    }
 
 }
