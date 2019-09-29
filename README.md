@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.com/EricMuller/qcm-rest-api.svg?branch=master)](https://travis-ci.com/EricMuller/qcm-rest-api)[![License](http://img.shields.io/:license-mit-blue.svg)](https://opensource.org/licenses/mit-license.php)[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=com.emu.apps.qcm%3Aqcm-rest-api&metric=alert_status)](https://sonarcloud.io/dashboard/index/com.emu.apps.qcm:qcm-rest-api) [![Known Vulnerabilities](https://snyk.io/test/github/EricMuller/qcm-rest-api/badge.svg)](https://snyk.io/test/github/EricMuller/qcm-rest-api)[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/2888/badge)](https://bestpractices.coreinfrastructure.org/projects/2888) 
 
 
-Qcm api is a sample QCM Rest API.
+qcm-rest-api is a sample QCM Rest API.
 
 
 You can also:
@@ -43,13 +43,13 @@ qcm-rest-api uses a number of open source projects to work properly:
 * [Heroku] - Fully managed container-based cloud platform, with integrated data services. [heroku.com](https://www.heroku.com)
 * [Snyk] - Finding & fixing vulnerabilities in your dependencies. [snyk.io](https://snyk.io)
 
-### Tooling
+### Documentations
 
-* [SwaggerHub] - Collaborative platform where you can define your APIs using the OpenAPI Specification (https://app.swaggerhub.com)
+* [SwaggerHub](https://app.swaggerhub.com/apis-docs/ericmuller/qcm-rest-api/2-oas) - Collaborative platform where you can define your APIs using the OpenAPI Specification (https://app.swaggerhub.com)
 
 ### Installation
 
-OpenQcm Api requires [MAVEN](https://maven.apache.org/) v3.3+ to run.
+qcm-rest-api requires [MAVEN](https://maven.apache.org/) v3.3+ to run.
 
 Install the dependencies and devDependencies and start the server.
 
@@ -65,11 +65,9 @@ Verify the deployment by navigating to your server address in your preferred bro
 http://127.0.0.1:8080/swagger-ui.html#/
 ```
 
-
 ### Deploy
 
 <a href="https://qcm-rest-api.herokuapp.com/swagger-ui.html#" target="_blank">![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)</a>
-
 
 
 ```sh
