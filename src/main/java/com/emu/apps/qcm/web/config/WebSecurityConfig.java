@@ -117,8 +117,11 @@ class WebSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(QcmApi.API_V1 + "/**").authenticated()
                 .antMatchers(UserApi.API_V1 + "/**").authenticated()
+//                .antMatchers("/info/**").permitAll()
                 .anyRequest().permitAll();
 
     }
+
+
 
 }

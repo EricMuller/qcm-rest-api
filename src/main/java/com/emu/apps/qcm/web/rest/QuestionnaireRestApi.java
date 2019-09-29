@@ -5,7 +5,6 @@ import com.emu.apps.qcm.web.dtos.QuestionDto;
 import com.emu.apps.qcm.web.dtos.QuestionnaireDto;
 import com.emu.apps.qcm.web.rest.caches.CacheName;
 import com.emu.apps.shared.metrics.Timer;
-import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -24,7 +23,7 @@ public interface QuestionnaireRestApi {
     @ResponseBody
     @Timer
     @Cacheable(cacheNames = CacheName.Names.QUESTIONNAIRE, key = "#id")
-    QuestionnaireDto getQuestionnaireById(@Parameter(description = "Questionnaire Id", required = true) @PathVariable("id") long id);
+    QuestionnaireDto getQuestionnaireById(@PathVariable("id") long id);
 
     @DeleteMapping(value = "/{id}")
     @ResponseBody
@@ -48,7 +47,7 @@ public interface QuestionnaireRestApi {
     @ResponseBody
     @GetMapping(produces = "application/json")
     @Timer
-    Iterable<QuestionnaireDto> getQuestionnaires(@Parameter(description = "Identifiant Tag(s)", required = true) @RequestParam(value = "tag_id", required = false) Long[] tagIds,
+    Page<QuestionnaireDto> getQuestionnaires(@RequestParam(value = "tag_id", required = false) Long[] tagIds,
                                                         Pageable pageable, Principal principal);
 
     @PutMapping(value = "/{id}/questions")

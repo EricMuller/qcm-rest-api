@@ -174,12 +174,6 @@
             <artifactId>mapstruct</artifactId>
         </dependency>
 
-        <!-- swagger -->
-
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-ui</artifactId>
-        </dependency>
 
         <!-- guava -->
         <dependency>

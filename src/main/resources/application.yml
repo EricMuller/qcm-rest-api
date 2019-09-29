@@ -1,5 +1,5 @@
 info:
-  application-name: qcm-designer-api
+  application-name: qcm-rest-api
 
 logging:
   # file: logs/application-debug.LOGGER
@@ -41,11 +41,6 @@ server:
   servlet:
     context-path: /
 
-springdoc:
-  api-docs:
-    path: /v3/api-docs
-  swagger-ui:
-    path: /swagger-ui.html
-  version: '@springdoc.version@'
+
 
 maven.version: @project.version@

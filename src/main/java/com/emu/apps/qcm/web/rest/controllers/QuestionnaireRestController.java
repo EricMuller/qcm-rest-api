@@ -108,7 +108,7 @@ public class QuestionnaireRestController implements QuestionnaireRestApi {
 
 
     @Override
-    public Iterable<QuestionnaireDto> getQuestionnaires(@RequestParam(value = "tag_id", required = false) Long[] tagIds,
+    public Page<QuestionnaireDto> getQuestionnaires(@RequestParam(value = "tag_id", required = false) Long[] tagIds,
                                                         Pageable pageable, Principal principal)  {
 
 
