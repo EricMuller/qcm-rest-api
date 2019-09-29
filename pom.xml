@@ -222,8 +222,32 @@
                 <artifactId>git-commit-id-plugin</artifactId>
                 <version>3.0.1</version>
                 <configuration>
+                    <verbose>true</verbose>
+                    <skip>false</skip>
+                    <prefix>git</prefix>
+                    <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
                     <generateGitPropertiesFile>true</generateGitPropertiesFile>
+                    <generateGitPropertiesFilename>target/testing.properties</generateGitPropertiesFilename>
+                    <dateFormat>dd.MM.yyyy '@' HH:mm:ss z</dateFormat>
+                    <dateFormatTimeZone>GMT-08:00</dateFormatTimeZone>
+                    <useNativeGit>false</useNativeGit>
+                    <abbrevLength>7</abbrevLength>
+                    <format>properties</format>
+                    <injectAllReactorProjects>true</injectAllReactorProjects>
+                    <gitDescribe>
+                        <skip>false</skip>
+                        <always>false</always>
+                        <abbrev>7</abbrev>
+                        <match>*</match>
+                        <dirty>-DEVEL</dirty>
+                        <forceLongFormat>false</forceLongFormat>
+                    </gitDescribe>
+                    <excludeProperties>
+                        <excludeProperty>git.commit.*</excludeProperty>
+                        <excludeProperty>git.remote.origin.url</excludeProperty>
+                    </excludeProperties>
                     <failOnNoGitDirectory>false</failOnNoGitDirectory>
+                    <failOnUnableToExtractRepoInfo>true</failOnUnableToExtractRepoInfo>
                 </configuration>
                 <executions>
                     <execution>
