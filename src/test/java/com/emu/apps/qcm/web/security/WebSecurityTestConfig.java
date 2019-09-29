@@ -14,17 +14,15 @@ public class WebSecurityTestConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.authorizeRequests()
-                .anyRequest().authenticated();
 
-
-        httpSecurity.csrf().disable().authorizeRequests();
+        httpSecurity.csrf().disable();
 
         httpSecurity.authorizeRequests().antMatchers("/").hasRole("USER")
                 .and()
                 .httpBasic();
-    }
+        httpSecurity.authorizeRequests().anyRequest().authenticated();
 
+    }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {

@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.services.jpa.entity.common;
 
-import io.swagger.annotations.ApiModelProperty;
+
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -15,7 +15,7 @@ public abstract class RefEntity implements ID {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @ApiModelProperty(notes = "The database generated Question ID")
+//    @ApiModelProperty(notes = "The database generated Question ID")
     private Long id;
 
     @Column(unique = true, name = "uuid", nullable = false)

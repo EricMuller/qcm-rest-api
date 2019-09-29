@@ -3,7 +3,6 @@ package com.emu.apps.qcm.web.dtos;
 import com.emu.apps.qcm.services.jpa.entity.Status;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +11,6 @@ import lombok.Setter;
 import java.util.Set;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@ApiModel(value = "Questionnaire")
 @Getter
 @Setter
 @NoArgsConstructor
