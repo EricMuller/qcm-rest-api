@@ -45,7 +45,7 @@ qcm-rest-api uses a number of open source projects to work properly:
 
 ### Documentations
 
-* [SwaggerHub](https://app.swaggerhub.com/apis-docs/ericmuller/qcm-rest-api/2-oas) - Collaborative platform where you can define your APIs using the OpenAPI Specification (https://app.swaggerhub.com)
+* [SwaggerHub](https://app.swaggerhub.com/apis-docs/ericmuller/qcm-rest-api/2-oas3) - Collaborative platform where you can define your APIs using the OpenAPI Specification
 
 ### Installation
 
