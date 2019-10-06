@@ -23,13 +23,14 @@ You can also:
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=com.emu.apps.qcm%3Aqcm-rest-api&metric=vulnerabilities)](https://sonarcloud.io/component_measures?id=com.emu.apps.qcm%3Aqcm-rest-api&metric=vulnerabilities)
 
 
-
 ### Tech
 
 qcm-rest-api uses a number of open source projects to work properly:
 
 * [SpringBoot] - Create stand-alone backend Spring applications
-* [Spring Data JPA]  - provides repository support for the Java Persistence API (JPA)
+* [Spring WebFlux] - Reactive-stack web framework 
+* [Spring Data JPA]  - Provides repository support for the Java Persistence API (JPA)
+* [Apache Kafka] - Distributed streaming platform
 * [MapStruct] - code generator that greatly simplifies the implementation of mappings between Java bean types  
 * [keycloak] - an open source identity and access management solution
 * [Lombok] - Never write another getter or equals method again

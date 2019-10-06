@@ -1,0 +1,72 @@
+info:
+  application-name: qcm-rest-api
+
+logging:
+  level:
+    root: WARN
+    org.springframework: WARN
+    # org.springframework.web: INFO
+    org.springframework.web.reactive: DEBUG
+    org.springframework.security: DEBUG
+    org.hibernate: WARN
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql: DEBUG
+    com.emu.apps: WARN
+    org.keycloak.services: WARN
+    org.springframework.aop.interceptor.PerformanceMonitorInterceptor: TRACE
+    com.zaxxer.hikari.pool.HikariPool: INFO
+    com.zaxxer.hikari: INFO
+    org.springframework.boot.web.embedded.tomcat.TomcatWebServer: INFO
+  file:
+    name: logs/application.log
+
+spring:
+  resources:
+    cache:
+      period: 31536000
+      cachecontrol:
+        max-age: 31536000
+    chain:
+      html-application-cache: true
+      enabled: true
+      strategy:
+        content:
+          enabled: true
+          paths: /webjars/swagger-ui/**.*
+
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuer-uri: https://keycloak.webmarks.net/auth/realms/qcm
+        #            authorization-uri: https://keycloak.webmarks.net/auth/realms/qcm/protocol/openid-connect/auth
+        #            token-uri: https://keycloak.webmarks.net/auth/realms/qcm/protocol/openid-connect/token
+        #            user-info-uri: https://keycloak.webmarks.net/auth/realms/qcm/protocol/openid-connect/userinfo
+        #            jwk-set-uri: https://keycloak.webmarks.net/auth/realms/qcm/protocol/openid-connect/certs
+        #            user-name-attribute: preferred_username
+        registration:
+          keycloak:
+            client-id: qcm-rest-api
+            client-secret: 4eab5725-f8c1-4758-80c4-7ec8ac484bcd
+
+      resourceserver:
+        jwt:
+          issuer-uri: https://keycloak.webmarks.net/auth/realms/qcm
+
+
+server:
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+    min-response-size: 1024
+  http2:
+    enabled: true
+  servlet:
+    context-path: /
+
+
+
+maven.version: @project.version@
+
+
