@@ -40,7 +40,7 @@
     <groupId>com.emu.apps.qcm</groupId>
     <artifactId>qcm-reactive</artifactId>
 
-    <name>Qcm Weblux</name>
+    <name>Qcm Reactive API</name>
     <description>Qcm Weblux</description>
 
     <dependencies>

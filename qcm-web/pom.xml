@@ -41,7 +41,7 @@
     <artifactId>qcm-web</artifactId>
 
     <name>Qcm Web</name>
-    <description>Qcm Web</description>
+    <description>Qcm Rest API</description>
 
     <dependencies>
 
@@ -99,9 +99,10 @@
         </dependency>
 
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
+
 
         <!-- security -->
 
@@ -129,6 +130,12 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <!--  tools  -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
         </dependency>
 
         <dependency>
