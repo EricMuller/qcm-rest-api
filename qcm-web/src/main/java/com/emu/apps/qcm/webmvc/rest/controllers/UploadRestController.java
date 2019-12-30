@@ -5,6 +5,7 @@ import com.emu.apps.qcm.services.UploadService;
 import com.emu.apps.qcm.services.exceptions.ExceptionUtil;
 import com.emu.apps.qcm.services.jpa.entity.upload.Upload;
 import com.emu.apps.qcm.services.jpa.specifications.UploadSpecificationBuilder;
+import com.emu.apps.qcm.shared.security.PrincipalUtils;
 import com.emu.apps.qcm.web.dtos.FileQuestionDto;
 import com.emu.apps.qcm.web.dtos.MessageDto;
 import com.emu.apps.qcm.web.dtos.UploadDto;
@@ -75,7 +76,7 @@ public class UploadRestController implements UploadRestApi {
     public Iterable <UploadDto> getUploads(Pageable pageable, Principal principal) {
 
         var uploadSpecificationBuilder = new UploadSpecificationBuilder();
-        uploadSpecificationBuilder.setPrincipal(principal.getName());
+        uploadSpecificationBuilder.setPrincipal(PrincipalUtils.getEmail(principal));
         return uploadMapper.pageToPageDto(uploadService.findAllByPage(uploadSpecificationBuilder.build(), pageable));
     }
 
