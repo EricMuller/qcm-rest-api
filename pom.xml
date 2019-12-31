@@ -8,8 +8,8 @@
     <version>2.2.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>Qcm API</name>
-    <description>Qcm Rest API</description>
+    <name>Qcm parent</name>
+    <description>Qcm Parent</description>
     <url>https://github.com/EricMuller/qcm-rest-api</url>
 
     <parent>
@@ -29,14 +29,28 @@
         <url>https://github.com/EricMuller/qcm-rest-api/issues</url>
     </issueManagement>
 
+    <distributionManagement>
+
+        <snapshotRepository>
+            <id>webmarks-snapshots</id>
+            <name>Snapshot Repository</name>
+            <url>https://nexus.webmarks.net/nexus/repository/webmarks-snapshots/</url>
+        </snapshotRepository>
+
+        <repository>
+            <id>webmarks-releases</id>
+            <name>Releases Repository</name>
+            <url>https://nexus.webmarks.net/nexus/repository/webmarks-releases/</url>
+        </repository>
+
+    </distributionManagement>
+
     <modules>
-        <module>qcm-services</module>
-        <module>qcm-entity</module>
-        <module>qcm-dto</module>
-        <module>qcm-mapper</module>
-        <module>qcm-shared</module>
-        <module>qcm-reactive</module>
-        <module>qcm-web</module>
+        <module>qcm-utils</module>
+        <module>qcm-rest-dto</module>
+        <module>qcm-rest-mapper</module>
+        <module>qcm-rest-web</module>
+        <module>qcm-service-jpa</module>
     </modules>
 
     <repositories>
@@ -51,20 +65,33 @@
     </repositories>
 
     <properties>
-        <sonar.host.url>http://brix:9000</sonar.host.url>
+        <sonar.host.url>http://localhost:9000</sonar.host.url>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <start-class>com.emu.apps.qcm.Application</start-class>
-        <sonar.language>java</sonar.language>
         <springdoc.version>1.1.41</springdoc.version>
-    </properties>
 
+        <jacoco.excludePattern/>
+
+        <sonar.language>java</sonar.language>
+        <sonar.exclusions>**/generated-sources/**/*</sonar.exclusions>
+        <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
+        <sonar.coverage.exclusions>${jacoco.excludePattern}</sonar.coverage.exclusions>
+        <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+        <!-- Tell sonar where to look for the coverage file. Property inherited by submodules -->
+        <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
+
+        <jacoco.reportPath>${project.basedir}/../target/jacoco.exec</jacoco.reportPath>
+
+        <!--        <argLine>-server -ea -Xmx2g ${coverageAgent}</argLine>-->
+
+    </properties>
 
     <dependencyManagement>
         <dependencies>
 
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-dto</artifactId>
+                <artifactId>qcm-rest-dto</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -76,22 +103,21 @@
 
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-services</artifactId>
+                <artifactId>qcm-service-jpa</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-mapper</artifactId>
+                <artifactId>qcm-rest-mapper</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-shared</artifactId>
+                <artifactId>qcm-utils</artifactId>
                 <version>${project.version}</version>
             </dependency>
-
 
         </dependencies>
 
@@ -201,12 +227,35 @@
             </plugin>
 
             <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <configuration>
+                    <append>true</append>
+                    <propertyName>coverageAgent</propertyName>
+                </configuration>
+
+                <executions>
+                    <execution>
+                        <id>coverage-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                        <configuration>
+                            <append>true</append>
+                            <destFile>${jacoco.reportPath}</destFile>
+                        </configuration>
+                    </execution>
+
+                </executions>
+            </plugin>
+
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
             </plugin>
 
         </plugins>
-    </build>
 
+    </build>
 
 </project>
