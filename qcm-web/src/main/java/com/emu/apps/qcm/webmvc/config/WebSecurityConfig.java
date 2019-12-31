@@ -19,9 +19,6 @@ import org.springframework.security.web.authentication.session.SessionAuthentica
 
 @Configuration
 @EnableWebSecurity
-@ConditionalOnResource(resources = {"classpath:keycloak.properties"})
-@ConditionalOnProperty(name = "keycloak.enabled", havingValue = "true")
-@PropertySource("classpath:keycloak.properties")
 @Profile("webmvc")
 class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -39,9 +36,8 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .oauth2Client(Customizer.withDefaults())
-                .oauth2ResourceServer().jwt()
-                .jwtAuthenticationConverter(new GrantedAuthoritiesConverter())
-                .and().and()
+                .oauth2ResourceServer().jwt().jwtAuthenticationConverter(new GrantedAuthoritiesConverter()).and()
+                .and()
                 .authorizeRequests()
                 .antMatchers(QcmApi.API_V1 + "/**").authenticated()
                 .antMatchers(UserApi.API_V1 + "/**").authenticated()

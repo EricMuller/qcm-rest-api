@@ -30,12 +30,14 @@ package com.emu.apps.qcm.webmvc.rest;
 
 import com.emu.apps.qcm.web.dtos.QuestionDto;
 import com.emu.apps.qcm.webmvc.rest.controllers.ReportRestController;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+@Profile("webmvc")
 @CrossOrigin
 @RequestMapping(value = QcmApi.API_V1 + ReportRestController.URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public interface ReportRestApi {

@@ -29,9 +29,11 @@
 package com.emu.apps.qcm.webmvc.rest;
 
 import com.emu.apps.qcm.web.dtos.SuggestDto;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+@Profile("webmvc")
 @CrossOrigin
 @RequestMapping(value = QcmApi.API_V1 + "/suggest", produces = MediaType.APPLICATION_JSON_VALUE)
 public interface SuggestRestApi {

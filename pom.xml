@@ -35,7 +35,7 @@
         <module>qcm-dto</module>
         <module>qcm-mapper</module>
         <module>qcm-shared</module>
-        <module>qcm-reactive</module>
+        <module>qcm-gateway</module>
         <module>qcm-web</module>
     </modules>
 
@@ -56,6 +56,10 @@
         <start-class>com.emu.apps.qcm.Application</start-class>
         <sonar.language>java</sonar.language>
         <springdoc.version>1.1.41</springdoc.version>
+<!--        <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>-->
+<!--        <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/../target/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>-->
+<!--        <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>-->
+        <aggregate.report.dir>tests/target/site/jacoco-aggregate/jacoco.xml</aggregate.report.dir>
     </properties>
 
 
@@ -91,7 +95,6 @@
                 <artifactId>qcm-shared</artifactId>
                 <version>${project.version}</version>
             </dependency>
-
 
         </dependencies>
 
@@ -206,7 +209,7 @@
             </plugin>
 
         </plugins>
-    </build>
 
+    </build>
 
 </project>

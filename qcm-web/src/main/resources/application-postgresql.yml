@@ -45,12 +45,12 @@ spring:
 
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:postgresql://192.168.1.100:5432/qcm
+        url: jdbc:postgresql://localhost:5432/qcm
         driverClassName: org.postgresql.Driver
-        username: mynotes
-        password: mynotes
+        username: qcm
+        password: qcm
         hikari:
-                url: jdbc:postgresql://192.168.1.100:5432/qcm
+                url: jdbc:postgresql://localhost:5432/qcm
                 pool-name: qcm-hikari-pool
                 autoCommit: false
                 connection-test-query: SELECT 1
@@ -60,12 +60,12 @@ spring:
 
         histo:
             type: com.zaxxer.hikari.HikariDataSource
-            url: jdbc:postgresql://192.168.1.100:5432/qcm
+            url: jdbc:postgresql://localhost:5432/qcm
             driverClassName: org.postgresql.Driver
-            username: mynotes
-            password: mynotes
+            username: qcm
+            password: qcm
             hikari:
-                url: jdbc:postgresql://192.168.1.100:5432/qcm
+                url: jdbc:postgresql://localhost:5432/qcm
                 pool-name: qcm-hikari-pool
                 autoCommit: false
                 connection-test-query: SELECT 1

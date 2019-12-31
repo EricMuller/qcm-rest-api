@@ -43,6 +43,10 @@
     <name>Qcm Service API</name>
     <description>Qcm Service API</description>
 
+    <properties>
+        <sonar.coverage.jacoco.xmlReportPaths>${basedir}/../${aggregate.report.dir}</sonar.coverage.jacoco.xmlReportPaths>
+    </properties>
+
     <dependencies>
 
         <dependency>
@@ -100,6 +104,10 @@
         </dependency>
 
         <!-- pilotes -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>com.h2database</groupId>

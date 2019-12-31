@@ -29,6 +29,7 @@
 package com.emu.apps.qcm.webmvc.rest;
 
 import com.emu.apps.qcm.web.dtos.TagDto;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
@@ -37,6 +38,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.security.Principal;
 
+@Profile("webmvc")
 @CrossOrigin
 @RequestMapping(value = QcmApi.API_V1 + "/tags", produces = MediaType.APPLICATION_JSON_VALUE)
 public interface TagRestApi {

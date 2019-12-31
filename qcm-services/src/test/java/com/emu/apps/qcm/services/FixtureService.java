@@ -7,7 +7,7 @@ import com.emu.apps.qcm.services.jpa.entity.questions.Question;
 import com.emu.apps.qcm.services.jpa.entity.questions.Response;
 import com.emu.apps.qcm.services.jpa.entity.questions.Type;
 import com.emu.apps.qcm.services.jpa.entity.tags.QuestionTag;
-import com.emu.apps.qcm.services.jpa.entity.tags.QuestionnaireTagBuilder;
+import com.emu.apps.qcm.services.jpa.builders.QuestionnaireTagBuilder;
 import com.emu.apps.qcm.services.jpa.entity.tags.Tag;
 import com.emu.apps.qcm.services.jpa.entity.upload.Upload;
 import com.emu.apps.qcm.services.jpa.repositories.*;

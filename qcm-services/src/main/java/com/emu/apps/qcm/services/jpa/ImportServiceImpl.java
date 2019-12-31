@@ -8,7 +8,7 @@ import com.emu.apps.qcm.services.jpa.entity.questionnaires.QuestionnaireQuestion
 import com.emu.apps.qcm.services.jpa.entity.questions.Response;
 import com.emu.apps.qcm.services.jpa.entity.questions.Type;
 import com.emu.apps.qcm.services.jpa.entity.tags.QuestionTag;
-import com.emu.apps.qcm.services.jpa.entity.tags.QuestionnaireTagBuilder;
+import com.emu.apps.qcm.services.jpa.builders.QuestionnaireTagBuilder;
 import com.emu.apps.qcm.web.dtos.FileQuestionDto;
 import com.emu.apps.qcm.web.mappers.FileQuestionMapper;
 import org.apache.commons.lang3.StringUtils;

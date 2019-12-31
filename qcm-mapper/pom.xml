@@ -43,6 +43,10 @@
     <name>Qcm Rest Mapper</name>
     <description>Qcm Rest Mapper</description>
 
+    <properties>
+        <sonar.coverage.jacoco.xmlReportPaths>${basedir}/../${aggregate.report.dir}</sonar.coverage.jacoco.xmlReportPaths>
+    </properties>
+
     <dependencies>
 
         <dependency>

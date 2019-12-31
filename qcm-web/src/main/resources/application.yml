@@ -1,7 +1,7 @@
 info:
   application-name: qcm-rest-api
 
-logging:
+logging1:
   level:
     root: WARN
     org.springframework: WARN
@@ -40,11 +40,11 @@ spring:
         provider:
           keycloak:
             issuer-uri: https://keycloak.webmarks.net/auth/realms/qcm
-        #            authorization-uri: https://keycloak.webmarks.net/auth/realms/qcm/protocol/openid-connect/auth
-        #            token-uri: https://keycloak.webmarks.net/auth/realms/qcm/protocol/openid-connect/token
-        #            user-info-uri: https://keycloak.webmarks.net/auth/realms/qcm/protocol/openid-connect/userinfo
-        #            jwk-set-uri: https://keycloak.webmarks.net/auth/realms/qcm/protocol/openid-connect/certs
-        #            user-name-attribute: preferred_username
+#            authorization-uri: https://keycloak.webmarks.net/auth/realms/qcm/protocol/openid-connect/auth
+#            token-uri: https://keycloak.webmarks.net/auth/realms/qcm/protocol/openid-connect/token
+#            user-info-uri: https://keycloak.webmarks.net/auth/realms/qcm/protocol/openid-connect/userinfo
+#            jwk-set-uri: https://keycloak.webmarks.net/auth/realms/qcm/protocol/openid-connect/certs
+#            user-name-attribute: preferred_username
         registration:
           keycloak:
             client-id: qcm-rest-api
@@ -66,7 +66,8 @@ server:
     context-path: /
 
 
-
 maven.version: @project.version@
+
+
 
 

@@ -43,9 +43,9 @@ public class GrantedAuthoritiesConverter extends JwtAuthenticationConverter {
 
     @Override
     protected Collection <GrantedAuthority> extractAuthorities(Jwt jwt) {
-        Map <String, Object> claims = jwt.getClaims();
-        JSONObject realm_access = (JSONObject) claims.get("realm_access");
-        JSONArray roles = (JSONArray) realm_access.get("roles");
+        var claims = jwt.getClaims();
+        var realm_access = (JSONObject) claims.get("realm_access");
+        var roles = (JSONArray) realm_access.get("roles");
 
         Collection <String> authorities = roles.stream()
                 .map(Object::toString)

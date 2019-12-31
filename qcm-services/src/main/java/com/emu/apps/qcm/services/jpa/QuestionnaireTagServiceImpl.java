@@ -6,7 +6,7 @@ import com.emu.apps.qcm.services.TagService;
 import com.emu.apps.qcm.services.exceptions.ExceptionUtil;
 import com.emu.apps.qcm.services.jpa.entity.questionnaires.Questionnaire;
 import com.emu.apps.qcm.services.jpa.entity.tags.QuestionnaireTag;
-import com.emu.apps.qcm.services.jpa.entity.tags.QuestionnaireTagBuilder;
+import com.emu.apps.qcm.services.jpa.builders.QuestionnaireTagBuilder;
 import com.emu.apps.qcm.services.jpa.entity.tags.Tag;
 import com.emu.apps.qcm.services.jpa.repositories.QuestionnaireRepository;
 import com.emu.apps.qcm.services.jpa.repositories.QuestionnaireTagRepository;

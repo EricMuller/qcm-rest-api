@@ -29,9 +29,11 @@
 package com.emu.apps.qcm.webmvc.rest;
 
 import com.emu.apps.qcm.web.dtos.CategoryDto;
+import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
+@Profile("webmvc")
 @RequestMapping(QcmApi.API_V1 +"/categories")
 public interface CategoryRestApi {
 

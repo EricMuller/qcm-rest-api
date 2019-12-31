@@ -43,6 +43,10 @@
     <name>Qcm Rest shared</name>
     <description>Qcm Shared</description>
 
+    <properties>
+        <sonar.coverage.jacoco.xmlReportPaths>${basedir}/../${aggregate.report.dir}</sonar.coverage.jacoco.xmlReportPaths>
+    </properties>
+
     <dependencies>
 
         <dependency>

@@ -40,8 +40,12 @@
     <groupId>com.emu.apps.qcm</groupId>
     <artifactId>qcm-web</artifactId>
 
-    <name>Qcm Web</name>
+    <name>Qcm Rest API</name>
     <description>Qcm Rest API</description>
+
+    <properties>
+        <sonar.coverage.jacoco.xmlReportPaths>${basedir}/../${aggregate.report.dir}</sonar.coverage.jacoco.xmlReportPaths>
+    </properties>
 
     <dependencies>
 
@@ -105,7 +109,6 @@
 
 
         <!-- security -->
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
@@ -155,10 +158,10 @@
         </dependency>
 
         <!-- pilotes -->
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.postgresql</groupId>-->
+<!--            <artifactId>postgresql</artifactId>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>com.h2database</groupId>
