@@ -8,8 +8,8 @@
     <version>2.2.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>Qcm API</name>
-    <description>Qcm Rest API</description>
+    <name>Qcm Parent</name>
+    <description>Qcm Parent</description>
     <url>https://github.com/EricMuller/qcm-rest-api</url>
 
     <parent>
@@ -30,13 +30,12 @@
     </issueManagement>
 
     <modules>
-        <module>qcm-services</module>
-        <module>qcm-entity</module>
-        <module>qcm-dto</module>
-        <module>qcm-mapper</module>
-        <module>qcm-shared</module>
+        <module>qcm-jpa</module>
+        <module>qcm-rest-dto</module>
+        <module>qcm-rest-mapper</module>
+        <module>qcm-rest-web</module>
         <module>qcm-gateway</module>
-        <module>qcm-web</module>
+        <module>qcm-commons</module>
     </modules>
 
     <repositories>
@@ -68,7 +67,7 @@
 
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-dto</artifactId>
+                <artifactId>qcm-rest-dto</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -80,19 +79,19 @@
 
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-services</artifactId>
+                <artifactId>qcm-jpa</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-mapper</artifactId>
+                <artifactId>qcm-rest-mapper</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-shared</artifactId>
+                <artifactId>qcm-commons</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
