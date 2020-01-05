@@ -1,0 +1,39 @@
+maven.version: @project.version@
+
+info:
+  application-name: qcm-reactive-api
+
+server:
+  port: 8000
+
+spring:
+  resources:
+    cache:
+      period: 31536000
+      cachecontrol:
+        max-age: 31536000
+
+  security:
+    oauth2:
+      client:
+        provider:
+          qcm-keycloak:
+            issuer-uri: https://keycloak.webmarks.net/auth/realms/qcm
+#            token-uri: https://keycloak.webmarks.net/auth/realms/qcm/protocol/openid-connect/token
+            user-name-attribute: preferred_username
+        registration:
+          qcm-keycloak:
+            client-id: qcm-rest-api
+            client-secret: 4eab5725-f8c1-4758-80c4-7ec8ac484bcd
+#            authorization-grant-type: client_credentials
+      resourceserver:
+        jwt:
+          issuer-uri: https://keycloak.webmarks.net/auth/realms/qcm
+
+
+
+
+
+
+
+

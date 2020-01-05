@@ -1,0 +1,29 @@
+
+####
+POST https://keycloak.webmarks.net/auth/realms/qcm/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+username=demo&password=demodemo&grant_type=password&client_id=qcm-mobile-rest-api
+
+> {%
+client.global.set("access_token", response.body.access_token);
+client.global.set("refresh_token", response.body.refresh_token);
+client.global.set("auth_token", "Bearer " + response.body.access_token);
+%}
+
+###
+
+###
+GET http://{{host}}:{{port}}/qcm/api/v1/upload
+Accept: application/json
+Content-Type: application/json
+Authorization: {{auth_token}}
+
+
+###
+GET http://{{host}}:{{port}}/qcm/api/v1/upload/152/import
+Accept: application/json
+Content-Type: application/json
+Authorization: {{auth_token}}
+
+###
