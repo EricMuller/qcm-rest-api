@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.webmvc.rest.controllers;
 
-import com.emu.apps.qcm.services.CategoryService;
+import com.emu.apps.qcm.webmvc.services.CategoryService;
 import com.emu.apps.qcm.web.dtos.CategoryDto;
 import com.emu.apps.qcm.web.dtos.MessageDto;
 import com.emu.apps.qcm.web.mappers.CategoryMapper;

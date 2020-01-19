@@ -1,11 +1,11 @@
 package com.emu.apps.qcm.webmvc.rest.controllers;
 
-import com.emu.apps.qcm.services.QuestionService;
-import com.emu.apps.qcm.services.QuestionTagService;
-import com.emu.apps.qcm.services.exceptions.EntityExceptionUtil;
-import com.emu.apps.qcm.services.jpa.entity.questions.Question;
-import com.emu.apps.qcm.services.jpa.entity.tags.QuestionTag;
-import com.emu.apps.qcm.services.jpa.specifications.QuestionSpecificationBuilder;
+import com.emu.apps.qcm.webmvc.services.QuestionService;
+import com.emu.apps.qcm.webmvc.services.QuestionTagService;
+import com.emu.apps.qcm.webmvc.services.exceptions.EntityExceptionUtil;
+import com.emu.apps.qcm.webmvc.services.jpa.entity.questions.Question;
+import com.emu.apps.qcm.webmvc.services.jpa.entity.tags.QuestionTag;
+import com.emu.apps.qcm.webmvc.services.jpa.specifications.QuestionSpecificationBuilder;
 import com.emu.apps.shared.security.PrincipalUtils;
 import com.emu.apps.qcm.web.dtos.MessageDto;
 import com.emu.apps.qcm.web.dtos.QuestionDto;

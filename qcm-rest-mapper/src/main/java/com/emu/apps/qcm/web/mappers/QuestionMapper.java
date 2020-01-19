@@ -28,8 +28,8 @@
 
 package com.emu.apps.qcm.web.mappers;
 
-import com.emu.apps.qcm.services.jpa.entity.questions.Question;
-import com.emu.apps.qcm.services.jpa.projections.QuestionResponseProjection;
+import com.emu.apps.qcm.webmvc.services.jpa.entity.questions.Question;
+import com.emu.apps.qcm.webmvc.services.jpa.projections.QuestionResponseProjection;
 import com.emu.apps.qcm.web.dtos.QuestionDto;
 import com.emu.apps.qcm.web.dtos.question.QuestionTagsDto;
 import org.mapstruct.Mapper;

@@ -1,14 +1,14 @@
 package com.emu.apps.qcm.webmvc.rest.controllers;
 
 
-import com.emu.apps.qcm.services.QuestionService;
-import com.emu.apps.qcm.services.QuestionnaireService;
-import com.emu.apps.qcm.services.QuestionnaireTagService;
-import com.emu.apps.qcm.services.exceptions.EntityExceptionUtil;
-import com.emu.apps.qcm.services.jpa.entity.questionnaires.Questionnaire;
-import com.emu.apps.qcm.services.jpa.entity.questionnaires.QuestionnaireQuestion;
-import com.emu.apps.qcm.services.jpa.entity.tags.QuestionnaireTag;
-import com.emu.apps.qcm.services.jpa.specifications.QuestionnaireSpecificationBuilder;
+import com.emu.apps.qcm.webmvc.services.QuestionService;
+import com.emu.apps.qcm.webmvc.services.QuestionnaireService;
+import com.emu.apps.qcm.webmvc.services.QuestionnaireTagService;
+import com.emu.apps.qcm.webmvc.services.exceptions.EntityExceptionUtil;
+import com.emu.apps.qcm.webmvc.services.jpa.entity.questionnaires.Questionnaire;
+import com.emu.apps.qcm.webmvc.services.jpa.entity.questionnaires.QuestionnaireQuestion;
+import com.emu.apps.qcm.webmvc.services.jpa.entity.tags.QuestionnaireTag;
+import com.emu.apps.qcm.webmvc.services.jpa.specifications.QuestionnaireSpecificationBuilder;
 import com.emu.apps.shared.security.PrincipalUtils;
 import com.emu.apps.qcm.web.dtos.QuestionDto;
 import com.emu.apps.qcm.web.dtos.QuestionnaireDto;

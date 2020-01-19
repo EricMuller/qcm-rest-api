@@ -1,8 +1,8 @@
 package com.emu.apps.qcm.webmvc.rest.controllers;
 
 
-import com.emu.apps.qcm.services.TagService;
-import com.emu.apps.qcm.services.jpa.specifications.TagSpecificationBuilder;
+import com.emu.apps.qcm.webmvc.services.TagService;
+import com.emu.apps.qcm.webmvc.services.jpa.specifications.TagSpecificationBuilder;
 import com.emu.apps.shared.security.PrincipalUtils;
 import com.emu.apps.qcm.web.dtos.TagDto;
 import com.emu.apps.qcm.web.mappers.TagMapper;

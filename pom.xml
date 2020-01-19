@@ -51,6 +51,7 @@
         <module>qcm-rest-mapper</module>
         <module>qcm-rest-web</module>
         <module>qcm-service-jpa</module>
+        <module>qcm-rest-webflux</module>
     </modules>
 
     <repositories>
@@ -97,7 +98,19 @@
 
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-entity</artifactId>
+                <artifactId>qcm-rest-mapper</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.emu.apps.qcm</groupId>
+                <artifactId>qcm-rest-web</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.emu.apps.qcm</groupId>
+                <artifactId>qcm-rest-webflux</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -109,15 +122,11 @@
 
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-rest-mapper</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.emu.apps.qcm</groupId>
                 <artifactId>qcm-utils</artifactId>
                 <version>${project.version}</version>
             </dependency>
+
+
 
         </dependencies>
 

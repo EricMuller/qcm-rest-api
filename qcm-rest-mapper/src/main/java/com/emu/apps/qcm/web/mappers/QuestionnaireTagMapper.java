@@ -28,7 +28,7 @@
 
 package com.emu.apps.qcm.web.mappers;
 
-import com.emu.apps.qcm.services.jpa.entity.tags.QuestionnaireTag;
+import com.emu.apps.qcm.webmvc.services.jpa.entity.tags.QuestionnaireTag;
 import com.emu.apps.qcm.web.dtos.QuestionnaireTagDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

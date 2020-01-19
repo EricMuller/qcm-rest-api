@@ -28,7 +28,7 @@
 
 package com.emu.apps.qcm.webmvc.rest;
 
-import com.emu.apps.qcm.services.jpa.entity.questionnaires.Questionnaire;
+import com.emu.apps.qcm.webmvc.services.jpa.entity.questionnaires.Questionnaire;
 import com.emu.apps.qcm.web.dtos.QuestionDto;
 import com.emu.apps.qcm.web.dtos.QuestionnaireDto;
 import com.emu.apps.qcm.webmvc.rest.caches.CacheName;

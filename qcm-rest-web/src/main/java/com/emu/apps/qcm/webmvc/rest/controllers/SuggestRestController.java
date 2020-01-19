@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.webmvc.rest.controllers;
 
 
-import com.emu.apps.qcm.services.QuestionnaireService;
+import com.emu.apps.qcm.webmvc.services.QuestionnaireService;
 import com.emu.apps.qcm.web.dtos.SuggestDto;
 import com.emu.apps.qcm.web.mappers.SuggestMapper;
 import com.emu.apps.qcm.webmvc.rest.SuggestRestApi;

@@ -1,6 +1,6 @@
 package com.emu.apps.users.services.jpa.entity;
 
-import com.emu.apps.qcm.services.jpa.entity.common.AuditableEntity;
+import com.emu.apps.qcm.webmvc.services.jpa.entity.common.AuditableEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
