@@ -29,7 +29,7 @@
 package com.emu.apps.qcm.services.jpa;
 
 import com.emu.apps.qcm.services.UploadService;
-import com.emu.apps.qcm.services.jpa.entity.upload.Upload;
+import com.emu.apps.qcm.services.entity.upload.Upload;
 import com.emu.apps.qcm.services.jpa.repositories.UploadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

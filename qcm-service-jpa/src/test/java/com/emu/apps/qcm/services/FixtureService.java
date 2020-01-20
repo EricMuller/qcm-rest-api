@@ -1,15 +1,15 @@
 package com.emu.apps.qcm.services;
 
-import com.emu.apps.qcm.services.jpa.entity.category.Category;
-import com.emu.apps.qcm.services.jpa.entity.questionnaires.Questionnaire;
-import com.emu.apps.qcm.services.jpa.entity.questionnaires.QuestionnaireQuestion;
-import com.emu.apps.qcm.services.jpa.entity.questions.Question;
-import com.emu.apps.qcm.services.jpa.entity.questions.Response;
-import com.emu.apps.qcm.services.jpa.entity.questions.Type;
-import com.emu.apps.qcm.services.jpa.entity.tags.QuestionTag;
+import com.emu.apps.qcm.services.entity.category.Category;
+import com.emu.apps.qcm.services.entity.questionnaires.Questionnaire;
+import com.emu.apps.qcm.services.entity.questionnaires.QuestionnaireQuestion;
+import com.emu.apps.qcm.services.entity.questions.Question;
+import com.emu.apps.qcm.services.entity.questions.Response;
+import com.emu.apps.qcm.services.entity.questions.Type;
+import com.emu.apps.qcm.services.entity.tags.QuestionTag;
 import com.emu.apps.qcm.services.jpa.builders.QuestionnaireTagBuilder;
-import com.emu.apps.qcm.services.jpa.entity.tags.Tag;
-import com.emu.apps.qcm.services.jpa.entity.upload.Upload;
+import com.emu.apps.qcm.services.entity.tags.Tag;
+import com.emu.apps.qcm.services.entity.upload.Upload;
 import com.emu.apps.qcm.services.jpa.repositories.*;
 import com.emu.apps.shared.security.PrincipalUtils;
 import com.google.common.collect.Lists;

@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.services;
 
-import com.emu.apps.qcm.services.jpa.entity.tags.Tag;
+import com.emu.apps.qcm.services.entity.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;

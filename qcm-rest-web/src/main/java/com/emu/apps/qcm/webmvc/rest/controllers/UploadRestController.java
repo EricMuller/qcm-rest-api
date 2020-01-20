@@ -3,7 +3,7 @@ package com.emu.apps.qcm.webmvc.rest.controllers;
 import com.emu.apps.qcm.services.ImportService;
 import com.emu.apps.qcm.services.UploadService;
 import com.emu.apps.qcm.services.exceptions.EntityExceptionUtil;
-import com.emu.apps.qcm.services.jpa.entity.upload.Upload;
+import com.emu.apps.qcm.services.entity.upload.Upload;
 import com.emu.apps.qcm.services.jpa.specifications.UploadSpecificationBuilder;
 import com.emu.apps.shared.security.PrincipalUtils;
 import com.emu.apps.qcm.web.dtos.FileQuestionDto;

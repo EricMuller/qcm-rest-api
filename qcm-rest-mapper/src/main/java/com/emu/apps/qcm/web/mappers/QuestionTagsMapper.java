@@ -28,7 +28,7 @@
 
 package com.emu.apps.qcm.web.mappers;
 
-import com.emu.apps.qcm.services.jpa.entity.questions.Question;
+import com.emu.apps.qcm.services.entity.questions.Question;
 import com.emu.apps.qcm.web.dtos.question.QuestionTagsDto;
 import org.mapstruct.Mapper;
 import org.springframework.data.domain.Page;

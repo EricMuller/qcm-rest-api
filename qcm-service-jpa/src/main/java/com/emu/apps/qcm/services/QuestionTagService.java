@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.services;
 
-import com.emu.apps.qcm.services.jpa.entity.questions.Question;
-import com.emu.apps.qcm.services.jpa.entity.tags.QuestionTag;
+import com.emu.apps.qcm.services.entity.questions.Question;
+import com.emu.apps.qcm.services.entity.tags.QuestionTag;
 
 import java.security.Principal;
 

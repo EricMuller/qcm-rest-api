@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.services.jpa.specifications;
 
-import com.emu.apps.qcm.services.jpa.entity.tags.Tag;
+import com.emu.apps.qcm.services.entity.tags.Tag;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.jpa.domain.Specification;
 

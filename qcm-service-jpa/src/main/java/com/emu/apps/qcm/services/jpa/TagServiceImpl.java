@@ -29,7 +29,7 @@
 package com.emu.apps.qcm.services.jpa;
 
 import com.emu.apps.qcm.services.TagService;
-import com.emu.apps.qcm.services.jpa.entity.tags.Tag;
+import com.emu.apps.qcm.services.entity.tags.Tag;
 import com.emu.apps.qcm.services.jpa.repositories.TagRepository;
 import com.emu.apps.shared.security.PrincipalUtils;
 import org.slf4j.Logger;

@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.services.jpa;
 
 import com.emu.apps.qcm.services.CategoryService;
-import com.emu.apps.qcm.services.jpa.entity.category.Category;
+import com.emu.apps.qcm.services.entity.category.Category;
 import com.emu.apps.qcm.services.jpa.repositories.CategoryRepository;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

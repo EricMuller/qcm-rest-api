@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.services.jpa.projections;
 
 
-import com.emu.apps.qcm.services.jpa.entity.questions.Type;
+import com.emu.apps.qcm.services.entity.questions.Type;
 import org.hibernate.annotations.Immutable;
 
 import java.util.Date;

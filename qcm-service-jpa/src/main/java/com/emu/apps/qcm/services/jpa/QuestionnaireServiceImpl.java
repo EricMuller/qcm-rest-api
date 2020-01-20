@@ -2,8 +2,8 @@ package com.emu.apps.qcm.services.jpa;
 
 
 import com.emu.apps.qcm.services.QuestionnaireService;
-import com.emu.apps.qcm.services.jpa.entity.questionnaires.Questionnaire;
-import com.emu.apps.qcm.services.jpa.entity.questionnaires.QuestionnaireQuestion;
+import com.emu.apps.qcm.services.entity.questionnaires.Questionnaire;
+import com.emu.apps.qcm.services.entity.questionnaires.QuestionnaireQuestion;
 import com.emu.apps.qcm.services.jpa.projections.QuestionnaireProjection;
 import com.emu.apps.qcm.services.jpa.repositories.QuestionnaireQuestionRepository;
 import com.emu.apps.qcm.services.jpa.repositories.QuestionnaireRepository;

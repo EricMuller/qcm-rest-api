@@ -28,7 +28,7 @@
 
 package com.emu.apps.qcm.webmvc.rest;
 
-import com.emu.apps.qcm.services.jpa.entity.upload.Upload;
+import com.emu.apps.qcm.services.entity.upload.Upload;
 import com.emu.apps.qcm.web.dtos.MessageDto;
 import com.emu.apps.qcm.web.dtos.UploadDto;
 import com.emu.apps.shared.metrics.Timer;

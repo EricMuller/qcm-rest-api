@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.services.jpa.repositories.custom;
 
-import com.emu.apps.qcm.services.jpa.entity.common.AuditableEntity;
+import com.emu.apps.qcm.services.entity.common.AuditableEntity;
 import com.emu.apps.qcm.services.jpa.repositories.SimpleJpaBulkRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

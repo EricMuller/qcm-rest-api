@@ -2,10 +2,10 @@ package com.emu.apps.qcm.services.jpa.repositories;
 
 import com.emu.apps.qcm.services.FixtureService;
 import com.emu.apps.qcm.services.SpringBootTestCase;
-import com.emu.apps.qcm.services.jpa.entity.questions.Question;
-import com.emu.apps.qcm.services.jpa.entity.questions.Response;
-import com.emu.apps.qcm.services.jpa.entity.tags.QuestionTag;
-import com.emu.apps.qcm.services.jpa.entity.tags.Tag;
+import com.emu.apps.qcm.services.entity.questions.Question;
+import com.emu.apps.qcm.services.entity.questions.Response;
+import com.emu.apps.qcm.services.entity.tags.QuestionTag;
+import com.emu.apps.qcm.services.entity.tags.Tag;
 import com.emu.apps.qcm.services.jpa.specifications.QuestionSpecificationBuilder;
 import com.emu.apps.shared.security.PrincipalUtils;
 import com.google.common.collect.Iterables;

@@ -2,10 +2,10 @@ package com.emu.apps.qcm.services.jpa;
 
 import com.emu.apps.qcm.services.QuestionTagService;
 import com.emu.apps.qcm.services.TagService;
-import com.emu.apps.qcm.services.jpa.entity.questions.Question;
-import com.emu.apps.qcm.services.jpa.entity.tags.QuestionTag;
+import com.emu.apps.qcm.services.entity.questions.Question;
+import com.emu.apps.qcm.services.entity.tags.QuestionTag;
 import com.emu.apps.qcm.services.jpa.builders.QuestionTagBuilder;
-import com.emu.apps.qcm.services.jpa.entity.tags.Tag;
+import com.emu.apps.qcm.services.entity.tags.Tag;
 import com.emu.apps.qcm.services.jpa.repositories.QuestionRepository;
 import com.emu.apps.qcm.services.jpa.repositories.QuestionTagRepository;
 import org.springframework.beans.factory.annotation.Autowired;

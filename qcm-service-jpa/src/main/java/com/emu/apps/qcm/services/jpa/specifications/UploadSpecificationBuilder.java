@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.services.jpa.specifications;
 
-import com.emu.apps.qcm.services.jpa.entity.upload.Upload;
+import com.emu.apps.qcm.services.entity.upload.Upload;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 

@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.services.jpa.repositories;
 
 import com.emu.apps.qcm.services.SpringBootTestCase;
-import com.emu.apps.qcm.services.jpa.entity.upload.Upload;
+import com.emu.apps.qcm.services.entity.upload.Upload;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

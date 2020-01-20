@@ -1,8 +1,8 @@
 package com.emu.apps.qcm.services.jpa.builders;
 
-import com.emu.apps.qcm.services.jpa.entity.questions.Question;
-import com.emu.apps.qcm.services.jpa.entity.tags.QuestionTag;
-import com.emu.apps.qcm.services.jpa.entity.tags.Tag;
+import com.emu.apps.qcm.services.entity.questions.Question;
+import com.emu.apps.qcm.services.entity.tags.QuestionTag;
+import com.emu.apps.qcm.services.entity.tags.Tag;
 
 
 public class QuestionTagBuilder {

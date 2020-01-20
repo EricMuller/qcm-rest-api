@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.services.jpa.repositories;
 
-import com.emu.apps.qcm.services.jpa.entity.category.Category;
+import com.emu.apps.qcm.services.entity.category.Category;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;

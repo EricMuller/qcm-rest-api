@@ -28,7 +28,7 @@
 
 package com.emu.apps.qcm.web.mappers;
 
-import com.emu.apps.qcm.services.jpa.entity.upload.Upload;
+import com.emu.apps.qcm.services.entity.upload.Upload;
 import com.emu.apps.qcm.web.dtos.UploadDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;

@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.services.jpa.repositories;
 
-import com.emu.apps.qcm.services.jpa.entity.questions.Response;
+import com.emu.apps.qcm.services.entity.questions.Response;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 

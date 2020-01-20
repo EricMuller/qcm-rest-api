@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.services.jpa.repositories;
 
-import com.emu.apps.qcm.services.jpa.entity.questions.Question;
+import com.emu.apps.qcm.services.entity.questions.Question;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;

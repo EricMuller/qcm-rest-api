@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.services.jpa.specifications;
 
-import com.emu.apps.qcm.services.jpa.entity.questionnaires.Questionnaire;
+import com.emu.apps.qcm.services.entity.questionnaires.Questionnaire;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;

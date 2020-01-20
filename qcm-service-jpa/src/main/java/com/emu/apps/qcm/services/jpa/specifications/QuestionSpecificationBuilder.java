@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.services.jpa.specifications;
 
-import com.emu.apps.qcm.services.jpa.entity.questions.Question;
+import com.emu.apps.qcm.services.entity.questions.Question;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.lang.Nullable;

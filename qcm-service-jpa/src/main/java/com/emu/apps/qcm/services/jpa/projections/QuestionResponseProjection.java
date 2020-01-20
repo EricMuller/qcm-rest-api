@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.services.jpa.projections;
 
 
-import com.emu.apps.qcm.services.jpa.entity.questions.Response;
+import com.emu.apps.qcm.services.entity.questions.Response;
 
 import java.util.List;
 

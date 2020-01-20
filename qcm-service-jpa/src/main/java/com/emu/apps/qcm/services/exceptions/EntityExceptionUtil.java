@@ -28,7 +28,7 @@
 
 package com.emu.apps.qcm.services.exceptions;
 
-import com.emu.apps.qcm.services.jpa.entity.common.AuditableEntity;
+import com.emu.apps.qcm.services.entity.common.AuditableEntity;
 
 import java.util.Objects;
 import java.util.Optional;
