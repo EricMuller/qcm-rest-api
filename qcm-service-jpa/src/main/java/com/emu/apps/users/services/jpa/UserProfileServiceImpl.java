@@ -1,7 +1,7 @@
 package com.emu.apps.users.services.jpa;
 
 import com.emu.apps.users.services.UserProfileService;
-import com.emu.apps.users.services.jpa.entity.UserProfile;
+import com.emu.apps.users.services.entity.UserProfile;
 import com.emu.apps.users.services.jpa.repositories.UserProfileJpaRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

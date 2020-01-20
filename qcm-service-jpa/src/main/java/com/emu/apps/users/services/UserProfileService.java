@@ -1,7 +1,7 @@
 package com.emu.apps.users.services;
 
 
-import com.emu.apps.users.services.jpa.entity.UserProfile;
+import com.emu.apps.users.services.entity.UserProfile;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 

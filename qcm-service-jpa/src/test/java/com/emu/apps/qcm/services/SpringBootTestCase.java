@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.services;
 
 import com.emu.apps.qcm.H2TestProfileJPAConfig;
-import com.emu.apps.qcm.SpringBootTestConfig;
+import com.emu.apps.SpringBootTestConfig;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

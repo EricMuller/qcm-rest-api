@@ -1,4 +1,4 @@
-package com.emu.apps.users.services.jpa.entity;
+package com.emu.apps.users.services.entity;
 
 import com.emu.apps.qcm.services.entity.common.AuditableEntity;
 import org.springframework.security.core.GrantedAuthority;

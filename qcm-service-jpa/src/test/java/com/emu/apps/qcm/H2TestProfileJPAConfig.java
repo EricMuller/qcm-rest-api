@@ -71,7 +71,7 @@ public class H2TestProfileJPAConfig {
             EntityManagerFactoryBuilder builder,  DataSource dataSource) {
         return builder
                 .dataSource(dataSource)
-                .packages("com.emu.apps.qcm.services.jpa.entity","com.emu.apps.users.services.jpa.entity")
+                .packages("com.emu.apps.qcm.services.entity","com.emu.apps.users.services.entity")
                 .persistenceUnit("qcm")
                 .properties(singletonMap("hibernate.hbm2ddl.auto", "create-drop"))
                 .build();

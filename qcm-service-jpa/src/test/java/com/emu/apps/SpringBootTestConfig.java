@@ -26,7 +26,7 @@
  *
  */
 
-package com.emu.apps.qcm;
+package com.emu.apps;
 
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -46,11 +46,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @Configuration
 @EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class, DataSourceTransactionManagerAutoConfiguration.class
         , WebFluxAutoConfiguration.class, ReactiveSecurityAutoConfiguration.class})
-@ComponentScan(basePackages = {"com.emu.apps.qcm", "com.emu.shared", "com.emu.apps.users"},
+@ComponentScan(basePackages = {"com.emu.apps.qcm", "com.emu.apps.shared", "com.emu.apps.users"},
         excludeFilters = @ComponentScan.Filter(type = FilterType.ASPECTJ, pattern = "com.emu.apps.qcm.webflux.config.*"))
 @EnableScheduling
 public class SpringBootTestConfig {
-
 
     @Bean
     public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
