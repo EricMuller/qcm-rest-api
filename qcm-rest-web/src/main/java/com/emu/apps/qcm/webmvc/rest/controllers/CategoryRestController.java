@@ -52,7 +52,7 @@ public class CategoryRestController implements CategoryRestApi {
 
     @ExceptionHandler({JsonProcessingException.class, IOException.class})
     public ResponseEntity <MessageDto> handleAllException(Exception e) {
-        return new ResponseEntity <>(new MessageDto(e.getMessage()), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity <>(new MessageDto(MessageDto.ERROR, e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
 }

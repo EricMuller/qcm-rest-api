@@ -13,13 +13,15 @@ import javax.persistence.*;
  */
 
 @Entity
-@Table(indexes = { @Index(name = "IDX_UPD_CREATE_BY_IDX", columnList = "created_by") })
-@Getter @Setter @NoArgsConstructor
-public class Upload extends AuditableEntity<String> {
+@Table(indexes = {@Index(name = "IDX_UPD_CREATE_BY_IDX", columnList = "created_by")})
+@Getter
+@Setter
+@NoArgsConstructor
+public class Upload extends AuditableEntity <String> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "upload_generator")
-    @SequenceGenerator(name="upload_generator", sequenceName = "upload_seq", allocationSize=50)
+    @SequenceGenerator(name = "upload_generator", sequenceName = "upload_seq", allocationSize = 50)
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
@@ -30,8 +32,15 @@ public class Upload extends AuditableEntity<String> {
     private String pathfileName;
 
     @Lob
-    @Column(name="data")
+    @Column(name = "DATA")
     private byte[] data;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "STATUS")
+    private ImportStatus status;
+
+    @Column(name = "CONTENT_TYPE")
+    private String contentType;
 
     @Override
     public boolean equals(Object obj) {
@@ -41,6 +50,12 @@ public class Upload extends AuditableEntity<String> {
     @Override
     public int hashCode() {
         return super.hashCode();
+    }
+
+    public Upload(String fileName, String contentType, byte[] data) {
+        this.fileName = fileName;
+        this.data = data;
+        this.contentType = contentType;
     }
 
 }

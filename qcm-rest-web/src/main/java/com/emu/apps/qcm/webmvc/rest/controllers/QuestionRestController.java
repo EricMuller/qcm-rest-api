@@ -2,11 +2,10 @@ package com.emu.apps.qcm.webmvc.rest.controllers;
 
 import com.emu.apps.qcm.services.QuestionService;
 import com.emu.apps.qcm.services.QuestionTagService;
-import com.emu.apps.qcm.services.exceptions.EntityExceptionUtil;
 import com.emu.apps.qcm.services.entity.questions.Question;
 import com.emu.apps.qcm.services.entity.tags.QuestionTag;
+import com.emu.apps.qcm.services.exceptions.EntityExceptionUtil;
 import com.emu.apps.qcm.services.jpa.specifications.QuestionSpecificationBuilder;
-import com.emu.apps.shared.security.PrincipalUtils;
 import com.emu.apps.qcm.web.dtos.MessageDto;
 import com.emu.apps.qcm.web.dtos.QuestionDto;
 import com.emu.apps.qcm.web.dtos.question.QuestionTagsDto;
@@ -14,6 +13,7 @@ import com.emu.apps.qcm.web.mappers.QuestionMapper;
 import com.emu.apps.qcm.web.mappers.QuestionTagMapper;
 import com.emu.apps.qcm.webmvc.rest.QuestionRestApi;
 import com.emu.apps.shared.metrics.Timer;
+import com.emu.apps.shared.security.PrincipalUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
@@ -99,7 +99,7 @@ public class QuestionRestController implements QuestionRestApi {
 
     @ExceptionHandler({JsonProcessingException.class, IOException.class})
     public ResponseEntity <MessageDto> handleAllException(Exception e) {
-        return ResponseEntity.badRequest().body(new MessageDto(e.getMessage()));
+        return ResponseEntity.badRequest().body(new MessageDto(MessageDto.ERROR, e.getMessage()));
     }
 
     @Override

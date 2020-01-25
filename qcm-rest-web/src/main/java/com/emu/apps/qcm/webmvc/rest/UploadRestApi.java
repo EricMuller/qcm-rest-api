@@ -29,11 +29,11 @@
 package com.emu.apps.qcm.webmvc.rest;
 
 import com.emu.apps.qcm.services.entity.upload.Upload;
-import com.emu.apps.qcm.web.dtos.MessageDto;
 import com.emu.apps.qcm.web.dtos.UploadDto;
 import com.emu.apps.shared.metrics.Timer;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -49,10 +49,10 @@ public interface UploadRestApi {
     @CrossOrigin
     @ResponseBody
     @PostMapping(value = "/{fileType}", headers = "Content-Type=multipart/form-data")
-    ResponseEntity <UploadDto> uploadFile(@PathVariable("fileType") String fileType,
-                                          @RequestParam("file") MultipartFile file,
-                                          @RequestParam("async") Boolean async,
-                                          Principal principal) throws IOException;
+    UploadDto uploadFile(@PathVariable("fileType") String fileType,
+                         @RequestParam("file") MultipartFile file,
+                         @RequestParam("async") Boolean async,
+                         Principal principal) throws IOException;
 
     @GetMapping()
     @Timer
@@ -61,9 +61,14 @@ public interface UploadRestApi {
     @CrossOrigin
     @ResponseBody
     @GetMapping(value = "/{id}/import")
-    ResponseEntity <MessageDto> importFile(@PathVariable("id") Long uploadId, Principal principal) throws IOException;
+    UploadDto importFile(@PathVariable("id") Long uploadId, Principal principal) throws IOException;
 
     @DeleteMapping(value = "/{id}")
     @ResponseBody
-    ResponseEntity <Upload> deleteUploadById(@PathVariable("id") long id);
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    void deleteUploadById(@PathVariable("id") long id);
+
+    @GetMapping(value = "/{id}")
+    @ResponseBody
+    UploadDto getUploadById(@PathVariable("id") long id);
 }

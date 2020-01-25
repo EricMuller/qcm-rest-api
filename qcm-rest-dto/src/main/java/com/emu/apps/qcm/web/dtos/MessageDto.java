@@ -14,7 +14,18 @@ import lombok.Setter;
 @AllArgsConstructor
 public class MessageDto {
 
-    String message;
+    public static final String OK = "OK";
 
+    public static final String ERROR = "KO";
 
+    private String status;
+
+    private String message;
+
+    private String data;
+
+    public MessageDto(String status, String message) {
+        this.status = status;
+        this.message = message;
+    }
 }

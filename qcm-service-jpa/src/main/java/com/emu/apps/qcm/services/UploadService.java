@@ -13,7 +13,7 @@ public interface UploadService {
 
     void deleteById(Long id);
 
-    Upload saveUpload(Upload question);
+    Upload saveUpload(Upload upload);
 
     Page<Upload> findAllByPage(Specification<Upload> specification, Pageable pageable);
 }
