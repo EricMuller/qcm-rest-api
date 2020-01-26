@@ -1,16 +1,24 @@
 package com.emu.apps.qcm.webmvc.rest;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import com.emu.apps.qcm.web.dtos.UserDto;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.Map;
 
 @CrossOrigin
-@RequestMapping(UserApi.API_V1 +"/users/me")
+@RequestMapping(UserApi.API_V1 + "/users")
 public interface UserRestApi {
 
-    @GetMapping(produces = "application/json")
-    Map <String, String> user(Principal principal);
+//    Map <String, String> principal(Principal principal);
+
+    @GetMapping(value = "/me",produces = "application/json")
+    @ResponseBody
+    UserDto user(Principal principal);
+
+    @PostMapping(produces = "application/json")
+    @ResponseBody
+    UserDto uploadFile(@RequestBody UserDto userDto, Principal principal);
+
+
 }

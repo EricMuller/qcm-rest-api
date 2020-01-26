@@ -20,5 +20,5 @@ public class QuestionLightDto extends EntityDto {
 
     private String type;
 
-
+    private String status;
 }
