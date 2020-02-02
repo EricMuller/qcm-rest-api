@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.Map;
 
-@CrossOrigin
+
 @RequestMapping(UserApi.API_V1 + "/users")
 public interface UserRestApi {
 

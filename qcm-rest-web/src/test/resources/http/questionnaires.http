@@ -14,10 +14,32 @@ client.global.set("auth_token", "Bearer " + response.body.access_token);
 ###
 
 ###
-GET http://{{host}}:{{port}}/qcm/api/v1/questionnaires
-Accept: application/json
+OPTIONS https://{{host}}/qcm/api/v1/questionnaires
+Accept: application/json, text/plain, */*
+Content-Type: application/json
+#Authorization: {{auth_token}}
+Origin: http://localhost:4200/
+Access-Control-Request-Method: GET
+#Access-Control-Request-Headers: X-Requested-With
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36
+
+###
+OPTIONS http://{{host}}:{{port}}/qcm/api/v1/questionnaires
+Accept: application/json, text/plain, */*
+Content-Type: application/json
+#Authorization: {{auth_token}}
+Origin: http://localhost:4200/
+Access-Control-Request-Method: GET
+#Access-Control-Request-Headers: X-Requested-With
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36
+
+###
+GET http://{{host}}:{{port}}/qcm/api/v1/questionnaires/?size=100&page=0&sort=id
+Accept: application/json, text/plain, */*
 Content-Type: application/json
 Authorization: {{auth_token}}
+Origin: http://localhost:4200/
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36
 
 > {%
 client.global.set("questionnaire_id", response.body.content[0].id);

@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Profile("webmvc")
-@CrossOrigin
+
 @RequestMapping(value = QcmApi.API_V1 + ReportRestController.URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public interface ReportRestApi {
     @GetMapping(value = "/query", produces = "application/json")

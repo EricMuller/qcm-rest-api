@@ -39,7 +39,7 @@ import java.io.IOException;
 import java.security.Principal;
 
 @Profile("webmvc")
-@CrossOrigin
+
 @RequestMapping(value = QcmApi.API_V1 + "/tags", produces = MediaType.APPLICATION_JSON_VALUE)
 public interface TagRestApi {
     @GetMapping()

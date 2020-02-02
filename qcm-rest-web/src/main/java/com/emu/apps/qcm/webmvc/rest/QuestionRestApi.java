@@ -46,7 +46,7 @@ import javax.validation.Valid;
 import java.security.Principal;
 
 @Profile("webmvc")
-@CrossOrigin
+
 @RequestMapping(value = QcmApi.API_V1 + "/questions", produces = MediaType.APPLICATION_JSON_VALUE)
 public interface QuestionRestApi {
     @GetMapping()

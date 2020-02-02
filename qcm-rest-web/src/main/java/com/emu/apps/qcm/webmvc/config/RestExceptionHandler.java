@@ -37,7 +37,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
      */
     @ExceptionHandler({Exception.class})
     @ResponseBody
-    public ResponseEntity<Object> handleAnyException(Exception e) {
+    public ResponseEntity <Object> handleAnyException(Exception e) {
 
         LOGGER.error("Exception caught: {}", e);
 
@@ -93,17 +93,17 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return response(response, CONFLICT);
     }
 
-    protected <T> ResponseEntity<T> response(T body, HttpStatus status) {
+    protected <T> ResponseEntity <T> response(T body, HttpStatus status) {
         LOGGER.debug("Responding with a status of {}", status);
-        return new ResponseEntity<>(body, new HttpHeaders(), status);
+        return new ResponseEntity <>(body, new HttpHeaders(), status);
     }
 
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-                                                                  HttpHeaders headers, HttpStatus status,
-                                                                  WebRequest request) {
+    protected ResponseEntity <Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+                                                                   HttpHeaders headers, HttpStatus status,
+                                                                   WebRequest request) {
 
-        List<FieldErrorMessage> fieldErrors = ex.getBindingResult().getFieldErrors().stream().map(fieldError ->
+        List <FieldErrorMessage> fieldErrors = ex.getBindingResult().getFieldErrors().stream().map(fieldError ->
                 new FieldErrorMessage(
                         fieldError.getObjectName(),
                         fieldError.getField(),

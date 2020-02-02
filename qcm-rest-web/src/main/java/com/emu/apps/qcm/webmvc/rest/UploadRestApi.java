@@ -43,10 +43,10 @@ import java.io.IOException;
 import java.security.Principal;
 
 @Profile("webmvc")
-@CrossOrigin
+
 @RequestMapping(value = QcmApi.API_V1 + "/upload", produces = MediaType.APPLICATION_JSON_VALUE)
 public interface UploadRestApi {
-    @CrossOrigin
+
     @ResponseBody
     @PostMapping(value = "/{fileType}", headers = "Content-Type=multipart/form-data")
     UploadDto uploadFile(@PathVariable("fileType") String fileType,
@@ -58,7 +58,7 @@ public interface UploadRestApi {
     @Timer
     Iterable <UploadDto> getUploads(Pageable pageable, Principal principal);
 
-    @CrossOrigin
+
     @ResponseBody
     @GetMapping(value = "/{id}/import")
     UploadDto importFile(@PathVariable("id") Long uploadId, Principal principal) throws IOException;
