@@ -9,8 +9,8 @@ import com.emu.apps.qcm.services.entity.questions.Question;
 import com.emu.apps.qcm.services.entity.questions.Response;
 import com.emu.apps.qcm.services.entity.questions.Type;
 import com.emu.apps.qcm.services.entity.tags.QuestionTag;
-import com.emu.apps.qcm.services.entity.upload.Upload;
 import com.emu.apps.qcm.services.entity.upload.ImportStatus;
+import com.emu.apps.qcm.services.entity.upload.Upload;
 import com.emu.apps.qcm.services.jpa.builders.QuestionnaireTagBuilder;
 import com.emu.apps.qcm.web.dtos.FileQuestionDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,7 +23,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.Principal;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -97,7 +97,7 @@ public class ImportServiceImpl implements ImportService {
                     question.setStatus(Status.DRAFT);
                     Response response = new Response();
                     response.setResponse(fileQuestionDto.getResponse());
-                    question.setResponses(new ArrayList <>());
+                    question.setResponses(Arrays.asList(response));
 
                     // new questionnaire by tag
                     var questionnaire = categorieQuestionnaireMap.get(categorie.getLibelle());

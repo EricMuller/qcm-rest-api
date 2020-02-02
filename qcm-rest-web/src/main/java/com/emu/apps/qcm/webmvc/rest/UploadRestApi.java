@@ -28,14 +28,12 @@
 
 package com.emu.apps.qcm.webmvc.rest;
 
-import com.emu.apps.qcm.services.entity.upload.Upload;
 import com.emu.apps.qcm.web.dtos.UploadDto;
 import com.emu.apps.shared.metrics.Timer;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -48,7 +46,7 @@ import java.security.Principal;
 public interface UploadRestApi {
 
     @ResponseBody
-    @PostMapping(value = "/{fileType}", headers = "Content-Type=multipart/form-data")
+    @PostMapping(value = "/{fileType}")
     UploadDto uploadFile(@PathVariable("fileType") String fileType,
                          @RequestParam("file") MultipartFile file,
                          @RequestParam("async") Boolean async,
