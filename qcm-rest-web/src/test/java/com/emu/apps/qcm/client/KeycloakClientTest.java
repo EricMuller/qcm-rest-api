@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
+
 
 import java.io.IOException;
 import java.net.URI;
@@ -16,6 +16,7 @@ import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.concurrent.CompletionException;
 import java.util.stream.Collectors;
+import org.junit.jupiter.api.Test;
 
 @Slf4j
 public class KeycloakClientTest {
