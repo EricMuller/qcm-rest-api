@@ -1,6 +1,7 @@
 package com.emu.apps.qcm.web.mappers;
 
 import com.emu.apps.qcm.services.entity.questions.Question;
+import com.emu.apps.qcm.web.dtos.CategoryDto;
 import com.emu.apps.qcm.web.dtos.QuestionDto;
 import com.emu.apps.qcm.web.dtos.QuestionTagDto;
 import org.assertj.core.api.Assertions;
@@ -11,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = {QuestionMapperImpl.class, QuestionTagMapperImpl.class, ResponseMapperImpl.class})
+@SpringBootTest(classes = {QuestionMapperImpl.class, QuestionTagMapperImpl.class, ResponseMapperImpl.class, QuestionCategoryMapperImpl.class})
 public class QuestionMapperTest {
 
     @Autowired
@@ -24,14 +25,16 @@ public class QuestionMapperTest {
         questionDto.setId(1L);
         questionDto.setQuestion("Question");
 
+        CategoryDto categoryDto = new CategoryDto();
+        categoryDto.setId(1L);
+        questionDto.setCategory(categoryDto);
+
         QuestionTagDto questionTagDto = new QuestionTagDto();
         questionTagDto.setId(1L);
 
         questionTagDto.setLibelle("Test");
 
-
         Question question = questionMapper.dtoToModel(questionDto);
-
 
         Assertions.assertThat(question).isNotNull();
 

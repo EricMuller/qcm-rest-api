@@ -34,18 +34,27 @@ import org.springframework.web.bind.annotation.*;
 
 
 @Profile("webmvc")
-@RequestMapping(QcmApi.API_V1 +"/categories")
+@RequestMapping(QcmApi.API_V1 + "/categories")
 public interface CategoryRestApi {
 
     @GetMapping(value = "{id}")
     @ResponseBody
     CategoryDto getCategory(@PathVariable("id") Long id);
 
-    @GetMapping( produces = "application/json")
+    @PostMapping(value = "/questions", produces = "application/json")
     @ResponseBody
-    Iterable<CategoryDto> getCategories();
+    CategoryDto saveQuestionCategory(@RequestBody CategoryDto categoryDto);
 
-    @PostMapping
+    @PostMapping(value = "/questionnaires", produces = "application/json")
     @ResponseBody
-    CategoryDto saveCategory(@RequestBody CategoryDto epicDto);
+    CategoryDto saveQuestionnaireCategory(@RequestBody CategoryDto categoryDto);
+
+    @GetMapping(value = "/questions", produces = "application/json")
+    @ResponseBody
+    Iterable <CategoryDto> getQuestionsCategories();
+
+    @GetMapping(value = "/questionnaires", produces = "application/json")
+    @ResponseBody
+    Iterable <CategoryDto> getQuestionnairesCategories();
+
 }

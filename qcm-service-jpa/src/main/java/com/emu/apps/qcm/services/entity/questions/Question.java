@@ -2,6 +2,7 @@ package com.emu.apps.qcm.services.entity.questions;
 
 
 import com.emu.apps.qcm.services.entity.Status;
+import com.emu.apps.qcm.services.entity.category.QuestionCategory;
 import com.emu.apps.qcm.services.entity.common.AuditableEntity;
 import com.emu.apps.qcm.services.entity.converters.BooleanTFConverter;
 import com.emu.apps.qcm.services.entity.questionnaires.QuestionnaireQuestion;
@@ -48,6 +49,9 @@ public class Question extends AuditableEntity<String> {
 
     @Enumerated(EnumType.STRING)
     private Type type;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private QuestionCategory category;
 
     @Enumerated(EnumType.STRING)
     private Status status = Status.DRAFT;

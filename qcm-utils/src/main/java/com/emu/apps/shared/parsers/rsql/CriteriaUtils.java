@@ -2,9 +2,8 @@ package com.emu.apps.shared.parsers.rsql;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -14,9 +13,8 @@ import java.util.Optional;
 import java.util.stream.IntStream;
 
 @Service
+@Slf4j
 public final class CriteriaUtils {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(CriteriaUtils.class);
 
     private CriteriaUtils() {
     }
@@ -48,7 +46,7 @@ public final class CriteriaUtils {
                 .map(t -> Long.valueOf(t.getValue())).toArray(it -> new Long[it]);
     }
 
-    public static Optional<String> getAttribute(String attribute, Criteria[] criterias) {
+    public static Optional <String> getAttribute(String attribute, Criteria[] criterias) {
         return Arrays.stream(criterias).
                 filter((filterDto -> attribute.equals(filterDto.getName())))
                 .map(Criteria::getValue)

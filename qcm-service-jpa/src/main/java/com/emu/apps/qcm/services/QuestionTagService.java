@@ -9,6 +9,6 @@ public interface QuestionTagService {
 
     QuestionTag saveQuestionTag(QuestionTag questionTag);
 
-    Question saveQuestionTags(long questionId, Iterable<QuestionTag> questionTag,Principal principal);
+    Question saveQuestionTags(long questionId, Iterable <QuestionTag> questionTag, Principal principal);
 
 }

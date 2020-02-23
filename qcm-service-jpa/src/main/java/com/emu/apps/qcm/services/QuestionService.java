@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface QuestionService {
 
-    Optional<Question> findById(Long id);
+    Optional <Question> findById(Long id);
 
     void deleteById(Long id);
 
@@ -20,7 +20,7 @@ public interface QuestionService {
 
     QuestionTag saveQuestionTag(QuestionTag questionTag);
 
-    Page<Question> findAllByPage(Specification<Question> specification, Pageable pageable);
+    Page <Question> findAllByPage(Specification <Question> specification, Pageable pageable);
 
-    Page<QuestionResponseProjection> getQuestionsProjectionByQuestionnaireId(Long questionnaireId, Pageable pageable);
+    Page <QuestionResponseProjection> getQuestionsProjectionByQuestionnaireId(Long questionnaireId, Pageable pageable);
 }

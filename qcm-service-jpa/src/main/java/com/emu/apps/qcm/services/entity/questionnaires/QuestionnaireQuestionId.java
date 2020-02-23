@@ -21,9 +21,9 @@ public class QuestionnaireQuestionId implements Serializable {
     @Column(name = "question_id")
     private Long questionId;
 
-    public QuestionnaireQuestionId(Long questionId, Long tagId) {
-        this.questionnaireId = questionId;
-        this.questionId = tagId;
+    public QuestionnaireQuestionId(Long questionnaireId, Long questionId) {
+        this.questionnaireId = questionnaireId;
+        this.questionId = questionId;
     }
 
     @Override

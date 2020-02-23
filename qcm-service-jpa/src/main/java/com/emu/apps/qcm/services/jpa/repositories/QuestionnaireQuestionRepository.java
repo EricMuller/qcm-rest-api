@@ -34,7 +34,7 @@ public interface QuestionnaireQuestionRepository extends JpaRepository<Questionn
             " left join q.questionTags  qt " +
             " join qt.tag t  " +
             " WHERE qq.id.questionnaireId in :questionnaireIds  and t.id in :tagIds  order by qq.position")
-    Page<QuestionResponseProjection> findQuestionsByQuestionnaireIdsAndTagIds(@Param("questionnaireIds") List<Long> questionnaireIds, @Param("tagIds") List<Long> tagIds, Pageable pageable);
+    Page<QuestionResponseProjection> findQuestionsByQuestionnaireIdsAndTagIds(@Param("questionnaireIds") List <Long> questionnaireIds, @Param("tagIds") List <Long> tagIds, Pageable pageable);
 
     @Modifying
     @Query("delete from QuestionnaireQuestion qq where qq.id.questionnaireId = :id")

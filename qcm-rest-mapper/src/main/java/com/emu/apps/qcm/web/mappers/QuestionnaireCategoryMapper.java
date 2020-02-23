@@ -28,19 +28,20 @@
 
 package com.emu.apps.qcm.web.mappers;
 
-import com.emu.apps.qcm.services.entity.category.Category;
+import com.emu.apps.qcm.services.entity.category.QuestionCategory;
+import com.emu.apps.qcm.services.entity.category.QuestionnaireCategory;
 import com.emu.apps.qcm.web.dtos.CategoryDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring"
-        , unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface CategoryMapper {
+        ,unmappedTargetPolicy = ReportingPolicy.IGNORE)
+public interface QuestionnaireCategoryMapper {
 
-    CategoryDto modelToDto(Category category);
+    CategoryDto modelToDto(QuestionCategory category);
 
-    Category dtoToModel(CategoryDto categoryDto);
+    QuestionnaireCategory dtoToModel(CategoryDto categoryDto);
 
-    Iterable <CategoryDto> modelsToDtos(Iterable <Category> categories);
+    Iterable<CategoryDto> modelsToDtos(Iterable <QuestionnaireCategory> categories);
 
 }

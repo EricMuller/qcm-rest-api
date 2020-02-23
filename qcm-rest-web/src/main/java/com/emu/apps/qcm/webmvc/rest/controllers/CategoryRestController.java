@@ -4,9 +4,10 @@ import com.emu.apps.qcm.services.CategoryService;
 import com.emu.apps.qcm.web.dtos.CategoryDto;
 import com.emu.apps.qcm.web.dtos.MessageDto;
 import com.emu.apps.qcm.web.mappers.CategoryMapper;
+import com.emu.apps.qcm.web.mappers.QuestionCategoryMapper;
+import com.emu.apps.qcm.web.mappers.QuestionnaireCategoryMapper;
 import com.emu.apps.qcm.webmvc.rest.CategoryRestApi;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,11 +27,16 @@ public class CategoryRestController implements CategoryRestApi {
 
     private final CategoryService categoryService;
 
+    private final QuestionCategoryMapper questionCategoryMapper;
+
+    private final QuestionnaireCategoryMapper questionnaireCategoryMapper;
+
     private final CategoryMapper categoryMapper;
 
-    @Autowired
-    public CategoryRestController(CategoryService categoryService, CategoryMapper categoryMapper) {
+    public CategoryRestController(CategoryService categoryService, QuestionCategoryMapper questionCategoryMapper, QuestionnaireCategoryMapper questionnaireCategoryMapper, CategoryMapper categoryMapper) {
         this.categoryService = categoryService;
+        this.questionCategoryMapper = questionCategoryMapper;
+        this.questionnaireCategoryMapper = questionnaireCategoryMapper;
         this.categoryMapper = categoryMapper;
     }
 
@@ -40,14 +46,25 @@ public class CategoryRestController implements CategoryRestApi {
     }
 
     @Override
-    public Iterable <CategoryDto> getCategories() {
-        return categoryMapper.modelsToDtos(categoryService.findAll());
+    public Iterable <CategoryDto> getQuestionsCategories() {
+        return questionCategoryMapper.modelsToDtos(categoryService.findQuestionCategories());
     }
 
     @Override
-    public CategoryDto saveCategory(@RequestBody CategoryDto categoryDto) {
-        var category = categoryMapper.dtoToModel(categoryDto);
-        return categoryMapper.modelToDto(categoryService.save(category));
+    public Iterable <CategoryDto> getQuestionnairesCategories() {
+        return questionnaireCategoryMapper.modelsToDtos(categoryService.findQuestionnairesCategories());
+    }
+
+    @Override
+    public CategoryDto saveQuestionCategory(@RequestBody CategoryDto categoryDto) {
+        var category = questionCategoryMapper.dtoToModel(categoryDto);
+        return questionCategoryMapper.modelToDto(categoryService.saveQuestionCategory(category));
+    }
+
+    @Override
+    public CategoryDto saveQuestionnaireCategory(@RequestBody CategoryDto categoryDto) {
+        var category = questionnaireCategoryMapper.dtoToModel(categoryDto);
+        return categoryMapper.modelToDto(categoryService.saveQuestionnaireCategory(category));
     }
 
     @ExceptionHandler({JsonProcessingException.class, IOException.class})

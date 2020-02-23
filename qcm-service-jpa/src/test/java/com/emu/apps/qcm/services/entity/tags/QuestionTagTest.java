@@ -9,7 +9,7 @@ public class QuestionTagTest {
     private QuestionTag pojoObject;
 
     public QuestionTagTest() throws Exception {
-        this.pojoObject = new com.emu.apps.qcm.services.entity.tags.QuestionTag();
+        this.pojoObject = new QuestionTag();
     }
 
     @Test

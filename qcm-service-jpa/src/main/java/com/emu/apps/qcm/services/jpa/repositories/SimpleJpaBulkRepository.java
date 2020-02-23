@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @NoRepositoryBean
 public interface SimpleJpaBulkRepository<T, I extends Serializable>
-  extends JpaRepository<T, I> {
+        extends JpaRepository <T, I> {
 
-  void bulkSave(Iterable<T> entities, int batchSize);
+    void bulkSave(Iterable <T> entities, int batchSize);
 }

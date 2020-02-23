@@ -34,5 +34,4 @@ public class QuestionnaireDto extends EntityDto {
     @JsonProperty("website")
     private String website;
 
-
 }

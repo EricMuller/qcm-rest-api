@@ -1,16 +1,19 @@
 package com.emu.apps.qcm.services;
 
-import com.emu.apps.qcm.services.entity.category.Category;
+import com.emu.apps.qcm.services.entity.category.QuestionCategory;
+import com.emu.apps.qcm.services.entity.category.QuestionnaireCategory;
 import com.emu.apps.qcm.services.entity.questionnaires.Questionnaire;
 import com.emu.apps.qcm.services.entity.questionnaires.QuestionnaireQuestion;
 import com.emu.apps.qcm.services.entity.questions.Question;
 import com.emu.apps.qcm.services.entity.questions.Response;
 import com.emu.apps.qcm.services.entity.questions.Type;
 import com.emu.apps.qcm.services.entity.tags.QuestionTag;
-import com.emu.apps.qcm.services.jpa.builders.QuestionnaireTagBuilder;
 import com.emu.apps.qcm.services.entity.tags.Tag;
 import com.emu.apps.qcm.services.entity.upload.Upload;
+import com.emu.apps.qcm.services.jpa.builders.QuestionnaireTagBuilder;
 import com.emu.apps.qcm.services.jpa.repositories.*;
+import com.emu.apps.qcm.services.jpa.repositories.category.QuestionCategoryRepository;
+import com.emu.apps.qcm.services.jpa.repositories.category.QuestionnaireCategoryRepository;
 import com.emu.apps.shared.security.PrincipalUtils;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
@@ -65,7 +68,10 @@ public class FixtureService {
     private QuestionnaireQuestionRepository questionnaireQuestionRepository;
 
     @Autowired
-    private CategoryRepository epicRepository;
+    private QuestionCategoryRepository questionCategoryRepository;
+
+    @Autowired
+    private QuestionnaireCategoryRepository questionnaireCategoryRepository;
 
     @Autowired
     private ResponseRepository responseCrudRepository;
@@ -75,6 +81,7 @@ public class FixtureService {
 
     @Autowired
     private UploadRepository uploadRepository;
+
 
     public FixtureService() {
     }
@@ -93,19 +100,25 @@ public class FixtureService {
         questionnaireQuestionRepository.deleteAll();
         questionRepository.deleteAll();
         tagRepository.deleteAll();
-        epicRepository.deleteAll();
+        questionCategoryRepository.deleteAll();
         questionnaireJpaRepository.deleteAll();
+        questionCategoryRepository.deleteAll();
 
         // category
-        Category epic = new Category();
-        epic.setLibelle(CATEGORIE_LIBELLE);
-        epic = epicRepository.save(epic);
+        QuestionCategory questionCategory = new QuestionCategory();
+        questionCategory.setLibelle(CATEGORIE_LIBELLE);
+        questionCategory = questionCategoryRepository.save(questionCategory);
+
+        // category
+        QuestionnaireCategory questionnaireCategory = new QuestionnaireCategory();
+        questionnaireCategory.setLibelle(CATEGORIE_LIBELLE);
+        questionnaireCategory = questionnaireCategoryRepository.save(questionnaireCategory);
 
         //questionnaire
         Questionnaire questionnaire = new Questionnaire();
         questionnaire.setTitle(QUESTIONNAIRE_TITLE);
         questionnaire.setDescription(QUESTIONNAIRE_DESC);
-        questionnaire.setCategory(epic);
+        questionnaire.setCategory(questionnaireCategory);
         questionnaire = questionnaireJpaRepository.save(questionnaire);
 
         Response response1 = new Response();
@@ -122,6 +135,7 @@ public class FixtureService {
         Question question1 = new Question();
         question1.setQuestion(QUESTION_QUESTION_1);
         question1.setType(Type.FREE_TEXT);
+        question1.setCategory(questionCategory);
 
         // question.setQuestionnaire(questionnaire);
         question1.setResponses(Lists.newArrayList(response1, response2));
@@ -131,6 +145,7 @@ public class FixtureService {
         Question question2 = new Question();
         question2.setQuestion(QUESTION_QUESTION_2);
         question2.setType(Type.FREE_TEXT);
+        question2.setCategory(questionCategory);
 
         question2 = questionRepository.save(question2);
 
@@ -155,7 +170,6 @@ public class FixtureService {
                 .setTag(questionnaireTag1)
                 .build());
 
-
         return questionnaire;
 
     }
@@ -176,6 +190,7 @@ public class FixtureService {
         questionnaireTagRepository.deleteAll();
         questionRepository.deleteAll();
         tagRepository.deleteAll();
+
 //
 //        Choice choice = new Choice("message", 1L, true);
 //        Choice choice2 = new Choice("message", 2L, false);

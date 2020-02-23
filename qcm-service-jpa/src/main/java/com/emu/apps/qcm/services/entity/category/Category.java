@@ -1,11 +1,11 @@
 package com.emu.apps.qcm.services.entity.category;
 
-import com.emu.apps.qcm.services.entity.common.RefEntity;
+import com.emu.apps.qcm.services.entity.common.AuditableEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 /**
  * Created by eric on 05/06/2017.
@@ -14,12 +14,15 @@ import javax.persistence.Entity;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Category extends RefEntity {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+public class Category extends AuditableEntity <String> {
 
-    private String libelle;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "category_generator")
+    @SequenceGenerator(name="category_generator", sequenceName = "category_seq", allocationSize=50)
+    @Column(name = "id", updatable = false, nullable = false)
+    private Long id;
 
-    public Category(String libelle) {
-        this.libelle = libelle;
-    }
+    protected String libelle;
 
 }

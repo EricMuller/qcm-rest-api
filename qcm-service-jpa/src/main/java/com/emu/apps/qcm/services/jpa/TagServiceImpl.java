@@ -32,6 +32,7 @@ import com.emu.apps.qcm.services.TagService;
 import com.emu.apps.qcm.services.entity.tags.Tag;
 import com.emu.apps.qcm.services.jpa.repositories.TagRepository;
 import com.emu.apps.shared.security.PrincipalUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,8 +52,6 @@ import java.util.Optional;
 @Service
 @Transactional
 public class TagServiceImpl implements TagService {
-
-    protected final Logger log = LoggerFactory.getLogger(getClass());
 
     private final TagRepository tagRepository;
 

@@ -31,6 +31,8 @@ import java.util.Map;
 @Transactional
 public class ImportServiceImpl implements ImportService {
 
+    public static final String IMPORT = "import";
+
     private final CategoryService categoryService;
 
     private final QuestionnaireService questionnaireService;
@@ -76,16 +78,18 @@ public class ImportServiceImpl implements ImportService {
             Map <String, Questionnaire> categorieQuestionnaireMap = new HashMap <>();
             Map <String, Long> tagsCounterMap = new HashMap <>();
 
-            var category = categoryService.findOrCreateByLibelle("Java");
+            var questionCategory = categoryService.findOrCreateByLibelle(IMPORT);
+
+
 
             for (FileQuestionDto fileQuestionDto : fileQuestionDtos) {
 
                 if (StringUtils.isNotEmpty(fileQuestionDto.getCategorie())) {
 
-                    var categorie = tagService.findOrCreateByLibelle(fileQuestionDto.getCategorie(), principal);
+                    var tag = tagService.findOrCreateByLibelle(fileQuestionDto.getCategorie(), principal);
 
-                    var aLong = tagsCounterMap.containsKey(categorie.getLibelle()) ? tagsCounterMap.get(categorie.getLibelle()) : Long.valueOf(0);
-                    tagsCounterMap.put(categorie.getLibelle(), ++aLong);
+                    var aLong = tagsCounterMap.containsKey(tag.getLibelle()) ? tagsCounterMap.get(tag.getLibelle()) : Long.valueOf(0);
+                    tagsCounterMap.put(tag.getLibelle(), ++aLong);
 
                     var question = new Question();
 
@@ -99,25 +103,28 @@ public class ImportServiceImpl implements ImportService {
                     response.setResponse(fileQuestionDto.getResponse());
                     question.setResponses(Arrays.asList(response));
 
+                    question.setCategory(questionCategory);
                     // new questionnaire by tag
-                    var questionnaire = categorieQuestionnaireMap.get(categorie.getLibelle());
+                    var questionnaire = categorieQuestionnaireMap.get(IMPORT/*categorie.getLibelle()*/);
                     if (questionnaire == null) {
                         questionnaire = new Questionnaire(name + "-" + fileQuestionDto.getCategorie());
                         questionnaire.setDescription(questionnaire.getTitle());
-                        questionnaire.setCategory(category);
+                        // questionnaire.setCategory(category);
                         questionnaire.setStatus(Status.DRAFT);
                         questionnaire = questionnaireService.saveQuestionnaire(questionnaire);
-                        categorieQuestionnaireMap.put(categorie.getLibelle(), questionnaire);
+                        categorieQuestionnaireMap.put(IMPORT/*categorie.getLibelle()*/, questionnaire);
+                        var tagImport = tagService.findOrCreateByLibelle(IMPORT, principal);
+                        questionnaireTagService.saveQuestionnaireTag(new QuestionnaireTagBuilder().setQuestionnaire(questionnaire).setTag(tagImport).build());
                     }
 
                     question = questionService.saveQuestion(question);
 
-                    var position = tagsCounterMap.get(categorie.getLibelle());
+                    var position = tagsCounterMap.get(tag.getLibelle());
 
                     questionnaireService.saveQuestionnaireQuestion(new QuestionnaireQuestion(questionnaire, question, position));
 
-                    questionService.saveQuestionTag(new QuestionTag(question, categorie));
-                    questionnaireTagService.saveQuestionnaireTag(new QuestionnaireTagBuilder().setQuestionnaire(questionnaire).setTag(categorie).build());
+                    questionService.saveQuestionTag(new QuestionTag(question, tag));
+                    // questionnaireTagService.saveQuestionnaireTag(new QuestionnaireTagBuilder().setQuestionnaire(questionnaire).setTag(categorie).build());
 
                 }
             }

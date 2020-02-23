@@ -33,7 +33,6 @@ public interface QuestionnaireRepository extends JpaRepository<Questionnaire, Lo
     Optional<Questionnaire> findById(Long id);
 
     @Override
-    Page<Questionnaire> findAll(Specification<Questionnaire> specification, Pageable pageable);
-
+    Page<Questionnaire> findAll(Specification <Questionnaire> specification, Pageable pageable);
 
 }

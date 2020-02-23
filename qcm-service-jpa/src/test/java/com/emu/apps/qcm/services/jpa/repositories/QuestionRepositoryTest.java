@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import static com.emu.apps.qcm.services.FixtureService.QUESTION_TAG_LIBELLE_1;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class QuestionRepositoryTest extends SpringBootTestCase {
@@ -41,9 +42,8 @@ public class QuestionRepositoryTest extends SpringBootTestCase {
         assertNotNull(newQuestion.orElse(null));
         assertNotNull(newQuestion.orElse(null).getId());
         assertEquals(FixtureService.QUESTION_QUESTION_1, newQuestion.get().getQuestion());
-        //Assert.assertEquals(RESPONSE, newQuestion.getResponse());
+        // Assert.assertEquals(RESPONSE, newQuestion.getResponse());
     }
-
 
     @Test
     @DisplayName("Test LazyInitializationException with lazy collection Tags")
@@ -57,7 +57,6 @@ public class QuestionRepositoryTest extends SpringBootTestCase {
         Assertions.assertThat(newQuestion.orElse(null)).isNotNull();
 
         assertThrows(LazyInitializationException.class, () -> newQuestion.get().getQuestionTags().size());
-
 
     }
 
@@ -82,7 +81,11 @@ public class QuestionRepositoryTest extends SpringBootTestCase {
         Assertions.assertThat(newQuestion.getQuestionTags()).isNotEmpty();
         Assertions.assertThat(newQuestion.getQuestionTags().size()).isEqualTo(2);
 
-        Optional <QuestionTag> optional = newQuestion.getQuestionTags().stream().filter(q -> FixtureService.QUESTION_TAG_LIBELLE_1.equals(q.getTag().getLibelle())).findFirst();
+        Optional <QuestionTag> optional = newQuestion.getQuestionTags()
+                .stream()
+                .filter(q -> QUESTION_TAG_LIBELLE_1.equals(q.getTag().getLibelle()))
+                .findFirst();
+
         Assertions.assertThat(optional.isPresent()).isTrue();
 
     }
@@ -100,7 +103,11 @@ public class QuestionRepositoryTest extends SpringBootTestCase {
         Assertions.assertThat(newQuestion.getQuestionTags()).isNotEmpty();
         Assertions.assertThat(newQuestion.getQuestionTags().size()).isEqualTo(2);
 
-        Optional <QuestionTag> optional = newQuestion.getQuestionTags().stream().filter(q -> FixtureService.QUESTION_TAG_LIBELLE_1.equals(q.getTag().getLibelle())).findFirst();
+        Optional <QuestionTag> optional = newQuestion.getQuestionTags()
+                .stream()
+                .filter(q -> QUESTION_TAG_LIBELLE_1.equals(q.getTag().getLibelle()))
+                .findFirst();
+
         Assertions.assertThat(optional.isPresent()).isTrue();
 
         // responses

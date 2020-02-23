@@ -14,8 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class UserProfileServiceImpl implements UserProfileService {
 
-    protected final Logger logger = LoggerFactory.getLogger(getClass());
-
     @Autowired
     private UserProfileJpaRepository userProfileRepository;
 

@@ -36,7 +36,7 @@ import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {CategoryMapper.class}
+@Mapper(componentModel = "spring", uses = {QuestionCategoryMapper.class}
         ,unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface FileQuestionMapper {
 

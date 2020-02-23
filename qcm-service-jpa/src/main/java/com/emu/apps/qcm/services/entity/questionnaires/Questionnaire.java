@@ -1,7 +1,8 @@
 package com.emu.apps.qcm.services.entity.questionnaires;
 
 import com.emu.apps.qcm.services.entity.Status;
-import com.emu.apps.qcm.services.entity.category.Category;
+import com.emu.apps.qcm.services.entity.category.QuestionCategory;
+import com.emu.apps.qcm.services.entity.category.QuestionnaireCategory;
 import com.emu.apps.qcm.services.entity.common.AuditableEntity;
 import com.emu.apps.qcm.services.entity.tags.QuestionnaireTag;
 import lombok.Getter;
@@ -14,8 +15,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-
-
 @NamedEntityGraph(name = "Questionnaire.questionnaireTags",
         attributeNodes = {
                 @NamedAttributeNode(value = "questionnaireTags", subgraph = "tags")
@@ -25,7 +24,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Questionnaire extends AuditableEntity<String> {
+public class Questionnaire extends AuditableEntity <String> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "questionnaire_generator")
@@ -49,14 +48,14 @@ public class Questionnaire extends AuditableEntity<String> {
     private String website;
 
     @OneToMany(mappedBy = "questionnaire", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<QuestionnaireQuestion> questionnaireQuestions = new HashSet<>();
+    private Set <QuestionnaireQuestion> questionnaireQuestions = new HashSet <>();
 
     @ManyToOne(fetch = FetchType.EAGER)
-    private Category category;
+    private QuestionnaireCategory category;
 
     @OneToMany(mappedBy = "questionnaire", cascade = CascadeType.ALL, orphanRemoval = true)
     @BatchSize(size = 20)
-    private Set<QuestionnaireTag> questionnaireTags = new HashSet<>();
+    private Set <QuestionnaireTag> questionnaireTags = new HashSet <>();
 
     public Questionnaire(String title) {
         this.title = title;

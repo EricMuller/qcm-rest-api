@@ -15,7 +15,6 @@ public abstract class RefEntity implements ID {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-//    @ApiModelProperty(notes = "The database generated Question ID")
     private Long id;
 
     @Column(unique = true, name = "uuid", nullable = false)

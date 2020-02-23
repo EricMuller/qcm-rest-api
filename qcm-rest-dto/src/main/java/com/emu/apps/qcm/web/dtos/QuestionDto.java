@@ -32,6 +32,9 @@ public class QuestionDto extends EntityDto {
     @JsonProperty("status")
     private String status;
 
+    @JsonProperty("category")
+    private CategoryDto category;
+
     @JsonProperty("responses")
     private List <ResponseDto> responses;
 

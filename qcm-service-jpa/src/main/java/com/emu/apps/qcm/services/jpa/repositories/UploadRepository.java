@@ -9,11 +9,11 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UploadRepository extends JpaRepository<Upload, Long>, JpaSpecificationExecutor<Upload> {
+public interface UploadRepository extends JpaRepository <Upload, Long>, JpaSpecificationExecutor <Upload> {
 
-    Page<Upload> findAll(Pageable pageable);
+    Page <Upload> findAll(Pageable pageable);
 
     @Override
-    Page<Upload> findAll(Specification<Upload> specification, Pageable pageable);
+    Page <Upload> findAll(Specification <Upload> specification, Pageable pageable);
 
 }

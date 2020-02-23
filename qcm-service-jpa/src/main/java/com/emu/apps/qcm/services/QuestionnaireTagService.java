@@ -9,6 +9,6 @@ public interface QuestionnaireTagService {
 
     QuestionnaireTag saveQuestionnaireTag(QuestionnaireTag questionnaireTag);
 
-    Questionnaire saveQuestionnaireTags(long questionnaireId, Iterable<QuestionnaireTag> questionnaireTag, Principal principal);
+    Questionnaire saveQuestionnaireTags(long questionnaireId, Iterable <QuestionnaireTag> questionnaireTag, Principal principal);
 
 }

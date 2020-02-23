@@ -15,7 +15,7 @@ public interface QuestionnaireService {
 
     Iterable<Questionnaire> findAll();
 
-    Page<Questionnaire> findAllByPage(Specification<Questionnaire> specification, Pageable pageable);
+    Page<Questionnaire> findAllByPage(Specification <Questionnaire> specification, Pageable pageable);
 
     Questionnaire saveQuestionnaire(Questionnaire questionnaire);
 

@@ -9,11 +9,11 @@ import java.util.Optional;
 
 public interface UploadService {
 
-    Optional<Upload> findById(Long id);
+    Optional <Upload> findById(Long id);
 
     void deleteById(Long id);
 
     Upload saveUpload(Upload upload);
 
-    Page<Upload> findAllByPage(Specification<Upload> specification, Pageable pageable);
+    Page <Upload> findAllByPage(Specification <Upload> specification, Pageable pageable);
 }

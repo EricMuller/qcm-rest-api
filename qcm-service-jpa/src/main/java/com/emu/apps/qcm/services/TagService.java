@@ -13,13 +13,13 @@ public interface TagService {
 
     Tag save(Tag tag);
 
-    Optional<Tag> findById(Long id);
+    Optional <Tag> findById(Long id);
 
-    Tag  findOrCreateByLibelle(String libelle, Principal principal);
+    Tag findOrCreateByLibelle(String libelle, Principal principal);
 
-    Iterable<Tag> findAll();
+    Iterable <Tag> findAll();
 
-    Page<Tag> findAllByPage(Specification<Tag> specifications, Pageable pageable);
+    Page <Tag> findAllByPage(Specification <Tag> specifications, Pageable pageable);
 
-    Iterable<Tag> findByLibelleContaining(String libelle);
+    Iterable <Tag> findByLibelleContaining(String libelle);
 }

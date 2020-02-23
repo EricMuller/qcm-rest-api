@@ -10,13 +10,10 @@ import com.emu.apps.qcm.web.mappers.UploadMapper;
 import com.emu.apps.qcm.webmvc.rest.UploadRestApi;
 import com.emu.apps.shared.security.PrincipalUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,8 +25,6 @@ import java.security.Principal;
 @RestController
 @Profile("webmvc")
 public class UploadRestController implements UploadRestApi {
-
-    protected static final Logger LOGGER = LoggerFactory.getLogger(UploadRestController.class);
 
     private UploadService uploadService;
 
@@ -55,7 +50,7 @@ public class UploadRestController implements UploadRestApi {
             bytes = inputStream.readAllBytes();
         }
 
-        var upload = new Upload(FilenameUtils.getName(multipartFile.getOriginalFilename()),multipartFile.getContentType(), bytes);
+        var upload = new Upload(FilenameUtils.getName(multipartFile.getOriginalFilename()), multipartFile.getContentType(), bytes);
 
         return uploadMapper.modelToDto(uploadService.saveUpload(upload));
     }

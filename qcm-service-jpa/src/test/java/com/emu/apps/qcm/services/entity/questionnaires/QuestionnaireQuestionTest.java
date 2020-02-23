@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class QuestionnaireQuestionTest {
 private QuestionnaireQuestion pojoObject;
 public QuestionnaireQuestionTest() throws Exception {
-this.pojoObject = new com.emu.apps.qcm.services.entity.questionnaires.QuestionnaireQuestion();
+this.pojoObject = new QuestionnaireQuestion();
 }
 @Test
 public void testId() {

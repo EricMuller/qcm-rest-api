@@ -3,14 +3,14 @@ package com.emu.apps.qcm.services.jpa;
 
 import com.emu.apps.qcm.services.QuestionnaireTagService;
 import com.emu.apps.qcm.services.TagService;
-import com.emu.apps.qcm.services.exceptions.EntityExceptionUtil;
 import com.emu.apps.qcm.services.entity.questionnaires.Questionnaire;
 import com.emu.apps.qcm.services.entity.tags.QuestionnaireTag;
-import com.emu.apps.qcm.services.jpa.builders.QuestionnaireTagBuilder;
 import com.emu.apps.qcm.services.entity.tags.Tag;
+import com.emu.apps.qcm.services.exceptions.EntityExceptionUtil;
+import com.emu.apps.qcm.services.jpa.builders.QuestionnaireTagBuilder;
 import com.emu.apps.qcm.services.jpa.repositories.QuestionnaireRepository;
 import com.emu.apps.qcm.services.jpa.repositories.QuestionnaireTagRepository;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,8 +21,6 @@ import java.util.Objects;
 @Service
 @Transactional()
 public class QuestionnaireTagServiceImpl implements QuestionnaireTagService {
-
-    protected final org.slf4j.Logger logger = LoggerFactory.getLogger(getClass());
 
     private final QuestionnaireTagRepository questionnaireTagRepository;
 
@@ -43,7 +41,7 @@ public class QuestionnaireTagServiceImpl implements QuestionnaireTagService {
     }
 
     @Transactional()
-    public Questionnaire saveQuestionnaireTags(long questionnaireId, Iterable<QuestionnaireTag> questionnaireTags, Principal principal) {
+    public Questionnaire saveQuestionnaireTags(long questionnaireId, Iterable <QuestionnaireTag> questionnaireTags, Principal principal) {
 
         var questionnaire = questionnaireRepository.findById(questionnaireId).orElse(null);
 

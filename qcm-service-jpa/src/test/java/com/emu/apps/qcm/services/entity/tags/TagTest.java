@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TagTest {
 private Tag pojoObject;
 public TagTest() throws Exception {
-this.pojoObject = new com.emu.apps.qcm.services.entity.tags.Tag();
+this.pojoObject = new Tag();
 }
 @Test
 public void testId() {

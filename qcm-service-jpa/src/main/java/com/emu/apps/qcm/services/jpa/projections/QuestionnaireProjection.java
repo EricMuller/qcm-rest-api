@@ -2,7 +2,8 @@ package com.emu.apps.qcm.services.jpa.projections;
 
 
 import com.emu.apps.qcm.services.entity.Status;
-import com.emu.apps.qcm.services.entity.category.Category;
+import com.emu.apps.qcm.services.entity.category.QuestionCategory;
+import com.emu.apps.qcm.services.entity.category.QuestionnaireCategory;
 import org.hibernate.annotations.Immutable;
 
 import java.util.Date;
@@ -18,7 +19,7 @@ public interface QuestionnaireProjection {
 
     String getTitle();
 
-    Category getCategory();
+    QuestionnaireCategory getCategory();
 
     Status getStatus();
 

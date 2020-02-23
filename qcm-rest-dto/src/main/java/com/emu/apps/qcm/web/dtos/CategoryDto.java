@@ -9,16 +9,13 @@ import lombok.Setter;
 
 /**
  * Created by eric on 05/06/2017.
-*/
+ */
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoryDto {
-
-    @JsonProperty("id")
-    private String id;
+public class CategoryDto extends EntityDto {
 
     @JsonProperty("libelle")
     private String libelle;

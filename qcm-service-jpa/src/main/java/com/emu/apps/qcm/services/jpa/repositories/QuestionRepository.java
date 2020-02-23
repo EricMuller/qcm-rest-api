@@ -12,11 +12,11 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface QuestionRepository extends JpaRepository<Question, Long>, JpaSpecificationExecutor<Question> {
+public interface QuestionRepository extends JpaRepository <Question, Long>, JpaSpecificationExecutor <Question> {
 
     @Query(value = " SELECT distinct q  from  Question  q left join fetch q.questionTags qt   join fetch qt.tag t",
             countQuery = "SELECT COUNT(distinct q) FROM Question q left JOIN  q.questionTags qt  join  qt.tag t")
-    Page<Question> findAllQuestionsTags(Pageable pageable);
+    Page <Question> findAllQuestionsTags(Pageable pageable);
 
     @Query("SELECT q from Question q left join fetch q.questionTags qt join fetch qt.tag WHERE q.id = :id ")
     Question findByIdAndFetchTags(@Param("id") Long id);
@@ -28,9 +28,9 @@ public interface QuestionRepository extends JpaRepository<Question, Long>, JpaSp
     Question findByIdAndFetchTagsAndResponses(@Param("id") Long id);
 
     @EntityGraph(value = "Question.questionTags")
-    Page<Question> findAll(Pageable pageable);
+    Page <Question> findAll(Pageable pageable);
 
     @Override
-    Page<Question> findAll(Specification<Question> specification, Pageable pageable);
+    Page <Question> findAll(Specification <Question> specification, Pageable pageable);
 
 }

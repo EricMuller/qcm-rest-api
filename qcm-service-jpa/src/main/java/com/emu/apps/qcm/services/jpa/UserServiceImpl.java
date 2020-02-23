@@ -29,17 +29,11 @@
 package com.emu.apps.qcm.services.jpa;
 
 import com.emu.apps.qcm.services.UserService;
-import com.emu.apps.qcm.services.entity.tags.Tag;
 import com.emu.apps.qcm.services.entity.users.User;
 import com.emu.apps.qcm.services.jpa.repositories.UserRepository;
-import com.emu.apps.shared.security.PrincipalUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.security.Principal;
 
 /**
  * Created by eric on 14/06/2017.
@@ -47,8 +41,6 @@ import java.security.Principal;
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
-
-    protected final Logger log = LoggerFactory.getLogger(getClass());
 
     private final UserRepository userRepository;
 
