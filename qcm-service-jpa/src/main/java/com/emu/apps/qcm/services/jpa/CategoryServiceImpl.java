@@ -4,9 +4,11 @@ import com.emu.apps.qcm.services.CategoryService;
 import com.emu.apps.qcm.services.entity.category.Category;
 import com.emu.apps.qcm.services.entity.category.QuestionCategory;
 import com.emu.apps.qcm.services.entity.category.QuestionnaireCategory;
+import com.emu.apps.qcm.services.entity.questions.Question;
 import com.emu.apps.qcm.services.jpa.repositories.category.CategoryRepository;
 import com.emu.apps.qcm.services.jpa.repositories.category.QuestionCategoryRepository;
 import com.emu.apps.qcm.services.jpa.repositories.category.QuestionnaireCategoryRepository;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,15 +59,14 @@ public class CategoryServiceImpl implements CategoryService {
         return category == null ? saveQuestionCategory(new QuestionCategory(libelle)) : category;
     }
 
-
     @Override
-    public Iterable <QuestionnaireCategory> findQuestionnairesCategories() {
-        return questionnaireCategoryRepository.findAll();
+    public Iterable <QuestionnaireCategory> findQuestionnairesCategories(Specification <QuestionnaireCategory> specification) {
+        return questionnaireCategoryRepository.findAll(specification);
     }
 
     @Override
-    public Iterable <QuestionCategory> findQuestionCategories() {
-        return questionCategoryRepository.findAll();
+    public Iterable <QuestionCategory> findQuestionCategories(Specification <QuestionCategory> specification) {
+        return questionCategoryRepository.findAll(specification);
     }
 
 }

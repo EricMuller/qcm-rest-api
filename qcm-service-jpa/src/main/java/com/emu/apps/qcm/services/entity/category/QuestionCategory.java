@@ -15,6 +15,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @DiscriminatorValue(value="QUESTION")
+@Table(indexes = { @Index(name = "IDX_QC_CREATE_BY_IDX", columnList = "created_by") })
 public class QuestionCategory extends Category {
 
     public QuestionCategory(String libelle) {

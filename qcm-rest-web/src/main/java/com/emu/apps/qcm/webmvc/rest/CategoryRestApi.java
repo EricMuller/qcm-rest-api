@@ -32,6 +32,8 @@ import com.emu.apps.qcm.web.dtos.CategoryDto;
 import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 
 @Profile("webmvc")
 @RequestMapping(QcmApi.API_V1 + "/categories")
@@ -51,10 +53,11 @@ public interface CategoryRestApi {
 
     @GetMapping(value = "/questions", produces = "application/json")
     @ResponseBody
-    Iterable <CategoryDto> getQuestionsCategories();
+
+    Iterable <CategoryDto> getQuestionCategories(Principal principal);
 
     @GetMapping(value = "/questionnaires", produces = "application/json")
     @ResponseBody
-    Iterable <CategoryDto> getQuestionnairesCategories();
+    Iterable <CategoryDto> getQuestionnaireCategories(Principal principal);
 
 }

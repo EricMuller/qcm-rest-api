@@ -1,12 +1,16 @@
 package com.emu.apps.qcm.webmvc.rest.controllers;
 
 import com.emu.apps.qcm.services.CategoryService;
+import com.emu.apps.qcm.services.entity.category.QuestionCategory;
+import com.emu.apps.qcm.services.entity.category.QuestionnaireCategory;
+import com.emu.apps.qcm.services.jpa.specifications.PrincipalSpecificationBuilder;
 import com.emu.apps.qcm.web.dtos.CategoryDto;
 import com.emu.apps.qcm.web.dtos.MessageDto;
 import com.emu.apps.qcm.web.mappers.CategoryMapper;
 import com.emu.apps.qcm.web.mappers.QuestionCategoryMapper;
 import com.emu.apps.qcm.web.mappers.QuestionnaireCategoryMapper;
 import com.emu.apps.qcm.webmvc.rest.CategoryRestApi;
+import com.emu.apps.shared.security.PrincipalUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.security.Principal;
 
 /**
  * Created by eric on 05/06/2017.
@@ -46,13 +51,21 @@ public class CategoryRestController implements CategoryRestApi {
     }
 
     @Override
-    public Iterable <CategoryDto> getQuestionsCategories() {
-        return questionCategoryMapper.modelsToDtos(categoryService.findQuestionCategories());
+    public Iterable <CategoryDto> getQuestionCategories(Principal principal) {
+
+        var principalSpecificationBuilder = new PrincipalSpecificationBuilder <QuestionCategory>();
+        principalSpecificationBuilder.setPrincipal(PrincipalUtils.getEmail(principal));
+
+        return questionCategoryMapper.modelsToDtos(categoryService.findQuestionCategories(principalSpecificationBuilder.build()));
     }
 
     @Override
-    public Iterable <CategoryDto> getQuestionnairesCategories() {
-        return questionnaireCategoryMapper.modelsToDtos(categoryService.findQuestionnairesCategories());
+    public Iterable <CategoryDto> getQuestionnaireCategories(Principal principal) {
+
+        var principalSpecificationBuilder = new PrincipalSpecificationBuilder <QuestionnaireCategory>();
+        principalSpecificationBuilder.setPrincipal(PrincipalUtils.getEmail(principal));
+
+        return questionnaireCategoryMapper.modelsToDtos(categoryService.findQuestionnairesCategories(principalSpecificationBuilder.build()));
     }
 
     @Override

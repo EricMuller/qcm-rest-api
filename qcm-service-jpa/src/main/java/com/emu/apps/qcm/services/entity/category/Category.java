@@ -17,9 +17,11 @@ import javax.persistence.*;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Category extends AuditableEntity <String> {
 
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "category_generator")
-    @SequenceGenerator(name="category_generator", sequenceName = "category_seq", allocationSize=50)
+    @SequenceGenerator(name = "category_generator", sequenceName = "category_seq", allocationSize = 50)
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
