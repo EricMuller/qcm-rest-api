@@ -27,6 +27,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.emu.apps.qcm.services.entity.category.Category.Type.QUESTION;
+
 @Service
 @Transactional
 public class ImportServiceImpl implements ImportService {
@@ -78,8 +80,7 @@ public class ImportServiceImpl implements ImportService {
             Map <String, Questionnaire> categorieQuestionnaireMap = new HashMap <>();
             Map <String, Long> tagsCounterMap = new HashMap <>();
 
-            var questionCategory = categoryService.findOrCreateByLibelle(IMPORT);
-
+            var questionCategory = categoryService.findOrCreateByLibelle(QUESTION, IMPORT);
 
 
             for (FileQuestionDto fileQuestionDto : fileQuestionDtos) {

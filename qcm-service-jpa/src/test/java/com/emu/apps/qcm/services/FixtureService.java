@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.services;
 
-import com.emu.apps.qcm.services.entity.category.QuestionCategory;
-import com.emu.apps.qcm.services.entity.category.QuestionnaireCategory;
+
+import com.emu.apps.qcm.services.entity.category.Category;
 import com.emu.apps.qcm.services.entity.questionnaires.Questionnaire;
 import com.emu.apps.qcm.services.entity.questionnaires.QuestionnaireQuestion;
 import com.emu.apps.qcm.services.entity.questions.Question;
@@ -12,12 +12,10 @@ import com.emu.apps.qcm.services.entity.tags.Tag;
 import com.emu.apps.qcm.services.entity.upload.Upload;
 import com.emu.apps.qcm.services.jpa.builders.QuestionnaireTagBuilder;
 import com.emu.apps.qcm.services.jpa.repositories.*;
-import com.emu.apps.qcm.services.jpa.repositories.category.QuestionCategoryRepository;
-import com.emu.apps.qcm.services.jpa.repositories.category.QuestionnaireCategoryRepository;
+import com.emu.apps.qcm.services.jpa.repositories.category.CategoryRepository;
 import com.emu.apps.shared.security.PrincipalUtils;
 import com.google.common.collect.Lists;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
@@ -25,7 +23,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
 
+import static com.emu.apps.qcm.services.entity.category.Category.Type.QUESTION;
+import static com.emu.apps.qcm.services.entity.category.Category.Type.QUESTIONNAIRE;
+
 @Component
+@Slf4j
 public class FixtureService {
 
     public static final String QUESTION_QUESTION_1 = "a cool question";
@@ -50,7 +52,6 @@ public class FixtureService {
 
     public static final String QUESTIONNAIRE_DESC = "Questionnaire desc";
 
-    protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private QuestionRepository questionRepository;
@@ -68,10 +69,7 @@ public class FixtureService {
     private QuestionnaireQuestionRepository questionnaireQuestionRepository;
 
     @Autowired
-    private QuestionCategoryRepository questionCategoryRepository;
-
-    @Autowired
-    private QuestionnaireCategoryRepository questionnaireCategoryRepository;
+    private CategoryRepository categoryRepository;
 
     @Autowired
     private ResponseRepository responseCrudRepository;
@@ -100,19 +98,17 @@ public class FixtureService {
         questionnaireQuestionRepository.deleteAll();
         questionRepository.deleteAll();
         tagRepository.deleteAll();
-        questionCategoryRepository.deleteAll();
+        categoryRepository.deleteAll();
         questionnaireJpaRepository.deleteAll();
-        questionCategoryRepository.deleteAll();
+        categoryRepository.deleteAll();
 
         // category
-        QuestionCategory questionCategory = new QuestionCategory();
-        questionCategory.setLibelle(CATEGORIE_LIBELLE);
-        questionCategory = questionCategoryRepository.save(questionCategory);
+        Category questionCategory = new Category(QUESTION, CATEGORIE_LIBELLE);
+        questionCategory = categoryRepository.save(questionCategory);
 
         // category
-        QuestionnaireCategory questionnaireCategory = new QuestionnaireCategory();
-        questionnaireCategory.setLibelle(CATEGORIE_LIBELLE);
-        questionnaireCategory = questionnaireCategoryRepository.save(questionnaireCategory);
+        Category questionnaireCategory = new Category(QUESTIONNAIRE, CATEGORIE_LIBELLE);
+        questionnaireCategory = categoryRepository.save(questionnaireCategory);
 
         //questionnaire
         Questionnaire questionnaire = new Questionnaire();

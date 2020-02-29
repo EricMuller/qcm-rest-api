@@ -1,8 +1,7 @@
 package com.emu.apps.qcm.services.entity.questionnaires;
 
 import com.emu.apps.qcm.services.entity.Status;
-import com.emu.apps.qcm.services.entity.category.QuestionCategory;
-import com.emu.apps.qcm.services.entity.category.QuestionnaireCategory;
+import com.emu.apps.qcm.services.entity.category.Category;
 import com.emu.apps.qcm.services.entity.common.AuditableEntity;
 import com.emu.apps.qcm.services.entity.tags.QuestionnaireTag;
 import lombok.Getter;
@@ -51,7 +50,7 @@ public class Questionnaire extends AuditableEntity <String> {
     private Set <QuestionnaireQuestion> questionnaireQuestions = new HashSet <>();
 
     @ManyToOne(fetch = FetchType.EAGER)
-    private QuestionnaireCategory category;
+    private Category category;
 
     @OneToMany(mappedBy = "questionnaire", cascade = CascadeType.ALL, orphanRemoval = true)
     @BatchSize(size = 20)

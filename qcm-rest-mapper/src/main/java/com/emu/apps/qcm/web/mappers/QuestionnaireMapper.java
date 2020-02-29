@@ -38,7 +38,7 @@ import org.mapstruct.ReportingPolicy;
 import org.springframework.data.domain.Page;
 
 
-@Mapper(componentModel = "spring", uses = {QuestionCategoryMapper.class, QuestionnaireTagMapper.class}
+@Mapper(componentModel = "spring", uses = {CategoryMapper.class, QuestionnaireTagMapper.class}
         , unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface QuestionnaireMapper {
 

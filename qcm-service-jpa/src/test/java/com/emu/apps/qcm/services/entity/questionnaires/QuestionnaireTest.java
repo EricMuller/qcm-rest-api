@@ -1,7 +1,6 @@
 package com.emu.apps.qcm.services.entity.questionnaires;
 
-import com.emu.apps.qcm.services.entity.category.QuestionCategory;
-import com.emu.apps.qcm.services.entity.category.QuestionnaireCategory;
+import com.emu.apps.qcm.services.entity.category.Category;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -47,7 +46,7 @@ public class QuestionnaireTest {
 
     @Test
     public void testCategory() {
-        QuestionnaireCategory param = new QuestionnaireCategory();
+        Category param = new Category();
         pojoObject.setCategory(param);
         Object result = pojoObject.getCategory();
         assertEquals(param, result);

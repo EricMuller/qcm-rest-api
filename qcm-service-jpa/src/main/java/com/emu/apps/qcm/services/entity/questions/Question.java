@@ -2,7 +2,7 @@ package com.emu.apps.qcm.services.entity.questions;
 
 
 import com.emu.apps.qcm.services.entity.Status;
-import com.emu.apps.qcm.services.entity.category.QuestionCategory;
+import com.emu.apps.qcm.services.entity.category.Category;
 import com.emu.apps.qcm.services.entity.common.AuditableEntity;
 import com.emu.apps.qcm.services.entity.converters.BooleanTFConverter;
 import com.emu.apps.qcm.services.entity.questionnaires.QuestionnaireQuestion;
@@ -27,13 +27,15 @@ import java.util.Set;
                 @NamedAttributeNode(value = "questionTags", subgraph = "tags")
         },
         subgraphs = @NamedSubgraph(name = "tags", attributeNodes = @NamedAttributeNode("tag")))
-@Table(indexes = { @Index(name = "IDX_QTO_CREATE_BY_IDX", columnList = "created_by") })
-@Getter @Setter @NoArgsConstructor
-public class Question extends AuditableEntity<String> {
+@Table(indexes = {@Index(name = "IDX_QTO_CREATE_BY_IDX", columnList = "created_by")})
+@Getter
+@Setter
+@NoArgsConstructor
+public class Question extends AuditableEntity <String> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "question_generator")
-    @SequenceGenerator(name="question_generator", sequenceName = "question_seq", allocationSize=50)
+    @SequenceGenerator(name = "question_generator", sequenceName = "question_seq")
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
@@ -45,23 +47,23 @@ public class Question extends AuditableEntity<String> {
     private String question;
 
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Response> responses;
+    private List <Response> responses;
 
     @Enumerated(EnumType.STRING)
     private Type type;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    private QuestionCategory category;
+    private Category category;
 
     @Enumerated(EnumType.STRING)
     private Status status = Status.DRAFT;
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @BatchSize(size = 100)
-    private Set<QuestionTag> questionTags = new HashSet<>();
+    private Set <QuestionTag> questionTags = new HashSet <>();
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private Set<QuestionnaireQuestion> questionnaireQuestions = new HashSet<>();
+    private Set <QuestionnaireQuestion> questionnaireQuestions = new HashSet <>();
 
     @Override
     public String toString() {

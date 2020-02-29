@@ -14,17 +14,26 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Table(indexes = {@Index(name = "IDX_CTG_CREATE_BY_IDX", columnList = "type,created_by")})
 public class Category extends AuditableEntity <String> {
 
-
+    public enum Type {
+        QUESTION, QUESTIONNAIRE
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "category_generator")
-    @SequenceGenerator(name = "category_generator", sequenceName = "category_seq", allocationSize = 50)
+    @SequenceGenerator(name = "category_generator", sequenceName = "category_seq")
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
     protected String libelle;
 
+    @Enumerated(EnumType.STRING)
+    private Type type;
+
+    public Category(Type type, String libelle) {
+        this.type = type;
+        this.libelle = libelle;
+    }
 }

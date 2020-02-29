@@ -65,7 +65,7 @@ public interface QuestionRestApi {
     @ResponseBody
     QuestionDto updateQuestion(@RequestBody @Valid QuestionDto questionDto, Principal principal);
 
-    @PostMapping()
+    @PostMapping(produces = "application/json")
     @ResponseBody
     QuestionDto saveQuestion(@RequestBody QuestionDto questionDto, Principal principal);
 
@@ -73,4 +73,5 @@ public interface QuestionRestApi {
     @ResponseBody
     @CacheEvict(cacheNames = CacheName.Names.QUESTION, condition = "#questionDto != null", key = "#questionDto.id")
     ResponseEntity<Question> deleteQuestionnaireById(@PathVariable("id") long id);
+
 }

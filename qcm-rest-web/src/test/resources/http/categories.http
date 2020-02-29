@@ -14,11 +14,35 @@ client.global.set("auth_token", "Bearer " + response.body.access_token);
 ###
 
 ###
-GET http://{{host}}:{{port}}/qcm/api/v1/categories
+GET http://{{host}}:{{port}}/qcm/api/v1/categories?type=QUESTION
 Accept: application/json
 Content-Type: application/json
 Authorization: {{auth_token}}
 
+> {%
+client.test("Request executed successfully", function() {
+client.assert(response.status === 200, "Response status is not 200");
+});
+%}
 
 ###
 
+###
+POST http://{{host}}:{{port}}/qcm/api/v1/categories
+Accept: application/json
+Content-Type: application/json
+Authorization: {{auth_token}}
+
+{
+  "libelle": "test",
+  "type": "QUESTION"
+}
+
+
+> {%
+client.test("Request executed successfully", function() {
+client.assert(response.status === 200, "Response status is not 200");
+});
+%}
+
+###

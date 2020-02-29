@@ -12,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = {QuestionMapperImpl.class, QuestionTagMapperImpl.class, ResponseMapperImpl.class, QuestionCategoryMapperImpl.class})
+@SpringBootTest(classes = {QuestionMapperImpl.class, QuestionTagMapperImpl.class, ResponseMapperImpl.class, CategoryMapperImpl.class})
 public class QuestionMapperTest {
 
     @Autowired

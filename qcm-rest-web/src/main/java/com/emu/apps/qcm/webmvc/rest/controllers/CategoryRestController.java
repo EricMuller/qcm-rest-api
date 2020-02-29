@@ -1,24 +1,18 @@
 package com.emu.apps.qcm.webmvc.rest.controllers;
 
 import com.emu.apps.qcm.services.CategoryService;
-import com.emu.apps.qcm.services.entity.category.QuestionCategory;
-import com.emu.apps.qcm.services.entity.category.QuestionnaireCategory;
+import com.emu.apps.qcm.services.entity.category.Category;
 import com.emu.apps.qcm.services.jpa.specifications.PrincipalSpecificationBuilder;
 import com.emu.apps.qcm.web.dtos.CategoryDto;
 import com.emu.apps.qcm.web.dtos.MessageDto;
 import com.emu.apps.qcm.web.mappers.CategoryMapper;
-import com.emu.apps.qcm.web.mappers.QuestionCategoryMapper;
-import com.emu.apps.qcm.web.mappers.QuestionnaireCategoryMapper;
 import com.emu.apps.qcm.webmvc.rest.CategoryRestApi;
 import com.emu.apps.shared.security.PrincipalUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.security.Principal;
@@ -32,16 +26,10 @@ public class CategoryRestController implements CategoryRestApi {
 
     private final CategoryService categoryService;
 
-    private final QuestionCategoryMapper questionCategoryMapper;
-
-    private final QuestionnaireCategoryMapper questionnaireCategoryMapper;
-
     private final CategoryMapper categoryMapper;
 
-    public CategoryRestController(CategoryService categoryService, QuestionCategoryMapper questionCategoryMapper, QuestionnaireCategoryMapper questionnaireCategoryMapper, CategoryMapper categoryMapper) {
+    public CategoryRestController(CategoryService categoryService, CategoryMapper categoryMapper) {
         this.categoryService = categoryService;
-        this.questionCategoryMapper = questionCategoryMapper;
-        this.questionnaireCategoryMapper = questionnaireCategoryMapper;
         this.categoryMapper = categoryMapper;
     }
 
@@ -51,33 +39,18 @@ public class CategoryRestController implements CategoryRestApi {
     }
 
     @Override
-    public Iterable <CategoryDto> getQuestionCategories(Principal principal) {
+    public Iterable <CategoryDto> getCategories(Principal principal, @RequestParam("type") Category.Type type) {
 
-        var principalSpecificationBuilder = new PrincipalSpecificationBuilder <QuestionCategory>();
+        var principalSpecificationBuilder = new PrincipalSpecificationBuilder <Category>();
         principalSpecificationBuilder.setPrincipal(PrincipalUtils.getEmail(principal));
 
-        return questionCategoryMapper.modelsToDtos(categoryService.findQuestionCategories(principalSpecificationBuilder.build()));
+        return categoryMapper.modelsToDtos(categoryService.findCategories(principalSpecificationBuilder.build()));
     }
 
     @Override
-    public Iterable <CategoryDto> getQuestionnaireCategories(Principal principal) {
-
-        var principalSpecificationBuilder = new PrincipalSpecificationBuilder <QuestionnaireCategory>();
-        principalSpecificationBuilder.setPrincipal(PrincipalUtils.getEmail(principal));
-
-        return questionnaireCategoryMapper.modelsToDtos(categoryService.findQuestionnairesCategories(principalSpecificationBuilder.build()));
-    }
-
-    @Override
-    public CategoryDto saveQuestionCategory(@RequestBody CategoryDto categoryDto) {
-        var category = questionCategoryMapper.dtoToModel(categoryDto);
-        return questionCategoryMapper.modelToDto(categoryService.saveQuestionCategory(category));
-    }
-
-    @Override
-    public CategoryDto saveQuestionnaireCategory(@RequestBody CategoryDto categoryDto) {
-        var category = questionnaireCategoryMapper.dtoToModel(categoryDto);
-        return categoryMapper.modelToDto(categoryService.saveQuestionnaireCategory(category));
+    public CategoryDto saveCategory(@RequestBody CategoryDto categoryDto) {
+        var category = categoryMapper.dtoToModel(categoryDto);
+        return categoryMapper.modelToDto(categoryService.saveCategory(category));
     }
 
     @ExceptionHandler({JsonProcessingException.class, IOException.class})

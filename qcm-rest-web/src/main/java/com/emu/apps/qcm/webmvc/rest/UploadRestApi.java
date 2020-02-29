@@ -41,7 +41,6 @@ import java.io.IOException;
 import java.security.Principal;
 
 @Profile("webmvc")
-
 @RequestMapping(value = QcmApi.API_V1 + "/upload", produces = MediaType.APPLICATION_JSON_VALUE)
 public interface UploadRestApi {
 
@@ -69,4 +68,5 @@ public interface UploadRestApi {
     @GetMapping(value = "/{id}")
     @ResponseBody
     UploadDto getUploadById(@PathVariable("id") long id);
+
 }

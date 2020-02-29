@@ -28,6 +28,7 @@
 
 package com.emu.apps.qcm.webmvc.rest;
 
+import com.emu.apps.qcm.services.entity.category.Category.Type;
 import com.emu.apps.qcm.web.dtos.CategoryDto;
 import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.*;
@@ -39,25 +40,17 @@ import java.security.Principal;
 @RequestMapping(QcmApi.API_V1 + "/categories")
 public interface CategoryRestApi {
 
-    @GetMapping(value = "{id}")
+    @GetMapping(value = "{id}", produces = "application/json")
     @ResponseBody
     CategoryDto getCategory(@PathVariable("id") Long id);
 
-    @PostMapping(value = "/questions", produces = "application/json")
+    @PostMapping(produces = "application/json")
     @ResponseBody
-    CategoryDto saveQuestionCategory(@RequestBody CategoryDto categoryDto);
+    CategoryDto saveCategory(@RequestBody CategoryDto categoryDto);
 
-    @PostMapping(value = "/questionnaires", produces = "application/json")
+    @GetMapping(produces = "application/json")
     @ResponseBody
-    CategoryDto saveQuestionnaireCategory(@RequestBody CategoryDto categoryDto);
+    Iterable <CategoryDto> getCategories(Principal principal, @RequestParam("type") Type type);
 
-    @GetMapping(value = "/questions", produces = "application/json")
-    @ResponseBody
-
-    Iterable <CategoryDto> getQuestionCategories(Principal principal);
-
-    @GetMapping(value = "/questionnaires", produces = "application/json")
-    @ResponseBody
-    Iterable <CategoryDto> getQuestionnaireCategories(Principal principal);
 
 }

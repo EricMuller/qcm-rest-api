@@ -2,17 +2,15 @@ package com.emu.apps.qcm.services.jpa;
 
 import com.emu.apps.qcm.services.CategoryService;
 import com.emu.apps.qcm.services.entity.category.Category;
-import com.emu.apps.qcm.services.entity.category.QuestionCategory;
-import com.emu.apps.qcm.services.entity.category.QuestionnaireCategory;
-import com.emu.apps.qcm.services.entity.questions.Question;
+import com.emu.apps.qcm.services.entity.category.Category.Type;
 import com.emu.apps.qcm.services.jpa.repositories.category.CategoryRepository;
-import com.emu.apps.qcm.services.jpa.repositories.category.QuestionCategoryRepository;
-import com.emu.apps.qcm.services.jpa.repositories.category.QuestionnaireCategoryRepository;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+
+import static com.emu.apps.qcm.services.entity.category.Category.Type.QUESTION;
 
 /**
  * Created by eric on 14/06/2017.
@@ -21,26 +19,16 @@ import java.util.Optional;
 @Transactional()
 public class CategoryServiceImpl implements CategoryService {
 
-    private final QuestionCategoryRepository questionCategoryRepository;
-
-    private final QuestionnaireCategoryRepository questionnaireCategoryRepository;
 
     private final CategoryRepository categoryRepository;
 
-    public CategoryServiceImpl(QuestionCategoryRepository questionCategoryRepository, QuestionnaireCategoryRepository questionnaireCategoryRepository, CategoryRepository categoryRepository) {
-        this.questionCategoryRepository = questionCategoryRepository;
-        this.questionnaireCategoryRepository = questionnaireCategoryRepository;
+    public CategoryServiceImpl(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
 
     @Override
-    public QuestionCategory saveQuestionCategory(QuestionCategory questionCategory) {
-        return questionCategoryRepository.save(questionCategory);
-    }
-
-    @Override
-    public QuestionnaireCategory saveQuestionnaireCategory(QuestionnaireCategory questionnaireCategory) {
-        return questionnaireCategoryRepository.save(questionnaireCategory);
+    public Category saveCategory(Category category) {
+        return categoryRepository.save(category);
     }
 
     @Override
@@ -48,25 +36,16 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryRepository.findById(id);
     }
 
+
     @Override
-    public Category findByLibelle(String libelle) {
-        return categoryRepository.findByLibelle(libelle);
+    public Category findOrCreateByLibelle(Type type, String libelle) {
+        var category = categoryRepository.findByLibelle(libelle);
+        return category == null ? saveCategory(new Category(QUESTION, libelle)) : category;
     }
 
     @Override
-    public QuestionCategory findOrCreateByLibelle(String libelle) {
-        var category = questionCategoryRepository.findByLibelle(libelle);
-        return category == null ? saveQuestionCategory(new QuestionCategory(libelle)) : category;
-    }
-
-    @Override
-    public Iterable <QuestionnaireCategory> findQuestionnairesCategories(Specification <QuestionnaireCategory> specification) {
-        return questionnaireCategoryRepository.findAll(specification);
-    }
-
-    @Override
-    public Iterable <QuestionCategory> findQuestionCategories(Specification <QuestionCategory> specification) {
-        return questionCategoryRepository.findAll(specification);
+    public Iterable <Category> findCategories(Specification <Category> specification) {
+        return categoryRepository.findAll(specification);
     }
 
 }

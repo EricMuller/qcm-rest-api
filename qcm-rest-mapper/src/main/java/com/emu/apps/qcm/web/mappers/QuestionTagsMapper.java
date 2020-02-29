@@ -33,7 +33,7 @@ import com.emu.apps.qcm.web.dtos.question.QuestionTagsDto;
 import org.mapstruct.Mapper;
 import org.springframework.data.domain.Page;
 
-@Mapper(componentModel = "spring", uses = {QuestionCategoryMapper.class, QuestionTagMapper.class})
+@Mapper(componentModel = "spring", uses = {CategoryMapper.class, QuestionTagMapper.class})
 public interface QuestionTagsMapper {
 
 

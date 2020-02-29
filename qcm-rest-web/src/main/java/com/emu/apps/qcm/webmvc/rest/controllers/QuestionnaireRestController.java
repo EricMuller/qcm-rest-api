@@ -46,7 +46,6 @@ public class QuestionnaireRestController implements QuestionnaireRestApi {
 
     private final QuestionnaireTagMapper questionnaireTagMapper;
 
-
     @Autowired
     public QuestionnaireRestController(QuestionnaireService questionnairesService, QuestionnaireMapper questionnaireMapper,
                                        QuestionMapper questionMapper, QuestionService questionService,

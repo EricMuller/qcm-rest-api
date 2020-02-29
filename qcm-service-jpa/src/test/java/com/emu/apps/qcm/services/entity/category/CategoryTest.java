@@ -5,10 +5,10 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CategoryTest {
-    private QuestionCategory pojoObject;
+    private Category pojoObject;
 
     public CategoryTest() throws Exception {
-        this.pojoObject = new QuestionCategory();
+        this.pojoObject = new Category();
     }
 
     @Test

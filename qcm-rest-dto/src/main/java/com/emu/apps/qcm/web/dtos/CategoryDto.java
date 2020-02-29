@@ -20,4 +20,7 @@ public class CategoryDto extends EntityDto {
     @JsonProperty("libelle")
     private String libelle;
 
+    @JsonProperty("type")
+    private String type;
+
 }
