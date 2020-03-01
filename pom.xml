@@ -109,6 +109,15 @@
 
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>
+                <artifactId>qcm-service-jpa</artifactId>
+                <version>${project.version}</version>
+                <scope>test</scope>
+                <type>test-jar</type>
+            </dependency>
+
+
+            <dependency>
+                <groupId>com.emu.apps.qcm</groupId>
                 <artifactId>qcm-rest-mapper</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -219,6 +228,13 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>

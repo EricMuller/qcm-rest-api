@@ -2,6 +2,9 @@ info:
   application-name: qcm-rest-api
 
 spring:
+  main:
+    lazy-initialization: false
+
   resources:
     cache:
       period: 31536000

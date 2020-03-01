@@ -10,16 +10,12 @@ import javax.persistence.*;
 /**
  * Created by eric on 05/06/2017.
  */
+
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
 @Table(indexes = {@Index(name = "IDX_CTG_CREATE_BY_IDX", columnList = "type,created_by")})
+@NoArgsConstructor @Getter @Setter
 public class Category extends AuditableEntity <String> {
 
-    public enum Type {
-        QUESTION, QUESTIONNAIRE
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "category_generator")
@@ -36,4 +32,5 @@ public class Category extends AuditableEntity <String> {
         this.type = type;
         this.libelle = libelle;
     }
+
 }

@@ -26,13 +26,23 @@
  *
  */
 
-package com.emu.apps.qcm;
+package com.emu.apps.qcm.services.config;
 
+
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.reactive.ReactiveSecurityAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.reactive.WebFluxAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.auditing.DateTimeProvider;
+import org.springframework.data.domain.AuditorAware;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -42,48 +52,71 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
+import java.util.Optional;
 
 import static java.util.Collections.singletonMap;
 
+
 @Configuration
+@EnableAutoConfiguration(exclude = {WebFluxAutoConfiguration.class, ReactiveSecurityAutoConfiguration.class})
+@ComponentScan(basePackages = {"com.emu.apps.qcm", "com.emu.apps.shared", "com.emu.apps.users"})
 @EnableJpaRepositories(basePackages = {"com.emu.apps"})
 @EnableTransactionManagement
-public class H2TestProfileJPAConfig {
+@EnableJpaAuditing(auditorAwareRef = "auditorAware", dateTimeProviderRef = "dateTimeProvider")
+public class SpringBootTestConfig {
 
     public static final String USER_TEST = "user";
+
     public static final String USER_PASSWORD = "password";
- 
+
+    @Bean
+    public AuditorAware auditorAware() {
+        return () -> Optional.of(SpringBootTestConfig.USER_TEST);
+    }
+
+    @Bean
+    DateTimeProvider dateTimeProvider(DateTimeService dateTimeService) {
+        return new AuditingDateTimeProvider();
+    }
+
+
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
+        var propsConfig = new PropertySourcesPlaceholderConfigurer();
+        propsConfig.setLocation(new ClassPathResource("git.properties"));
+        propsConfig.setIgnoreResourceNotFound(true);
+        propsConfig.setIgnoreUnresolvablePlaceholders(true);
+        return propsConfig;
+    }
+
     @Bean
     @Profile("test")
-    @ConfigurationProperties(prefix="spring.datasource")
+    @ConfigurationProperties(prefix = "spring.datasource")
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.h2.Driver");
         dataSource.setUrl("jdbc:h2:mem:db;DB_CLOSE_DELAY=-1");
         dataSource.setUsername("sa");
         dataSource.setPassword("sa");
- 
+
         return dataSource;
     }
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory(
-            EntityManagerFactoryBuilder builder,  DataSource dataSource) {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(EntityManagerFactoryBuilder builder,
+                                                                       DataSource dataSource) {
         return builder
                 .dataSource(dataSource)
-                .packages("com.emu.apps.qcm.services.entity","com.emu.apps.users.services.entity")
+                .packages("com.emu.apps.qcm.services.entity", "com.emu.apps.users.services.entity")
                 .persistenceUnit("qcm")
                 .properties(singletonMap("hibernate.hbm2ddl.auto", "create-drop"))
                 .build();
     }
 
     @Bean
-    public PlatformTransactionManager transactionManager(EntityManagerFactory
-                                                                 entityManagerFactory) {
+    public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
         return new JpaTransactionManager(entityManagerFactory);
     }
-     
-    // configure entityManagerFactory
-    // configure transactionManager
-    // configure additional Hibernate properties
+
 }
+

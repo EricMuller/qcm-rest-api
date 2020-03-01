@@ -28,27 +28,29 @@
 
 package com.emu.apps.qcm.webmvc.rest;
 
-import com.emu.apps.qcm.services.entity.category.Category.Type;
+
+import com.emu.apps.qcm.services.entity.category.Type;
 import com.emu.apps.qcm.web.dtos.CategoryDto;
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
 
 @Profile("webmvc")
-@RequestMapping(QcmApi.API_V1 + "/categories")
+@RequestMapping(value = QcmApi.API_V1 + "/categories", produces = MediaType.APPLICATION_JSON_VALUE)
 public interface CategoryRestApi {
 
     @GetMapping(value = "{id}", produces = "application/json")
     @ResponseBody
     CategoryDto getCategory(@PathVariable("id") Long id);
 
-    @PostMapping(produces = "application/json")
+    @PostMapping()
     @ResponseBody
     CategoryDto saveCategory(@RequestBody CategoryDto categoryDto);
 
-    @GetMapping(produces = "application/json")
+    @GetMapping()
     @ResponseBody
     Iterable <CategoryDto> getCategories(Principal principal, @RequestParam("type") Type type);
 

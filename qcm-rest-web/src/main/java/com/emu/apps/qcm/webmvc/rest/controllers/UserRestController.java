@@ -67,7 +67,7 @@ public class UserRestController implements UserRestApi {
 
     }
 
-    public UserDto uploadFile(@RequestBody UserDto userDto, Principal principal) {
+    public UserDto updateUser(@RequestBody UserDto userDto, Principal principal) {
         var user = userService.findByEmailContaining(userDto.getEmail());
         if (Objects.isNull(user)) {
             user = new User();

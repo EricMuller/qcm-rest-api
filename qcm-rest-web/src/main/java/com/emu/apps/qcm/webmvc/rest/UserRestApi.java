@@ -18,7 +18,7 @@ public interface UserRestApi {
 
     @PostMapping(produces = "application/json")
     @ResponseBody
-    UserDto uploadFile(@RequestBody UserDto userDto, Principal principal);
+    UserDto updateUser(@RequestBody UserDto userDto, Principal principal);
 
 
 }

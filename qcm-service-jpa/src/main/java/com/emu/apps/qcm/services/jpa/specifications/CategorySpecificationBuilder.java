@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.services.jpa.specifications;
 
-import com.emu.apps.qcm.services.entity.category.Category.Type;
+import com.emu.apps.qcm.services.entity.category.Type;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
@@ -14,7 +14,7 @@ import static org.springframework.data.jpa.domain.Specification.where;
 @NoArgsConstructor
 public final class CategorySpecificationBuilder<T> extends BaseSpecification <T> {
 
-    private static String TYPE = "type";
+    private static String TYPE_FIELD_NAME = "type";
 
     private String principal;
 
@@ -30,12 +30,15 @@ public final class CategorySpecificationBuilder<T> extends BaseSpecification <T>
         return this;
     }
 
+    protected Specification <T> fieldEquals(String attribute, Type value) {
+        return (root, query, cb) -> Objects.isNull(value) ? null : cb.equal(root.get(attribute), value);
+    }
+
     @Override
     public Specification <T> build() {
         return (root, query, cb) -> where(
-                fieldEquals(TYPE, Objects.nonNull(type) ? type.name() : null))
-                .and(fieldEquals(CREATED_BY, principal)
-                ).toPredicate(root, query, cb);
+                fieldEquals(TYPE_FIELD_NAME, type)).and(fieldEquals(CREATED_BY, principal)
+        ).toPredicate(root, query, cb);
     }
 
 }

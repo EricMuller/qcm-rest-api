@@ -28,7 +28,7 @@ client.assert(response.status === 200, "Response status is not 200");
 ###
 
 ###
-POST http://{{host}}:{{port}}/qcm/api/v1/categories
+POST http://{{host}}:{{port}}/qcm/api/v1/categories/
 Accept: application/json
 Content-Type: application/json
 Authorization: {{auth_token}}

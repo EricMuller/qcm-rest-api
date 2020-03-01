@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.services.jpa.repositories;
 
-import com.emu.apps.qcm.services.FixtureService;
-import com.emu.apps.qcm.services.SpringBootTestCase;
+import com.emu.apps.qcm.services.Fixture;
+import com.emu.apps.qcm.services.config.SpringBootTestConfig;
 import com.emu.apps.qcm.services.entity.questions.Question;
 import com.emu.apps.qcm.services.entity.questions.Response;
 import com.emu.apps.qcm.services.entity.tags.QuestionTag;
@@ -14,21 +14,28 @@ import org.hibernate.LazyInitializationException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import static com.emu.apps.qcm.services.FixtureService.QUESTION_TAG_LIBELLE_1;
+import static com.emu.apps.qcm.services.Fixture.QUESTION_TAG_LIBELLE_1;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class QuestionRepositoryTest extends SpringBootTestCase {
+@SpringBootTest(classes = SpringBootTestConfig.class)
+@ActiveProfiles(value = "test")
+public class QuestionRepositoryTest {
+
+    @Autowired
+    private Fixture fixture;
 
     @Autowired
     private QuestionRepository questionRepository;
@@ -36,12 +43,12 @@ public class QuestionRepositoryTest extends SpringBootTestCase {
     @Test
     @Transactional
     public void findOne() {
-        Question question = getFixtureService().createQuestionsAndGetFirst();
+        Question question = fixture.createQuestionsAndGetFirst();
         assertNotNull(question.getId());
         Optional <Question> newQuestion = questionRepository.findById(question.getId());
         assertNotNull(newQuestion.orElse(null));
         assertNotNull(newQuestion.orElse(null).getId());
-        assertEquals(FixtureService.QUESTION_QUESTION_1, newQuestion.get().getQuestion());
+        assertEquals(Fixture.QUESTION_QUESTION_1, newQuestion.get().getQuestion());
         // Assert.assertEquals(RESPONSE, newQuestion.getResponse());
     }
 
@@ -50,7 +57,7 @@ public class QuestionRepositoryTest extends SpringBootTestCase {
     public void findOneLazyInitializationException() {
 
 
-        Question question = getFixtureService().createQuestionsAndGetFirst();
+        Question question = fixture.createQuestionsAndGetFirst();
         assertNotNull(question.getId());
         Optional <Question> newQuestion = questionRepository.findById(question.getId());
 
@@ -63,7 +70,7 @@ public class QuestionRepositoryTest extends SpringBootTestCase {
     @Test
     @DisplayName("Test LazyInitializationException with lazy collection responses")
     public void findByIdAndFetchTagsLazyInitializationException() {
-        Question question = getFixtureService().createQuestionsAndGetFirst();
+        Question question = fixture.createQuestionsAndGetFirst();
 
         Question newQuestion = questionRepository.findByIdAndFetchTags(question.getId());
 
@@ -73,7 +80,7 @@ public class QuestionRepositoryTest extends SpringBootTestCase {
 
     @Test
     public void findByIdAndFetchTags() {
-        Question question = getFixtureService().createQuestionsAndGetFirst();
+        Question question = fixture.createQuestionsAndGetFirst();
 
         Question newQuestion = questionRepository.findByIdAndFetchTags(question.getId());
 
@@ -92,7 +99,7 @@ public class QuestionRepositoryTest extends SpringBootTestCase {
 
     @Test
     public void findByIdAndFetchTagsAndResponses() {
-        Question question = getFixtureService().createQuestionsAndGetFirst();
+        Question question = fixture.createQuestionsAndGetFirst();
 
         //test create
         Question newQuestion = questionRepository.findByIdAndFetchTagsAndResponses(question.getId());
@@ -123,7 +130,7 @@ public class QuestionRepositoryTest extends SpringBootTestCase {
     @Test
     public void findAllQuestionsTags() {
 
-        getFixtureService().createOneQuestionnaireWithTwoQuestionTags();
+        fixture.createOneQuestionnaireWithTwoQuestionTags();
 
         Page <Question> page = questionRepository.findAllQuestionsTags(null);
 
@@ -151,14 +158,14 @@ public class QuestionRepositoryTest extends SpringBootTestCase {
     public void findAllQuestions() {
 
 
-        getFixtureService().createOneQuestionnaireWithTwoQuestionTags();
+        fixture.createOneQuestionnaireWithTwoQuestionTags();
 
-        Tag tag1 = getFixtureService().findTagbyLibelle(getFixtureService().QUESTION_TAG_LIBELLE_1, getPrincipal());
+        Tag tag1 = fixture.findTagbyLibelle(fixture.QUESTION_TAG_LIBELLE_1, () -> SpringBootTestConfig.USER_TEST);
         Assertions.assertThat(tag1).isNotNull();
 
         Specification <Question> specification = new QuestionSpecificationBuilder()
                 .setTagIds(new Long[]{tag1.getId()})
-                .setPrincipal(PrincipalUtils.getEmail(getPrincipal())).build();
+                .setPrincipal(PrincipalUtils.getEmail(() -> SpringBootTestConfig.USER_TEST)).build();
 
         Pageable pageable = PageRequest.of(0, 3, Sort.by("id"));
 

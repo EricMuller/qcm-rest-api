@@ -24,7 +24,6 @@ import java.util.Arrays;
 @Profile("webmvc")
 class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-
     @Bean
     protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
         return new NullAuthenticatedSessionStrategy();

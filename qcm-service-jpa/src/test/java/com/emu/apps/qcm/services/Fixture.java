@@ -12,7 +12,7 @@ import com.emu.apps.qcm.services.entity.tags.Tag;
 import com.emu.apps.qcm.services.entity.upload.Upload;
 import com.emu.apps.qcm.services.jpa.builders.QuestionnaireTagBuilder;
 import com.emu.apps.qcm.services.jpa.repositories.*;
-import com.emu.apps.qcm.services.jpa.repositories.category.CategoryRepository;
+import com.emu.apps.qcm.web.dtos.CategoryDto;
 import com.emu.apps.shared.security.PrincipalUtils;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
@@ -23,12 +23,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
 
-import static com.emu.apps.qcm.services.entity.category.Category.Type.QUESTION;
-import static com.emu.apps.qcm.services.entity.category.Category.Type.QUESTIONNAIRE;
+import static com.emu.apps.qcm.services.entity.category.Type.QUESTION;
+import static com.emu.apps.qcm.services.entity.category.Type.QUESTIONNAIRE;
+import static com.emu.apps.qcm.services.entity.questions.Type.*;
+
 
 @Component
 @Slf4j
-public class FixtureService {
+public class Fixture {
 
     public static final String QUESTION_QUESTION_1 = "a cool question";
 
@@ -51,6 +53,8 @@ public class FixtureService {
     public static final String QUESTIONNAIRE_TITLE = "Questionnaire";
 
     public static final String QUESTIONNAIRE_DESC = "Questionnaire desc";
+
+    public static final String CATEGORY_LIBELLE = "Category libelle";
 
 
     @Autowired
@@ -81,7 +85,7 @@ public class FixtureService {
     private UploadRepository uploadRepository;
 
 
-    public FixtureService() {
+    public Fixture() {
     }
 
     @Transactional(readOnly = true)
@@ -90,8 +94,7 @@ public class FixtureService {
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public Questionnaire createOneQuestionnaireWithTwoQuestionTags() {
-
+    public void emptyDatabase() {
         responseCrudRepository.deleteAll();
         questionTagRepository.deleteAll();
         questionnaireTagRepository.deleteAll();
@@ -101,6 +104,13 @@ public class FixtureService {
         categoryRepository.deleteAll();
         questionnaireJpaRepository.deleteAll();
         categoryRepository.deleteAll();
+    }
+
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public Questionnaire createOneQuestionnaireWithTwoQuestionTags() {
+
+        emptyDatabase();
 
         // category
         Category questionCategory = new Category(QUESTION, CATEGORIE_LIBELLE);
@@ -130,7 +140,7 @@ public class FixtureService {
         //question 1
         Question question1 = new Question();
         question1.setQuestion(QUESTION_QUESTION_1);
-        question1.setType(Type.FREE_TEXT);
+        question1.setType(FREE_TEXT);
         question1.setCategory(questionCategory);
 
         // question.setQuestionnaire(questionnaire);
@@ -140,7 +150,7 @@ public class FixtureService {
         //question 2
         Question question2 = new Question();
         question2.setQuestion(QUESTION_QUESTION_2);
-        question2.setType(Type.FREE_TEXT);
+        question2.setType(FREE_TEXT);
         question2.setCategory(questionCategory);
 
         question2 = questionRepository.save(question2);
@@ -205,7 +215,7 @@ public class FixtureService {
         //question 1
         Question question1 = new Question();
         question1.setQuestion(QUESTION_QUESTION_1);
-        question1.setType(Type.FREE_TEXT);
+        question1.setType(FREE_TEXT);
 
         question1.setResponses(Lists.newArrayList(response, response2));
         questionRepository.save(question1);
@@ -213,7 +223,7 @@ public class FixtureService {
         //question 2
         Question question2 = new Question();
         question2.setQuestion(QUESTION_QUESTION_2);
-        question2.setType(Type.FREE_TEXT);
+        question2.setType(FREE_TEXT);
 
         questionRepository.save(question2);
 
@@ -231,5 +241,8 @@ public class FixtureService {
         return question1;
 
     }
+
+
+
 
 }

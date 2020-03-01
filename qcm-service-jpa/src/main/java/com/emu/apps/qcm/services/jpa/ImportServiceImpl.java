@@ -27,7 +27,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.emu.apps.qcm.services.entity.category.Category.Type.QUESTION;
+import static com.emu.apps.qcm.services.entity.category.Type.QUESTION;
+
 
 @Service
 @Transactional

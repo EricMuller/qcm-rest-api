@@ -2,6 +2,8 @@ package com.emu.apps.qcm.webmvc.rest.controllers;
 
 import com.emu.apps.qcm.services.CategoryService;
 import com.emu.apps.qcm.services.entity.category.Category;
+import com.emu.apps.qcm.services.entity.category.Type;
+import com.emu.apps.qcm.services.jpa.specifications.CategorySpecificationBuilder;
 import com.emu.apps.qcm.services.jpa.specifications.PrincipalSpecificationBuilder;
 import com.emu.apps.qcm.web.dtos.CategoryDto;
 import com.emu.apps.qcm.web.dtos.MessageDto;
@@ -39,12 +41,13 @@ public class CategoryRestController implements CategoryRestApi {
     }
 
     @Override
-    public Iterable <CategoryDto> getCategories(Principal principal, @RequestParam("type") Category.Type type) {
+    public Iterable <CategoryDto> getCategories(Principal principal, @RequestParam("type") Type type) {
 
-        var principalSpecificationBuilder = new PrincipalSpecificationBuilder <Category>();
-        principalSpecificationBuilder.setPrincipal(PrincipalUtils.getEmail(principal));
+        var categorySpecificationBuilder = new CategorySpecificationBuilder <Category>();
+        categorySpecificationBuilder.setPrincipal(PrincipalUtils.getEmail(principal));
+        categorySpecificationBuilder.setType(type);
 
-        return categoryMapper.modelsToDtos(categoryService.findCategories(principalSpecificationBuilder.build()));
+        return categoryMapper.modelsToDtos(categoryService.findCategories(categorySpecificationBuilder.build()));
     }
 
     @Override

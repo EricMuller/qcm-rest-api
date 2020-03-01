@@ -59,5 +59,6 @@ public class WebMvcApplication {
         propsConfig.setIgnoreUnresolvablePlaceholders(true);
         return propsConfig;
     }
+
 }
 

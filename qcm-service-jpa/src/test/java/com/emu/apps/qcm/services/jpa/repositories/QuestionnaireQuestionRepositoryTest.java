@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.services.jpa.repositories;
 
-import com.emu.apps.qcm.services.FixtureService;
-import com.emu.apps.qcm.services.SpringBootTestCase;
+import com.emu.apps.qcm.services.Fixture;
+import com.emu.apps.qcm.services.config.SpringBootTestConfig;
 import com.emu.apps.qcm.services.entity.questionnaires.Questionnaire;
 import com.emu.apps.qcm.services.jpa.projections.QuestionResponseProjection;
 import com.google.common.collect.Iterables;
@@ -9,11 +9,18 @@ import com.google.common.collect.Lists;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
-public class QuestionnaireQuestionRepositoryTest extends SpringBootTestCase {
+@SpringBootTest(classes = SpringBootTestConfig.class)
+@ActiveProfiles(value = "test")
+public class QuestionnaireQuestionRepositoryTest {
+
+    @Autowired
+    private Fixture fixture;
 
     @Autowired
     private QuestionnaireQuestionRepository questionnaireQuestionRepository;
@@ -21,10 +28,11 @@ public class QuestionnaireQuestionRepositoryTest extends SpringBootTestCase {
     @Autowired
     private TagRepository tagRepository;
 
+
     @Test
     public void findQuestionsByQuestionnaireId() {
 
-        Questionnaire questionnaire = getFixtureService().createOneQuestionnaireWithTwoQuestionTags();
+        Questionnaire questionnaire = fixture.createOneQuestionnaireWithTwoQuestionTags();
 
         Iterable <QuestionResponseProjection> questions = questionnaireQuestionRepository.findQuestionsByQuestionnaireId(questionnaire.getId());
         Assertions.assertThat(questions).isNotEmpty();
@@ -33,14 +41,14 @@ public class QuestionnaireQuestionRepositoryTest extends SpringBootTestCase {
         QuestionResponseProjection question = Iterables.getFirst(questions, null);
         Assertions.assertThat(question).isNotNull();
         Assertions.assertThat(question.getId()).isNotNull();
-        Assertions.assertThat(question.getQuestion()).isNotNull().isEqualTo(FixtureService.QUESTION_QUESTION_1);
+        Assertions.assertThat(question.getQuestion()).isNotNull().isEqualTo(Fixture.QUESTION_QUESTION_1);
         Assertions.assertThat(question.getPosition()).isNotNull().isEqualTo(1L);
     }
 
     @Test
     public void findQuestionsByQuestionnaireIds() {
 
-        Questionnaire questionnaire = getFixtureService().createOneQuestionnaireWithTwoQuestionTags();
+        Questionnaire questionnaire = fixture.createOneQuestionnaireWithTwoQuestionTags();
 
         List <Long> longListTag = Lists.newArrayList();
         tagRepository.findAll().forEach((tag) -> longListTag.add(tag.getId()));
@@ -56,7 +64,7 @@ public class QuestionnaireQuestionRepositoryTest extends SpringBootTestCase {
         QuestionResponseProjection question = Iterables.getFirst(questions.getContent(), null);
         Assertions.assertThat(question).isNotNull();
         Assertions.assertThat(question.getId()).isNotNull();
-        Assertions.assertThat(question.getQuestion()).isNotNull().isEqualTo(FixtureService.QUESTION_QUESTION_1);
+        Assertions.assertThat(question.getQuestion()).isNotNull().isEqualTo(Fixture.QUESTION_QUESTION_1);
         Assertions.assertThat(question.getPosition()).isNotNull().isEqualTo(1L);
     }
 
