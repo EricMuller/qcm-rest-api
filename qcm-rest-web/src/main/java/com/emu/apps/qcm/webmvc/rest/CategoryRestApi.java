@@ -30,12 +30,15 @@ package com.emu.apps.qcm.webmvc.rest;
 
 
 import com.emu.apps.qcm.services.entity.category.Type;
+import com.emu.apps.qcm.services.exceptions.FunctionnalException;
 import com.emu.apps.qcm.web.dtos.CategoryDto;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+
+import static com.emu.apps.qcm.services.jpa.repositories.mptt.MpttExceptions.*;
 
 
 @Profile("webmvc")
@@ -48,11 +51,11 @@ public interface CategoryRestApi {
 
     @PostMapping()
     @ResponseBody
-    CategoryDto saveCategory(@RequestBody CategoryDto categoryDto);
+    CategoryDto saveCategory(@RequestBody CategoryDto categoryDto, Principal principal) throws HierarchyIdNotSetException, HierarchyIdAlreadySetException, HierarchyRootExistsException, FunctionnalException;
 
     @GetMapping()
     @ResponseBody
-    Iterable <CategoryDto> getCategories(Principal principal, @RequestParam("type") Type type);
+    Iterable <CategoryDto> getCategories(Principal principal, @RequestParam("type") Type type) throws FunctionnalException;
 
 
 }

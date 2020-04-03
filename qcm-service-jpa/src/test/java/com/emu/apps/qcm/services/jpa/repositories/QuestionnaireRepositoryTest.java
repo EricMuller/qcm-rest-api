@@ -42,6 +42,8 @@ public class QuestionnaireRepositoryTest {
     @Transactional
     public void findOne() {
 
+        fixture.emptyDatabase();
+
         Questionnaire questionnaire1 = fixture.createOneQuestionnaireWithTwoQuestionTags();
 
         Questionnaire questionnaire = questionnaireRepository.findById(questionnaire1.getId()).orElse(null);
@@ -78,6 +80,8 @@ public class QuestionnaireRepositoryTest {
     @Test
     public void findQuestionnaireById() {
 
+        fixture.emptyDatabase();
+
         Questionnaire q = fixture.createOneQuestionnaireWithTwoQuestionTags();
 
         QuestionnaireProjection questionnaire = questionnaireRepository.findQuestionnaireById(q.getId());
@@ -92,6 +96,8 @@ public class QuestionnaireRepositoryTest {
     @Test
     public void findAllWithSpecification() {
 
+
+        fixture.emptyDatabase();
 
         fixture.createOneQuestionnaireWithTwoQuestionTags();
 

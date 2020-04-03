@@ -6,6 +6,7 @@ import com.emu.apps.qcm.services.entity.questions.Question;
 import com.emu.apps.qcm.services.entity.questions.Response;
 import com.emu.apps.qcm.services.entity.tags.QuestionTag;
 import com.emu.apps.qcm.services.entity.tags.Tag;
+import com.emu.apps.qcm.services.jpa.repositories.mptt.MpttExceptions;
 import com.emu.apps.qcm.services.jpa.specifications.QuestionSpecificationBuilder;
 import com.emu.apps.shared.security.PrincipalUtils;
 import com.google.common.collect.Iterables;
@@ -130,6 +131,8 @@ public class QuestionRepositoryTest {
     @Test
     public void findAllQuestionsTags() {
 
+        fixture.emptyDatabase();
+
         fixture.createOneQuestionnaireWithTwoQuestionTags();
 
         Page <Question> page = questionRepository.findAllQuestionsTags(null);
@@ -155,8 +158,10 @@ public class QuestionRepositoryTest {
 
 
     @Test
-    public void findAllQuestions() {
+    public void findAllQuestions()  {
 
+
+        fixture.emptyDatabase();
 
         fixture.createOneQuestionnaireWithTwoQuestionTags();
 

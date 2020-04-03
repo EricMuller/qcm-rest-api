@@ -24,6 +24,7 @@ public class UserProfileServiceImpl implements UserProfileService {
 
     @Override
     public UserProfile save(UserProfile user){
+
         return userProfileRepository.save(user);
     }
 

@@ -4,6 +4,7 @@ import com.emu.apps.qcm.services.Fixture;
 import com.emu.apps.qcm.services.config.SpringBootTestConfig;
 import com.emu.apps.qcm.services.entity.questionnaires.Questionnaire;
 import com.emu.apps.qcm.services.jpa.projections.QuestionResponseProjection;
+import com.emu.apps.qcm.services.jpa.repositories.mptt.MpttExceptions;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import org.assertj.core.api.Assertions;
@@ -32,6 +33,8 @@ public class QuestionnaireQuestionRepositoryTest {
     @Test
     public void findQuestionsByQuestionnaireId() {
 
+        fixture.emptyDatabase();
+
         Questionnaire questionnaire = fixture.createOneQuestionnaireWithTwoQuestionTags();
 
         Iterable <QuestionResponseProjection> questions = questionnaireQuestionRepository.findQuestionsByQuestionnaireId(questionnaire.getId());
@@ -47,6 +50,8 @@ public class QuestionnaireQuestionRepositoryTest {
 
     @Test
     public void findQuestionsByQuestionnaireIds() {
+
+        fixture.emptyDatabase();
 
         Questionnaire questionnaire = fixture.createOneQuestionnaireWithTwoQuestionTags();
 

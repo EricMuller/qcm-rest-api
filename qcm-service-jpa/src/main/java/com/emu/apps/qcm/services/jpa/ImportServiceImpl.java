@@ -13,7 +13,9 @@ import com.emu.apps.qcm.services.entity.upload.ImportStatus;
 import com.emu.apps.qcm.services.entity.upload.Upload;
 import com.emu.apps.qcm.services.jpa.builders.QuestionnaireTagBuilder;
 import com.emu.apps.qcm.web.dtos.FileQuestionDto;
+import com.emu.apps.shared.security.PrincipalUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +34,7 @@ import static com.emu.apps.qcm.services.entity.category.Type.QUESTION;
 
 @Service
 @Transactional
+@Log4j2
 public class ImportServiceImpl implements ImportService {
 
     public static final String IMPORT = "import";
@@ -76,64 +79,69 @@ public class ImportServiceImpl implements ImportService {
 
         var uploadStatus = aUploadStatus;
 
-        if (fileQuestionDtos.length > 0) {
+        try {
+            if (fileQuestionDtos.length > 0) {
 
-            Map <String, Questionnaire> categorieQuestionnaireMap = new HashMap <>();
-            Map <String, Long> tagsCounterMap = new HashMap <>();
+                Map <String, Questionnaire> categorieQuestionnaireMap = new HashMap <>();
+                Map <String, Long> tagsCounterMap = new HashMap <>();
 
-            var questionCategory = categoryService.findOrCreateByLibelle(QUESTION, IMPORT);
+                var questionCategory = categoryService.findOrCreateByLibelle(PrincipalUtils.getEmail(principal), QUESTION, IMPORT);
 
+                for (FileQuestionDto fileQuestionDto : fileQuestionDtos) {
 
-            for (FileQuestionDto fileQuestionDto : fileQuestionDtos) {
+                    if (StringUtils.isNotEmpty(fileQuestionDto.getCategorie())) {
 
-                if (StringUtils.isNotEmpty(fileQuestionDto.getCategorie())) {
+                        var tag = tagService.findOrCreateByLibelle(fileQuestionDto.getCategorie(), principal);
 
-                    var tag = tagService.findOrCreateByLibelle(fileQuestionDto.getCategorie(), principal);
+                        var aLong = tagsCounterMap.containsKey(tag.getLibelle()) ? tagsCounterMap.get(tag.getLibelle()) : Long.valueOf(0);
+                        tagsCounterMap.put(tag.getLibelle(), ++aLong);
 
-                    var aLong = tagsCounterMap.containsKey(tag.getLibelle()) ? tagsCounterMap.get(tag.getLibelle()) : Long.valueOf(0);
-                    tagsCounterMap.put(tag.getLibelle(), ++aLong);
+                        var question = new Question();
 
-                    var question = new Question();
+                        question.setId(fileQuestionDto.getId());
+                        question.setQuestion(fileQuestionDto.getQuestion());
 
-                    question.setId(fileQuestionDto.getId());
-                    question.setQuestion(fileQuestionDto.getQuestion());
+                        question.setType(Type.FREE_TEXT);
 
-                    question.setType(Type.FREE_TEXT);
+                        question.setStatus(Status.DRAFT);
+                        Response response = new Response();
+                        response.setResponse(fileQuestionDto.getResponse());
+                        question.setResponses(Arrays.asList(response));
 
-                    question.setStatus(Status.DRAFT);
-                    Response response = new Response();
-                    response.setResponse(fileQuestionDto.getResponse());
-                    question.setResponses(Arrays.asList(response));
+                        question.setCategory(questionCategory);
+                        // new questionnaire by tag
+                        var questionnaire = categorieQuestionnaireMap.get(IMPORT/*categorie.getLibelle()*/);
+                        if (questionnaire == null) {
+                            questionnaire = new Questionnaire(name + "-" + fileQuestionDto.getCategorie());
+                            questionnaire.setDescription(questionnaire.getTitle());
+                            // questionnaire.setCategory(category);
+                            questionnaire.setStatus(Status.DRAFT);
+                            questionnaire = questionnaireService.saveQuestionnaire(questionnaire);
+                            categorieQuestionnaireMap.put(IMPORT/*categorie.getLibelle()*/, questionnaire);
+                            var tagImport = tagService.findOrCreateByLibelle(IMPORT, principal);
+                            questionnaireTagService.saveQuestionnaireTag(new QuestionnaireTagBuilder().setQuestionnaire(questionnaire).setTag(tagImport).build());
+                        }
 
-                    question.setCategory(questionCategory);
-                    // new questionnaire by tag
-                    var questionnaire = categorieQuestionnaireMap.get(IMPORT/*categorie.getLibelle()*/);
-                    if (questionnaire == null) {
-                        questionnaire = new Questionnaire(name + "-" + fileQuestionDto.getCategorie());
-                        questionnaire.setDescription(questionnaire.getTitle());
-                        // questionnaire.setCategory(category);
-                        questionnaire.setStatus(Status.DRAFT);
-                        questionnaire = questionnaireService.saveQuestionnaire(questionnaire);
-                        categorieQuestionnaireMap.put(IMPORT/*categorie.getLibelle()*/, questionnaire);
-                        var tagImport = tagService.findOrCreateByLibelle(IMPORT, principal);
-                        questionnaireTagService.saveQuestionnaireTag(new QuestionnaireTagBuilder().setQuestionnaire(questionnaire).setTag(tagImport).build());
+                        question = questionService.saveQuestion(question);
+
+                        var position = tagsCounterMap.get(tag.getLibelle());
+
+                        questionnaireService.saveQuestionnaireQuestion(new QuestionnaireQuestion(questionnaire, question, position));
+
+                        questionService.saveQuestionTag(new QuestionTag(question, tag));
+                        // questionnaireTagService.saveQuestionnaireTag(new QuestionnaireTagBuilder().setQuestionnaire(questionnaire).setTag(categorie).build());
+
                     }
-
-                    question = questionService.saveQuestion(question);
-
-                    var position = tagsCounterMap.get(tag.getLibelle());
-
-                    questionnaireService.saveQuestionnaireQuestion(new QuestionnaireQuestion(questionnaire, question, position));
-
-                    questionService.saveQuestionTag(new QuestionTag(question, tag));
-                    // questionnaireTagService.saveQuestionnaireTag(new QuestionnaireTagBuilder().setQuestionnaire(questionnaire).setTag(categorie).build());
-
                 }
+
+                uploadStatus = ImportStatus.DONE;
+            } else {
+
+                uploadStatus = ImportStatus.REJECTED;
             }
 
-            uploadStatus = ImportStatus.DONE;
-        } else {
-
+        } catch (Exception e) {
+            LOGGER.error(e);
             uploadStatus = ImportStatus.REJECTED;
         }
 

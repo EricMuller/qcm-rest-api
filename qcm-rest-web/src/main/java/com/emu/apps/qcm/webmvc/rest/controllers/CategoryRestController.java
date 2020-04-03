@@ -1,10 +1,8 @@
 package com.emu.apps.qcm.webmvc.rest.controllers;
 
 import com.emu.apps.qcm.services.CategoryService;
-import com.emu.apps.qcm.services.entity.category.Category;
 import com.emu.apps.qcm.services.entity.category.Type;
-import com.emu.apps.qcm.services.jpa.specifications.CategorySpecificationBuilder;
-import com.emu.apps.qcm.services.jpa.specifications.PrincipalSpecificationBuilder;
+import com.emu.apps.qcm.services.exceptions.FunctionnalException;
 import com.emu.apps.qcm.web.dtos.CategoryDto;
 import com.emu.apps.qcm.web.dtos.MessageDto;
 import com.emu.apps.qcm.web.mappers.CategoryMapper;
@@ -41,18 +39,16 @@ public class CategoryRestController implements CategoryRestApi {
     }
 
     @Override
-    public Iterable <CategoryDto> getCategories(Principal principal, @RequestParam("type") Type type) {
+    public Iterable <CategoryDto> getCategories(Principal principal, @RequestParam("type") Type type) throws FunctionnalException {
 
-        var categorySpecificationBuilder = new CategorySpecificationBuilder <Category>();
-        categorySpecificationBuilder.setPrincipal(PrincipalUtils.getEmail(principal));
-        categorySpecificationBuilder.setType(type);
 
-        return categoryMapper.modelsToDtos(categoryService.findCategories(categorySpecificationBuilder.build()));
+        return categoryMapper.modelsToDtos(categoryService.findCategories(PrincipalUtils.getEmail(principal), type));
     }
 
     @Override
-    public CategoryDto saveCategory(@RequestBody CategoryDto categoryDto) {
+    public CategoryDto saveCategory(@RequestBody CategoryDto categoryDto, Principal principal) throws FunctionnalException {
         var category = categoryMapper.dtoToModel(categoryDto);
+        category.setUserId(PrincipalUtils.getEmail(principal));
         return categoryMapper.modelToDto(categoryService.saveCategory(category));
     }
 
