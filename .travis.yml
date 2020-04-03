@@ -8,7 +8,8 @@ addons:
   sonarcloud:
     organization: "ericmuller-github" # the key of the org you chose at step #3
     token:
-      secure: 0788142029544ae075cb932452c66ed1167fd5bd # encrypted value of your token
+      secure: $SONAR_API_YEY
+
 
 script:
   - mvn clean verify sonar:sonar -Prun-sonar
