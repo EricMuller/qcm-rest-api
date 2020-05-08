@@ -72,6 +72,6 @@ public interface QuestionRestApi {
     @DeleteMapping(value = "/{id}")
     @ResponseBody
     @CacheEvict(cacheNames = CacheName.Names.QUESTION, condition = "#questionDto != null", key = "#questionDto.id")
-    ResponseEntity<Question> deleteQuestionnaireById(@PathVariable("id") long id);
+    ResponseEntity<Question> deleteQuestionById(@PathVariable("id") long id);
 
 }

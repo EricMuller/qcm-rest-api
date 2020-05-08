@@ -40,7 +40,7 @@
     <groupId>com.emu.apps.qcm</groupId>
     <artifactId>qcm-rest-web</artifactId>
 
-    <name>Qcm rest web</name>
+    <name>Qcm Rest Web</name>
     <description>Qcm rest web</description>
 
 
@@ -49,25 +49,17 @@
 
         <dependency>
             <groupId>com.emu.apps.qcm</groupId>
-            <artifactId>qcm-service-jpa</artifactId>
+            <artifactId>qcm-business</artifactId>
         </dependency>
+
 
         <dependency>
             <groupId>com.emu.apps.qcm</groupId>
-            <artifactId>qcm-service-jpa</artifactId>
+            <artifactId>qcm-services</artifactId>
             <scope>test</scope>
             <type>test-jar</type>
         </dependency>
 
-        <dependency>
-            <groupId>com.emu.apps.qcm</groupId>
-            <artifactId>qcm-rest-dto</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.emu.apps.qcm</groupId>
-            <artifactId>qcm-rest-mapper</artifactId>
-        </dependency>
 
         <!-- spring -->
 

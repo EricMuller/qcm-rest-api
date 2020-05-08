@@ -1,13 +1,11 @@
 package com.emu.apps.qcm.webmvc.rest.controllers;
 
-import com.emu.apps.qcm.services.CategoryService;
 import com.emu.apps.qcm.services.entity.category.Type;
 import com.emu.apps.qcm.services.exceptions.FunctionnalException;
 import com.emu.apps.qcm.web.dtos.CategoryDto;
 import com.emu.apps.qcm.web.dtos.MessageDto;
-import com.emu.apps.qcm.web.mappers.CategoryMapper;
+import com.emu.apps.qcm.business.CategoryDelegate;
 import com.emu.apps.qcm.webmvc.rest.CategoryRestApi;
-import com.emu.apps.shared.security.PrincipalUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
@@ -24,32 +22,25 @@ import java.security.Principal;
 @Profile("webmvc")
 public class CategoryRestController implements CategoryRestApi {
 
-    private final CategoryService categoryService;
+    private CategoryDelegate categoryDelegate;
 
-    private final CategoryMapper categoryMapper;
-
-    public CategoryRestController(CategoryService categoryService, CategoryMapper categoryMapper) {
-        this.categoryService = categoryService;
-        this.categoryMapper = categoryMapper;
+    public CategoryRestController(CategoryDelegate categoryDelegate) {
+        this.categoryDelegate = categoryDelegate;
     }
 
     @Override
     public CategoryDto getCategory(@PathVariable("id") Long id) {
-        return categoryMapper.modelToDto(categoryService.findById(id).orElse(null));
+        return categoryDelegate.getCategory(id);
     }
 
     @Override
     public Iterable <CategoryDto> getCategories(Principal principal, @RequestParam("type") Type type) throws FunctionnalException {
-
-
-        return categoryMapper.modelsToDtos(categoryService.findCategories(PrincipalUtils.getEmail(principal), type));
+        return categoryDelegate.getCategories(principal, type);
     }
 
     @Override
     public CategoryDto saveCategory(@RequestBody CategoryDto categoryDto, Principal principal) throws FunctionnalException {
-        var category = categoryMapper.dtoToModel(categoryDto);
-        category.setUserId(PrincipalUtils.getEmail(principal));
-        return categoryMapper.modelToDto(categoryService.saveCategory(category));
+        return categoryDelegate.saveCategory(categoryDto,principal);
     }
 
     @ExceptionHandler({JsonProcessingException.class, IOException.class})

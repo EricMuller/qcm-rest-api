@@ -27,7 +27,7 @@ public class Questionnaire extends AuditableEntity <String> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "questionnaire_generator")
-    @SequenceGenerator(name = "questionnaire_generator", sequenceName = "questionnaire_seq", allocationSize = 50)
+    @SequenceGenerator(name = "questionnaire_generator", sequenceName = "questionnaire_seq")
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
@@ -56,9 +56,6 @@ public class Questionnaire extends AuditableEntity <String> {
     @BatchSize(size = 20)
     private Set <QuestionnaireTag> questionnaireTags = new HashSet <>();
 
-    public Questionnaire(String title) {
-        this.title = title;
-    }
 
 
 }

@@ -41,5 +41,7 @@ public class QuestionDto extends EntityDto {
     @JsonProperty("tags")
     private Set <QuestionTagDto> questionTags;
 
-
+    @JsonProperty("tip")
+    private String tip;
+    
 }

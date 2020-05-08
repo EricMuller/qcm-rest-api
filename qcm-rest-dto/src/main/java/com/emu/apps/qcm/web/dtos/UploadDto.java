@@ -18,16 +18,21 @@ public class UploadDto {
 
     private Long id;
 
-    private String fileName;
-
     private LocalDateTime dateCreation;
+
+    @JsonProperty("contentType")
+    private String contentType;
+
+    @JsonProperty("fileName")
+    private String fileName;
 
     @JsonProperty("status")
     private String status;
 
+    @JsonProperty("data")
     private byte[] data;
 
-    @JsonProperty("contentType")
-    private String contentType;
+    @JsonProperty("libelle")
+    private String libelle;
 
 }

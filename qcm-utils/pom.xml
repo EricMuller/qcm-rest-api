@@ -40,8 +40,8 @@
     <groupId>com.emu.apps.qcm</groupId>
     <artifactId>qcm-utils</artifactId>
 
-    <name>Qcm utils</name>
-    <description>Qcm utils</description>
+    <name>Qcm Utils</name>
+    <description>Qcm Utils</description>
 
     <dependencies>
 

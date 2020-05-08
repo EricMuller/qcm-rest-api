@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -18,15 +18,15 @@ public abstract class EntityDto {
     protected Long id;
 
     @JsonProperty("uuid")
-    private  String uuid;
+    private String uuid;
 
     @JsonProperty("version")
     private Long version;
 
     @JsonProperty("dateCreation")
-    private Date dateCreation;
+    private LocalDateTime dateCreation;
 
     @JsonProperty("dateModification")
-    private Date dateModification;
+    private LocalDateTime dateModification;
 
 }

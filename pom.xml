@@ -8,7 +8,7 @@
     <version>2.2.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>Qcm parent</name>
+    <name>Qcm</name>
     <description>Qcm Parent</description>
     <url>https://github.com/EricMuller/qcm-rest-api</url>
 
@@ -50,7 +50,8 @@
         <module>qcm-rest-dto</module>
         <module>qcm-rest-mapper</module>
         <module>qcm-rest-web</module>
-        <module>qcm-service-jpa</module>
+        <module>qcm-services</module>
+        <module>qcm-business</module>
     </modules>
 
     <repositories>
@@ -103,16 +104,22 @@
 
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-service-jpa</artifactId>
+                <artifactId>qcm-services</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-service-jpa</artifactId>
+                <artifactId>qcm-services</artifactId>
                 <version>${project.version}</version>
                 <scope>test</scope>
                 <type>test-jar</type>
+            </dependency>
+
+            <dependency>
+                <groupId>com.emu.apps.qcm</groupId>
+                <artifactId>qcm-business</artifactId>
+                <version>${project.version}</version>
             </dependency>
 
 

@@ -58,6 +58,9 @@ public class Question extends AuditableEntity <String> {
     @Enumerated(EnumType.STRING)
     private Status status = Status.DRAFT;
 
+    @Column(name = "tip", length = 1024)
+    private String tip;
+
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @BatchSize(size = 100)
     private Set <QuestionTag> questionTags = new HashSet <>();

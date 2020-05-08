@@ -42,6 +42,9 @@ public class Upload extends AuditableEntity <String> {
     @Column(name = "CONTENT_TYPE")
     private String contentType;
 
+    @Column(name = "LIBELLE")
+    private String libelle;
+
     @Override
     public boolean equals(Object obj) {
         return super.equals(obj);

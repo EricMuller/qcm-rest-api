@@ -4,6 +4,7 @@ import com.emu.apps.qcm.services.entity.questions.Question;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -33,7 +34,7 @@ public class QuestionnaireQuestion implements Serializable {
     @Column(name = "POSITION", nullable = false)
     private Long position;
 
-    public QuestionnaireQuestion(Questionnaire questionnaire, Question question, Long position) {
+    public QuestionnaireQuestion(@NotNull Questionnaire questionnaire, @NotNull Question question, Long position) {
         this.id = new QuestionnaireQuestionId(questionnaire.getId(), question.getId());
         this.questionnaire = questionnaire;
         this.question = question;

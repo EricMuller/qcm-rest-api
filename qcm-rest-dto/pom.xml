@@ -40,8 +40,8 @@
     <groupId>com.emu.apps.qcm</groupId>
     <artifactId>qcm-rest-dto</artifactId>
 
-    <name>Qcm rest dto</name>
-    <description>Qcm rest dto</description>
+    <name>Qcm Rest Dto</name>
+    <description>Qcm Rest Dto</description>
 
     <dependencies>
 

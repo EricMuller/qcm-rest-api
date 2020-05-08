@@ -38,10 +38,10 @@
     </parent>
 
     <groupId>com.emu.apps.qcm</groupId>
-    <artifactId>qcm-service-jpa</artifactId>
+    <artifactId>qcm-services</artifactId>
 
-    <name>Qcm services jpa</name>
-    <description>Qcm services jpa</description>
+    <name>Qcm Services</name>
+    <description>Qcm Services</description>
 
     <dependencies>
 
@@ -134,6 +134,11 @@
                     <artifactId>junit-vintage-engine</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
         </dependency>
 
     </dependencies>

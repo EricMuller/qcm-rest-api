@@ -38,10 +38,11 @@
     </parent>
 
     <groupId>com.emu.apps.qcm</groupId>
-    <artifactId>qcm-rest-mapper</artifactId>
+    <artifactId>qcm-business</artifactId>
 
-    <name>Qcm Rest Mapper</name>
-    <description>Qcm rest Mapper</description>
+    <name>Qcm Business Delegate</name>
+    <description>Qcm Business Delegate</description>
+
 
     <dependencies>
 
@@ -52,40 +53,49 @@
 
         <dependency>
             <groupId>com.emu.apps.qcm</groupId>
+            <artifactId>qcm-services</artifactId>
+            <scope>test</scope>
+            <type>test-jar</type>
+        </dependency>
+
+        <dependency>
+            <groupId>com.emu.apps.qcm</groupId>
             <artifactId>qcm-rest-dto</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct</artifactId>
+            <groupId>com.emu.apps.qcm</groupId>
+            <artifactId>qcm-rest-mapper</artifactId>
         </dependency>
 
-        <!--        test -->
+        <!--  tools  -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>junit</groupId>
-                    <artifactId>junit</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.junit.vintage</groupId>
-                    <artifactId>junit-vintage-engine</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <scope>test</scope>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+        </dependency>
+
+        <!-- json -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
+
+        <!-- pilotes -->
+
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.196</version>
             <scope>test</scope>
         </dependency>
 
@@ -99,6 +109,7 @@
                 <filtering>true</filtering>
             </resource>
         </resources>
+
 
     </build>
 
