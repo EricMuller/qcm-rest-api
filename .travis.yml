@@ -12,7 +12,7 @@ addons:
 
 
 script:
-  - mvn clean verify sonar:sonar -Prun-sonar -Dsonar.login=$SONAR_TOKEN
+  - mvn clean verify sonar:sonar -Prun-sonar -Dsonar.login=$SONAR_API_KEY
 
 
 
