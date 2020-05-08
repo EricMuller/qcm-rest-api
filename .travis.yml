@@ -7,12 +7,12 @@ sudo: false
 addons:
   sonarcloud:
     organization: "ericmuller-github" # the key of the org you chose at step #3
-    token:
-      secure: $SONAR_API_YEY
+    # token:
+      # secure: $SONAR_API_KEY
 
 
 script:
-  - mvn clean verify sonar:sonar -Prun-sonar
+  - mvn clean verify sonar:sonar -Prun-sonar Dsonar.login=$SONAR_TOKEN
 
 
 
