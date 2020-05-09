@@ -22,7 +22,7 @@ import static com.emu.apps.qcm.webmvc.rest.RestMapping.REPORTS;
 @RequestMapping(value = REPORTS, produces = MediaType.APPLICATION_JSON_VALUE)
 public class ReportRestController {
 
-    @GetMapping(value = "/query", produces = "application/json")
+    @GetMapping(value = "/query", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public Iterable <QuestionDto> queryByName(String libelle) {
         return new ArrayList <>();

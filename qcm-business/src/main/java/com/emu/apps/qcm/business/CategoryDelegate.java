@@ -10,8 +10,14 @@ import org.springframework.stereotype.Service;
 
 import java.security.Principal;
 
+
 /**
- * Created by eric on 05/06/2017.
+ *
+ * Category Business Delegate
+ *<p>
+ *
+ * @since 2.2.0
+ * @author eric
  */
 @Service
 public class CategoryDelegate {

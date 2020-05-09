@@ -15,6 +15,14 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ *
+ * User Business Delegate
+ *<p>
+ *
+ * @since 2.2.0
+ * @author eric
+ */
 @Service
 public class UserDelegate {
 
@@ -42,8 +50,9 @@ public class UserDelegate {
     }
 
     /**
+     *
      * @param principal
-     * @return
+     * @return the current user
      */
     public UserDto user(Principal principal) {
         UserDto userDto;
@@ -63,6 +72,13 @@ public class UserDelegate {
         return userDto;
 
     }
+
+    /**
+     * Update a user
+     * @param userDto
+     * @param principal
+     * @return the updated user DTO
+     */
 
     public UserDto updateUser(@RequestBody UserDto userDto, Principal principal) {
         var user = userService.findByEmailContaining(userDto.getEmail());

@@ -18,6 +18,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.Principal;
 
+/**
+ *
+ * Upload Business Delegate
+ *<p>
+ *
+ * @since 2.2.0
+ * @author eric
+ */
 @Service
 public class UploadDelegate {
 

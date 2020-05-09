@@ -17,7 +17,12 @@ import java.security.Principal;
 import java.util.Optional;
 
 /**
- * Created by eric on 05/06/2017.
+ *
+ * Tag Business Delegate
+ *<p>
+ *
+ * @since 2.2.0
+ * @author eric
  */
 @Service
 public class TagDelegate {

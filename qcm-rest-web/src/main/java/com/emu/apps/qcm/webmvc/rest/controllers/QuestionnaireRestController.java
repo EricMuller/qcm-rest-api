@@ -67,12 +67,11 @@ public class QuestionnaireRestController {
 
     @GetMapping(value = "/{id:[\\d]+}/questions")
     @ResponseBody
-//    public Page<QuestionDto> getQuestionsByQuestionnaireId(@PathVariable("id") @ApiParam(value = "ID of the Questionnaire") long id, Pageable pageable) {
     public Page <QuestionDto> getQuestionsByQuestionnaireId(@PathVariable("id") long id, Pageable pageable) {
         return delegate.getQuestionsByQuestionnaireId(id, pageable);
     }
 
-    @GetMapping(produces = "application/json")
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @Timer
     @ResponseBody
     public Page <QuestionnaireDto> getQuestionnaires(@RequestParam(value = "tag_id", required = false) Long[] tagIds,
@@ -82,8 +81,8 @@ public class QuestionnaireRestController {
 
     @PutMapping(value = "/{id}/questions")
     @ResponseBody
-    public QuestionDto updateQuestionnaire(@PathVariable("id") long id, @RequestBody QuestionDto questionDto) {
-        return delegate.updateQuestionnaire(id, questionDto);
+    public QuestionDto addQuestion(@PathVariable("id") long id, @RequestBody QuestionDto questionDto) {
+        return delegate.addQuestion(id, questionDto);
     }
 
 }

@@ -13,7 +13,7 @@ public interface MpttHierarchicalEntity<T extends MpttHierarchicalEntity <T>> {
      * identified with a unique hierarchy id. Thus the indexing
      * between hierarchies can be independent.
      *
-     * @return the id of the hierarchy
+     * @param userId the id of the hierarchy
      */
 
     void setUserId(String userId);

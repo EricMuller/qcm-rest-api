@@ -32,7 +32,7 @@ public class CategoryRestController {
         this.categoryDelegate = categoryDelegate;
     }
 
-    @GetMapping(value = "{id}", produces = "application/json")
+    @GetMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public CategoryDto getCategory(@PathVariable("id") Long id) {
         return categoryDelegate.getCategory(id);

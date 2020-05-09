@@ -18,9 +18,13 @@ import org.springframework.stereotype.Service;
 
 import java.security.Principal;
 
-
 /**
  *
+ * Question Business Delegate
+ *<p>
+ *
+ * @since 2.2.0
+ * @author eric
  */
 @Service
 public class QuestionDelegate {
