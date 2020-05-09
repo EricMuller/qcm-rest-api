@@ -28,34 +28,27 @@
 
 package com.emu.apps.qcm.webmvc.rest;
 
+public final class RestMapping {
 
-import com.emu.apps.qcm.services.entity.category.Type;
-import com.emu.apps.qcm.services.exceptions.FunctionnalException;
-import com.emu.apps.qcm.web.dtos.CategoryDto;
-import org.springframework.context.annotation.Profile;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+    public static final String API = "/qcm/api/v1";
 
-import java.security.Principal;
+    public static final String QUESTIONNAIRES = API + "/questionnaires";
 
-import static com.emu.apps.qcm.services.jpa.repositories.mptt.MpttExceptions.*;
+    public static final String CATEGORIES = API + "/categories";
 
+    public static final String QUESTIONS = API + "/questions";
 
-@Profile("webmvc")
-@RequestMapping(value = QcmApi.API_V1 + "/categories", produces = MediaType.APPLICATION_JSON_VALUE)
-public interface CategoryRestApi {
+    public static final String REPORTS = API + "/reports";
 
-    @GetMapping(value = "{id}", produces = "application/json")
-    @ResponseBody
-    CategoryDto getCategory(@PathVariable("id") Long id);
+    public static final String SUGGEST = API + "/suggest";
 
-    @PostMapping()
-    @ResponseBody
-    CategoryDto saveCategory(@RequestBody CategoryDto categoryDto, Principal principal) throws HierarchyIdNotSetException, HierarchyIdAlreadySetException, HierarchyRootExistsException, FunctionnalException;
+    public static final String TAGS = API + "/tags";
 
-    @GetMapping()
-    @ResponseBody
-    Iterable <CategoryDto> getCategories(Principal principal, @RequestParam("type") Type type) throws FunctionnalException;
+    public static final String UPLOADS = API + "/upload";
 
+    public static final String USERS = API + "/users";
 
+    private RestMapping() {
+        //nop
+    }
 }

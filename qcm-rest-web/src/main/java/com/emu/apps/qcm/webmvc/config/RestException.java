@@ -26,22 +26,15 @@
  *
  */
 
-package com.emu.apps.qcm.webmvc.rest;
+package com.emu.apps.qcm.webmvc.config;
 
-import com.emu.apps.qcm.web.dtos.QuestionDto;
-import com.emu.apps.qcm.webmvc.rest.controllers.ReportRestController;
-import org.springframework.context.annotation.Profile;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-@Profile("webmvc")
+/**
+ * Created by eric on 19/06/2017.
+ */
+@ResponseStatus(code= HttpStatus.BAD_REQUEST,reason="Exception occurred in api")
+public class RestException extends RuntimeException{
 
-@RequestMapping(value = QcmApi.API_V1 + ReportRestController.URL, produces = MediaType.APPLICATION_JSON_VALUE)
-public interface ReportRestApi {
-    @GetMapping(value = "/query", produces = "application/json")
-    @ResponseBody
-    Iterable<QuestionDto> queryByName(String name);
 }

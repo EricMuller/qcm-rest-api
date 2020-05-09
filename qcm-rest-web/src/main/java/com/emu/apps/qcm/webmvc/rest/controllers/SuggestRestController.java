@@ -1,12 +1,13 @@
 package com.emu.apps.qcm.webmvc.rest.controllers;
 
 
-import com.emu.apps.qcm.web.dtos.SuggestDto;
 import com.emu.apps.qcm.business.SuggestDelegate;
-import com.emu.apps.qcm.webmvc.rest.SuggestRestApi;
+import com.emu.apps.qcm.web.dtos.SuggestDto;
 import org.springframework.context.annotation.Profile;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+
+import static com.emu.apps.qcm.webmvc.rest.RestMapping.SUGGEST;
 
 
 /**
@@ -14,7 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Profile("webmvc")
-public class SuggestRestController implements SuggestRestApi {
+@RequestMapping(value = SUGGEST, produces = MediaType.APPLICATION_JSON_VALUE)
+public class SuggestRestController {
 
     private SuggestDelegate suggestDelegate;
 
@@ -22,7 +24,8 @@ public class SuggestRestController implements SuggestRestApi {
         this.suggestDelegate = suggestDelegate;
     }
 
-    @Override
+    @GetMapping(value = "/title")
+    @ResponseBody
     @SuppressWarnings("squid:CommentedOutCodeLine")
     public Iterable <SuggestDto> getSuggestions(@RequestParam("queryText") String queryText) {
 

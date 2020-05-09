@@ -5,7 +5,7 @@ import com.emu.apps.qcm.services.config.SpringBootTestConfig;
 import com.emu.apps.qcm.web.dtos.QuestionDto;
 import com.emu.apps.qcm.web.dtos.QuestionTagDto;
 import com.emu.apps.qcm.web.dtos.ResponseDto;
-import com.emu.apps.qcm.webmvc.rest.QcmApi;
+import com.emu.apps.qcm.webmvc.rest.RestMapping;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 import org.junit.jupiter.api.Test;
@@ -29,7 +29,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 @ActiveProfiles(value = "webmvc")
 public class QuestionRestControllerTest {
 
-    private static final String QUESTIONS_URI = QcmApi.API_V1 + "/questions/";
+    private static final String QUESTIONS_URI = RestMapping.API + "/questions/";
 
     private static final String QUESTION1 = "Question 1";
 
