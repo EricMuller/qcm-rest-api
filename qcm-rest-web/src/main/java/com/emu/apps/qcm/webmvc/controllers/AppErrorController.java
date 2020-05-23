@@ -32,10 +32,10 @@ public class AppErrorController implements ErrorController {
 
 
     /**
-     * Supports the HTML Error View
+     *  Supports the HTML Error View
      *
-     * @param request
-     * @return
+     * @param request HttpServletRequest
+     * @return  view /errors/error
      */
     @GetMapping(value = ERROR_PATH, produces = "text/html")
     public ModelAndView errorHtml(HttpServletRequest request) {
@@ -44,10 +44,10 @@ public class AppErrorController implements ErrorController {
     }
 
     /**
-     * Supports other formats like JSON, XML
+     *  Supports other formats like JSON, XML
      *
-     * @param request
-     * @return
+     * @param request HttpServletRequest
+     * @return Send status  specified in the request or Send Http 500 Internal erreur
      */
     @GetMapping(value = ERROR_PATH)
     @ResponseBody

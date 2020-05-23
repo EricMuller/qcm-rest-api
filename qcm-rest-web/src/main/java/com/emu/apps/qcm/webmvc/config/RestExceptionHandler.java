@@ -3,6 +3,7 @@ package com.emu.apps.qcm.webmvc.config;
 import com.emu.apps.qcm.webmvc.exceptions.ExceptionMessage;
 import com.emu.apps.qcm.webmvc.exceptions.FieldErrorMessage;
 import com.emu.apps.qcm.webmvc.exceptions.builders.ExceptionMessageBuilder;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
@@ -22,6 +23,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,8 +34,11 @@ import static org.springframework.http.HttpStatus.*;
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(RestExceptionHandler.class);
 
+
     /**
      * Catch all for any other exceptions...
+     * @param e Exception.class
+     * @return Send a 500 Internal Server Error
      */
     @ExceptionHandler({Exception.class})
     @ResponseBody
@@ -45,14 +50,18 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 .setStatus(INTERNAL_SERVER_ERROR.value())
                 .setException(INTERNAL_SERVER_ERROR.getReasonPhrase())
                 .setError(e.getClass().getName())
-                .setTimestamp(LocalDate.now())
+                .setTimestamp(LocalDateTime.now())
                 .setMessage(e.getMessage()).createExceptionMessage();
 
         return response(exceptionMessage, INTERNAL_SERVER_ERROR);
     }
 
+
     /**
      * Handle failures commonly thrown from code
+     *
+     * @param t InvocationTargetException.class, IllegalArgumentException.class, ClassCastException.class, ConversionFailedException.class
+     * @return Send a 400 Bad Request
      */
     @ExceptionHandler({InvocationTargetException.class, IllegalArgumentException.class,
             ClassCastException.class,
@@ -66,14 +75,20 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 .setStatus(BAD_REQUEST.value())
                 .setError(BAD_REQUEST.getReasonPhrase())
                 .setException(t.getClass().getName())
-                .setTimestamp(LocalDate.now())
+                .setTimestamp(LocalDateTime.now())
                 .setMessage(t.getMessage()).createExceptionMessage();
 
         return response(exceptionMessage, BAD_REQUEST);
     }
 
+
     /**
-     * Send a 409 Conflict in case of concurrent modification
+     * Catch conflict Exception
+     *
+     * @param ex ObjectOptimisticLockingFailureException.class,
+     *             OptimisticLockingFailureException.class,
+     *             DataIntegrityViolationException.class
+     * @return Send a 409 Conflict in case of concurrent modification
      */
     @ExceptionHandler({ObjectOptimisticLockingFailureException.class,
             OptimisticLockingFailureException.class,
@@ -88,7 +103,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 .setError(CONFLICT.getReasonPhrase())
                 .setException(ex.getClass().getName())
                 .setMessage(ex.getMessage())
-                .setTimestamp(LocalDate.now()).createExceptionMessage();
+                .setTimestamp(LocalDateTime.now()).createExceptionMessage();
 
         return response(response, CONFLICT);
     }
@@ -98,10 +113,18 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity <>(body, new HttpHeaders(), status);
     }
 
+    /**
+     *
+     * @param ex
+     * @param headers
+     * @param status
+     * @param request
+     * @return Send a 400 Bad Request
+     */
     @Override
-    protected ResponseEntity <Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-                                                                   HttpHeaders headers, HttpStatus status,
-                                                                   WebRequest request) {
+    protected @NotNull ResponseEntity <Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+                                                                            @NotNull HttpHeaders headers, @NotNull HttpStatus status,
+                                                                            @NotNull WebRequest request) {
 
         List <FieldErrorMessage> fieldErrors = ex.getBindingResult().getFieldErrors().stream().map(fieldError ->
                 new FieldErrorMessage(
@@ -114,7 +137,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 .setStatus(BAD_REQUEST.value())
                 .setError(BAD_REQUEST.getReasonPhrase())
                 .setException(ex.getClass().getName())
-                .setTimestamp(LocalDate.now())
+                .setTimestamp(LocalDateTime.now())
                 .setMessage(ex.getMessage())
                 .setErrors(fieldErrors).createExceptionMessage();
 

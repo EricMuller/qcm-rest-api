@@ -46,12 +46,12 @@
     </distributionManagement>
 
     <modules>
-        <module>qcm-utils</module>
-        <module>qcm-rest-dto</module>
-        <module>qcm-rest-mapper</module>
+        <module>qcm-shared</module>
+        <module>qcm-dto</module>
+        <module>qcm-mapper</module>
+        <module>qcm-domain</module>
+        <module>qcm-service</module>
         <module>qcm-rest-web</module>
-        <module>qcm-services</module>
-        <module>qcm-business</module>
     </modules>
 
     <repositories>
@@ -92,7 +92,7 @@
 
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-rest-dto</artifactId>
+                <artifactId>qcm-dto</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -104,13 +104,13 @@
 
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-services</artifactId>
+                <artifactId>qcm-domain</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-services</artifactId>
+                <artifactId>qcm-domain</artifactId>
                 <version>${project.version}</version>
                 <scope>test</scope>
                 <type>test-jar</type>
@@ -118,20 +118,20 @@
 
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-business</artifactId>
+                <artifactId>qcm-service</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
 
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-rest-mapper</artifactId>
+                <artifactId>qcm-mapper</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-utils</artifactId>
+                <artifactId>qcm-shared</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

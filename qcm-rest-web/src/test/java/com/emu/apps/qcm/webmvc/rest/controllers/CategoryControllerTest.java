@@ -1,9 +1,9 @@
 package com.emu.apps.qcm.webmvc.rest.controllers;
 
 
-import com.emu.apps.qcm.services.Fixture;
-import com.emu.apps.qcm.services.config.SpringBootTestConfig;
-import com.emu.apps.qcm.services.entity.category.Type;
+import com.emu.apps.qcm.domain.Fixture;
+import com.emu.apps.qcm.domain.config.SpringBootTestConfig;
+import com.emu.apps.qcm.domain.entity.category.Type;
 import com.emu.apps.qcm.web.dtos.CategoryDto;
 import com.emu.apps.qcm.webmvc.rest.RestMapping;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,7 +30,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 @ActiveProfiles(value = "webmvc")
 public class CategoryControllerTest {
 
-    private static final String CATEGORY_URI = RestMapping.API + "/categories/";
+    private static final String CATEGORY_URI = RestMapping.PROTECTED_API + "/categories/";
 
     private static final String LIBELLE = "cate 1";
 

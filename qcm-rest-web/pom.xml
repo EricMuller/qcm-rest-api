@@ -43,23 +43,20 @@
     <name>Qcm Rest Web</name>
     <description>Qcm rest web</description>
 
-
-
     <dependencies>
 
         <dependency>
             <groupId>com.emu.apps.qcm</groupId>
-            <artifactId>qcm-business</artifactId>
+            <artifactId>qcm-service</artifactId>
         </dependency>
 
 
         <dependency>
             <groupId>com.emu.apps.qcm</groupId>
-            <artifactId>qcm-services</artifactId>
+            <artifactId>qcm-domain</artifactId>
             <scope>test</scope>
             <type>test-jar</type>
         </dependency>
-
 
         <!-- spring -->
 

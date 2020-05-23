@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.webmvc.rest.controllers;
 
 
-import com.emu.apps.qcm.services.config.SpringBootTestConfig;
+import com.emu.apps.qcm.domain.config.SpringBootTestConfig;
 import com.emu.apps.qcm.web.dtos.UploadDto;
 import com.emu.apps.qcm.webmvc.rest.RestMapping;
 import org.junit.jupiter.api.Test;
@@ -42,7 +42,7 @@ public class UploadRestControllerTest {
 
         final ResponseEntity<UploadDto> postResponse = restTemplate
                 .withBasicAuth(SpringBootTestConfig.USER_TEST,SpringBootTestConfig.USER_PASSWORD)
-                .exchange(getURL(RestMapping.API + "/upload/json"), HttpMethod.POST, new HttpEntity<>(map), UploadDto.class);
+                .exchange(getURL(RestMapping.PROTECTED_API + "/upload/json"), HttpMethod.POST, new HttpEntity<>(map), UploadDto.class);
         assertThat(postResponse.getBody()).isNotNull();
 
 

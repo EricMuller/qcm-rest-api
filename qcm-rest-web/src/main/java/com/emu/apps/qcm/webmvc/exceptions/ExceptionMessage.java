@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -22,17 +24,17 @@ public class ExceptionMessage {
     @JsonProperty("message")
     private String message;
     @JsonProperty("errors")
-    private List<FieldErrorMessage> errors;
+    private List<FieldErrorMessage> errors = new ArrayList <>(1);
     @JsonProperty("timestamp")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
-    private LocalDate timestamp;
+    private LocalDateTime timestamp;
 
     public ExceptionMessage() {
     }
 
 
     public ExceptionMessage(int status, String error, String message, String exception,
-                            List<FieldErrorMessage> fieldErrors, LocalDate timestamp) {
+                            List<FieldErrorMessage> fieldErrors, LocalDateTime timestamp) {
         this.status = status;
         this.error = error;
         this.message = message;
@@ -75,11 +77,11 @@ public class ExceptionMessage {
         this.errors = errors;
     }
 
-    public LocalDate getTimestamp() {
+    public LocalDateTime getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(LocalDate timestamp) {
+    public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
     }
 

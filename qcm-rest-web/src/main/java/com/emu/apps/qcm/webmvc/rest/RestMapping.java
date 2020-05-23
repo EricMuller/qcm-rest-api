@@ -30,23 +30,25 @@ package com.emu.apps.qcm.webmvc.rest;
 
 public final class RestMapping {
 
-    public static final String API = "/qcm/api/v1";
+    public static final String PROTECTED_API = "/qcm/api/v1";
 
-    public static final String QUESTIONNAIRES = API + "/questionnaires";
+    public static final String PUBLIC_API = "/public/qcm/api/v1";
 
-    public static final String CATEGORIES = API + "/categories";
+    public static final String QUESTIONNAIRES = PROTECTED_API + "/questionnaires";
 
-    public static final String QUESTIONS = API + "/questions";
+    public static final String CATEGORIES = PROTECTED_API + "/categories";
 
-    public static final String REPORTS = API + "/reports";
+    public static final String QUESTIONS = PROTECTED_API + "/questions";
 
-    public static final String SUGGEST = API + "/suggest";
+    public static final String SUGGEST = PROTECTED_API + "/suggest";
 
-    public static final String TAGS = API + "/tags";
+    public static final String TAGS = PROTECTED_API + "/tags";
 
-    public static final String UPLOADS = API + "/upload";
+    public static final String UPLOADS = PROTECTED_API + "/upload";
 
-    public static final String USERS = API + "/users";
+    public static final String USERS = PROTECTED_API + "/users";
+
+    public static final String EXPORTS = PUBLIC_API + "/exports";
 
     private RestMapping() {
         //nop
