@@ -75,14 +75,10 @@ public class QuestionServiceImpl implements QuestionDOService {
 
     @Override
     @Transactional(readOnly = true)
-    public Iterable <Question> findAllWithTagsAndResponseByQuestionnaireId(Long questionnaireId) {
+    public Iterable <QuestionnaireQuestion> findAllWithTagsAndResponseByQuestionnaireId(Long questionnaireId) {
 
-        Iterable <QuestionnaireQuestion> questionnaireQuestion = questionnaireQuestionRepository.findAllWithTagsAndResponseByQuestionnaireId(questionnaireId);
+        return questionnaireQuestionRepository.findAllWithTagsAndResponseByQuestionnaireId(questionnaireId);
 
-        return StreamSupport
-                .stream(questionnaireQuestion.spliterator(), false)
-                .map(questionnaireQuestion1 -> questionnaireQuestion1.getQuestion())
-                .collect(Collectors.toList());
     }
 
 }

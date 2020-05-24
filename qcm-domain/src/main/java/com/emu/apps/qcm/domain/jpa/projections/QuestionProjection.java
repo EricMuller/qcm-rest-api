@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.domain.jpa.projections;
 
 
-import com.emu.apps.qcm.domain.entity.questions.Type;
+import com.emu.apps.qcm.domain.entity.questions.TypeQuestion;
 import org.hibernate.annotations.Immutable;
 
 import java.util.Date;
@@ -21,7 +21,7 @@ public interface QuestionProjection {
 
     String getQuestion();
 
-    Type getType();
+    TypeQuestion getType();
 
     String getUuid();
 }

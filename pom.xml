@@ -51,6 +51,7 @@
         <module>qcm-mapper</module>
         <module>qcm-domain</module>
         <module>qcm-service</module>
+        <module>qcm-reporting</module>
         <module>qcm-rest-web</module>
     </modules>
 
@@ -122,6 +123,11 @@
                 <version>${project.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.emu.apps.qcm</groupId>
+                <artifactId>qcm-reporting</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>

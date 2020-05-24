@@ -2,7 +2,7 @@ package com.emu.apps.qcm.services;
 
 import com.emu.apps.qcm.domain.QuestionDOService;
 import com.emu.apps.qcm.domain.QuestionnaireDOService;
-import com.emu.apps.qcm.domain.QuestionnaireTagDOService;
+import com.emu.apps.qcm.domain.entity.questionnaires.Questionnaire;
 import com.emu.apps.qcm.mappers.exports.ExportMapper;
 import com.emu.apps.qcm.web.dtos.export.ExportDto;
 import org.springframework.stereotype.Service;
@@ -44,7 +44,15 @@ public class ExportService {
         var questionnaire = questionnaireDOService.findOne(id);
         assertIsPresent(questionnaire, String.valueOf(id));
         var questions = questionDOService.findAllWithTagsAndResponseByQuestionnaireId(id);
-        return exportMapper.toDto(questionnaire, questions);
+
+        var name = generateName(questionnaire);
+
+        return exportMapper.toDto(questionnaire, questions, name);
+    }
+
+    private String generateName(Questionnaire questionnaire) {
+
+        return questionnaire.getId() + "-" + questionnaire.getTitle();
 
     }
 

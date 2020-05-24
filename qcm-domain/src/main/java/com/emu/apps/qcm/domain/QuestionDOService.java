@@ -1,6 +1,7 @@
 package com.emu.apps.qcm.domain;
 
 
+import com.emu.apps.qcm.domain.entity.questionnaires.QuestionnaireQuestion;
 import com.emu.apps.qcm.domain.entity.questions.Question;
 import com.emu.apps.qcm.domain.entity.tags.QuestionTag;
 import com.emu.apps.qcm.domain.jpa.projections.QuestionResponseProjection;
@@ -25,6 +26,6 @@ public interface QuestionDOService {
 
     Page <QuestionResponseProjection> getQuestionsProjectionByQuestionnaireId(Long questionnaireId, Pageable pageable);
 
-    Iterable <Question> findAllWithTagsAndResponseByQuestionnaireId(Long questionnaireId);
+    Iterable <QuestionnaireQuestion> findAllWithTagsAndResponseByQuestionnaireId(Long questionnaireId);
 
 }

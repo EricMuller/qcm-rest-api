@@ -7,11 +7,11 @@ import com.emu.apps.qcm.domain.entity.questionnaires.Questionnaire;
 import com.emu.apps.qcm.domain.entity.questionnaires.QuestionnaireQuestion;
 import com.emu.apps.qcm.domain.entity.tags.QuestionnaireTag;
 import com.emu.apps.qcm.domain.jpa.specifications.QuestionnaireSpecificationBuilder;
-import com.emu.apps.qcm.web.dtos.QuestionDto;
-import com.emu.apps.qcm.web.dtos.QuestionnaireDto;
 import com.emu.apps.qcm.mappers.QuestionMapper;
 import com.emu.apps.qcm.mappers.QuestionnaireMapper;
 import com.emu.apps.qcm.mappers.QuestionnaireTagMapper;
+import com.emu.apps.qcm.web.dtos.QuestionDto;
+import com.emu.apps.qcm.web.dtos.QuestionnaireDto;
 import com.emu.apps.shared.security.PrincipalUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.security.Principal;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
@@ -158,15 +159,21 @@ public class QuestionnaireService {
      * @param questionDto the question DTO
      * @return
      */
-    public QuestionDto addQuestion(long id, QuestionDto questionDto) {
+    public QuestionDto addQuestion(long id, QuestionDto questionDto, Long position) {
         var questionnaire = questionnaireDOService.findOne(id);
-        AtomicLong atomicLong = new AtomicLong(questionnaire.getQuestionnaireQuestions().size());
-        assertIsPresent(questionnaire, "Questionnaire Not found");
-        var question = questionDOService.findById(questionDto.getId()).orElse(null);
-        assertIsPresent(question, "Question Not found");
-        QuestionnaireQuestion questionnaireQuestion = questionnaireDOService.saveQuestionnaireQuestion(new QuestionnaireQuestion(questionnaire, question, atomicLong.incrementAndGet()));
-        questionnaire.getQuestionnaireQuestions().add(questionnaireQuestion);
-        return questionMapper.modelToDto(question);
+        if (Objects.isNull(position)) {
+            position = questionnaire.getQuestionnaireQuestions().size() + 1L;
+        }
+        var question = questionDOService.findById(questionDto.getId());
+
+        if (question.isPresent()) {
+            var questionnaireQuestion = new QuestionnaireQuestion(questionnaire, question.get(), position);
+
+            questionnaireQuestion = questionnaireDOService.saveQuestionnaireQuestion(questionnaireQuestion);
+
+            questionnaire.getQuestionnaireQuestions().add(questionnaireQuestion);
+        }
+        return questionMapper.modelToDto(question.get());
     }
 
     /**
@@ -177,9 +184,10 @@ public class QuestionnaireService {
      */
     public List <QuestionDto> addQuestions(long questionnaireId, Collection <QuestionDto> questionDtos) {
 
+        AtomicLong atomicLong = new AtomicLong(0);
         return questionDtos
                 .stream()
-                .map(questionDto -> addQuestion(questionnaireId, questionDto))
+                .map(questionDto -> addQuestion(questionnaireId, questionDto, atomicLong.incrementAndGet()))
                 .collect(Collectors.toList());
     }
 

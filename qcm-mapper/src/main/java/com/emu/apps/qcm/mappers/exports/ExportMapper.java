@@ -31,11 +31,11 @@ package com.emu.apps.qcm.mappers.exports;
 
 import com.emu.apps.qcm.domain.entity.category.Category;
 import com.emu.apps.qcm.domain.entity.questionnaires.Questionnaire;
+import com.emu.apps.qcm.domain.entity.questionnaires.QuestionnaireQuestion;
 import com.emu.apps.qcm.domain.entity.questions.Question;
 import com.emu.apps.qcm.domain.entity.questions.Response;
 import com.emu.apps.qcm.domain.entity.tags.QuestionTag;
 import com.emu.apps.qcm.domain.entity.tags.QuestionnaireTag;
-import com.emu.apps.qcm.web.dtos.QuestionDto;
 import com.emu.apps.qcm.web.dtos.export.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -49,7 +49,8 @@ import java.util.stream.StreamSupport;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ExportMapper {
 
-    ExportDto toDto(Questionnaire questionnaire, Iterable <Question> questions);
+
+    ExportDto toDto(Questionnaire questionnaire, Iterable <QuestionnaireQuestion> questions, String name);
 
     QuestionnaireExportDto modelToDto(Questionnaire questionnaire);
 
@@ -67,8 +68,19 @@ public interface ExportMapper {
 
     List <QuestionExportDto> modelToDtos(List <Question> questions);
 
-    default List <Question> map(Iterable <Question> value) {
-        return StreamSupport.stream(value.spliterator(), false).collect(Collectors.toList());
+    @Mapping(source = "question.question", target = "question")
+    @Mapping(source = "question.type", target = "type")
+    @Mapping(source = "question.status", target = "status")
+    @Mapping(source = "question.category", target = "category")
+    @Mapping(source = "question.responses", target = "responses")
+    @Mapping(source = "question.questionTags", target = "questionTags")
+    @Mapping(source = "question.tip", target = "tip")
+    QuestionExportDto modelToDto(QuestionnaireQuestion questionnaireQuestion);
+
+    default List <QuestionExportDto> modelToDtos(Iterable <QuestionnaireQuestion> value) {
+        return StreamSupport.stream(value.spliterator(), false)
+                .map(this::modelToDto)
+                .collect(Collectors.toList());
     }
 
 }

@@ -1,8 +1,8 @@
 package com.emu.apps.qcm.webmvc.rest;
 
 
-import com.emu.apps.qcm.services.QuestionnaireService;
 import com.emu.apps.qcm.domain.entity.questionnaires.Questionnaire;
+import com.emu.apps.qcm.services.QuestionnaireService;
 import com.emu.apps.qcm.web.dtos.QuestionDto;
 import com.emu.apps.qcm.web.dtos.QuestionnaireDto;
 import com.emu.apps.qcm.webmvc.rest.caches.CacheName;
@@ -82,7 +82,9 @@ public class QuestionnaireRestController {
     @PutMapping(value = "/{id}/questions")
     @ResponseBody
     public QuestionDto addQuestion(@PathVariable("id") long id, @RequestBody QuestionDto questionDto) {
-        return questionnaireService.addQuestion(id, questionDto);
+
+        // todo send QuestionnaireQuestionDto
+        return questionnaireService.addQuestion(id, questionDto, null);
     }
 
 }

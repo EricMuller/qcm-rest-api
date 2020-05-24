@@ -25,7 +25,7 @@ import java.util.Set;
                 @NamedAttributeNode(value = "questionnaireQuestions", subgraph = "questions"),
         },
         subgraphs = {@NamedSubgraph(name = "tags", attributeNodes = @NamedAttributeNode("tag")),
-              @NamedSubgraph(name = "questions", attributeNodes = @NamedAttributeNode("question"))}
+                @NamedSubgraph(name = "questions", attributeNodes = @NamedAttributeNode("question"))}
 )
 @Table(indexes = {@Index(name = "IDX_QTE_CREATE_BY_IDX", columnList = "created_by")})
 @Getter
@@ -54,6 +54,9 @@ public class Questionnaire extends AuditableEntity <String> {
     @Column(name = "WEBSITE")
     private String website;
 
+    @Column(name = "PUBLISHED")
+    private Boolean published;
+
     @OneToMany(mappedBy = "questionnaire", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set <QuestionnaireQuestion> questionnaireQuestions = new HashSet <>();
 
@@ -63,7 +66,5 @@ public class Questionnaire extends AuditableEntity <String> {
     @OneToMany(mappedBy = "questionnaire", cascade = CascadeType.ALL, orphanRemoval = true)
     @BatchSize(size = 20)
     private Set <QuestionnaireTag> questionnaireTags = new HashSet <>();
-
-
 
 }

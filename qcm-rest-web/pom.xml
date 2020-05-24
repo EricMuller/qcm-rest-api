@@ -50,6 +50,10 @@
             <artifactId>qcm-service</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.emu.apps.qcm</groupId>
+            <artifactId>qcm-reporting</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>com.emu.apps.qcm</groupId>

@@ -3,7 +3,7 @@ package com.emu.apps.qcm.services;
 import com.emu.apps.qcm.domain.TagDOService;
 import com.emu.apps.qcm.domain.UploadDOService;
 import com.emu.apps.qcm.domain.entity.Status;
-import com.emu.apps.qcm.domain.entity.questions.Type;
+import com.emu.apps.qcm.domain.entity.questions.TypeQuestion;
 import com.emu.apps.qcm.domain.entity.upload.ImportStatus;
 import com.emu.apps.qcm.domain.entity.upload.Upload;
 import com.emu.apps.qcm.domain.exceptions.EntityExceptionUtil;
@@ -45,14 +45,14 @@ public class ImportService {
 
     private final QuestionnaireService questionnaireService;
 
-    private final QuestionService questionDelegate;
+    private final QuestionService questionService;
 
     public ImportService(TagDOService tagDOService, UploadDOService uploadDOService, UploadMapper uploadMapper, QuestionnaireService questionnaireService, QuestionService questionDelegate) {
         this.tagDOService = tagDOService;
         this.uploadDOService = uploadDOService;
         this.uploadMapper = uploadMapper;
         this.questionnaireService = questionnaireService;
-        this.questionDelegate = questionDelegate;
+        this.questionService = questionDelegate;
     }
 
     public UploadDto importFile(Long uploadId, Principal principal) throws IOException {
@@ -67,7 +67,7 @@ public class ImportService {
     }
 
 
-    public Upload importUpload(Upload upload, Principal principal) throws IOException {
+    private Upload importUpload(Upload upload, Principal principal) throws IOException {
 
         InputStream inputStream = new ByteArrayInputStream(upload.getData());
 
@@ -84,7 +84,7 @@ public class ImportService {
         var questionDto = new QuestionDto();
         questionDto.setId(fileQuestionDto.getId());
         questionDto.setQuestion(fileQuestionDto.getQuestion());
-        questionDto.setType(Type.FREE_TEXT.name());
+        questionDto.setType(TypeQuestion.FREE_TEXT.name());
         questionDto.setStatus(Status.DRAFT.name());
 
 
@@ -131,7 +131,7 @@ public class ImportService {
                         .map(fileQuestionDto -> mapToQuestionDto(fileQuestionDto, categoryDto))
                         .collect(Collectors.toList());
 
-                Collection questionDtos = questionDelegate.saveQuestions(questions, principal);
+                Collection questionDtos = questionService.saveQuestions(questions, principal);
 
                 questionnaireService.addQuestions(questionnaire.getId(), questionDtos);
 

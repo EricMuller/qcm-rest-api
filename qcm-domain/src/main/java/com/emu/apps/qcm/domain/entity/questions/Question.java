@@ -50,7 +50,7 @@ public class Question extends AuditableEntity <String> {
     private List <Response> responses;
 
     @Enumerated(EnumType.STRING)
-    private Type type;
+    private TypeQuestion type;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private Category category;

@@ -26,7 +26,7 @@ import java.security.Principal;
 
 import static com.emu.apps.qcm.domain.entity.category.Type.QUESTION;
 import static com.emu.apps.qcm.domain.entity.category.Type.QUESTIONNAIRE;
-import static com.emu.apps.qcm.domain.entity.questions.Type.FREE_TEXT;
+import static com.emu.apps.qcm.domain.entity.questions.TypeQuestion.FREE_TEXT;
 
 
 @Component

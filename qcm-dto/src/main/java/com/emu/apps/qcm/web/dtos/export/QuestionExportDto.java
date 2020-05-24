@@ -47,5 +47,8 @@ public class QuestionExportDto {
 
     @JsonProperty("tip")
     private String tip;
-    
+
+    @JsonProperty("position")
+    private Long position;
+
 }

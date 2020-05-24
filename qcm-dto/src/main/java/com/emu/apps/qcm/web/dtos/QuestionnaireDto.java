@@ -34,5 +34,7 @@ public class QuestionnaireDto extends EntityDto {
     @JsonProperty("website")
     private String website;
 
+    @JsonProperty("published")
+    private Boolean published;
 
 }
