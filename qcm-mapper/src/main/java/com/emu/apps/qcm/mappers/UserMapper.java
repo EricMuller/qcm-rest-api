@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.mappers;
 
 
-import com.emu.apps.qcm.domain.entity.users.User;
+import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.users.User;
 import com.emu.apps.qcm.web.dtos.UserDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;

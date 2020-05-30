@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.webmvc.rest;
 
 
-import com.emu.apps.qcm.services.ExportService;
+import com.emu.apps.qcm.domain.adapters.ExportServiceAdapter;
 import com.emu.apps.qcm.reporting.ReportService;
 import com.emu.apps.qcm.reporting.TypeReport;
 import com.emu.apps.qcm.web.dtos.export.ExportDto;
@@ -24,11 +24,11 @@ import static com.emu.apps.qcm.webmvc.rest.RestMapping.EXPORTS;
 @RequestMapping(value = EXPORTS, produces = MediaType.APPLICATION_JSON_VALUE)
 public class ExportRestController {
 
-    private final ExportService exportService;
+    private final ExportServiceAdapter exportService;
 
     private final ReportService reportService;
 
-    public ExportRestController(ExportService exportService, ReportService reportService) {
+    public ExportRestController(ExportServiceAdapter exportService, ReportService reportService) {
         this.exportService = exportService;
         this.reportService = reportService;
     }

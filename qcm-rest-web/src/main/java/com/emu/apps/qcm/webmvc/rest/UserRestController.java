@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.webmvc.rest;
 
-import com.emu.apps.qcm.services.UserService;
+import com.emu.apps.qcm.domain.adapters.UserServiceAdapter;
 import com.emu.apps.qcm.web.dtos.UserDto;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.MediaType;
@@ -14,9 +14,9 @@ import java.util.Map;
 @RequestMapping(RestMapping.USERS)
 public class UserRestController {
 
-    private final UserService userService;
+    private final UserServiceAdapter userService;
 
-    public UserRestController(UserService userService) {
+    public UserRestController(UserServiceAdapter userService) {
         this.userService = userService;
     }
 

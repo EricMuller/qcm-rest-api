@@ -1,8 +1,8 @@
 package com.emu.apps.qcm.webmvc.rest;
 
 
-import com.emu.apps.qcm.domain.entity.questionnaires.Questionnaire;
-import com.emu.apps.qcm.services.QuestionnaireService;
+import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questionnaires.Questionnaire;
+import com.emu.apps.qcm.domain.adapters.QuestionnaireServiceAdapter;
 import com.emu.apps.qcm.web.dtos.QuestionDto;
 import com.emu.apps.qcm.web.dtos.QuestionnaireDto;
 import com.emu.apps.qcm.webmvc.rest.caches.CacheName;
@@ -28,9 +28,9 @@ import static com.emu.apps.qcm.webmvc.rest.RestMapping.QUESTIONNAIRES;
 @RequestMapping(value = QUESTIONNAIRES, produces = MediaType.APPLICATION_JSON_VALUE)
 public class QuestionnaireRestController {
 
-    private final QuestionnaireService questionnaireService;
+    private final QuestionnaireServiceAdapter questionnaireService;
 
-    public QuestionnaireRestController(QuestionnaireService questionnaireService) {
+    public QuestionnaireRestController(QuestionnaireServiceAdapter questionnaireService) {
         this.questionnaireService = questionnaireService;
     }
 

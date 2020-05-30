@@ -49,8 +49,8 @@
         <module>qcm-shared</module>
         <module>qcm-dto</module>
         <module>qcm-mapper</module>
+        <module>qcm-infrastructure</module>
         <module>qcm-domain</module>
-        <module>qcm-service</module>
         <module>qcm-reporting</module>
         <module>qcm-rest-web</module>
     </modules>
@@ -105,13 +105,13 @@
 
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-domain</artifactId>
+                <artifactId>qcm-infrastructure</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-domain</artifactId>
+                <artifactId>qcm-infrastructure</artifactId>
                 <version>${project.version}</version>
                 <scope>test</scope>
                 <type>test-jar</type>
@@ -119,7 +119,7 @@
 
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-service</artifactId>
+                <artifactId>qcm-domain</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

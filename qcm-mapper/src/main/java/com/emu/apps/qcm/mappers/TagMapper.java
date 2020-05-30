@@ -29,7 +29,7 @@
 package com.emu.apps.qcm.mappers;
 
 
-import com.emu.apps.qcm.domain.entity.tags.Tag;
+import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.tags.Tag;
 import com.emu.apps.qcm.web.dtos.TagDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;

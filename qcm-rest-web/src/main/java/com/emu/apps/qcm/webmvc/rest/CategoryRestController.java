@@ -1,8 +1,8 @@
 package com.emu.apps.qcm.webmvc.rest;
 
-import com.emu.apps.qcm.services.CategoryService;
-import com.emu.apps.qcm.domain.entity.category.Type;
-import com.emu.apps.qcm.domain.exceptions.FunctionnalException;
+import com.emu.apps.qcm.domain.ports.CategoryService;
+import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.category.Type;
+import com.emu.apps.qcm.infrastructure.exceptions.FunctionnalException;
 import com.emu.apps.qcm.web.dtos.CategoryDto;
 import com.emu.apps.qcm.web.dtos.MessageDto;
 import com.fasterxml.jackson.core.JsonProcessingException;

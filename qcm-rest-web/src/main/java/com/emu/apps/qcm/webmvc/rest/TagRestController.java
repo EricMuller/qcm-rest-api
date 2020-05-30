@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.webmvc.rest;
 
 
-import com.emu.apps.qcm.services.TagService;
+import com.emu.apps.qcm.domain.adapters.TagServiceAdapter;
 import com.emu.apps.qcm.web.dtos.TagDto;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
@@ -22,9 +22,9 @@ import static com.emu.apps.qcm.webmvc.rest.RestMapping.TAGS;
 @RequestMapping(value = TAGS, produces = MediaType.APPLICATION_JSON_VALUE)
 public class TagRestController {
 
-    private final TagService tagService;
+    private final TagServiceAdapter tagService;
 
-    public TagRestController(TagService tagService) {
+    public TagRestController(TagServiceAdapter tagService) {
         this.tagService = tagService;
     }
 

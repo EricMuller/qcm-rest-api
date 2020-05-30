@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.reporting;
 
-import com.emu.apps.qcm.domain.entity.questions.TypeQuestion;
+import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questions.TypeQuestion;
 import com.emu.apps.qcm.web.dtos.export.CategoryExportDto;
 import com.emu.apps.qcm.web.dtos.export.QuestionExportDto;
 import com.emu.apps.qcm.web.dtos.export.QuestionnaireExportDto;

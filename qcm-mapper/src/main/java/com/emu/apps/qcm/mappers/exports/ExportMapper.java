@@ -29,13 +29,13 @@
 package com.emu.apps.qcm.mappers.exports;
 
 
-import com.emu.apps.qcm.domain.entity.category.Category;
-import com.emu.apps.qcm.domain.entity.questionnaires.Questionnaire;
-import com.emu.apps.qcm.domain.entity.questionnaires.QuestionnaireQuestion;
-import com.emu.apps.qcm.domain.entity.questions.Question;
-import com.emu.apps.qcm.domain.entity.questions.Response;
-import com.emu.apps.qcm.domain.entity.tags.QuestionTag;
-import com.emu.apps.qcm.domain.entity.tags.QuestionnaireTag;
+import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.category.Category;
+import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questionnaires.Questionnaire;
+import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questionnaires.QuestionnaireQuestion;
+import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questions.Question;
+import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questions.Response;
+import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.tags.QuestionTag;
+import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.tags.QuestionnaireTag;
 import com.emu.apps.qcm.web.dtos.export.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.webmvc.rest.controllers;
 
 
-import com.emu.apps.qcm.domain.config.SpringBootTestConfig;
+import com.emu.apps.qcm.infrastructure.adapters.jpa.config.SpringBootTestConfig;
 import com.emu.apps.qcm.web.dtos.QuestionDto;
 import com.emu.apps.qcm.web.dtos.ResponseDto;
 import com.emu.apps.qcm.webmvc.rest.RestMapping;

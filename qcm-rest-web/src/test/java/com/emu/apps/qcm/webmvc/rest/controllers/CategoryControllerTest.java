@@ -1,9 +1,9 @@
 package com.emu.apps.qcm.webmvc.rest.controllers;
 
 
-import com.emu.apps.qcm.domain.Fixture;
-import com.emu.apps.qcm.domain.config.SpringBootTestConfig;
-import com.emu.apps.qcm.domain.entity.category.Type;
+import com.emu.apps.qcm.infrastructure.Fixture;
+import com.emu.apps.qcm.infrastructure.adapters.jpa.config.SpringBootTestConfig;
+import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.category.Type;
 import com.emu.apps.qcm.web.dtos.CategoryDto;
 import com.emu.apps.qcm.webmvc.rest.RestMapping;
 import org.junit.jupiter.api.BeforeEach;

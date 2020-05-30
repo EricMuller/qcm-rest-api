@@ -28,7 +28,7 @@
 
 package com.emu.apps.qcm.mappers;
 
-import com.emu.apps.qcm.domain.entity.questions.Response;
+import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questions.Response;
 import com.emu.apps.qcm.web.dtos.ResponseDto;
 import org.mapstruct.Mapper;
 

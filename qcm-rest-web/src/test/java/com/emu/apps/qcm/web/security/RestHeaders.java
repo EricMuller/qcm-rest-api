@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.web.security;
 
-import com.emu.apps.qcm.domain.config.SpringBootTestConfig;
+import com.emu.apps.qcm.infrastructure.adapters.jpa.config.SpringBootTestConfig;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
