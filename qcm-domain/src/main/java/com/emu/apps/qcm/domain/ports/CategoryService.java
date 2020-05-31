@@ -7,6 +7,7 @@ import com.emu.apps.qcm.web.dtos.CategoryDto;
 import java.security.Principal;
 
 public interface CategoryService {
+
     CategoryDto getCategory(Long id);
 
     Iterable <CategoryDto> getCategories(Principal principal, Type type) throws FunctionnalException;

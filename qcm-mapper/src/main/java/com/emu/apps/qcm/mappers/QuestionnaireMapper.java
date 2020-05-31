@@ -38,7 +38,7 @@ import org.mapstruct.ReportingPolicy;
 import org.springframework.data.domain.Page;
 
 
-@Mapper(componentModel = "spring", uses = {CategoryMapper.class, QuestionnaireTagMapper.class}
+@Mapper(componentModel = "spring", uses = {CategoryMapper.class, QuestionnaireTagMapper.class, UUIDMapper.class}
         , unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface QuestionnaireMapper {
 
@@ -53,7 +53,7 @@ public interface QuestionnaireMapper {
     @Mapping(target = "uuid", ignore = true)
     Questionnaire dtoToModel(@MappingTarget Questionnaire questionnaire, QuestionnaireDto questionnaireDto);
 
-    default Page<QuestionnaireDto> pageToDto(Page<Questionnaire> page) {
+    default Page <QuestionnaireDto> pageToDto(Page <Questionnaire> page) {
         return page.map(this::modelToDto);
     }
 

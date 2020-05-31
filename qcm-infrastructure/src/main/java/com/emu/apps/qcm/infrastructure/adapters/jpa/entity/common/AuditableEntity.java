@@ -35,24 +35,24 @@ public abstract class AuditableEntity<U extends Serializable> implements Seriali
     private LocalDateTime dateModification;
 
     @Column(unique = true, name = "uuid", nullable = false)
-    private String uuid = UUID.randomUUID().toString().toUpperCase();
+    private UUID uuid = UUID.randomUUID();
 
     @Version
     private Long version;
 
     public abstract Long getId();
 
-    public String getUuid() {
+    public UUID getUuid() {
         return uuid;
     }
 
-    public void setUuid(String uuid) {
+    public void setUuid(UUID uuid) {
         this.uuid = uuid;
     }
 
     @PrePersist
     public void prePersist() {
-        this.setUuid(UUID.randomUUID().toString());
+        this.setUuid(UUID.randomUUID());
     }
 
     public Long getVersion() {

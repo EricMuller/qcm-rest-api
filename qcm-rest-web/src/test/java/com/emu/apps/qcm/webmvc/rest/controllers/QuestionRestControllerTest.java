@@ -20,6 +20,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.Arrays;
+import java.util.UUID;
 
 import static com.emu.apps.qcm.web.security.RestHeaders.headers;
 import static org.assertj.core.api.Java6Assertions.assertThat;

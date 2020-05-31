@@ -40,7 +40,7 @@ import org.springframework.data.domain.Page;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {CategoryMapper.class, QuestionTagMapper.class, ResponseMapper.class}
+@Mapper(componentModel = "spring", uses = {CategoryMapper.class, QuestionTagMapper.class, ResponseMapper.class, UUIDMapper.class}
         , unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface QuestionMapper {
 

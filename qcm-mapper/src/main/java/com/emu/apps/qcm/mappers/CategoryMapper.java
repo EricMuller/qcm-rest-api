@@ -33,8 +33,7 @@ import com.emu.apps.qcm.web.dtos.CategoryDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring"
-        , unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring", uses = {UUIDMapper.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface CategoryMapper {
 
     CategoryDto modelToDto(Category category);

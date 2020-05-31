@@ -35,8 +35,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import org.springframework.data.domain.Page;
 
-@Mapper(componentModel = "spring"
-        ,unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring", uses = {UUIDMapper.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface TagMapper {
 
     TagDto modelToDto(Tag tag);
