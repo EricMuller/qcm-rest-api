@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.webmvc.config;
 
 
-import com.emu.apps.qcm.webmvc.rest.RestMapping;
+import com.emu.apps.qcm.webmvc.rest.RestMappings;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -39,8 +39,8 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .oauth2ResourceServer().jwt().jwtAuthenticationConverter(new GrantedAuthoritiesConverter()).and()
                 .and()
                 .authorizeRequests()
-                .antMatchers(RestMapping.PROTECTED_API + "/**").authenticated()
-                .antMatchers(RestMapping.PUBLIC_API + "/**").permitAll()
+                .antMatchers(RestMappings.PROTECTED_API + "/**").authenticated()
+                .antMatchers(RestMappings.PUBLIC_API + "/**").permitAll()
                 .antMatchers("/actuator/**").permitAll()
 //                .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .anyRequest().permitAll();

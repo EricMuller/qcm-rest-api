@@ -28,7 +28,7 @@
 
 package com.emu.apps.qcm.webmvc.rest;
 
-public final class RestMapping {
+public final class RestMappings {
 
     public static final String PROTECTED_API = "/qcm/api/v1";
 
@@ -50,7 +50,7 @@ public final class RestMapping {
 
     public static final String EXPORTS = PUBLIC_API + "/exports";
 
-    private RestMapping() {
+    private RestMappings() {
         //nop
     }
 }

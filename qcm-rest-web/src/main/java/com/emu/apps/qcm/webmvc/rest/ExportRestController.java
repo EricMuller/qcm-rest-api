@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.webmvc.rest;
 
 
-import com.emu.apps.qcm.domain.adapters.ExportServiceAdapter;
+import com.emu.apps.qcm.domain.ports.ExportService;
 import com.emu.apps.qcm.reporting.ReportService;
 import com.emu.apps.qcm.reporting.TypeReport;
 import com.emu.apps.qcm.web.dtos.export.ExportDto;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayOutputStream;
 
-import static com.emu.apps.qcm.webmvc.rest.RestMapping.EXPORTS;
+import static com.emu.apps.qcm.webmvc.rest.RestMappings.EXPORTS;
 
 
 @RestController
@@ -24,11 +24,11 @@ import static com.emu.apps.qcm.webmvc.rest.RestMapping.EXPORTS;
 @RequestMapping(value = EXPORTS, produces = MediaType.APPLICATION_JSON_VALUE)
 public class ExportRestController {
 
-    private final ExportServiceAdapter exportService;
+    private final ExportService exportService;
 
     private final ReportService reportService;
 
-    public ExportRestController(ExportServiceAdapter exportService, ReportService reportService) {
+    public ExportRestController(ExportService exportService, ReportService reportService) {
         this.exportService = exportService;
         this.reportService = reportService;
     }

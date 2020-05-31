@@ -1,6 +1,8 @@
 package com.emu.apps.qcm.domain.adapters;
 
 import com.emu.apps.qcm.domain.ports.ImportService;
+import com.emu.apps.qcm.domain.ports.QuestionService;
+import com.emu.apps.qcm.domain.ports.QuestionnaireService;
 import com.emu.apps.qcm.infrastructure.ports.TagDOService;
 import com.emu.apps.qcm.infrastructure.ports.UploadDOService;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.Status;
@@ -44,16 +46,17 @@ public class ImportServiceAdapter implements ImportService {
 
     private final UploadMapper uploadMapper;
 
-    private final QuestionnaireServiceAdapter questionnaireService;
+    private final QuestionnaireService questionnaireService;
 
-    private final QuestionServiceAdapter questionService;
+    private final QuestionService questionService;
 
-    public ImportServiceAdapter(TagDOService tagDOService, UploadDOService uploadDOService, UploadMapper uploadMapper, QuestionnaireServiceAdapter questionnaireService, QuestionServiceAdapter questionDelegate) {
+    public ImportServiceAdapter(TagDOService tagDOService, UploadDOService uploadDOService, UploadMapper uploadMapper
+            , QuestionnaireService questionnaireService, QuestionService questionService) {
         this.tagDOService = tagDOService;
         this.uploadDOService = uploadDOService;
         this.uploadMapper = uploadMapper;
         this.questionnaireService = questionnaireService;
-        this.questionService = questionDelegate;
+        this.questionService = questionService;
     }
 
     @Override

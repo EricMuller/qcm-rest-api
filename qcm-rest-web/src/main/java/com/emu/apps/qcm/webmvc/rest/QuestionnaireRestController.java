@@ -1,8 +1,7 @@
 package com.emu.apps.qcm.webmvc.rest;
 
 
-import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questionnaires.Questionnaire;
-import com.emu.apps.qcm.domain.adapters.QuestionnaireServiceAdapter;
+import com.emu.apps.qcm.domain.ports.QuestionnaireService;
 import com.emu.apps.qcm.web.dtos.QuestionDto;
 import com.emu.apps.qcm.web.dtos.QuestionnaireDto;
 import com.emu.apps.qcm.webmvc.rest.caches.CacheName;
@@ -20,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
-import static com.emu.apps.qcm.webmvc.rest.RestMapping.QUESTIONNAIRES;
+import static com.emu.apps.qcm.webmvc.rest.RestMappings.QUESTIONNAIRES;
 
 
 @RestController
@@ -28,9 +27,9 @@ import static com.emu.apps.qcm.webmvc.rest.RestMapping.QUESTIONNAIRES;
 @RequestMapping(value = QUESTIONNAIRES, produces = MediaType.APPLICATION_JSON_VALUE)
 public class QuestionnaireRestController {
 
-    private final QuestionnaireServiceAdapter questionnaireService;
+    private final QuestionnaireService questionnaireService;
 
-    public QuestionnaireRestController(QuestionnaireServiceAdapter questionnaireService) {
+    public QuestionnaireRestController(QuestionnaireService questionnaireService) {
         this.questionnaireService = questionnaireService;
     }
 
@@ -46,7 +45,7 @@ public class QuestionnaireRestController {
     @DeleteMapping(value = "/{id}")
     @CacheEvict(cacheNames = CacheName.Names.QUESTIONNAIRE, key = "#id")
     @ResponseBody
-    public ResponseEntity <Questionnaire> deleteQuestionnaireById(@PathVariable("id") long id) {
+    public ResponseEntity <QuestionnaireDto> deleteQuestionnaireById(@PathVariable("id") long id) {
         questionnaireService.deleteQuestionnaireById(id);
         return new ResponseEntity <>(HttpStatus.NO_CONTENT);
     }

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.security.Principal;
 
-import static com.emu.apps.qcm.webmvc.rest.RestMapping.CATEGORIES;
+import static com.emu.apps.qcm.webmvc.rest.RestMappings.CATEGORIES;
 
 /**
  * Created by eric on 05/06/2017.

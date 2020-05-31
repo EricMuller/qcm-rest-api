@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.webmvc.rest;
 
-import com.emu.apps.qcm.domain.adapters.QuestionServiceAdapter;
+import com.emu.apps.qcm.domain.ports.QuestionService;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questions.Question;
 import com.emu.apps.qcm.web.dtos.MessageDto;
 import com.emu.apps.qcm.web.dtos.QuestionDto;
@@ -21,7 +21,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.security.Principal;
 
-import static com.emu.apps.qcm.webmvc.rest.RestMapping.QUESTIONS;
+import static com.emu.apps.qcm.webmvc.rest.RestMappings.QUESTIONS;
 
 /**
  * Created by eric on 05/06/2017.
@@ -31,9 +31,9 @@ import static com.emu.apps.qcm.webmvc.rest.RestMapping.QUESTIONS;
 @RequestMapping(value = QUESTIONS, produces = MediaType.APPLICATION_JSON_VALUE)
 public class QuestionRestController {
 
-    private final QuestionServiceAdapter questionService;
+    private final QuestionService questionService;
 
-    public QuestionRestController(QuestionServiceAdapter questionService) {
+    public QuestionRestController(QuestionService questionService) {
         this.questionService = questionService;
     }
 

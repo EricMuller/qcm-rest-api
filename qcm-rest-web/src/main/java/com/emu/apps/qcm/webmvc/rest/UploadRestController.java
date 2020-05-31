@@ -2,6 +2,8 @@ package com.emu.apps.qcm.webmvc.rest;
 
 import com.emu.apps.qcm.domain.adapters.ImportServiceAdapter;
 import com.emu.apps.qcm.domain.adapters.UploadServiceAdapter;
+import com.emu.apps.qcm.domain.ports.ImportService;
+import com.emu.apps.qcm.domain.ports.UploadService;
 import com.emu.apps.qcm.web.dtos.UploadDto;
 import com.emu.apps.shared.metrics.Timer;
 import org.springframework.context.annotation.Profile;
@@ -14,18 +16,18 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.security.Principal;
 
-import static com.emu.apps.qcm.webmvc.rest.RestMapping.UPLOADS;
+import static com.emu.apps.qcm.webmvc.rest.RestMappings.UPLOADS;
 
 @RestController
 @Profile("webmvc")
 @RequestMapping(value = UPLOADS, produces = MediaType.APPLICATION_JSON_VALUE)
 public class UploadRestController {
 
-    private final UploadServiceAdapter uploadService;
+    private final UploadService uploadService;
 
-    private final ImportServiceAdapter importService;
+    private final ImportService importService;
 
-    public UploadRestController(UploadServiceAdapter uploadService, ImportServiceAdapter importService) {
+    public UploadRestController(UploadServiceAdapter uploadService, ImportService importService) {
         this.uploadService = uploadService;
         this.importService = importService;
     }
