@@ -1,5 +1,6 @@
 package com.emu.apps.qcm.infrastructure.adapters.jpa.entity.common;
 
+import org.hibernate.annotations.Type;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -35,6 +36,7 @@ public abstract class AuditableEntity<U extends Serializable> implements Seriali
     private LocalDateTime dateModification;
 
     @Column(unique = true, name = "uuid", nullable = false)
+    @Type(type="org.hibernate.type.UUIDCharType")
     private UUID uuid = UUID.randomUUID();
 
     @Version

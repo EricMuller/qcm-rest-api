@@ -1,10 +1,8 @@
 package com.emu.apps.qcm.domain.adapters;
 
-import com.emu.apps.qcm.domain.ports.UserService;
-import com.emu.apps.qcm.infrastructure.ports.UserDOService;
-import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.users.User;
-import com.emu.apps.qcm.web.dtos.UserDto;
-import com.emu.apps.qcm.mappers.UserMapper;
+import com.emu.apps.qcm.domain.ports.UserServicePort;
+import com.emu.apps.qcm.infrastructure.ports.UserPersistencePort;
+import com.emu.apps.qcm.domain.dtos.UserDto;
 import com.emu.apps.shared.security.PrincipalUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -16,26 +14,22 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- *
  * User Business Delegate
- *<p>
+ * <p>
  *
- * @since 2.2.0
  * @author eric
+ * @since 2.2.0
  */
 @Service
-public class UserServiceAdapter implements UserService {
+public class UserServiceAdapter implements UserServicePort {
 
     @Value("${spring.profiles.active}")
     private String profiles;
 
-    private final UserDOService userDOService;
+    private final UserPersistencePort userPersistencePort;
 
-    private final UserMapper userMapper;
-
-    public UserServiceAdapter(UserDOService userDOService, UserMapper userMapper) {
-        this.userDOService = userDOService;
-        this.userMapper = userMapper;
+    public UserServiceAdapter(UserPersistencePort userPersistencePort) {
+        this.userPersistencePort = userPersistencePort;
     }
 
     @Override
@@ -49,8 +43,7 @@ public class UserServiceAdapter implements UserService {
     }
 
     /**
-     *
-     * @param principal
+     * @param principal principal
      * @return the current user
      */
     @Override
@@ -58,36 +51,30 @@ public class UserServiceAdapter implements UserService {
         UserDto userDto;
         if (Objects.nonNull(principal)) {
             String email = PrincipalUtils.getEmail(principal);
-            User user = userDOService.findByEmailContaining(email);
-            if (Objects.isNull(user)) {
+            userDto = userPersistencePort.findByEmailContaining(email);
+            if (Objects.isNull(userDto)) {
                 userDto = new UserDto();
                 userDto.setEmail(email);
-            } else {
-                userDto = userMapper.modelToDto(user);
             }
         } else {
             userDto = new UserDto();
         }
 
         return userDto;
-
     }
 
     /**
      * Update a user
-     * @param userDto
-     * @param principal
+     *
+     * @param userDto   user
+     * @param principal principal
      * @return the updated user DTO
      */
 
     @Override
     public UserDto updateUser(@RequestBody UserDto userDto, Principal principal) {
-        var user = userDOService.findByEmailContaining(userDto.getEmail());
-        if (Objects.isNull(user)) {
-            user = new User();
-        }
-        userMapper.dtoToModel(user, userDto);
-        return userMapper.modelToDto(userDOService.save(user));
+
+        return userPersistencePort.save(userDto);
 
     }
 

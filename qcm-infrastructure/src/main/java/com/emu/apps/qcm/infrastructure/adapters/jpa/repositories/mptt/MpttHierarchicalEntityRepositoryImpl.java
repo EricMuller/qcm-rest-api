@@ -10,6 +10,7 @@ import javax.persistence.TypedQuery;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 public class MpttHierarchicalEntityRepositoryImpl<T extends MpttHierarchicalEntity <T>>
         implements MpttHierarchicalEntityRepository <T> {
@@ -23,8 +24,20 @@ public class MpttHierarchicalEntityRepositoryImpl<T extends MpttHierarchicalEnti
         this.clazz = clazz;
     }
 
-    public T findById( Long id) {
+    public void save(T t) {
+         entityManager.persist(t);
+    }
+
+    public T findById(Long id) {
         return entityManager.find(clazz, id);
+    }
+
+    public T findByUuid(UUID uuid) {
+        return entityManager
+                .createNamedQuery("findByUuid", clazz)
+                .setParameter("uuid", uuid)
+                .getSingleResult();
+
     }
 
     @Override
@@ -59,7 +72,7 @@ public class MpttHierarchicalEntityRepositoryImpl<T extends MpttHierarchicalEnti
         incrementEntitiesLft(parentsLft, 2L);
 
         child.setLft(parentRght);
-        child.setRgt(parentRght+ 1);
+        child.setRgt(parentRght + 1);
         child.setLevel(parent.getLevel() + 1);
         child.setUserId(userId);
 
@@ -233,7 +246,7 @@ public class MpttHierarchicalEntityRepositoryImpl<T extends MpttHierarchicalEnti
                 .setParameter("hierarchyId", node.getUserId())
                 .setParameter("lft", node.getLft())
                 .setParameter("rgt", node.getRgt())
-                .setParameter("level", node.getLevel() + 1 )
+                .setParameter("level", node.getLevel() + 1)
                 .getResultList()
         );
     }

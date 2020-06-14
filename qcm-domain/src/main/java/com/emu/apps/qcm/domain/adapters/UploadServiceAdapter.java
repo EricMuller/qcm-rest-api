@@ -1,12 +1,10 @@
 package com.emu.apps.qcm.domain.adapters;
 
-import com.emu.apps.qcm.domain.ports.UploadService;
-import com.emu.apps.qcm.infrastructure.ports.UploadDOService;
-import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.upload.Upload;
+import com.emu.apps.qcm.domain.ports.UploadServicePort;
 import com.emu.apps.qcm.infrastructure.exceptions.EntityExceptionUtil;
-import com.emu.apps.qcm.infrastructure.adapters.jpa.specifications.UploadSpecificationBuilder;
-import com.emu.apps.qcm.web.dtos.UploadDto;
-import com.emu.apps.qcm.mappers.UploadMapper;
+import com.emu.apps.qcm.infrastructure.exceptions.MessageSupport;
+import com.emu.apps.qcm.infrastructure.ports.UploadPersistencePort;
+import com.emu.apps.qcm.domain.dtos.UploadDto;
 import com.emu.apps.shared.security.PrincipalUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.data.domain.Pageable;
@@ -25,15 +23,12 @@ import java.security.Principal;
  * @since 2.2.0
  */
 @Service
-public class UploadServiceAdapter implements UploadService {
+public class UploadServiceAdapter implements UploadServicePort {
 
-    private final UploadDOService uploadDOService;
+    private final UploadPersistencePort uploadPersistencePort;
 
-    private final UploadMapper uploadMapper;
-
-    public UploadServiceAdapter(UploadDOService uploadDOService, UploadMapper uploadMapper) {
-        this.uploadDOService = uploadDOService;
-        this.uploadMapper = uploadMapper;
+    public UploadServiceAdapter(UploadPersistencePort uploadPersistencePort) {
+        this.uploadPersistencePort = uploadPersistencePort;
     }
 
     @Override
@@ -47,40 +42,38 @@ public class UploadServiceAdapter implements UploadService {
             bytes = inputStream.readAllBytes();
         }
 
-        var upload = new Upload(FilenameUtils.getName(multipartFile.getOriginalFilename()), multipartFile.getContentType(), bytes);
+        UploadDto uploadDto = new UploadDto();
+        uploadDto.setFileName(FilenameUtils.getName(multipartFile.getOriginalFilename()));
+        uploadDto.setContentType(multipartFile.getContentType());
+        uploadDto.setData(bytes);
 
-        return uploadMapper.modelToDto(uploadDOService.saveUpload(upload));
+        return uploadPersistencePort.saveUpload(uploadDto);
     }
 
     @Override
     public Iterable <UploadDto> getUploads(Pageable pageable, Principal principal) {
 
-        var uploadSpecificationBuilder = new UploadSpecificationBuilder();
-        uploadSpecificationBuilder.setPrincipal(PrincipalUtils.getEmail(principal));
-        return uploadMapper.pageToPageDto(uploadDOService.findAllByPage(uploadSpecificationBuilder.build(), pageable));
+        return uploadPersistencePort.findAllByPage( pageable,PrincipalUtils.getEmail(principal));
     }
 
     @Override
-    public void deleteUploadById(long id) {
-        var optionalUpload = uploadDOService.findById(id);
+    public void deleteUploadByUuid(String uuid) {
+        var uploadDto = uploadPersistencePort.findByUuid(uuid);
 
-        if (!optionalUpload.isPresent()) {
-            EntityExceptionUtil.raiseNoteFoundException(String.valueOf(id));
-        }
+        EntityExceptionUtil.raiseExceptionIfNull(uuid, uploadDto, MessageSupport.UNKNOWN_UUID_UPLOAD);
 
-        uploadDOService.deleteById(optionalUpload.get().getId());
+        uploadPersistencePort.deleteByUuid(uuid);
 
     }
 
     @Override
-    public UploadDto getUploadById(long id) {
+    public UploadDto getUploadByUuid(String uuid) {
 
-        var optionalUpload = uploadDOService.findById(id);
+        var uploadDto = uploadPersistencePort.findByUuid(uuid);
 
-        if (!optionalUpload.isPresent()) {
-            EntityExceptionUtil.raiseNoteFoundException(String.valueOf(id));
-        }
-        return uploadMapper.modelToDto(optionalUpload.get());
+        EntityExceptionUtil.raiseExceptionIfNull(uuid, uploadDto, MessageSupport.UNKNOWN_UUID_UPLOAD);
+
+        return uploadDto;
 
     }
 

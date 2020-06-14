@@ -1,14 +1,13 @@
 package com.emu.apps.qcm.webmvc.rest;
 
 
-import com.emu.apps.qcm.domain.adapters.SuggestServiceAdapter;
-import com.emu.apps.qcm.domain.ports.SuggestService;
+import com.emu.apps.qcm.domain.ports.SuggestServicePort;
 import com.emu.apps.qcm.web.dtos.SuggestDto;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import static com.emu.apps.qcm.webmvc.rest.RestMappings.SUGGEST;
+import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.SUGGEST;
 
 
 /**
@@ -19,10 +18,10 @@ import static com.emu.apps.qcm.webmvc.rest.RestMappings.SUGGEST;
 @RequestMapping(value = SUGGEST, produces = MediaType.APPLICATION_JSON_VALUE)
 public class SuggestRestController {
 
-    private final SuggestService suggestService;
+    private final SuggestServicePort suggestServicePort;
 
-    public SuggestRestController(SuggestService suggestService) {
-        this.suggestService = suggestService;
+    public SuggestRestController(SuggestServicePort suggestServicePort) {
+        this.suggestServicePort = suggestServicePort;
     }
 
     @GetMapping(value = "/title")
@@ -30,7 +29,7 @@ public class SuggestRestController {
     @SuppressWarnings("squid:CommentedOutCodeLine")
     public Iterable <SuggestDto> getSuggestions(@RequestParam("queryText") String queryText) {
 
-        return suggestService.getSuggestions(queryText);
+        return suggestServicePort.getSuggestions(queryText);
     }
 
 }

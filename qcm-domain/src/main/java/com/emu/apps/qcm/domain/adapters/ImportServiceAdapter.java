@@ -1,18 +1,19 @@
 package com.emu.apps.qcm.domain.adapters;
 
-import com.emu.apps.qcm.domain.ports.ImportService;
-import com.emu.apps.qcm.domain.ports.QuestionService;
-import com.emu.apps.qcm.domain.ports.QuestionnaireService;
-import com.emu.apps.qcm.infrastructure.ports.TagDOService;
-import com.emu.apps.qcm.infrastructure.ports.UploadDOService;
+import com.emu.apps.qcm.domain.dtos.*;
+import com.emu.apps.qcm.domain.ports.ImportServicePort;
+import com.emu.apps.qcm.domain.ports.QuestionServicePort;
+import com.emu.apps.qcm.domain.ports.QuestionnaireServicePort;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.Status;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questions.TypeQuestion;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.upload.ImportStatus;
-import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.upload.Upload;
 import com.emu.apps.qcm.infrastructure.exceptions.EntityExceptionUtil;
+import com.emu.apps.qcm.infrastructure.exceptions.MessageSupport;
 import com.emu.apps.qcm.infrastructure.exceptions.TechnicalException;
+import com.emu.apps.qcm.infrastructure.ports.CategoryPersistencePort;
+import com.emu.apps.qcm.infrastructure.ports.TagPersistencePort;
+import com.emu.apps.qcm.infrastructure.ports.UploadPersistencePort;
 import com.emu.apps.qcm.web.dtos.*;
-import com.emu.apps.qcm.mappers.UploadMapper;
 import com.emu.apps.shared.security.PrincipalUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.security.Principal;
 import java.util.Arrays;
 import java.util.Collection;
@@ -36,62 +36,54 @@ import static com.emu.apps.qcm.infrastructure.adapters.jpa.entity.category.Type.
 @Service
 @Slf4j
 @Transactional
-public class ImportServiceAdapter implements ImportService {
+public class ImportServiceAdapter implements ImportServicePort {
 
     public static final String IMPORT = "import";
 
-    private final TagDOService tagDOService;
+    private final TagPersistencePort tagPersistencePort;
 
-    private final UploadDOService uploadDOService;
+    private final UploadPersistencePort uploadPersistencePort;
 
-    private final UploadMapper uploadMapper;
+    private final QuestionnaireServicePort questionnaireService;
 
-    private final QuestionnaireService questionnaireService;
+    private final QuestionServicePort questionService;
 
-    private final QuestionService questionService;
+    private final CategoryPersistencePort categoryPersistencePort;
 
-    public ImportServiceAdapter(TagDOService tagDOService, UploadDOService uploadDOService, UploadMapper uploadMapper
-            , QuestionnaireService questionnaireService, QuestionService questionService) {
-        this.tagDOService = tagDOService;
-        this.uploadDOService = uploadDOService;
-        this.uploadMapper = uploadMapper;
+    public ImportServiceAdapter(TagPersistencePort tagPersistencePort, UploadPersistencePort uploadPersistencePort
+            , QuestionnaireServicePort questionnaireService, QuestionServicePort questionService, CategoryPersistencePort categoryPersistencePort) {
+        this.tagPersistencePort = tagPersistencePort;
+        this.uploadPersistencePort = uploadPersistencePort;
         this.questionnaireService = questionnaireService;
         this.questionService = questionService;
+        this.categoryPersistencePort = categoryPersistencePort;
     }
 
     @Override
-    public UploadDto importFile(Long uploadId, Principal principal) throws IOException {
+    public UploadDto importFile(String uploadUuid, Principal principal) throws IOException {
 
-        var optionalUpload = uploadDOService.findById(uploadId);
-        if (!optionalUpload.isPresent()) {
-            EntityExceptionUtil.raiseNoteFoundException(String.valueOf(uploadId));
-        }
+        var uploadDto = uploadPersistencePort.findByUuid(uploadUuid);
 
-        return uploadMapper.modelToDto(importUpload(optionalUpload.get(), principal));
+        EntityExceptionUtil.raiseExceptionIfNull(uploadUuid, uploadDto, MessageSupport.UNKNOWN_UUID_UPLOAD);
 
-    }
+        final FileQuestionDto[] fileQuestionDtos = new ObjectMapper().readValue(new ByteArrayInputStream(uploadDto.getData()), FileQuestionDto[].class);
 
+        ImportStatus importStatus = importQuestionnaire(uploadDto.getFileName(), fileQuestionDtos, principal);
 
-    private Upload importUpload(Upload upload, Principal principal) throws IOException {
+        uploadDto.setStatus(importStatus.name());
 
-        InputStream inputStream = new ByteArrayInputStream(upload.getData());
-
-        final FileQuestionDto[] fileQuestionDtos = new ObjectMapper().readValue(inputStream, FileQuestionDto[].class);
-
-        upload.setStatus(importQuestionnaire(upload.getStatus(), upload.getFileName(), fileQuestionDtos, principal));
-
-        return uploadDOService.saveUpload(upload);
+        return uploadPersistencePort.saveUpload(uploadDto);
 
     }
+
 
     private QuestionDto mapToQuestionDto(FileQuestionDto fileQuestionDto, CategoryDto categoryDto) {
 
         var questionDto = new QuestionDto();
-        questionDto.setId(fileQuestionDto.getId());
+
         questionDto.setQuestion(fileQuestionDto.getQuestion());
         questionDto.setType(TypeQuestion.FREE_TEXT.name());
         questionDto.setStatus(Status.DRAFT.name());
-
 
         questionDto.setCategory(categoryDto);
 
@@ -110,7 +102,7 @@ public class ImportServiceAdapter implements ImportService {
 
     @Override
     @Transactional
-    public ImportStatus importQuestionnaire(ImportStatus aUploadStatus, String name, FileQuestionDto[] fileQuestionDtos, Principal principal) {
+    public ImportStatus importQuestionnaire(String name, FileQuestionDto[] fileQuestionDtos, Principal principal) {
 
         if (ArrayUtils.isNotEmpty(fileQuestionDtos)) {
             try {
@@ -119,17 +111,19 @@ public class ImportServiceAdapter implements ImportService {
                 questionnaireDto.setTitle(IMPORT);
                 questionnaireDto.setStatus(Status.DRAFT.name());
 
-                final var tagQuestionnaire = tagDOService.findOrCreateByLibelle(IMPORT, principal);
+                final var tagQuestionnaire = tagPersistencePort.findOrCreateByLibelle(IMPORT, PrincipalUtils.getEmail(principal));
 
                 QuestionnaireTagDto questionnaireTagDto = new QuestionnaireTagDto();
-                questionnaireTagDto.setId(tagQuestionnaire.getId());
+                questionnaireTagDto.setUuid(tagQuestionnaire.getUuid().toString());
                 questionnaireDto.setQuestionnaireTags(new HashSet <>(Arrays.asList(questionnaireTagDto)));
                 QuestionnaireDto questionnaire = questionnaireService.saveQuestionnaire(questionnaireDto, principal);
 
-                CategoryDto categoryDto = new CategoryDto();
-                categoryDto.setLibelle(IMPORT);
-                categoryDto.setType(QUESTION.name());
-                categoryDto.setUserId(PrincipalUtils.getEmail(principal));
+                CategoryDto importCategoryQuestionDto = new CategoryDto();
+                importCategoryQuestionDto.setLibelle(IMPORT);
+                importCategoryQuestionDto.setType(QUESTION.name());
+                importCategoryQuestionDto.setUserId(PrincipalUtils.getEmail(principal));
+
+                final CategoryDto categoryDto = categoryPersistencePort.saveCategory(importCategoryQuestionDto);
 
                 List <QuestionDto> questions = Arrays
                         .stream(fileQuestionDtos)
@@ -139,7 +133,7 @@ public class ImportServiceAdapter implements ImportService {
 
                 Collection questionDtos = questionService.saveQuestions(questions, principal);
 
-                questionnaireService.addQuestions(questionnaire.getId(), questionDtos);
+                questionnaireService.addQuestions(questionnaire.getUuid(), questionDtos);
 
             } catch (TechnicalException e) {
 
@@ -151,6 +145,5 @@ public class ImportServiceAdapter implements ImportService {
         return ImportStatus.DONE;
 
     }
-
 
 }

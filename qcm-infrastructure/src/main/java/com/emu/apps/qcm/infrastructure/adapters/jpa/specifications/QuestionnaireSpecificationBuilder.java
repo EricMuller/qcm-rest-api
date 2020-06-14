@@ -6,12 +6,13 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.criteria.JoinType;
+import java.util.UUID;
 
 import static org.springframework.data.jpa.domain.Specification.where;
 
 
 @Component
-public final class QuestionnaireSpecificationBuilder extends BaseSpecification<Questionnaire> {
+public final class QuestionnaireSpecificationBuilder extends BaseSpecification <Questionnaire> {
 
     private static final String TITLE_FIELD = "title";
 
@@ -19,10 +20,10 @@ public final class QuestionnaireSpecificationBuilder extends BaseSpecification<Q
 
     private String principal;
 
-    private Long[] tagIds;
+    private UUID[] tagUuids;
 
     public QuestionnaireSpecificationBuilder() {
-        // nope
+//nope
     }
 
     @SuppressWarnings("squid:S1172")
@@ -36,18 +37,13 @@ public final class QuestionnaireSpecificationBuilder extends BaseSpecification<Q
         return this;
     }
 
-    public QuestionnaireSpecificationBuilder setTagIds(Long[] tagIds) {
-        this.tagIds = tagIds;
-        return this;
-    }
-
-
     @Override
-    public Specification<Questionnaire> build() {
+    public Specification <Questionnaire> build() {
 
         Specification where = where(fieldContains(TITLE_FIELD, title)
                 .and(fieldEquals(CREATED_BY, principal))
-                .and(questionnaireTagsIdIn(tagIds))); //
+                .and(questionnaireTagsUuidIn(tagUuids))
+        ); //
 
         return (root, query, cb) -> {
             // Important because of the join in the questionnaireTags
@@ -56,8 +52,25 @@ public final class QuestionnaireSpecificationBuilder extends BaseSpecification<Q
         };
     }
 
-    private Specification<Questionnaire> questionnaireTagsIdIn(Long[] values) {
+    private Specification <Questionnaire> questionnaireTagsIdIn(Long[] values) {
         return ArrayUtils.isEmpty(values) ? null :
-                (root, query, cb) -> root.joinSet("questionnaireTags", JoinType.INNER).join("tag").get(ID).in(values);
+                (root, query, cb) -> root
+                        .joinSet("questionnaireTags", JoinType.INNER)
+                        .join("tag")
+                        .get(ID)
+                        .in(values);
+    }
+
+    private Specification <Questionnaire> questionnaireTagsUuidIn(UUID[] values) {
+        return ArrayUtils.isEmpty(values) ? null :
+                (root, query, cb) -> root
+                        .joinSet("questionnaireTags", JoinType.INNER)
+                        .join("tag")
+                        .get(UUID)
+                        .in(values);
+    }
+
+    public void setTagUuids(UUID[] tagUuids) {
+        this.tagUuids = tagUuids;
     }
 }

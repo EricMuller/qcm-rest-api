@@ -15,6 +15,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public interface QuestionnaireQuestionRepository extends JpaRepository<QuestionnaireQuestion, QuestionnaireQuestionId> {
@@ -27,8 +28,8 @@ public interface QuestionnaireQuestionRepository extends JpaRepository<Questionn
 
     @Query("SELECT qq.question.id as id, qq.question.uuid as uuid, qq.question.dateCreation as dateCreation,qq.question.version as version,qq.question.question as question ,qq.question.type as type,qq.position as position " +
             " FROM QuestionnaireQuestion  qq " +
-            " WHERE qq.id.questionnaireId = :questionnaireId")
-    Page<QuestionResponseProjection> findQuestionsByQuestionnaireId(@Param("questionnaireId") Long questionnaireId, Pageable pageable);
+            " WHERE qq.question.uuid = :questionnaireId")
+    Page<QuestionResponseProjection> findQuestionsByQuestionnaireId(@Param("questionnaireId") String questionnaireId, Pageable pageable);
 
     @Query("SELECT distinct qq.question.id as id, qq.question.uuid as uuid, qq.question.dateCreation as dateCreation,qq.question.version as version,qq.question.question as question ,qq.question.type as type,qq.position as position " +
             " FROM QuestionnaireQuestion qq " +
@@ -44,8 +45,8 @@ public interface QuestionnaireQuestionRepository extends JpaRepository<Questionn
     void deleteByQuestionnaireId(@Param("id") Long questionnaireId);
 
     @EntityGraph(value = "QuestionnaireQuestion.question")
-    @Query("SELECT qq FROM QuestionnaireQuestion  qq  WHERE qq.id.questionnaireId = :questionnaireId")
+    @Query("SELECT qq FROM QuestionnaireQuestion  qq  WHERE qq.question.uuid = :questionnaireUuid")
     @NotNull
-    Iterable<QuestionnaireQuestion> findAllWithTagsAndResponseByQuestionnaireId(@Param("questionnaireId") Long questionnaireId);
+    Iterable<QuestionnaireQuestion> findAllWithTagsAndResponseByQuestionnaireUuid(@Param("questionnaireUuid") UUID uuid);
 
 }

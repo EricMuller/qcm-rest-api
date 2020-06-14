@@ -1,20 +1,22 @@
 package com.emu.apps.qcm.web.dtos;
 
-import java.time.LocalDateTime;
+import com.emu.apps.qcm.domain.dtos.UploadDto;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.time.LocalDateTime;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class UploadDtoTest {
 private UploadDto pojoObject;
 public UploadDtoTest() throws Exception {
-this.pojoObject = new com.emu.apps.qcm.web.dtos.UploadDto();
+this.pojoObject = new UploadDto();
 }
 @Test
 public void testId() {
-Long param = Long.valueOf(123);
-pojoObject.setId(param);
-Object result = pojoObject.getId();
+String param = "123";
+pojoObject.setUuid(param);
+Object result = pojoObject.getUuid();
 assertEquals(param, result);
 }
 

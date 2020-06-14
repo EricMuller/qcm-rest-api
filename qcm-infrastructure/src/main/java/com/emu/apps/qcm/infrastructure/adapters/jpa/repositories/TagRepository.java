@@ -7,6 +7,9 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+import java.util.UUID;
+
 
 @Repository
 public interface TagRepository extends PagingAndSortingRepository<Tag, Long>, JpaSpecificationExecutor<Tag> {
@@ -15,5 +18,7 @@ public interface TagRepository extends PagingAndSortingRepository<Tag, Long>, Jp
     Tag findByLibelle(@Param("libelle") String libelle, @Param("principal") String principal);
 
     Iterable<Tag> findByLibelleContaining(String libelle);
+
+    Optional<Tag> findByUuid(UUID uuid);
 
 }

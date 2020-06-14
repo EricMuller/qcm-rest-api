@@ -3,6 +3,7 @@ package com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questionnaires;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.Status;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.category.Category;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.common.AuditableEntity;
+import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.converters.BooleanTFConverter;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.tags.QuestionnaireTag;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -55,6 +56,7 @@ public class Questionnaire extends AuditableEntity <String> {
     private String website;
 
     @Column(name = "PUBLISHED")
+    @Convert(converter = BooleanTFConverter.class)
     private Boolean published;
 
     @OneToMany(mappedBy = "questionnaire", cascade = CascadeType.ALL, orphanRemoval = true)

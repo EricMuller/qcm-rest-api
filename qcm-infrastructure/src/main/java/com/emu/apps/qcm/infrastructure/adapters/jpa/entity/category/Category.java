@@ -21,6 +21,8 @@ import javax.persistence.*;
 
         @NamedQuery(name = "deleteAll", query = "DELETE FROM Category"),
 
+        @NamedQuery(name = "findByUuid", query =
+                "SELECT node FROM Category node WHERE node.uuid = :uuid "),
         @NamedQuery(name = "findAncestors", query =
                 "SELECT node" +
                         " FROM Category node" +

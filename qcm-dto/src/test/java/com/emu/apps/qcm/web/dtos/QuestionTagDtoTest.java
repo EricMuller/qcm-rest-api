@@ -1,5 +1,6 @@
 package com.emu.apps.qcm.web.dtos;
 
+import com.emu.apps.qcm.domain.dtos.QuestionTagDto;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -7,13 +8,13 @@ import static org.junit.jupiter.api.Assertions.*;
 public class QuestionTagDtoTest {
 private QuestionTagDto pojoObject;
 public QuestionTagDtoTest() throws Exception {
-this.pojoObject = new com.emu.apps.qcm.web.dtos.QuestionTagDto();
+this.pojoObject = new QuestionTagDto();
 }
 @Test
 public void testId() {
-Long param = Long.valueOf(123);
-pojoObject.setId(param);
-Object result = pojoObject.getId();
+String param = "123";
+pojoObject.setUuid(param);
+Object result = pojoObject.getUuid();
 assertEquals(param, result);
 }
 

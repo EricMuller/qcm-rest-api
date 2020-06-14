@@ -1,12 +1,12 @@
 package com.emu.apps.qcm.webmvc.rest;
 
-import com.emu.apps.qcm.domain.ports.QuestionService;
+import com.emu.apps.qcm.domain.ports.QuestionServicePort;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questions.Question;
 import com.emu.apps.qcm.web.dtos.MessageDto;
-import com.emu.apps.qcm.web.dtos.QuestionDto;
-import com.emu.apps.qcm.web.dtos.question.QuestionTagsDto;
+import com.emu.apps.qcm.domain.dtos.QuestionDto;
+import com.emu.apps.qcm.domain.dtos.question.QuestionTagsDto;
 import com.emu.apps.qcm.webmvc.rest.caches.CacheName;
-import com.emu.apps.shared.metrics.Timer;
+import com.emu.apps.shared.annotations.Timer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -21,7 +21,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.security.Principal;
 
-import static com.emu.apps.qcm.webmvc.rest.RestMappings.QUESTIONS;
+import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.QUESTIONS;
 
 /**
  * Created by eric on 05/06/2017.
@@ -31,51 +31,51 @@ import static com.emu.apps.qcm.webmvc.rest.RestMappings.QUESTIONS;
 @RequestMapping(value = QUESTIONS, produces = MediaType.APPLICATION_JSON_VALUE)
 public class QuestionRestController {
 
-    private final QuestionService questionService;
+    private final QuestionServicePort questionServicePort;
 
-    public QuestionRestController(QuestionService questionService) {
-        this.questionService = questionService;
+    public QuestionRestController(QuestionServicePort questionServicePort) {
+        this.questionServicePort = questionServicePort;
     }
 
     @GetMapping
     @Timer
-    public Iterable <QuestionTagsDto> getQuestions(@RequestParam(value = "tag_id", required = false) Long[] tagIds,
-                                                   @RequestParam(value = "questionnaire_id", required = false) Long[] questionnaireIds,
+    public Iterable <QuestionTagsDto> getQuestions(@RequestParam(value = "tag_uuid", required = false) String[] tagUuid,
+                                                   @RequestParam(value = "questionnaire_uuid", required = false) String[] questionnaireUuid,
                                                    Pageable pageable, Principal principal) {
 
-        return questionService.getQuestions(tagIds, questionnaireIds, pageable, principal);
+        return questionServicePort.getQuestions(tagUuid, questionnaireUuid, pageable, principal);
     }
 
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/{uuid}")
     @Timer
-    @Cacheable(cacheNames = CacheName.Names.QUESTION, key = "#id")
+    @Cacheable(cacheNames = CacheName.Names.QUESTION, key = "#uuid")
     @ResponseBody
-    public QuestionDto getQuestionById(@PathVariable("id") long id) {
-        return questionService.getQuestionById(id);
+    public QuestionDto getQuestionById(@PathVariable("uuid") String uuid) {
+        return questionServicePort.getQuestionByUuId(uuid);
     }
 
     @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @CachePut(cacheNames = CacheName.Names.QUESTION, condition = "#questionDto != null", key = "#questionDto.id")
+    @CachePut(cacheNames = CacheName.Names.QUESTION, condition = "#questionDto != null", key = "#questionDto.uuid")
     @ResponseBody
     public QuestionDto updateQuestion(@RequestBody @Valid QuestionDto questionDto, Principal principal) {
 
-        return questionService.updateQuestion(questionDto, principal);
+        return questionServicePort.updateQuestion(questionDto, principal);
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public QuestionDto saveQuestion(@RequestBody @Valid QuestionDto questionDto, Principal principal) {
 
-        return questionService.saveQuestion(questionDto, principal);
+        return questionServicePort.saveQuestion(questionDto, principal);
 
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "/{uuid}")
     @ResponseBody
-    @CacheEvict(cacheNames = CacheName.Names.QUESTION, condition = "#questionDto != null", key = "#questionDto.id")
-    public ResponseEntity <Question> deleteQuestionById(@PathVariable("id") long id) {
-        questionService.deleteQuestionById(id);
+    @CacheEvict(cacheNames = CacheName.Names.QUESTION, condition = "#questionDto != null", key = "#questionDto.uuid")
+    public ResponseEntity <Question> deleteQuestionById(@PathVariable("uuid") String uuid) {
+        questionServicePort.deleteQuestionByUuid(uuid);
         return ResponseEntity.noContent().build();
     }
 

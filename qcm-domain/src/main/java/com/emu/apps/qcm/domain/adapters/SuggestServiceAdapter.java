@@ -1,8 +1,8 @@
 package com.emu.apps.qcm.domain.adapters;
 
 
-import com.emu.apps.qcm.domain.ports.SuggestService;
-import com.emu.apps.qcm.infrastructure.ports.QuestionnaireDOService;
+import com.emu.apps.qcm.domain.ports.SuggestServicePort;
+import com.emu.apps.qcm.infrastructure.ports.QuestionnairePersistencePort;
 import com.emu.apps.qcm.web.dtos.SuggestDto;
 import com.emu.apps.qcm.mappers.SuggestMapper;
 import org.apache.commons.lang3.StringUtils;
@@ -21,13 +21,13 @@ import java.util.List;
  */
 
 @Service
-public class SuggestServiceAdapter implements SuggestService {
-    private final QuestionnaireDOService questionnaireDOService;
+public class SuggestServiceAdapter implements SuggestServicePort {
+    private final QuestionnairePersistencePort questionnairePersistencePort;
 
     private final SuggestMapper suggestMapper;
 
-    public SuggestServiceAdapter(QuestionnaireDOService questionnaireDOService, SuggestMapper suggestMapper) {
-        this.questionnaireDOService = questionnaireDOService;
+    public SuggestServiceAdapter(QuestionnairePersistencePort questionnairePersistencePort, SuggestMapper suggestMapper) {
+        this.questionnairePersistencePort = questionnairePersistencePort;
         this.suggestMapper = suggestMapper;
     }
 
@@ -36,7 +36,7 @@ public class SuggestServiceAdapter implements SuggestService {
     public Iterable <SuggestDto> getSuggestions(String queryText) {
         final List <SuggestDto> suggestions = new ArrayList <>();
         if (StringUtils.isNoneEmpty(queryText)) {
-            suggestMapper.modelsToSuggestDtos(questionnaireDOService.findByTitleContaining(queryText)).forEach(suggestions::add);
+            suggestMapper.modelsToSuggestDtos(questionnairePersistencePort.findByTitleContaining(queryText)).forEach(suggestions::add);
             // tagMapper.modelsToSugestDtos(tagService.findByLibelleContaining(queryText)).forEach(suggestions::add);
         }
         return suggestions;

@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.criteria.JoinType;
 
+import java.util.UUID;
+
 import static org.springframework.data.jpa.domain.Specification.where;
 
 @Component
@@ -16,7 +18,9 @@ public final class QuestionSpecificationBuilder extends BaseSpecification<Questi
 
     private Long[] tagIds;
 
-    private Long[] questionnaireIds;
+    private UUID[] tagUuids;
+
+    private UUID[] questionnaireUuids;
 
     private String principal;
 
@@ -29,13 +33,20 @@ public final class QuestionSpecificationBuilder extends BaseSpecification<Questi
         return this;
     }
 
-    public QuestionSpecificationBuilder setQuestionnaireIds(Long[] questionnaireIds) {
-        this.questionnaireIds = questionnaireIds;
-        return this;
-    }
+
 
     public QuestionSpecificationBuilder setPrincipal(String principal) {
         this.principal = principal;
+        return this;
+    }
+
+    public QuestionSpecificationBuilder setTagUuids(UUID[] tagUuids) {
+        this.tagUuids = tagUuids;
+        return this;
+    }
+
+    public QuestionSpecificationBuilder setQuestionnaireUuids(UUID[] questionnaireUuids) {
+        this.questionnaireUuids = questionnaireUuids;
         return this;
     }
 
@@ -43,8 +54,8 @@ public final class QuestionSpecificationBuilder extends BaseSpecification<Questi
     public Specification<Question> build() {
 
         Specification where = fieldEquals(CREATED_BY, principal)
-                .and(questionnaireTagsIdIn(tagIds))
-                .and(questionnaireQuestionsIdIn(questionnaireIds));
+                .and(questionnaireQuestionsUuidIn(questionnaireUuids))
+                .and(questionnaireTagsUuidIn(tagUuids));
 
         return (root, query, cb) -> {
             query.distinct(true);
@@ -52,15 +63,18 @@ public final class QuestionSpecificationBuilder extends BaseSpecification<Questi
         };
     }
 
-    private Specification<Question> questionnaireTagsIdIn(@Nullable Long[] tagIds) {
-        return ArrayUtils.isEmpty(tagIds) ? null :
-                (root, query, cb) -> root.joinSet("questionTags", JoinType.INNER).join("tag").get(ID).in(tagIds);
+    private Specification<Question> questionnaireTagsUuidIn(@Nullable UUID[] tagUuids) {
+        return ArrayUtils.isEmpty(tagUuids) ? null :
+                (root, query, cb) -> root.joinSet("questionTags", JoinType.INNER)
+                        .join("tag").get(UUID)
+                        .in(tagUuids);
     }
 
-    private Specification<Question> questionnaireQuestionsIdIn(Long[] questionnaireIds) {
-        return ArrayUtils.isEmpty(questionnaireIds) ? null :
+    private Specification<Question> questionnaireQuestionsUuidIn(UUID[] questionnaireUuids) {
+        return ArrayUtils.isEmpty(questionnaireUuids) ? null :
                 (root, query, cb) -> root.joinSet("questionnaireQuestions", JoinType.INNER)
-                        .get(ID).get("questionnaireId").in(questionnaireIds);
+                        .join("questionnaire").get(UUID)
+                        .in(questionnaireUuids);
     }
 
 }

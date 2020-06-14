@@ -10,6 +10,8 @@ public abstract class BaseSpecification<T> {
 
     protected static final String ID = "id";
 
+    protected static final String UUID= "uuid";
+
     protected static final String LIBELLE = "libelle";
 
     protected static final String CREATED_BY = "createdBy";

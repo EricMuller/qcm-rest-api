@@ -48,7 +48,6 @@
     <modules>
         <module>qcm-shared</module>
         <module>qcm-dto</module>
-        <module>qcm-mapper</module>
         <module>qcm-infrastructure</module>
         <module>qcm-domain</module>
         <module>qcm-reporting</module>

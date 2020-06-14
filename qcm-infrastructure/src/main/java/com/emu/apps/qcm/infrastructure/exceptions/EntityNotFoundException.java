@@ -29,18 +29,14 @@
 package com.emu.apps.qcm.infrastructure.exceptions;
 
 // @ResponseStatus(value= HttpStatus.NOT_FOUND, reason="No such Resource")
-public class EntityNotFoundException extends   RuntimeException{
+public class EntityNotFoundException extends RunTimeMessageException {
 
-    public EntityNotFoundException() {
-        super();
-    }
-    public EntityNotFoundException(String message, Throwable cause) {
-        super(message, cause);
-    }
+
     public EntityNotFoundException(String message) {
-        super(message);
+        super(null, message);
     }
-    public EntityNotFoundException(Throwable cause) {
-        super(cause);
+
+    public EntityNotFoundException(String uuid, String message) {
+        super(uuid, message);
     }
 }

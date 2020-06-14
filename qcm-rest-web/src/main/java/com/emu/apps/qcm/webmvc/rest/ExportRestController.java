@@ -1,11 +1,11 @@
 package com.emu.apps.qcm.webmvc.rest;
 
 
-import com.emu.apps.qcm.domain.ports.ExportService;
-import com.emu.apps.qcm.reporting.ReportService;
+import com.emu.apps.qcm.domain.ports.ExportServicePort;
+import com.emu.apps.qcm.reporting.ReportServicePort;
 import com.emu.apps.qcm.reporting.TypeReport;
 import com.emu.apps.qcm.web.dtos.export.ExportDto;
-import com.emu.apps.shared.metrics.Timer;
+import com.emu.apps.shared.annotations.Timer;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayOutputStream;
 
-import static com.emu.apps.qcm.webmvc.rest.RestMappings.EXPORTS;
+import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.EXPORTS;
 
 
 @RestController
@@ -24,24 +24,40 @@ import static com.emu.apps.qcm.webmvc.rest.RestMappings.EXPORTS;
 @RequestMapping(value = EXPORTS, produces = MediaType.APPLICATION_JSON_VALUE)
 public class ExportRestController {
 
-    private final ExportService exportService;
+    private final ExportServicePort exportServicePort;
 
-    private final ReportService reportService;
+    private final ReportServicePort reportServicePort;
 
-    public ExportRestController(ExportService exportService, ReportService reportService) {
-        this.exportService = exportService;
-        this.reportService = reportService;
+    public ExportRestController(ExportServicePort exportService, ReportServicePort reportServicePort) {
+        this.exportServicePort = exportService;
+        this.reportServicePort = reportServicePort;
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/{uuid}")
     @Timer
     @ResponseBody
-    public ExportDto getQuestionnaireById(@PathVariable("id") long id) {
-        return exportService.getbyQuestionnaireId(id);
+    public ExportDto getQuestionnaireById(@PathVariable("uuid") String id) {
+        return exportServicePort.getbyQuestionnaireUuid(id);
     }
 
-    public static final String MS_DOC = "application/msword";
 
+
+    @GetMapping(value = "/{uuid}/{type-report}")
+    @Timer
+    public ResponseEntity <Resource> getReportById(@PathVariable("uuid") String uuid, @PathVariable("type-report") String typeReport) {
+
+        final ExportDto exportDto = exportServicePort.getbyQuestionnaireUuid(uuid);
+
+        ByteArrayOutputStream outputStream = reportServicePort.getReportStream(exportDto, TypeReport.getByName(typeReport));
+
+        ByteArrayResource resource = new ByteArrayResource(outputStream.toByteArray());
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + exportDto.getName() + "." + typeReport + "\"")
+                .body(resource);
+    }
+
+//    public static final String MS_DOC = "application/msword";
 //    @GetMapping(value = "/{id}/docx")
 //    @Timer
 //    public StreamingResponseBody  getReportById(@PathVariable("id") long id, HttpServletResponse response) {
@@ -63,23 +79,5 @@ public class ExportRestController {
 //            }
 //        };
 //    }
-
-
-    @GetMapping(value = "/{id}/{type}")
-    @Timer
-    public ResponseEntity <Resource> getReportById(@PathVariable("id") long id, @PathVariable("type") String type) {
-
-        final ExportDto exportDto = exportService.getbyQuestionnaireId(id);
-
-        TypeReport typeReport = TypeReport.getByName(type);
-
-        ByteArrayOutputStream outputStream = reportService.getReportStream(exportDto, typeReport);
-
-        ByteArrayResource resource = new ByteArrayResource(outputStream.toByteArray());
-
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + exportDto.getName() + "." + type + "\"")
-                .body(resource);
-    }
 
 }

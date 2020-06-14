@@ -1,9 +1,9 @@
 package com.emu.apps.qcm.webmvc.rest;
 
-import com.emu.apps.qcm.domain.ports.CategoryService;
+import com.emu.apps.qcm.domain.ports.CategoryServicePort;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.category.Type;
 import com.emu.apps.qcm.infrastructure.exceptions.FunctionnalException;
-import com.emu.apps.qcm.web.dtos.CategoryDto;
+import com.emu.apps.qcm.domain.dtos.CategoryDto;
 import com.emu.apps.qcm.web.dtos.MessageDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.context.annotation.Profile;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.security.Principal;
 
-import static com.emu.apps.qcm.webmvc.rest.RestMappings.CATEGORIES;
+import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.CATEGORIES;
 
 /**
  * Created by eric on 05/06/2017.
@@ -26,28 +26,28 @@ import static com.emu.apps.qcm.webmvc.rest.RestMappings.CATEGORIES;
 @RequestMapping(value = CATEGORIES, produces = MediaType.APPLICATION_JSON_VALUE)
 public class CategoryRestController {
 
-    private final CategoryService categoryService;
+    private final CategoryServicePort categoryServicePort;
 
-    public CategoryRestController(CategoryService categoryService) {
-        this.categoryService = categoryService;
+    public CategoryRestController(CategoryServicePort categoryServicePort) {
+        this.categoryServicePort = categoryServicePort;
     }
 
-    @GetMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "{uuid}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public CategoryDto getCategory(@PathVariable("id") Long id) {
-        return categoryService.getCategory(id);
+    public CategoryDto getCategory(@PathVariable("uuid") String uuid) {
+        return categoryServicePort.getCategoryByUuid(uuid);
     }
 
     @GetMapping()
     @ResponseBody
     public Iterable <CategoryDto> getCategories(Principal principal, @RequestParam("type") Type type) throws FunctionnalException {
-        return categoryService.getCategories(principal, type);
+        return categoryServicePort.getCategories(principal, type);
     }
 
     @PostMapping()
     @ResponseBody
     public CategoryDto saveCategory(@RequestBody CategoryDto categoryDto, Principal principal) throws FunctionnalException {
-        return categoryService.saveCategory(categoryDto, principal);
+        return categoryServicePort.saveCategory(categoryDto, principal);
     }
 
     @ExceptionHandler({JsonProcessingException.class, IOException.class})

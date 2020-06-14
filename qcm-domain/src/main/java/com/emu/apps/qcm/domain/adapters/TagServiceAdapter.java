@@ -1,11 +1,9 @@
 package com.emu.apps.qcm.domain.adapters;
 
 
-import com.emu.apps.qcm.domain.ports.TagService;
-import com.emu.apps.qcm.infrastructure.ports.TagDOService;
-import com.emu.apps.qcm.infrastructure.adapters.jpa.specifications.TagSpecificationBuilder;
-import com.emu.apps.qcm.web.dtos.TagDto;
-import com.emu.apps.qcm.mappers.TagMapper;
+import com.emu.apps.qcm.domain.ports.TagServicePort;
+import com.emu.apps.qcm.infrastructure.ports.TagPersistencePort;
+import com.emu.apps.qcm.domain.dtos.TagDto;
 import com.emu.apps.shared.parsers.rsql.CriteriaUtils;
 import com.emu.apps.shared.security.PrincipalUtils;
 import org.springframework.data.domain.Page;
@@ -17,23 +15,19 @@ import java.security.Principal;
 import java.util.Optional;
 
 /**
- *
  * Tag Business Delegate
- *<p>
+ * <p>
  *
- * @since 2.2.0
  * @author eric
+ * @since 2.2.0
  */
 @Service
-public class TagServiceAdapter implements TagService {
+public class TagServiceAdapter implements TagServicePort {
 
-    private final TagDOService tagDOService;
+    private final TagPersistencePort tagInfraService;
 
-    private final TagMapper tagMapper;
-
-    public TagServiceAdapter(TagDOService tagDOService, TagMapper tagMapper) {
-        this.tagDOService = tagDOService;
-        this.tagMapper = tagMapper;
+    public TagServiceAdapter(TagPersistencePort tagInfraService) {
+        this.tagInfraService = tagInfraService;
     }
 
     @Override
@@ -42,23 +36,17 @@ public class TagServiceAdapter implements TagService {
         var criterias = CriteriaUtils.toCriteria(search);
         Optional <String> firstLetter = CriteriaUtils.getAttribute("firstLetter", criterias);
 
-        var tagSpecificationBuilder = new TagSpecificationBuilder()
-                .setPrincipal(PrincipalUtils.getEmail(principal))
-                .setLetter(firstLetter.isPresent() ? firstLetter.get() : null);
-
-        return tagMapper.pageToDto(tagDOService.findAllByPage(tagSpecificationBuilder.build(), pageable));
+        return tagInfraService.findAllByPage(firstLetter,pageable,PrincipalUtils.getEmail(principal));
     }
-
 
     @Override
     public TagDto getTagById(Long id) {
-        return tagMapper.modelToDto(tagDOService.findById(id).orElse(null));
+        return tagInfraService.findById(id);
     }
 
     @Override
     public TagDto saveTag(TagDto tagDto) {
-        var tag = tagMapper.dtoToModel(tagDto);
-        return tagMapper.modelToDto(tagDOService.save(tag));
+        return tagInfraService.save(tagDto);
     }
 
 }

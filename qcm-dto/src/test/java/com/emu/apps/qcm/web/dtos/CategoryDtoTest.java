@@ -1,5 +1,6 @@
 package com.emu.apps.qcm.web.dtos;
 
+import com.emu.apps.qcm.domain.dtos.CategoryDto;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

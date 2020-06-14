@@ -4,8 +4,8 @@ package com.emu.apps.qcm.webmvc.rest.controllers;
 import com.emu.apps.qcm.infrastructure.Fixture;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.config.SpringBootTestConfig;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.category.Type;
-import com.emu.apps.qcm.web.dtos.CategoryDto;
-import com.emu.apps.qcm.webmvc.rest.RestMappings;
+import com.emu.apps.qcm.domain.dtos.CategoryDto;
+import com.emu.apps.qcm.webmvc.rest.ApiRestMappings;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 @ActiveProfiles(value = "webmvc")
 public class CategoryControllerTest {
 
-    private static final String CATEGORY_URI = RestMappings.PROTECTED_API + "/categories/";
+    private static final String CATEGORY_URI = ApiRestMappings.PROTECTED_API + "/categories/";
 
     private static final String LIBELLE = "cate 1";
 
@@ -71,7 +71,7 @@ public class CategoryControllerTest {
                                 headers()), CategoryDto.class);
 
         assertThat(posteResponse.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
-        assertThat(posteResponse.getBody().getId()).isNotNull();
+        assertThat(posteResponse.getBody().getUuid()).isNotNull();
         assertThat(posteResponse.getBody().getType()).isNotNull();
     }
 
@@ -86,9 +86,9 @@ public class CategoryControllerTest {
 
         assertThat(postResponse.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
 
-        Long id = postResponse.getBody().getId();
+        String uuid = postResponse.getBody().getUuid();
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getURL(CATEGORY_URI + "{id}"));
-        URI uri = builder.build().expand(id).encode().toUri();
+        URI uri = builder.build().expand(uuid).encode().toUri();
 
         final ResponseEntity <CategoryDto> getResponse = restTemplate
                 .exchange(uri, HttpMethod.GET, new HttpEntity <>(headers()), CategoryDto.class);
@@ -97,7 +97,7 @@ public class CategoryControllerTest {
         assertThat(getResponse.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
         assertThat(getResponse.getBody()).isNotNull();
 
-        assertThat(getResponse.getBody().getId()).isNotNull().isEqualTo(id);
+        assertThat(getResponse.getBody().getUuid()).isNotNull().isEqualTo(uuid);
         assertThat(getResponse.getBody().getType()).isNotNull().isEqualTo(Type.QUESTION.name());
         assertThat(getResponse.getBody().getLibelle()).isNotNull().isEqualTo(LIBELLE);
 
@@ -111,7 +111,7 @@ public class CategoryControllerTest {
                         new HttpEntity <>(createCategoryDto(),
                                 headers()), CategoryDto.class);
 
-        Long id = postResponse.getBody().getId();
+        String uuid = postResponse.getBody().getUuid();
 
         URI uriQuestion = UriComponentsBuilder.fromHttpUrl(getURL(CATEGORY_URI))
                 .queryParam("type", Type.QUESTION.name()).build().toUri();
@@ -123,7 +123,7 @@ public class CategoryControllerTest {
 
         CategoryDto categoryDto = getResponse.getBody()[0];
 
-        assertThat(categoryDto.getId()).isNotNull().isEqualTo(id);
+        assertThat(categoryDto.getUuid()).isNotNull().isEqualTo(uuid);
         assertThat(categoryDto.getType()).isNotNull().isEqualTo(Type.QUESTION.name());
         assertThat(categoryDto.getLibelle()).isNotNull().isEqualTo(LIBELLE);
 

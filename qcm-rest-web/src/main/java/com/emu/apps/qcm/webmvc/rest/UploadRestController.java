@@ -1,11 +1,9 @@
 package com.emu.apps.qcm.webmvc.rest;
 
-import com.emu.apps.qcm.domain.adapters.ImportServiceAdapter;
-import com.emu.apps.qcm.domain.adapters.UploadServiceAdapter;
-import com.emu.apps.qcm.domain.ports.ImportService;
-import com.emu.apps.qcm.domain.ports.UploadService;
-import com.emu.apps.qcm.web.dtos.UploadDto;
-import com.emu.apps.shared.metrics.Timer;
+import com.emu.apps.qcm.domain.dtos.UploadDto;
+import com.emu.apps.qcm.domain.ports.ImportServicePort;
+import com.emu.apps.qcm.domain.ports.UploadServicePort;
+import com.emu.apps.shared.annotations.Timer;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -16,20 +14,20 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.security.Principal;
 
-import static com.emu.apps.qcm.webmvc.rest.RestMappings.UPLOADS;
+import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.UPLOADS;
 
 @RestController
 @Profile("webmvc")
 @RequestMapping(value = UPLOADS, produces = MediaType.APPLICATION_JSON_VALUE)
 public class UploadRestController {
 
-    private final UploadService uploadService;
+    private final UploadServicePort uploadServicePort;
 
-    private final ImportService importService;
+    private final ImportServicePort importServicePort;
 
-    public UploadRestController(UploadServiceAdapter uploadService, ImportService importService) {
-        this.uploadService = uploadService;
-        this.importService = importService;
+    public UploadRestController(UploadServicePort uploadServicePort, ImportServicePort importServicePort) {
+        this.uploadServicePort = uploadServicePort;
+        this.importServicePort = importServicePort;
     }
 
     @ResponseBody
@@ -39,32 +37,32 @@ public class UploadRestController {
                                 @RequestParam(value = "async", required = false) Boolean async,
                                 Principal principal) throws IOException {
 
-        return uploadService.uploadFile(fileType, multipartFile, async, principal);
+        return uploadServicePort.uploadFile(fileType, multipartFile, async, principal);
     }
 
     @GetMapping()
     @Timer
     public Iterable <UploadDto> getUploads(Pageable pageable, Principal principal) {
-        return uploadService.getUploads(pageable, principal);
+        return uploadServicePort.getUploads(pageable, principal);
     }
 
     @ResponseBody
-    @GetMapping(value = "/{id}/import")
-    public UploadDto importFile(@PathVariable("id") Long uploadId, Principal principal) throws IOException {
-        return importService.importFile(uploadId, principal);
+    @GetMapping(value = "/{uuid}/import")
+    public UploadDto importFile(@PathVariable("uuid") String uploadUuid, Principal principal) throws IOException {
+        return importServicePort.importFile(uploadUuid, principal);
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "/{uuid}")
     @ResponseBody
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void deleteUploadById(@PathVariable("id") long id) {
-        uploadService.deleteUploadById(id);
+    public void deleteUploadById(@PathVariable("uuid") String uuid) {
+        uploadServicePort.deleteUploadByUuid(uuid);
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/{uuid}")
     @ResponseBody
-    public UploadDto getUploadById(@PathVariable("id") long id) {
-        return uploadService.getUploadById(id);
+    public UploadDto getUploadById(@PathVariable("uuid") String uuid) {
+        return uploadServicePort.getUploadByUuid(uuid);
     }
 
 }

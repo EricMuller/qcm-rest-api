@@ -22,6 +22,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -103,7 +105,7 @@ public class QuestionnaireRepositoryTest {
         Assertions.assertThat(tag).isNotNull();
 
         QuestionnaireSpecificationBuilder questionnaireSpecificationBuilder = new QuestionnaireSpecificationBuilder();
-        questionnaireSpecificationBuilder.setTagIds(new Long[]{tag.getId()});
+        questionnaireSpecificationBuilder.setTagUuids(new UUID[]{tag.getUuid()});
 
         questionnaireSpecificationBuilder.setPrincipal(SpringBootTestConfig.USER_TEST);
 

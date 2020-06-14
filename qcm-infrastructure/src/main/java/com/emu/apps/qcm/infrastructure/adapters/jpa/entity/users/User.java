@@ -30,5 +30,4 @@ public class User extends AuditableEntity <String> {
 
     private String company;
 
-
 }

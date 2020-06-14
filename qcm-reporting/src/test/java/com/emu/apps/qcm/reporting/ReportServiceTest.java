@@ -21,7 +21,7 @@ class ReportServiceTest {
     @Test
     void name() throws IOException, XDocReportException {
 
-        InputStream in = ReportService.class.getResourceAsStream("/template_questionnaire.docx");
+        InputStream in = ReportServiceAdapter.class.getResourceAsStream("/template_questionnaire.docx");
 
         IXDocReport report = XDocReportRegistry.getRegistry().loadReport(in,
                 TemplateEngineKind.Velocity);

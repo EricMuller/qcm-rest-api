@@ -1,5 +1,7 @@
 package com.emu.apps.qcm.web.dtos;
 
+import com.emu.apps.qcm.domain.dtos.CategoryDto;
+import com.emu.apps.qcm.domain.dtos.QuestionnaireDto;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -7,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class QuestionnaireDtoTest {
 private QuestionnaireDto pojoObject;
 public QuestionnaireDtoTest() throws Exception {
-this.pojoObject = new com.emu.apps.qcm.web.dtos.QuestionnaireDto();
+this.pojoObject = new QuestionnaireDto();
 }
 @Test
 public void testTitle() {

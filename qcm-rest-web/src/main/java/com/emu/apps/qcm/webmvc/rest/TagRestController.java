@@ -1,9 +1,8 @@
 package com.emu.apps.qcm.webmvc.rest;
 
 
-import com.emu.apps.qcm.domain.adapters.TagServiceAdapter;
-import com.emu.apps.qcm.domain.ports.TagService;
-import com.emu.apps.qcm.web.dtos.TagDto;
+import com.emu.apps.qcm.domain.ports.TagServicePort;
+import com.emu.apps.qcm.domain.dtos.TagDto;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.security.Principal;
 
-import static com.emu.apps.qcm.webmvc.rest.RestMappings.TAGS;
+import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.TAGS;
 
 /**
  * Created by eric on 05/06/2017.
@@ -23,28 +22,28 @@ import static com.emu.apps.qcm.webmvc.rest.RestMappings.TAGS;
 @RequestMapping(value = TAGS, produces = MediaType.APPLICATION_JSON_VALUE)
 public class TagRestController {
 
-    private final TagService tagService;
+    private final TagServicePort tagServicePort;
 
-    public TagRestController(TagService tagService) {
-        this.tagService = tagService;
+    public TagRestController(TagServicePort tagServicePort) {
+        this.tagServicePort = tagServicePort;
     }
 
     @GetMapping
     @ResponseBody
     public Page <TagDto> getTagsByPAge(@RequestParam(value = "search", required = false) String search, Pageable pageable, Principal principal) throws IOException {
-        return tagService.getTagsByPAge(search, pageable, principal);
+        return tagServicePort.getTagsByPAge(search, pageable, principal);
     }
 
     @GetMapping(value = "{id}")
     @ResponseBody
     public TagDto getTagById(@PathVariable("id") Long id) {
-        return tagService.getTagById(id);
+        return tagServicePort.getTagById(id);
     }
 
     @RequestMapping(method = {RequestMethod.PUT, RequestMethod.POST})
     @ResponseBody
     public TagDto saveTag(@RequestBody TagDto tagDto) {
-        return tagService.saveTag(tagDto);
+        return tagServicePort.saveTag(tagDto);
     }
 
 }

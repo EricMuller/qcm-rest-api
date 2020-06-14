@@ -11,6 +11,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+import java.util.UUID;
+
 @Repository
 public interface QuestionRepository extends JpaRepository <Question, Long>, JpaSpecificationExecutor <Question> {
 
@@ -28,6 +31,10 @@ public interface QuestionRepository extends JpaRepository <Question, Long>, JpaS
     Question findByIdAndFetchTagsAndResponses(@Param("id") Long id);
 
 
+    Optional <Question> findByUuid(@NotNull UUID uuid);
+
+
+    void deleteByUuid(UUID uuid);
 
 
 

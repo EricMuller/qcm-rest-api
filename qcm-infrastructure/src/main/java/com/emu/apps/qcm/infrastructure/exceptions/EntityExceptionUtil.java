@@ -39,17 +39,24 @@ public final class EntityExceptionUtil {
         //nope
     }
 
-    public static <T extends AuditableEntity> void assertIsPresent(T  entity, String message) {
+    public static <T extends Object> void raiseExceptionIfNull(String uuid, T entity, String message) {
+        if (Objects.isNull(entity)) {
+            throw new EntityNotFoundException(uuid, message);
+        }
+    }
+
+    public static <T extends AuditableEntity> void raiseExceptionIfNull(T entity, String message) {
         if (Objects.isNull(entity)) {
             throw new EntityNotFoundException(message);
         }
     }
 
-    public static void assertIsPresent(Optional<? extends AuditableEntity> entity, String message) {
+    public static void raiseExceptionIfNull(Optional <? extends AuditableEntity> entity, String message) {
         if (!entity.isPresent()) {
             throw new EntityNotFoundException(message);
         }
     }
+
     public static void raiseNoteFoundException(String message) {
         throw new EntityNotFoundException(message);
     }

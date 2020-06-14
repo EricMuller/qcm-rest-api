@@ -2,11 +2,10 @@ package com.emu.apps.qcm.webmvc.rest.controllers;
 
 
 import com.emu.apps.qcm.infrastructure.adapters.jpa.config.SpringBootTestConfig;
-import com.emu.apps.qcm.web.dtos.QuestionDto;
-import com.emu.apps.qcm.web.dtos.ResponseDto;
-import com.emu.apps.qcm.webmvc.rest.RestMappings;
+import com.emu.apps.qcm.domain.dtos.QuestionDto;
+import com.emu.apps.qcm.domain.dtos.ResponseDto;
+import com.emu.apps.qcm.webmvc.rest.ApiRestMappings;
 import com.google.common.collect.Iterables;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -22,7 +21,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.Arrays;
-import java.util.UUID;
 
 import static com.emu.apps.qcm.web.security.RestHeaders.headers;
 import static org.assertj.core.api.Java6Assertions.assertThat;
@@ -32,7 +30,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 @ActiveProfiles(value = "webmvc")
 public class QuestionRestControllerSearchTest {
 
-    private static final String QUESTIONS_URI = RestMappings.PROTECTED_API + "/questions/";
+    private static final String QUESTIONS_URI = ApiRestMappings.PROTECTED_API + "/questions/";
 
     private static final String QUESTION1 = "Question 1";
 
@@ -53,7 +51,6 @@ public class QuestionRestControllerSearchTest {
     private QuestionDto createQuestionDto() {
         QuestionDto questionDto = new QuestionDto();
         questionDto.setQuestion(QUESTION1);
-        questionDto.setUuid(UUID.randomUUID().toString());
 
         ResponseDto responseDto = new ResponseDto();
         responseDto.setResponse(RESPONSE1);
@@ -74,9 +71,9 @@ public class QuestionRestControllerSearchTest {
         assertThat(postResponse.getBody()).isNotNull();
 
         // get the question
-        Long id = postResponse.getBody().getId();
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getURL(QUESTIONS_URI + "{id}"));
-        URI uri = builder.build().expand(id).encode().toUri();
+        String uuid = postResponse.getBody().getUuid();
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getURL(QUESTIONS_URI + "{uuid}"));
+        URI uri = builder.build().expand(uuid).encode().toUri();
 
         final ResponseEntity<QuestionDto> getResponse = restTemplate
                 .exchange(uri, HttpMethod.GET, new HttpEntity<>(headers()), QuestionDto.class);

@@ -1,11 +1,11 @@
 package com.emu.apps.qcm.webmvc.rest;
 
 
-import com.emu.apps.qcm.domain.ports.QuestionnaireService;
-import com.emu.apps.qcm.web.dtos.QuestionDto;
-import com.emu.apps.qcm.web.dtos.QuestionnaireDto;
+import com.emu.apps.qcm.domain.ports.QuestionnaireServicePort;
+import com.emu.apps.qcm.domain.dtos.QuestionDto;
+import com.emu.apps.qcm.domain.dtos.QuestionnaireDto;
 import com.emu.apps.qcm.webmvc.rest.caches.CacheName;
-import com.emu.apps.shared.metrics.Timer;
+import com.emu.apps.shared.annotations.Timer;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -18,8 +18,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.Optional;
 
-import static com.emu.apps.qcm.webmvc.rest.RestMappings.QUESTIONNAIRES;
+import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.QUESTIONNAIRES;
 
 
 @RestController
@@ -27,63 +28,64 @@ import static com.emu.apps.qcm.webmvc.rest.RestMappings.QUESTIONNAIRES;
 @RequestMapping(value = QUESTIONNAIRES, produces = MediaType.APPLICATION_JSON_VALUE)
 public class QuestionnaireRestController {
 
-    private final QuestionnaireService questionnaireService;
+    private final QuestionnaireServicePort questionnaireServicePort;
 
-    public QuestionnaireRestController(QuestionnaireService questionnaireService) {
-        this.questionnaireService = questionnaireService;
+    public QuestionnaireRestController(QuestionnaireServicePort questionnaireServicePort) {
+        this.questionnaireServicePort = questionnaireServicePort;
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/{uuid}")
     @Timer
-    @Cacheable(cacheNames = CacheName.Names.QUESTIONNAIRE, key = "#id")
+    @Cacheable(cacheNames = CacheName.Names.QUESTIONNAIRE, key = "#uuid")
     @ResponseBody
-    public QuestionnaireDto getQuestionnaireById(@PathVariable("id") long id) {
-        return questionnaireService.getQuestionnaireById(id);
+    public QuestionnaireDto getQuestionnaireByUuid(@PathVariable("uuid") String uuid) {
+        return questionnaireServicePort.getQuestionnaireByUuid(uuid);
     }
 
 
-    @DeleteMapping(value = "/{id}")
-    @CacheEvict(cacheNames = CacheName.Names.QUESTIONNAIRE, key = "#id")
+    @DeleteMapping(value = "/{uuid}")
+    @CacheEvict(cacheNames = CacheName.Names.QUESTIONNAIRE, key = "#uuid")
     @ResponseBody
-    public ResponseEntity <QuestionnaireDto> deleteQuestionnaireById(@PathVariable("id") long id) {
-        questionnaireService.deleteQuestionnaireById(id);
+    public ResponseEntity <QuestionnaireDto> deleteQuestionnaireById(@PathVariable("uuid") String uuid) {
+        questionnaireServicePort.deleteQuestionnaireByUuid(uuid);
         return new ResponseEntity <>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping
-    @CachePut(cacheNames = CacheName.Names.QUESTIONNAIRE, condition = "#questionnaireDto != null", key = "#questionnaireDto.id")
+    @CachePut(cacheNames = CacheName.Names.QUESTIONNAIRE, condition = "#questionnaireDto != null", key = "#questionnaireDto.uuid")
     @Timer
     @ResponseBody
     public QuestionnaireDto updateQuestionnaire(@RequestBody QuestionnaireDto questionnaireDto, Principal principal) {
-        return questionnaireService.updateQuestionnaire(questionnaireDto, principal);
+        return questionnaireServicePort.updateQuestionnaire(questionnaireDto, principal);
     }
 
     @PostMapping()
     @ResponseBody
     public QuestionnaireDto saveQuestionnaire(@RequestBody QuestionnaireDto questionnaireDto, Principal principal) {
-        return questionnaireService.saveQuestionnaire(questionnaireDto, principal);
+        return questionnaireServicePort.saveQuestionnaire(questionnaireDto, principal);
     }
 
-    @GetMapping(value = "/{id:[\\d]+}/questions")
+    /* /{id:[\d]+}/questions*/
+    @GetMapping(value = "/{uuid}/questions")
     @ResponseBody
-    public Page <QuestionDto> getQuestionsByQuestionnaireId(@PathVariable("id") long id, Pageable pageable) {
-        return questionnaireService.getQuestionsByQuestionnaireId(id, pageable);
+    public Page <QuestionDto> getQuestionsByQuestionnaireId(@PathVariable("uuid") String uuid, Pageable pageable) {
+        return questionnaireServicePort.getQuestionsByQuestionnaireId(uuid, pageable);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @Timer
     @ResponseBody
-    public Page <QuestionnaireDto> getQuestionnaires(@RequestParam(value = "tag_id", required = false) Long[] tagIds,
+    public Page <QuestionnaireDto> getQuestionnaires(@RequestParam(value = "tag_uuid", required = false) String[] tagUuid,
                                                      Pageable pageable, Principal principal) {
-        return questionnaireService.getQuestionnaires(tagIds, pageable, principal);
+        return questionnaireServicePort.getQuestionnaires(tagUuid, pageable, principal);
     }
 
-    @PutMapping(value = "/{id}/questions")
+    @PutMapping(value = "/{uuid}/questions")
     @ResponseBody
-    public QuestionDto addQuestion(@PathVariable("id") long id, @RequestBody QuestionDto questionDto) {
+    public QuestionDto addQuestion(@PathVariable("uuid") String uuid, @RequestBody QuestionDto questionDto) {
 
         // todo send QuestionnaireQuestionDto
-        return questionnaireService.addQuestion(id, questionDto, null);
+        return questionnaireServicePort.addQuestion(uuid, questionDto, Optional.empty());
     }
 
 }

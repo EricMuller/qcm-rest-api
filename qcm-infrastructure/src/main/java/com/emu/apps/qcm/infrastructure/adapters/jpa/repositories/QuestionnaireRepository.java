@@ -14,6 +14,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Created by eric on 05/06/2017.
@@ -35,11 +36,18 @@ public interface QuestionnaireRepository extends JpaRepository<Questionnaire, Lo
     @NotNull
     Optional<Questionnaire> findById(@NotNull Long id);
 
+
+    @EntityGraph(value = "Questionnaire.questionnaireTags")
+    @NotNull
+    Optional<Questionnaire> findByUuid(@NotNull UUID uuid);
+
     @EntityGraph(value = "Questionnaire.questionnaire")
     Optional<Questionnaire> getById(Long id);
 
     @Override
     @NotNull
     Page<Questionnaire> findAll(Specification <Questionnaire> specification, @NotNull Pageable pageable);
+
+    void deleteByUuid(UUID uuid);
 
 }

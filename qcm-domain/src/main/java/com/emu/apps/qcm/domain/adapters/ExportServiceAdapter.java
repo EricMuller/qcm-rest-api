@@ -1,50 +1,43 @@
 package com.emu.apps.qcm.domain.adapters;
 
-import com.emu.apps.qcm.domain.ports.ExportService;
-import com.emu.apps.qcm.infrastructure.ports.QuestionDOService;
-import com.emu.apps.qcm.infrastructure.ports.QuestionnaireDOService;
+import com.emu.apps.qcm.domain.ports.ExportServicePort;
+import com.emu.apps.qcm.infrastructure.exceptions.EntityExceptionUtil;
+import com.emu.apps.qcm.infrastructure.exceptions.MessageSupport;
+import com.emu.apps.qcm.infrastructure.ports.QuestionPersistencePort;
+import com.emu.apps.qcm.infrastructure.ports.QuestionnairePersistencePort;
 import com.emu.apps.qcm.mappers.exports.ExportMapper;
 import com.emu.apps.qcm.web.dtos.export.ExportDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.emu.apps.qcm.infrastructure.exceptions.EntityExceptionUtil.assertIsPresent;
-
 /**
- * Questionnaire Business Delegate
- * <p>
- * <ul>
- * <li>create a new questionnaire</li>
- * <li>delete a questionnaire</li>
- * <li>update a questionnaire</li>
- * <li>add a question to a questionnaire</li>
- * </ul>
- * <p>
+ * Questionnaire Business Adapter
  *
  * @author eric
  * @since 2.2.0
  */
 @Service
 @Transactional
-public class ExportServiceAdapter implements ExportService {
+public class ExportServiceAdapter implements ExportServicePort {
 
-    private final QuestionnaireDOService questionnaireDOService;
+    private final QuestionnairePersistencePort questionnairePersistencePort;
 
     private final ExportMapper exportMapper;
 
-    private final QuestionDOService questionDOService;
+    private final QuestionPersistencePort questionPersistencePort;
 
-    public ExportServiceAdapter(QuestionnaireDOService questionnaireDOService, ExportMapper exportMapper, QuestionDOService questionDOService) {
-        this.questionnaireDOService = questionnaireDOService;
+    public ExportServiceAdapter(QuestionnairePersistencePort questionnairePersistencePort, ExportMapper exportMapper, QuestionPersistencePort questionPersistencePort) {
+        this.questionnairePersistencePort = questionnairePersistencePort;
         this.exportMapper = exportMapper;
-        this.questionDOService = questionDOService;
+        this.questionPersistencePort = questionPersistencePort;
     }
 
     @Override
-    public ExportDto getbyQuestionnaireId(long id) {
-        var questionnaire = questionnaireDOService.findOne(id);
-        assertIsPresent(questionnaire, String.valueOf(id));
-        var questions = questionDOService.findAllWithTagsAndResponseByQuestionnaireId(id);
+    public ExportDto getbyQuestionnaireUuid(String uuid) {
+        var questionnaire = questionnairePersistencePort.findByUuid(uuid);
+        EntityExceptionUtil.raiseExceptionIfNull(uuid, questionnaire, MessageSupport.UNKNOWN_UUID_QUESTIONNAIRE);
+
+        var questions = questionPersistencePort.findAllWithTagsAndResponseByQuestionnaireUuid(uuid);
 
         var name = generateName(questionnaire);
 

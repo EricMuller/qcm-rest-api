@@ -3,10 +3,7 @@
 ![Java CI with M](https://github.com/EricMuller/qcm-rest-api/workflows/Java%20CI%20with%20Maven/badge.svg)
 [![Travis Status](https://travis-ci.com/EricMuller/qcm-rest-api.svg?branch=master)](https://travis-ci.com/EricMuller/qcm-rest-api)[![License](http://img.shields.io/:license-mit-blue.svg)](https://opensource.org/licenses/mit-license.php)[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=com.emu.apps.qcm%3Aqcm-rest-api&metric=alert_status)](https://sonarcloud.io/dashboard/index/com.emu.apps.qcm:qcm-rest-api) [![Known Vulnerabilities](https://snyk.io/test/github/EricMuller/qcm-rest-api/badge.svg)](https://snyk.io/test/github/EricMuller/qcm-rest-api)[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/2888/badge)](https://bestpractices.coreinfrastructure.org/projects/2888) 
 
-
-
 qcm-rest-api is a sample QCM Rest API.
-
 
 You can also:
   
@@ -32,11 +29,11 @@ qcm-rest-api uses a number of open source projects to work properly:
 * [SpringBoot] - Create stand-alone backend Spring applications
 * [Spring WebFlux] - Reactive-stack web framework 
 * [Spring Data JPA]  - Provides repository support for the Java Persistence API (JPA)
-* [Apache Kafka] - Distributed streaming platform
 * [MapStruct] - code generator that greatly simplifies the implementation of mappings between Java bean types  
 * [keycloak] - an open source identity and access management solution
 * [Lombok] - Never write another getter or equals method again
-* [JaCoCo] - JaCoCo is a free code coverage library for Java,.
+* [JaCoCo] - JaCoCo is a free code coverage library for Java.
+* [Xdocreport] - XML Document reporting.
 
 ### Continuous integration
 
@@ -46,9 +43,11 @@ qcm-rest-api uses a number of open source projects to work properly:
 * [Heroku] - Fully managed container-based cloud platform, with integrated data services. [heroku.com](https://www.heroku.com)
 * [Snyk] - Finding & fixing vulnerabilities in your dependencies. [snyk.io](https://snyk.io)
 
+
 ### Documentations
 
 * [SwaggerHub](https://app.swaggerhub.com/apis-docs/ericmuller/qcm-rest-api/2-oas3) - Collaborative platform where you can define your APIs using the OpenAPI Specification
+
 
 ### Installation
 
@@ -68,10 +67,9 @@ Verify the deployment by navigating to your server address in your preferred bro
 http://127.0.0.1:8080/swagger-ui.html#/
 ```
 
-### Deploy
+### Deployment
 
 <a href="https://qcm-rest-api.herokuapp.com/swagger-ui.html#" target="_blank">![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)</a>
-
 
 ```sh
 $ curl https://qcm-rest-api.herokuapp.com/ ...
@@ -82,14 +80,17 @@ $ curl https://qcm-rest-api.herokuapp.com/ ...
 
  - Write more features
  - Add reactive mode with webflux
- - Batch import with kafka
+ - Batch import with [Apache Kafka] - Distributed streaming platform
  
 ### License
 
 
-
 Code is under the [MIT Licence ](https://opensource.org/licenses/mit-license.php).
 
+
+### Architecture
+
+![Architecture](hexagonal.png)
 
 ### Some Technical Notes 
 

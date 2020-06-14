@@ -1,18 +1,11 @@
 package com.emu.apps.qcm.domain.adapters;
 
-import com.emu.apps.qcm.domain.ports.QuestionnaireService;
-import com.emu.apps.qcm.infrastructure.ports.QuestionDOService;
-import com.emu.apps.qcm.infrastructure.ports.QuestionnaireDOService;
-import com.emu.apps.qcm.infrastructure.ports.QuestionnaireTagDOService;
-import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questionnaires.Questionnaire;
-import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questionnaires.QuestionnaireQuestion;
-import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.tags.QuestionnaireTag;
-import com.emu.apps.qcm.infrastructure.adapters.jpa.specifications.QuestionnaireSpecificationBuilder;
-import com.emu.apps.qcm.mappers.QuestionMapper;
-import com.emu.apps.qcm.mappers.QuestionnaireMapper;
-import com.emu.apps.qcm.mappers.QuestionnaireTagMapper;
-import com.emu.apps.qcm.web.dtos.QuestionDto;
-import com.emu.apps.qcm.web.dtos.QuestionnaireDto;
+import com.emu.apps.qcm.domain.ports.QuestionnaireServicePort;
+import com.emu.apps.qcm.infrastructure.exceptions.EntityExceptionUtil;
+import com.emu.apps.qcm.infrastructure.ports.QuestionPersistencePort;
+import com.emu.apps.qcm.infrastructure.ports.QuestionnairePersistencePort;
+import com.emu.apps.qcm.domain.dtos.QuestionDto;
+import com.emu.apps.qcm.domain.dtos.QuestionnaireDto;
 import com.emu.apps.shared.security.PrincipalUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,97 +17,66 @@ import org.springframework.transaction.annotation.Transactional;
 import java.security.Principal;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
-import static com.emu.apps.qcm.infrastructure.exceptions.EntityExceptionUtil.assertIsPresent;
-
 /**
  * Questionnaire Business Delegate
- * <p>
- * <ul>
- * <li>create a new questionnaire</li>
- * <li>delete a questionnaire</li>
- * <li>update a questionnaire</li>
- * <li>add a question to a questionnaire</li>
- * </ul>
- * <p>
+ *
  *
  * @author eric
  * @since 2.2.0
  */
 @Service
 @Transactional
-public class QuestionnaireServiceAdapter implements QuestionnaireService {
+public class QuestionnaireServiceAdapter implements QuestionnaireServicePort {
 
-    private final QuestionnaireDOService questionnaireDOService;
+    private final QuestionnairePersistencePort questionnairePersistencePort;
 
-    private final QuestionnaireMapper questionnaireMapper;
+    private final QuestionPersistencePort questionPersistencePort;
 
-    private final QuestionnaireTagDOService questionnaireTagDOService;
-
-    private final QuestionnaireTagMapper questionnaireTagMapper;
-
-    private final QuestionMapper questionMapper;
-
-    private final QuestionDOService questionDOService;
-
-
-    public QuestionnaireServiceAdapter(QuestionnaireDOService questionnaireDOService, QuestionnaireMapper questionnaireMapper, QuestionnaireTagDOService questionnaireTagDOService, QuestionnaireTagMapper questionnaireTagMapper, QuestionMapper questionMapper, QuestionDOService questionDOService) {
-        this.questionnaireDOService = questionnaireDOService;
-        this.questionnaireMapper = questionnaireMapper;
-        this.questionnaireTagDOService = questionnaireTagDOService;
-        this.questionnaireTagMapper = questionnaireTagMapper;
-        this.questionMapper = questionMapper;
-        this.questionDOService = questionDOService;
+    public QuestionnaireServiceAdapter(QuestionnairePersistencePort questionnairePersistencePort,
+                                       QuestionPersistencePort questionPersistencePort) {
+        this.questionnairePersistencePort = questionnairePersistencePort;
+        this.questionPersistencePort = questionPersistencePort;
     }
 
     /**
      * Find a Questionnaire with technical identifier
      *
-     * @param id
+     * @param questionnaireUuid questionnaire uuid
      * @return the questionnaire
      */
     @Override
-    public QuestionnaireDto getQuestionnaireById(long id) {
-        var questionnaire = questionnaireDOService.findOne(id);
-        assertIsPresent(questionnaire, String.valueOf(id));
-        return questionnaireMapper.modelToDto(questionnaire);
+    @Transactional(readOnly = true)
+    public QuestionnaireDto getQuestionnaireByUuid(String questionnaireUuid) {
+        var questionnaire = questionnairePersistencePort.findByUuid(questionnaireUuid);
+        EntityExceptionUtil.raiseExceptionIfNull(questionnaireUuid, questionnaire, String.valueOf(questionnaireUuid));
+        return questionnaire;
     }
 
     /**
      * Delete a Questionnaire with technical identifier
      *
-     * @param id
-     * @return
+     * @param  questionnaireUuid questionnaire Uuid
+     * @return Nocontent
      */
     @Override
-    public ResponseEntity <Questionnaire> deleteQuestionnaireById(long id) {
-        var questionnaire = questionnaireDOService.findOne(id);
-        assertIsPresent(questionnaire, String.valueOf(id));
-        questionnaireDOService.deleteById(id);
+    public ResponseEntity <QuestionnaireDto> deleteQuestionnaireByUuid(String questionnaireUuid) {
+        questionnairePersistencePort.deleteByUuid(questionnaireUuid);
         return new ResponseEntity <>(HttpStatus.NO_CONTENT);
     }
 
     /**
      * Update a existing questionnaire
      *
-     * @param questionnaireDto the questionnaire DTO
+     * @param aQuestionnaireDto the questionnaire DTO
      * @return the updated questionnaire
      */
     @Override
-    public QuestionnaireDto updateQuestionnaire(QuestionnaireDto questionnaireDto, Principal principal) {
-
-        var questionnaire = questionnaireDOService.findOne(questionnaireDto.getId());
-
-        questionnaire = questionnaireDOService.saveQuestionnaire(questionnaireMapper.dtoToModel(questionnaire, questionnaireDto));
-
-        var questionnaireTags = questionnaireTagMapper.dtosToModels(questionnaireDto.getQuestionnaireTags());
-
-        questionnaire = questionnaireTagDOService.saveQuestionnaireTags(questionnaire.getId(), questionnaireTags, principal);
-
-        return questionnaireMapper.modelToDto(questionnaire);
+    public QuestionnaireDto updateQuestionnaire(QuestionnaireDto aQuestionnaireDto, Principal principal) {
+        return questionnairePersistencePort.saveQuestionnaire(aQuestionnaireDto, PrincipalUtils.getEmail(principal));
     }
 
     /**
@@ -125,78 +87,54 @@ public class QuestionnaireServiceAdapter implements QuestionnaireService {
      */
     @Override
     public QuestionnaireDto saveQuestionnaire(QuestionnaireDto questionnaireDto, Principal principal) {
-
-        var questionnaire = questionnaireDOService.saveQuestionnaire(questionnaireMapper.dtoToModel(questionnaireDto));
-
-        Iterable <QuestionnaireTag> questionnaireTags = questionnaireTagMapper.dtosToModels(questionnaireDto.getQuestionnaireTags());
-
-        questionnaire = questionnaireTagDOService.saveQuestionnaireTags(questionnaire.getId(), questionnaireTags, principal);
-
-        return questionnaireMapper.modelToDto(questionnaire);
+        return questionnairePersistencePort.saveQuestionnaire(questionnaireDto, PrincipalUtils.getEmail(principal));
     }
 
     @Override
-    public Page <QuestionDto> getQuestionsByQuestionnaireId(long id, Pageable pageable) {
-        return questionMapper.pageQuestionResponseProjectionToDto(questionDOService.getQuestionsProjectionByQuestionnaireId(id, pageable));
+    public Page <QuestionDto> getQuestionsByQuestionnaireId(String id, Pageable pageable) {
+        return questionPersistencePort.getQuestionsProjectionByQuestionnaireUuid(id, pageable);
     }
 
     /**
      * find  a list of questionnaires
      *
-     * @param tagIds    technical tag identifier list
+     * @param tagUuid    array of technical tag UUID
      * @param pageable
      * @param principal
      * @return a list of questionnaires with the specified tag
      */
     @Override
-    public Page <QuestionnaireDto> getQuestionnaires(Long[] tagIds, Pageable pageable, Principal principal) {
-
-        var specificationBuilder = new QuestionnaireSpecificationBuilder();
-
-        specificationBuilder.setPrincipal(PrincipalUtils.getEmail(principal));
-        specificationBuilder.setTagIds(tagIds);
-
-        return questionnaireMapper.pageToDto(questionnaireDOService.findAllByPage(specificationBuilder.build(), pageable));
+    @Transactional(readOnly = true)
+    public Page <QuestionnaireDto> getQuestionnaires(String[] tagUuid, Pageable pageable, Principal principal) {
+        return questionnairePersistencePort.findAllByPage(tagUuid, PrincipalUtils.getEmail(principal), pageable);
     }
 
     /**
      * Add  question to a questionnaire
      *
-     * @param id
+     * @param uuid questionnaire UUID
      * @param questionDto the question DTO
-     * @return
+     * @return QuestionDto
      */
     @Override
-    public QuestionDto addQuestion(long id, QuestionDto questionDto, Long position) {
-        var questionnaire = questionnaireDOService.findOne(id);
-        if (Objects.isNull(position)) {
-            position = questionnaire.getQuestionnaireQuestions().size() + 1L;
-        }
-        var question = questionDOService.findById(questionDto.getId());
+    public QuestionDto addQuestion(String uuid, QuestionDto questionDto, Optional <Long> position) {
 
-        if (question.isPresent()) {
-            var questionnaireQuestion = new QuestionnaireQuestion(questionnaire, question.get(), position);
-
-            questionnaireQuestion = questionnaireDOService.saveQuestionnaireQuestion(questionnaireQuestion);
-
-            questionnaire.getQuestionnaireQuestions().add(questionnaireQuestion);
-        }
-        return questionMapper.modelToDto(question.get());
+        return questionnairePersistencePort.addQuestion(uuid, questionDto, position);
     }
 
     /**
      * Add  questions to a questionnaire
      *
-     * @param questionnaireId
-     * @param questionDtos
+     * @param questionnaireUuid UUI Questionnaire
+     * @param questionDtos      List of questions to add
      */
     @Override
-    public List <QuestionDto> addQuestions(long questionnaireId, Collection <QuestionDto> questionDtos) {
+    public List <QuestionDto> addQuestions(String questionnaireUuid, Collection <QuestionDto> questionDtos) {
 
         AtomicLong atomicLong = new AtomicLong(0);
         return questionDtos
                 .stream()
-                .map(questionDto -> addQuestion(questionnaireId, questionDto, atomicLong.incrementAndGet()))
+                .map(questionDto -> addQuestion(questionnaireUuid, questionDto, Optional.of(atomicLong.incrementAndGet())))
                 .collect(Collectors.toList());
     }
 

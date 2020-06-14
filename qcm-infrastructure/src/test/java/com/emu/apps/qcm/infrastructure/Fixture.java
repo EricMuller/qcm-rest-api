@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.infrastructure;
 
 
-import com.emu.apps.qcm.infrastructure.adapters.jpa.repositories.*;
+import com.emu.apps.qcm.infrastructure.adapters.jpa.builders.QuestionnaireTagBuilder;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.config.SpringBootTestConfig;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.category.Category;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questionnaires.Questionnaire;
@@ -11,8 +11,10 @@ import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questions.Response;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.tags.QuestionTag;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.tags.Tag;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.upload.Upload;
-import com.emu.apps.qcm.infrastructure.adapters.jpa.builders.QuestionnaireTagBuilder;
-import com.emu.apps.qcm.infrastructure.ports.CategoryDOService;
+import com.emu.apps.qcm.infrastructure.adapters.jpa.repositories.*;
+import com.emu.apps.qcm.infrastructure.ports.CategoryPersistencePort;
+import com.emu.apps.qcm.mappers.CategoryMapper;
+import com.emu.apps.qcm.domain.dtos.CategoryDto;
 import com.emu.apps.shared.security.PrincipalUtils;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.security.Principal;
+import java.util.UUID;
 
 import static com.emu.apps.qcm.infrastructure.adapters.jpa.entity.category.Type.QUESTION;
 import static com.emu.apps.qcm.infrastructure.adapters.jpa.entity.category.Type.QUESTIONNAIRE;
@@ -91,7 +94,10 @@ public class Fixture {
     private UploadRepository uploadRepository;
 
     @Autowired
-    private CategoryDOService categoryService;
+    private CategoryPersistencePort categoryService;
+
+    @Autowired
+    private CategoryMapper categoryMapper;
 
     public Fixture() {
     }
@@ -120,9 +126,13 @@ public class Fixture {
 
         try {
 
-            Category questionnaireCategory = categoryService.findOrCreateByLibelle(USER, QUESTIONNAIRE, CATEGORIE_LIBELLE);
+            CategoryDto questionnaireCategoryDto = categoryService.findOrCreateByLibelle(USER, QUESTIONNAIRE, CATEGORIE_LIBELLE);
 
-            Category questionCategory = categoryService.findOrCreateByLibelle(USER, QUESTION, CATEGORIE_LIBELLE);
+            CategoryDto questionCategoryDto = categoryService.findOrCreateByLibelle(USER, QUESTION, CATEGORIE_LIBELLE);
+
+            Category questionnaireCategory = categoryRepository.findByUuid(UUID.fromString(questionnaireCategoryDto.getUuid()));
+
+            Category questionCategory = categoryRepository.findByUuid(UUID.fromString(questionCategoryDto.getUuid()));
 
             //questionnaire
             Questionnaire questionnaire = new Questionnaire();

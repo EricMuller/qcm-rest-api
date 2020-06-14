@@ -1,10 +1,6 @@
 package com.emu.apps.qcm.web.dtos.export;
 
 
-import com.emu.apps.qcm.web.dtos.CategoryDto;
-import com.emu.apps.qcm.web.dtos.EntityDto;
-import com.emu.apps.qcm.web.dtos.QuestionTagDto;
-import com.emu.apps.qcm.web.dtos.ResponseDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
