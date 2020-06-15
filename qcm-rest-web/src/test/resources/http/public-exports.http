@@ -5,3 +5,9 @@ GET http://{{host}}:{{port}}/public/qcm/api/v1/exports/54
 Accept: application/json
 Content-Type: application/json
 Authorization: {{auth_token}}
+
+###
+GET http://{{host}}:{{port}}/public/qcm/api/v1/questionnaires
+Accept: application/json
+Content-Type: application/json
+

@@ -22,14 +22,14 @@ public interface QuestionnaireQuestionRepository extends JpaRepository<Questionn
 
     @Query("SELECT qq.question.id as id, qq.question.uuid as uuid, qq.question.dateCreation as dateCreation,qq.question.version as version,qq.question.question as question ,qq.question.type as type,qq.position as position " +
             " FROM QuestionnaireQuestion  qq " +
-            " WHERE qq.id.questionnaireId = :id  ")
-    Iterable<QuestionResponseProjection> findQuestionsByQuestionnaireId(@Param("id") Long questionnaireId);
+            " WHERE qq.questionnaire.uuid = :questionnaireUuid  ")
+    Iterable<QuestionResponseProjection> findQuestionsByQuestionnaireUuiId(@Param("questionnaireUuid") UUID questionnaireUuid);
 
 
     @Query("SELECT qq.question.id as id, qq.question.uuid as uuid, qq.question.dateCreation as dateCreation,qq.question.version as version,qq.question.question as question ,qq.question.type as type,qq.position as position " +
             " FROM QuestionnaireQuestion  qq " +
-            " WHERE qq.question.uuid = :questionnaireId")
-    Page<QuestionResponseProjection> findQuestionsByQuestionnaireId(@Param("questionnaireId") String questionnaireId, Pageable pageable);
+            " WHERE qq.questionnaire.uuid = :questionnaireUuid")
+    Page<QuestionResponseProjection> findQuestionsByQuestionnaireUuiId(@Param("questionnaireUuid") UUID questionnaireUuid, Pageable pageable);
 
     @Query("SELECT distinct qq.question.id as id, qq.question.uuid as uuid, qq.question.dateCreation as dateCreation,qq.question.version as version,qq.question.question as question ,qq.question.type as type,qq.position as position " +
             " FROM QuestionnaireQuestion qq " +

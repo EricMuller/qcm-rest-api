@@ -28,7 +28,8 @@ import java.util.Set;
         subgraphs = {@NamedSubgraph(name = "tags", attributeNodes = @NamedAttributeNode("tag")),
                 @NamedSubgraph(name = "questions", attributeNodes = @NamedAttributeNode("question"))}
 )
-@Table(indexes = {@Index(name = "IDX_QTE_CREATE_BY_IDX", columnList = "created_by")})
+@Table(indexes = {@Index(name = "IDX_QTE_CREATE_BY_IDX", columnList = "created_by"),
+        @Index(name = "IDX_QTE_UUID_IDX", columnList = "uuid")})
 @Getter
 @Setter
 @NoArgsConstructor
@@ -57,7 +58,7 @@ public class Questionnaire extends AuditableEntity <String> {
 
     @Column(name = "PUBLISHED")
     @Convert(converter = BooleanTFConverter.class)
-    private Boolean published;
+    private Boolean published = Boolean.FALSE;
 
     @OneToMany(mappedBy = "questionnaire", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set <QuestionnaireQuestion> questionnaireQuestions = new HashSet <>();

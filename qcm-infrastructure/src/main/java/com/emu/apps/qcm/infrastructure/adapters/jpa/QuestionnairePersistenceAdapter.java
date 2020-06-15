@@ -1,6 +1,9 @@
 package com.emu.apps.qcm.infrastructure.adapters.jpa;
 
 
+import com.emu.apps.qcm.domain.dtos.QuestionDto;
+import com.emu.apps.qcm.domain.dtos.QuestionnaireDto;
+import com.emu.apps.qcm.domain.dtos.QuestionnaireTagDto;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.builders.QuestionnaireTagBuilder;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.category.Category;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questionnaires.Questionnaire;
@@ -16,9 +19,6 @@ import com.emu.apps.qcm.infrastructure.ports.QuestionnairePersistencePort;
 import com.emu.apps.qcm.mappers.QuestionMapper;
 import com.emu.apps.qcm.mappers.QuestionnaireMapper;
 import com.emu.apps.qcm.mappers.UuidMapper;
-import com.emu.apps.qcm.domain.dtos.QuestionDto;
-import com.emu.apps.qcm.domain.dtos.QuestionnaireDto;
-import com.emu.apps.qcm.domain.dtos.QuestionnaireTagDto;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -111,6 +111,20 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
         var specificationBuilder = new QuestionnaireSpecificationBuilder();
 
         specificationBuilder.setPrincipal(principal);
+        specificationBuilder.setTagUuids(uuidMapper.toUUIDs(tagUuid));
+
+        return questionnaireMapper.pageToDto(questionnaireRepository.findAll(specificationBuilder.build(), pageable));
+
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page <QuestionnaireDto> findAllPublicByPage(String[] tagUuid, String principal, Pageable pageable) {
+
+        var specificationBuilder = new QuestionnaireSpecificationBuilder();
+
+        specificationBuilder.setPrincipal(principal);
+        specificationBuilder.setPublished(Boolean.TRUE);
         specificationBuilder.setTagUuids(uuidMapper.toUUIDs(tagUuid));
 
         return questionnaireMapper.pageToDto(questionnaireRepository.findAll(specificationBuilder.build(), pageable));

@@ -13,7 +13,8 @@ import javax.persistence.*;
  */
 
 @Entity
-@Table(indexes = {@Index(name = "IDX_CTG_CREATE_BY_IDX", columnList = "type,created_by")})
+@Table(indexes = {@Index(name = "IDX_CTG_CREATE_BY_IDX", columnList = "type,created_by"),
+                  @Index(name = "IDX_CTG_UUID_IDX", columnList = "uuid")})
 @NoArgsConstructor
 @Getter
 @Setter

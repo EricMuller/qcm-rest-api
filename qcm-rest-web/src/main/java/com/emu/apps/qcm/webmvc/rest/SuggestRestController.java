@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.SUGGEST;
+import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.PROTECTED_SUGGEST;
 
 
 /**
@@ -15,7 +15,7 @@ import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.SUGGEST;
  */
 @RestController
 @Profile("webmvc")
-@RequestMapping(value = SUGGEST, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = PROTECTED_SUGGEST, produces = MediaType.APPLICATION_JSON_VALUE)
 public class SuggestRestController {
 
     private final SuggestServicePort suggestServicePort;

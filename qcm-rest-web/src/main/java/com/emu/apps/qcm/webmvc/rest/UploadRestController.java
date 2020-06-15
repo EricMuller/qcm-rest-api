@@ -14,11 +14,11 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.security.Principal;
 
-import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.UPLOADS;
+import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.PROTECTED_UPLOADS;
 
 @RestController
 @Profile("webmvc")
-@RequestMapping(value = UPLOADS, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = PROTECTED_UPLOADS, produces = MediaType.APPLICATION_JSON_VALUE)
 public class UploadRestController {
 
     private final UploadServicePort uploadServicePort;

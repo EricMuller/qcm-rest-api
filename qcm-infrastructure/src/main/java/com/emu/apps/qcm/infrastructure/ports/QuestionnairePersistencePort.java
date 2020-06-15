@@ -1,8 +1,8 @@
 package com.emu.apps.qcm.infrastructure.ports;
 
-import com.emu.apps.qcm.infrastructure.adapters.jpa.projections.QuestionnaireProjection;
 import com.emu.apps.qcm.domain.dtos.QuestionDto;
 import com.emu.apps.qcm.domain.dtos.QuestionnaireDto;
+import com.emu.apps.qcm.infrastructure.adapters.jpa.projections.QuestionnaireProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -14,8 +14,9 @@ public interface QuestionnairePersistencePort {
 
     void deleteByUuid(String uuid);
 
-
     Page <QuestionnaireDto> findAllByPage(String tagUuids[], String principal, Pageable pageable);
+
+    Page <QuestionnaireDto> findAllPublicByPage(String tagUuids[], String principal, Pageable pageable);
 
     QuestionnaireDto saveQuestionnaire(QuestionnaireDto questionnaireDto, String principal);
 

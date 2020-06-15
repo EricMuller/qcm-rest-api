@@ -20,12 +20,12 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.Optional;
 
-import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.QUESTIONNAIRES;
+import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.PROTECTED_QUESTIONNAIRES;
 
 
 @RestController
 @Profile("webmvc")
-@RequestMapping(value = QUESTIONNAIRES, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = PROTECTED_QUESTIONNAIRES, produces = MediaType.APPLICATION_JSON_VALUE)
 public class QuestionnaireRestController {
 
     private final QuestionnaireServicePort questionnaireServicePort;
@@ -69,7 +69,7 @@ public class QuestionnaireRestController {
     @GetMapping(value = "/{uuid}/questions")
     @ResponseBody
     public Page <QuestionDto> getQuestionsByQuestionnaireId(@PathVariable("uuid") String uuid, Pageable pageable) {
-        return questionnaireServicePort.getQuestionsByQuestionnaireId(uuid, pageable);
+        return questionnaireServicePort.getQuestionsByQuestionnaireUuid(uuid, pageable);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)

@@ -16,7 +16,7 @@ public interface QuestionnaireServicePort {
 
     ResponseEntity <QuestionnaireDto> deleteQuestionnaireByUuid(String uuid);
 
-    Page <QuestionDto> getQuestionsByQuestionnaireId(String uuid, Pageable pageable);
+    Page <QuestionDto> getQuestionsByQuestionnaireUuid(String uuid, Pageable pageable);
 
     QuestionDto addQuestion(String questionnaireUuid, QuestionDto questionDto, Optional <Long> position);
 
@@ -28,5 +28,6 @@ public interface QuestionnaireServicePort {
 
     Page <QuestionnaireDto> getQuestionnaires(String[] tagUuid, Pageable pageable, Principal principal);
 
+    Page <QuestionnaireDto> getPublicQuestionnaires(String[] tagUuid, Pageable pageable, String principal);
 
 }

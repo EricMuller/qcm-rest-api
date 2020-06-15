@@ -27,7 +27,9 @@ import java.util.Set;
                 @NamedAttributeNode(value = "questionTags", subgraph = "tags")
         },
         subgraphs = @NamedSubgraph(name = "tags", attributeNodes = @NamedAttributeNode("tag")))
-@Table(indexes = {@Index(name = "IDX_QTO_CREATE_BY_IDX", columnList = "created_by")})
+@Table(indexes = {@Index(name = "IDX_QTO_CREATE_BY_IDX", columnList = "created_by"),
+        @Index(name = "IDX_QTO_UUID_IDX", columnList = "uuid")
+})
 @Getter
 @Setter
 @NoArgsConstructor

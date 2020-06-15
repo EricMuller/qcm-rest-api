@@ -6,6 +6,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.criteria.JoinType;
+import java.util.Objects;
 import java.util.UUID;
 
 import static org.springframework.data.jpa.domain.Specification.where;
@@ -17,6 +18,8 @@ public final class QuestionnaireSpecificationBuilder extends BaseSpecification <
     private static final String TITLE_FIELD = "title";
 
     private String title;
+
+    private Boolean published;
 
     private String principal;
 
@@ -37,28 +40,32 @@ public final class QuestionnaireSpecificationBuilder extends BaseSpecification <
         return this;
     }
 
+    public QuestionnaireSpecificationBuilder setPublished(Boolean published) {
+        this.published = published;
+        return this;
+    }
+
     @Override
     public Specification <Questionnaire> build() {
-
-        Specification where = where(fieldContains(TITLE_FIELD, title)
-                .and(fieldEquals(CREATED_BY, principal))
-                .and(questionnaireTagsUuidIn(tagUuids))
-        ); //
 
         return (root, query, cb) -> {
             // Important because of the join in the questionnaireTags
             query.distinct(true);
+
+            Specification where = where(fieldContains(TITLE_FIELD, title)
+                    .and(questionnaireTagsUuidIn(tagUuids))
+            ); //
+
+            if (Objects.nonNull(principal)) {
+                where = where.and(fieldEquals(CREATED_BY, principal));
+            }
+
+            if (Objects.nonNull(published)) {
+                where = where.and(fieldEquals(PUBLISHED, published));
+            }
+
             return where(where).toPredicate(root, query, cb);
         };
-    }
-
-    private Specification <Questionnaire> questionnaireTagsIdIn(Long[] values) {
-        return ArrayUtils.isEmpty(values) ? null :
-                (root, query, cb) -> root
-                        .joinSet("questionnaireTags", JoinType.INNER)
-                        .join("tag")
-                        .get(ID)
-                        .in(values);
     }
 
     private Specification <Questionnaire> questionnaireTagsUuidIn(UUID[] values) {

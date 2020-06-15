@@ -1,11 +1,11 @@
 package com.emu.apps.qcm.domain.adapters;
 
+import com.emu.apps.qcm.domain.dtos.QuestionDto;
+import com.emu.apps.qcm.domain.dtos.QuestionnaireDto;
 import com.emu.apps.qcm.domain.ports.QuestionnaireServicePort;
 import com.emu.apps.qcm.infrastructure.exceptions.EntityExceptionUtil;
 import com.emu.apps.qcm.infrastructure.ports.QuestionPersistencePort;
 import com.emu.apps.qcm.infrastructure.ports.QuestionnairePersistencePort;
-import com.emu.apps.qcm.domain.dtos.QuestionDto;
-import com.emu.apps.qcm.domain.dtos.QuestionnaireDto;
 import com.emu.apps.shared.security.PrincipalUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 
 /**
  * Questionnaire Business Delegate
- *
  *
  * @author eric
  * @since 2.2.0
@@ -59,7 +58,7 @@ public class QuestionnaireServiceAdapter implements QuestionnaireServicePort {
     /**
      * Delete a Questionnaire with technical identifier
      *
-     * @param  questionnaireUuid questionnaire Uuid
+     * @param questionnaireUuid questionnaire Uuid
      * @return Nocontent
      */
     @Override
@@ -90,19 +89,23 @@ public class QuestionnaireServiceAdapter implements QuestionnaireServicePort {
         return questionnairePersistencePort.saveQuestionnaire(questionnaireDto, PrincipalUtils.getEmail(principal));
     }
 
-    @Override
-    public Page <QuestionDto> getQuestionsByQuestionnaireId(String id, Pageable pageable) {
-        return questionPersistencePort.getQuestionsProjectionByQuestionnaireUuid(id, pageable);
+    public Page <QuestionDto> getQuestionsByQuestionnaireUuid(String questionnaireUuid, Pageable pageable) {
+        return questionPersistencePort.getQuestionsProjectionByQuestionnaireUuid(questionnaireUuid, pageable);
     }
 
     /**
      * find  a list of questionnaires
      *
-     * @param tagUuid    array of technical tag UUID
+     * @param tagUuid   array of technical tag UUID
      * @param pageable
      * @param principal
      * @return a list of questionnaires with the specified tag
      */
+    @Transactional(readOnly = true)
+    public Page <QuestionnaireDto> getPublicQuestionnaires(String[] tagUuid, Pageable pageable, String principal) {
+        return questionnairePersistencePort.findAllPublicByPage(tagUuid, principal, pageable);
+    }
+
     @Override
     @Transactional(readOnly = true)
     public Page <QuestionnaireDto> getQuestionnaires(String[] tagUuid, Pageable pageable, Principal principal) {
@@ -112,7 +115,7 @@ public class QuestionnaireServiceAdapter implements QuestionnaireServicePort {
     /**
      * Add  question to a questionnaire
      *
-     * @param uuid questionnaire UUID
+     * @param uuid        questionnaire UUID
      * @param questionDto the question DTO
      * @return QuestionDto
      */

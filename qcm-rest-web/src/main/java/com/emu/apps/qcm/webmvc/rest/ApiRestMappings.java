@@ -34,21 +34,23 @@ public final class ApiRestMappings {
 
     public static final String PUBLIC_API = "/public/qcm/api/v1";
 
-    public static final String QUESTIONNAIRES = PROTECTED_API + "/questionnaires";
+    public static final String PROTECTED_QUESTIONNAIRES = PROTECTED_API + "/questionnaires";
 
-    public static final String CATEGORIES = PROTECTED_API + "/categories";
+    public static final String PROTECTED_CATEGORIES = PROTECTED_API + "/categories";
 
-    public static final String QUESTIONS = PROTECTED_API + "/questions";
+    public static final String PROTECTED_QUESTIONS = PROTECTED_API + "/questions";
 
-    public static final String SUGGEST = PROTECTED_API + "/suggest";
+    public static final String PROTECTED_SUGGEST = PROTECTED_API + "/suggest";
 
-    public static final String TAGS = PROTECTED_API + "/tags";
+    public static final String PROTECTED_TAGS = PROTECTED_API + "/tags";
 
-    public static final String UPLOADS = PROTECTED_API + "/upload";
+    public static final String PROTECTED_UPLOADS = PROTECTED_API + "/upload";
 
-    public static final String USERS = PROTECTED_API + "/users";
+    public static final String PROTECTED_USERS = PROTECTED_API + "/users";
 
-    public static final String EXPORTS = PUBLIC_API + "/exports";
+    public static final String PUBLIC_EXPORTS = PUBLIC_API + "/exports";
+
+    public static final String PUBLIC_QUESTIONNAIRES = PUBLIC_API + "/questionnaires";
 
     private ApiRestMappings() {
         //nop

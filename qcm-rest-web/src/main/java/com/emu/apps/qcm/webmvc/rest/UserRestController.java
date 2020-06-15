@@ -11,7 +11,7 @@ import java.util.Map;
 
 @RestController
 @Profile("webmvc")
-@RequestMapping(ApiRestMappings.USERS)
+@RequestMapping(ApiRestMappings.PROTECTED_USERS)
 public class UserRestController {
 
     private final UserServicePort userServicePort;

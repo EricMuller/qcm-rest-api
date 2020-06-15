@@ -30,13 +30,13 @@ public class QuestionnaireQuestionRepositoryTest {
 
 
     @Test
-    public void findQuestionsByQuestionnaireId() {
+    public void findQuestionsByQuestionnaireUuId() {
 
         fixture.emptyDatabase();
 
         Questionnaire questionnaire = fixture.createOneQuestionnaireWithTwoQuestionTags();
 
-        Iterable <QuestionResponseProjection> questions = questionnaireQuestionRepository.findQuestionsByQuestionnaireId(questionnaire.getId());
+        Iterable <QuestionResponseProjection> questions = questionnaireQuestionRepository.findQuestionsByQuestionnaireUuiId(questionnaire.getUuid());
         Assertions.assertThat(questions).isNotEmpty();
         Assertions.assertThat(questions.spliterator().estimateSize()).isEqualTo(2);
 

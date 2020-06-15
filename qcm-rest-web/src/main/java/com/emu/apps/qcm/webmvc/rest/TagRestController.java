@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.security.Principal;
 
-import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.TAGS;
+import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.PROTECTED_TAGS;
 
 /**
  * Created by eric on 05/06/2017.
  */
 @RestController
 @Profile("webmvc")
-@RequestMapping(value = TAGS, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = PROTECTED_TAGS, produces = MediaType.APPLICATION_JSON_VALUE)
 public class TagRestController {
 
     private final TagServicePort tagServicePort;

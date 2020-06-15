@@ -120,8 +120,8 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
     }
 
     @Transactional(readOnly = true)
-    public Page <QuestionDto> getQuestionsProjectionByQuestionnaireUuid(String questionnaireId, Pageable pageable) {
-        return questionMapper.pageQuestionResponseProjectionToDto(questionnaireQuestionRepository.findQuestionsByQuestionnaireId(questionnaireId, pageable));
+    public Page <QuestionDto> getQuestionsProjectionByQuestionnaireUuid(String questionnaireUuid, Pageable pageable) {
+        return questionMapper.pageQuestionResponseProjectionToDto(questionnaireQuestionRepository.findQuestionsByQuestionnaireUuiId(UUID.fromString(questionnaireUuid), pageable));
     }
 
 
