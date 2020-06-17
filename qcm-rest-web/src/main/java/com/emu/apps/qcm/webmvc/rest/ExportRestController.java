@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayOutputStream;
 
-import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.PUBLIC_EXPORTS;
+import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.GUEST_EXPORTS;
 
 
 @RestController
 @Profile("webmvc")
-@RequestMapping(value = PUBLIC_EXPORTS, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = GUEST_EXPORTS, produces = MediaType.APPLICATION_JSON_VALUE)
 public class ExportRestController {
 
     private final ExportServicePort exportServicePort;

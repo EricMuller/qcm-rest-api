@@ -30,7 +30,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 @ActiveProfiles(value = "webmvc")
 public class CategoryControllerTest {
 
-    private static final String CATEGORY_URI = ApiRestMappings.PROTECTED_API + "/categories/";
+    private static final String CATEGORY_URI = ApiRestMappings.PUBLIC_API + "/categories/";
 
     private static final String LIBELLE = "cate 1";
 

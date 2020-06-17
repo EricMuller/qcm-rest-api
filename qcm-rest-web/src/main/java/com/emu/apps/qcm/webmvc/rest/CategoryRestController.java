@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.security.Principal;
 
-import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.PROTECTED_CATEGORIES;
+import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.PUBLIC_CATEGORIES;
 
 /**
  * Created by eric on 05/06/2017.
@@ -23,7 +23,7 @@ import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.PROTECTED_CATEGORIES;
 
 @RestController
 @Profile("webmvc")
-@RequestMapping(value = PROTECTED_CATEGORIES, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = PUBLIC_CATEGORIES, produces = MediaType.APPLICATION_JSON_VALUE)
 public class CategoryRestController {
 
     private final CategoryServicePort categoryServicePort;

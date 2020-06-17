@@ -37,4 +37,7 @@ public class QuestionnaireDto extends DomainDto {
     @JsonProperty("published")
     private Boolean published;
 
+    @JsonProperty("created_by")
+    private String createdBy;
+
 }

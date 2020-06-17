@@ -1,5 +1,6 @@
 package com.emu.apps.qcm.infrastructure.adapters.jpa.repositories;
 
+import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.category.Category;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.projections.QuestionnaireProjection;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questionnaires.Questionnaire;
 import org.jetbrains.annotations.NotNull;
@@ -50,4 +51,6 @@ public interface QuestionnaireRepository extends JpaRepository<Questionnaire, Lo
 
     void deleteByUuid(UUID uuid);
 
+    @Query("SELECT distinct q.category FROM Questionnaire  q  WHERE q.published = true")
+    Iterable<Category> getAllPublicCategories();
 }

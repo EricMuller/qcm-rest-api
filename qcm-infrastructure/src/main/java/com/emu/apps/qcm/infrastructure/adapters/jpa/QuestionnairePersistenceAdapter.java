@@ -4,6 +4,8 @@ package com.emu.apps.qcm.infrastructure.adapters.jpa;
 import com.emu.apps.qcm.domain.dtos.QuestionDto;
 import com.emu.apps.qcm.domain.dtos.QuestionnaireDto;
 import com.emu.apps.qcm.domain.dtos.QuestionnaireTagDto;
+import com.emu.apps.qcm.guest.GuestCategoryDto;
+import com.emu.apps.qcm.guest.GuestTagDto;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.builders.QuestionnaireTagBuilder;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.category.Category;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questionnaires.Questionnaire;
@@ -16,7 +18,7 @@ import com.emu.apps.qcm.infrastructure.adapters.jpa.specifications.Questionnaire
 import com.emu.apps.qcm.infrastructure.exceptions.EntityExceptionUtil;
 import com.emu.apps.qcm.infrastructure.exceptions.MessageSupport;
 import com.emu.apps.qcm.infrastructure.ports.QuestionnairePersistencePort;
-import com.emu.apps.qcm.mappers.QuestionMapper;
+import com.emu.apps.qcm.mappers.GuestMapper;
 import com.emu.apps.qcm.mappers.QuestionnaireMapper;
 import com.emu.apps.qcm.mappers.UuidMapper;
 import org.apache.commons.lang3.StringUtils;
@@ -49,7 +51,13 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
 
     private QuestionnaireTagRepository questionnaireTagRepository;
 
-    public QuestionnairePersistenceAdapter(QuestionnaireRepository questionnaireRepository, QuestionRepository questionRepository, QuestionnaireQuestionRepository questionnaireQuestionRepository, CategoryRepository categoryRepository, QuestionnaireMapper questionnaireMapper, QuestionMapper questionMapper, UuidMapper uuidMapper, TagRepository tagRepository, QuestionnaireTagRepository questionnaireTagRepository) {
+    private GuestMapper guestMapper;
+
+    public QuestionnairePersistenceAdapter(QuestionnaireRepository questionnaireRepository, QuestionRepository questionRepository,
+                                           QuestionnaireQuestionRepository questionnaireQuestionRepository,
+                                           CategoryRepository categoryRepository, QuestionnaireMapper questionnaireMapper,
+                                           UuidMapper uuidMapper, TagRepository tagRepository,
+                                           QuestionnaireTagRepository questionnaireTagRepository, GuestMapper guestMapper) {
         this.questionnaireRepository = questionnaireRepository;
         this.questionRepository = questionRepository;
         this.questionnaireQuestionRepository = questionnaireQuestionRepository;
@@ -58,6 +66,8 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
         this.uuidMapper = uuidMapper;
         this.tagRepository = tagRepository;
         this.questionnaireTagRepository = questionnaireTagRepository;
+        this.guestMapper = guestMapper;
+
     }
 
     @Override
@@ -176,5 +186,14 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
         }
 
         return questionDto;
+    }
+
+    @Override
+    public Iterable <GuestCategoryDto> getPublicCategories() {
+        return guestMapper.categoriesToDtos(questionnaireRepository.getAllPublicCategories());
+    }
+
+    public Iterable <GuestTagDto> getPublicTags() {
+        return guestMapper.tagsToDtos(questionnaireTagRepository.getPublicTags());
     }
 }

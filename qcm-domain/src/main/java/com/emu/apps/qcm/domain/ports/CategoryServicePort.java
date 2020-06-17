@@ -13,4 +13,5 @@ public interface CategoryServicePort {
     Iterable <CategoryDto> getCategories(Principal principal, Type type) throws FunctionnalException;
 
     CategoryDto saveCategory(CategoryDto categoryDto, Principal principal) throws FunctionnalException;
+
 }

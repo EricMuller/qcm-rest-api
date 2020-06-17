@@ -22,17 +22,16 @@ import javax.persistence.*;
 
         @NamedQuery(name = "deleteAll", query = "DELETE FROM Category"),
 
-        @NamedQuery(name = "findByUuid", query =
-                "SELECT node FROM Category node WHERE node.uuid = :uuid "),
+        @NamedQuery(name = "findByUuid", query = "SELECT node FROM Category node WHERE node.uuid = :uuid "),
         @NamedQuery(name = "findAncestors", query =
-                "SELECT node" +
+                        " SELECT node" +
                         " FROM Category node" +
                         " WHERE :hierarchyId IS NOT NULL AND :hierarchyId = node.userId" +
                         " AND node.lft < :lft AND :rgt < node.rgt" +
                         " ORDER BY node.lft ASC"),
 
         @NamedQuery(name = "findSubtree", query =
-                "SELECT node" +
+                        " SELECT node" +
                         " FROM Category node" +
                         " WHERE :hierarchyId IS NOT NULL AND :hierarchyId = node.userId" +
                         " AND node.lft > :lft  AND node.rgt <= :rgt " +
@@ -40,25 +39,25 @@ import javax.persistence.*;
         ),
 
         @NamedQuery(name = "findEntitiesWithLeftGreaterThan", query =
-                "SELECT node" +
+                        " SELECT node" +
                         " FROM Category node" +
                         " WHERE :hierarchyId IS NOT NULL AND node.userId = :hierarchyId  " +
                         " AND node.lft > :value  "),
 
         @NamedQuery(name = "findEntitiesWithLeftGreaterThanOrEqual", query =
-                "SELECT node" +
+                        " SELECT node" +
                         " FROM Category node" +
                         " WHERE :hierarchyId IS NOT NULL AND node.userId = :hierarchyId  " +
                         " AND node.lft >= :value "),
 
         @NamedQuery(name = "findEntitiesWithRightGreaterThan", query =
-                "SELECT node" +
+                        " SELECT node" +
                         " FROM Category node" +
                         " WHERE :hierarchyId IS NOT NULL AND node.userId = :hierarchyId  " +
                         " AND node.rgt > :value "),
 
         @NamedQuery(name = "findEntitiesWithRightGreaterThanOrEqual", query =
-                "SELECT node" +
+                        " SELECT node" +
                         " FROM Category node" +
                         " WHERE :hierarchyId IS NOT NULL AND node.userId = :hierarchyId  " +
                         " AND node.rgt >= :value "),

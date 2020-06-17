@@ -1,0 +1,21 @@
+
+###
+GET http://{{host}}:{{port}}/guest/qcm/api/v1/exports/54
+Accept: application/json
+Content-Type: application/json
+Authorization: {{auth_token}}
+
+###
+GET http://{{host}}:{{port}}/guest/qcm/api/v1/questionnaires
+Accept: application/json
+Content-Type: application/json
+
+###
+GET http://{{host}}:{{port}}/guest/qcm/api/v1/categories
+Accept: application/json
+Content-Type: application/json
+
+###
+GET http://{{host}}:{{port}}/guest/qcm/api/v1/tags
+Accept: application/json
+Content-Type: application/json

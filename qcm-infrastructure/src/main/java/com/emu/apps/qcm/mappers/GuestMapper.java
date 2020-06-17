@@ -26,35 +26,23 @@
  *
  */
 
-package com.emu.apps.qcm.webmvc.rest;
+package com.emu.apps.qcm.mappers;
 
-public final class ApiRestMappings {
+import com.emu.apps.qcm.guest.GuestCategoryDto;
+import com.emu.apps.qcm.guest.GuestTagDto;
+import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.category.Category;
+import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.tags.Tag;
+import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
 
-    public static final String PUBLIC_API = "/qcm/api/v1";
+@Mapper(componentModel = "spring", uses = {UuidMapper.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
+public interface GuestMapper {
 
-    public static final String GUEST_API = "/guest/qcm/api/v1";
+    GuestCategoryDto categoryToDto(Category category);
 
-    public static final String PUBLIC_QUESTIONNAIRES = PUBLIC_API + "/questionnaires";
+    Iterable <GuestCategoryDto> categoriesToDtos(Iterable <Category> categories);
 
-    public static final String PUBLIC_CATEGORIES = PUBLIC_API + "/categories";
+    GuestTagDto tagToDto(Tag tag);
 
-    public static final String PUBLIC_QUESTIONS = PUBLIC_API + "/questions";
-
-    public static final String PUBLIC_SUGGEST = PUBLIC_API + "/suggest";
-
-    public static final String PUBLIC_TAGS = PUBLIC_API + "/tags";
-
-    public static final String PUBLIC_UPLOADS = PUBLIC_API + "/upload";
-
-    public static final String PUBLIC_USERS = PUBLIC_API + "/users";
-
-    public static final String GUEST_EXPORTS = GUEST_API + "/exports";
-
-    public static final String GUEST_QUESTIONNAIRES = GUEST_API + "/questionnaires";
-
-    public static final String GUEST_CATEGORIES = GUEST_API + "/categories";
-
-    private ApiRestMappings() {
-        //nop
-    }
+    Iterable <GuestTagDto> tagsToDtos(Iterable <Tag> tags);
 }

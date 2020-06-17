@@ -20,4 +20,7 @@ public interface QuestionnaireTagRepository extends JpaRepository<QuestionnaireT
     @Query("delete from QuestionnaireTag qt where qt.id.questionnaireId = :id")
     void deleteByQuestionnaireId(@Param("id") Long questionId);
 
+    @Query("SELECT distinct qt.tag  from QuestionnaireTag  qt WHERE qt.questionnaire.published = true ")
+    Iterable<Tag> getPublicTags();
+
 }

@@ -2,6 +2,8 @@ package com.emu.apps.qcm.infrastructure.ports;
 
 import com.emu.apps.qcm.domain.dtos.QuestionDto;
 import com.emu.apps.qcm.domain.dtos.QuestionnaireDto;
+import com.emu.apps.qcm.guest.GuestCategoryDto;
+import com.emu.apps.qcm.guest.GuestTagDto;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.projections.QuestionnaireProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,4 +26,7 @@ public interface QuestionnairePersistencePort {
 
     Iterable <QuestionnaireProjection> findByTitleContaining(String title);
 
+    Iterable <GuestCategoryDto> getPublicCategories();
+
+    Iterable <GuestTagDto> getPublicTags();
 }

@@ -21,14 +21,14 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.security.Principal;
 
-import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.PROTECTED_QUESTIONS;
+import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.PUBLIC_QUESTIONS;
 
 /**
  * Created by eric on 05/06/2017.
  */
 @RestController
 @Profile("webmvc")
-@RequestMapping(value = PROTECTED_QUESTIONS, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = PUBLIC_QUESTIONS, produces = MediaType.APPLICATION_JSON_VALUE)
 public class QuestionRestController {
 
     private final QuestionServicePort questionServicePort;

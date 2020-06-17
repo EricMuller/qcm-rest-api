@@ -29,7 +29,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 @ActiveProfiles(value = "webmvc")
 public class QuestionRestControllerTest {
 
-    private static final String QUESTIONS_URI = ApiRestMappings.PROTECTED_API + "/questions/";
+    private static final String QUESTIONS_URI = ApiRestMappings.PUBLIC_API + "/questions/";
 
     private static final String QUESTION1 = "Question 1";
 

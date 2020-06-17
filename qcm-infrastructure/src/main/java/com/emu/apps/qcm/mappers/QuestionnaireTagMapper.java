@@ -28,8 +28,9 @@
 
 package com.emu.apps.qcm.mappers;
 
-import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.tags.QuestionnaireTag;
 import com.emu.apps.qcm.domain.dtos.QuestionnaireTagDto;
+import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.tags.QuestionnaireTag;
+import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.tags.Tag;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
@@ -38,16 +39,15 @@ import org.mapstruct.ReportingPolicy;
         , unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface QuestionnaireTagMapper {
 
-
     @Mapping(source = "tag.uuid", target = "uuid")
     @Mapping(source = "tag.libelle", target = "libelle")
     QuestionnaireTagDto modelToDto(QuestionnaireTag questionnaireTag);
-
 
     @Mapping(source = "uuid", target = "tag.uuid")
     @Mapping(source = "libelle", target = "tag.libelle")
     QuestionnaireTag dtoToModel(QuestionnaireTagDto questionnaireTagDto);
 
-    Iterable <QuestionnaireTag> dtosToModels(Iterable <QuestionnaireTagDto> questionnaireTagDtos);
+    Iterable <QuestionnaireTagDto> questionnaireTagToDtos(Iterable <Tag> tags);
+
 
 }

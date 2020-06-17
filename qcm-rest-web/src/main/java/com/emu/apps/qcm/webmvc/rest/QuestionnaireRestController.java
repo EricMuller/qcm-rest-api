@@ -20,12 +20,12 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.Optional;
 
-import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.PROTECTED_QUESTIONNAIRES;
+import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.PUBLIC_QUESTIONNAIRES;
 
 
 @RestController
 @Profile("webmvc")
-@RequestMapping(value = PROTECTED_QUESTIONNAIRES, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = PUBLIC_QUESTIONNAIRES, produces = MediaType.APPLICATION_JSON_VALUE)
 public class QuestionnaireRestController {
 
     private final QuestionnaireServicePort questionnaireServicePort;

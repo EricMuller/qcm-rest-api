@@ -42,7 +42,7 @@ public class UploadRestControllerTest {
 
         final ResponseEntity<UploadDto> postResponse = restTemplate
                 .withBasicAuth(SpringBootTestConfig.USER_TEST,SpringBootTestConfig.USER_PASSWORD)
-                .exchange(getURL(ApiRestMappings.PROTECTED_API + "/upload/json"), HttpMethod.POST, new HttpEntity<>(map), UploadDto.class);
+                .exchange(getURL(ApiRestMappings.PUBLIC_API + "/upload/json"), HttpMethod.POST, new HttpEntity<>(map), UploadDto.class);
         assertThat(postResponse.getBody()).isNotNull();
 
 

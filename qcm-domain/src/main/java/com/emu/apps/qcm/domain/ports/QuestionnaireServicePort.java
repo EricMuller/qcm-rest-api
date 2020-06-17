@@ -2,6 +2,8 @@ package com.emu.apps.qcm.domain.ports;
 
 import com.emu.apps.qcm.domain.dtos.QuestionDto;
 import com.emu.apps.qcm.domain.dtos.QuestionnaireDto;
+import com.emu.apps.qcm.guest.GuestCategoryDto;
+import com.emu.apps.qcm.guest.GuestTagDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -29,5 +31,9 @@ public interface QuestionnaireServicePort {
     Page <QuestionnaireDto> getQuestionnaires(String[] tagUuid, Pageable pageable, Principal principal);
 
     Page <QuestionnaireDto> getPublicQuestionnaires(String[] tagUuid, Pageable pageable, String principal);
+
+    Iterable <GuestCategoryDto> getPublicCategories();
+
+    Iterable <GuestTagDto> getPublicTags();
 
 }

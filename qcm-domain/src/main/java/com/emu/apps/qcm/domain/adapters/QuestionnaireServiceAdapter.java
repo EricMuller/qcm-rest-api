@@ -3,6 +3,8 @@ package com.emu.apps.qcm.domain.adapters;
 import com.emu.apps.qcm.domain.dtos.QuestionDto;
 import com.emu.apps.qcm.domain.dtos.QuestionnaireDto;
 import com.emu.apps.qcm.domain.ports.QuestionnaireServicePort;
+import com.emu.apps.qcm.guest.GuestCategoryDto;
+import com.emu.apps.qcm.guest.GuestTagDto;
 import com.emu.apps.qcm.infrastructure.exceptions.EntityExceptionUtil;
 import com.emu.apps.qcm.infrastructure.ports.QuestionPersistencePort;
 import com.emu.apps.qcm.infrastructure.ports.QuestionnairePersistencePort;
@@ -104,6 +106,15 @@ public class QuestionnaireServiceAdapter implements QuestionnaireServicePort {
     @Transactional(readOnly = true)
     public Page <QuestionnaireDto> getPublicQuestionnaires(String[] tagUuid, Pageable pageable, String principal) {
         return questionnairePersistencePort.findAllPublicByPage(tagUuid, principal, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Iterable <GuestCategoryDto> getPublicCategories() {
+        return questionnairePersistencePort.getPublicCategories();
+    }
+    @Transactional(readOnly = true)
+    public Iterable <GuestTagDto> getPublicTags() {
+        return questionnairePersistencePort.getPublicTags();
     }
 
     @Override
