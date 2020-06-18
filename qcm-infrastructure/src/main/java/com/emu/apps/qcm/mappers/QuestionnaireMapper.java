@@ -53,6 +53,8 @@ public interface QuestionnaireMapper {
     @Mapping(target = "uuid", ignore = true)
     @Mapping(target = "dateCreation", ignore = true)
     @Mapping(target = "dateModification", ignore = true)
+    @Mapping(target = "createdBy", ignore = true)
+    @Mapping(target = "lastModifiedBy", ignore = true)
     Questionnaire dtoToModel(@MappingTarget Questionnaire questionnaire, QuestionnaireDto questionnaireDto);
 
     default Page <QuestionnaireDto> pageToDto(Page <Questionnaire> page) {
