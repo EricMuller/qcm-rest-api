@@ -6,7 +6,7 @@ import com.emu.apps.qcm.infrastructure.exceptions.MessageSupport;
 import com.emu.apps.qcm.infrastructure.ports.QuestionPersistencePort;
 import com.emu.apps.qcm.infrastructure.ports.QuestionnairePersistencePort;
 import com.emu.apps.qcm.mappers.exports.ExportMapper;
-import com.emu.apps.qcm.web.dtos.export.ExportDto;
+import com.emu.apps.qcm.dtos.export.ExportDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

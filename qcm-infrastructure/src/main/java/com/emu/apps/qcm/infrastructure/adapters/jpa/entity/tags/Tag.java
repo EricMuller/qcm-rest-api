@@ -18,7 +18,7 @@ public class Tag extends AuditableEntity<String> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tag_generator")
-    @SequenceGenerator(name="tag_generator", sequenceName = "tag_seq", allocationSize=50)
+    @SequenceGenerator(name="tag_generator", sequenceName = "tag_seq", allocationSize=1)
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 

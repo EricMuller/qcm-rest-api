@@ -2,12 +2,13 @@ package com.emu.apps.qcm.webmvc.rest;
 
 
 import com.emu.apps.qcm.domain.ports.SuggestServicePort;
-import com.emu.apps.qcm.web.dtos.SuggestDto;
+import com.emu.apps.qcm.dtos.SuggestDto;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.PUBLIC_SUGGEST;
+import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.PUBLIC_API;
+import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.SUGGEST;
 
 
 /**
@@ -15,7 +16,7 @@ import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.PUBLIC_SUGGEST;
  */
 @RestController
 @Profile("webmvc")
-@RequestMapping(value = PUBLIC_SUGGEST, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = PUBLIC_API + SUGGEST, produces = MediaType.APPLICATION_JSON_VALUE)
 public class SuggestRestController {
 
     private final SuggestServicePort suggestServicePort;

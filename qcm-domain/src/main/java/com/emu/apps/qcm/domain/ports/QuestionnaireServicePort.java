@@ -1,14 +1,13 @@
 package com.emu.apps.qcm.domain.ports;
 
-import com.emu.apps.qcm.domain.dtos.QuestionDto;
-import com.emu.apps.qcm.domain.dtos.QuestionnaireDto;
-import com.emu.apps.qcm.guest.GuestCategoryDto;
-import com.emu.apps.qcm.guest.GuestTagDto;
+import com.emu.apps.qcm.models.QuestionDto;
+import com.emu.apps.qcm.models.QuestionnaireDto;
+import com.emu.apps.qcm.dtos.published.PublishedCategoryDto;
+import com.emu.apps.qcm.dtos.published.PublishedTagDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
-import java.security.Principal;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -24,16 +23,16 @@ public interface QuestionnaireServicePort {
 
     List <QuestionDto> addQuestions(String uuid, Collection <QuestionDto> questionDtos);
 
-    QuestionnaireDto updateQuestionnaire(QuestionnaireDto questionnaireDto, Principal principal);
+    QuestionnaireDto updateQuestionnaire(QuestionnaireDto questionnaireDto, String principal);
 
-    QuestionnaireDto saveQuestionnaire(QuestionnaireDto questionnaireDto, Principal principal);
+    QuestionnaireDto saveQuestionnaire(QuestionnaireDto questionnaireDto, String principal);
 
-    Page <QuestionnaireDto> getQuestionnaires(String[] tagUuid, Pageable pageable, Principal principal);
+    Page <QuestionnaireDto> getQuestionnaires(String[] tagUuid, Pageable pageable, String principal);
 
     Page <QuestionnaireDto> getPublicQuestionnaires(String[] tagUuid, Pageable pageable, String principal);
 
-    Iterable <GuestCategoryDto> getPublicCategories();
+    Iterable <PublishedCategoryDto> getPublicCategories();
 
-    Iterable <GuestTagDto> getPublicTags();
+    Iterable <PublishedTagDto> getPublicTags();
 
 }

@@ -47,7 +47,7 @@
 
         <dependency>
             <groupId>com.emu.apps.qcm</groupId>
-            <artifactId>qcm-dto</artifactId>
+            <artifactId>qcm-model</artifactId>
         </dependency>
 
         <dependency>
@@ -73,13 +73,23 @@
         <!--   hibernate  -->
         <dependency>
             <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-ehcache</artifactId>
+            <artifactId>hibernate-jcache</artifactId>
             <exclusions>
                 <exclusion>
                     <groupId>org.hibernate</groupId>
                     <artifactId>hibernate-core</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.cache</groupId>
+            <artifactId>cache-api</artifactId>
         </dependency>
 
         <dependency>

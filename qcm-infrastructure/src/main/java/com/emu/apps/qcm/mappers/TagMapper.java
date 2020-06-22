@@ -30,7 +30,7 @@ package com.emu.apps.qcm.mappers;
 
 
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.tags.Tag;
-import com.emu.apps.qcm.domain.dtos.TagDto;
+import com.emu.apps.qcm.models.TagDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import org.springframework.data.domain.Page;

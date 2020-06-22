@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.infrastructure.ports;
 
-import com.emu.apps.qcm.domain.dtos.UploadDto;
+import com.emu.apps.qcm.models.UploadDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

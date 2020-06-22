@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.infrastructure.ports;
 
-import com.emu.apps.qcm.domain.dtos.UserDto;
+import com.emu.apps.qcm.models.UserDto;
 
 public interface UserPersistencePort {
 

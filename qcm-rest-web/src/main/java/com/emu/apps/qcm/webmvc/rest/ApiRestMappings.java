@@ -32,27 +32,24 @@ public final class ApiRestMappings {
 
     public static final String PUBLIC_API = "/qcm/api/v1";
 
-    public static final String GUEST_API = "/guest/qcm/api/v1";
+    public static final String PUBLISHED_API = "/published/qcm/api/v1";
 
-    public static final String PUBLIC_QUESTIONNAIRES = PUBLIC_API + "/questionnaires";
+    public static final String QUESTIONNAIRES =  "/questionnaires";
 
-    public static final String PUBLIC_CATEGORIES = PUBLIC_API + "/categories";
+    public static final String CATEGORIES = "/categories";
 
-    public static final String PUBLIC_QUESTIONS = PUBLIC_API + "/questions";
+    public static final String QUESTIONS =  "/questions";
 
-    public static final String PUBLIC_SUGGEST = PUBLIC_API + "/suggest";
+    public static final String SUGGEST = "/suggest";
 
-    public static final String PUBLIC_TAGS = PUBLIC_API + "/tags";
+    public static final String TAGS =  "/tags";
 
-    public static final String PUBLIC_UPLOADS = PUBLIC_API + "/upload";
+    public static final String UPLOADS =  "/upload";
 
-    public static final String PUBLIC_USERS = PUBLIC_API + "/users";
+    public static final String USERS =  "/users";
 
-    public static final String GUEST_EXPORTS = GUEST_API + "/exports";
+    public static final String EXPORTS =  "/exports";
 
-    public static final String GUEST_QUESTIONNAIRES = GUEST_API + "/questionnaires";
-
-    public static final String GUEST_CATEGORIES = GUEST_API + "/categories";
 
     private ApiRestMappings() {
         //nop

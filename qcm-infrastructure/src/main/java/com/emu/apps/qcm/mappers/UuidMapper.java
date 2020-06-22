@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.mappers;
 
-import com.emu.apps.qcm.domain.dtos.DomainDto;
+import com.emu.apps.qcm.models.DomainDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 

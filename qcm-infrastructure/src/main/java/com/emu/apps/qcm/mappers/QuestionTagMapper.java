@@ -29,7 +29,7 @@
 package com.emu.apps.qcm.mappers;
 
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.tags.QuestionTag;
-import com.emu.apps.qcm.domain.dtos.QuestionTagDto;
+import com.emu.apps.qcm.models.QuestionTagDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;

@@ -7,7 +7,7 @@ import com.emu.apps.qcm.infrastructure.adapters.jpa.repositories.mptt.MpttExcept
 import com.emu.apps.qcm.infrastructure.exceptions.TechnicalException;
 import com.emu.apps.qcm.infrastructure.ports.CategoryPersistencePort;
 import com.emu.apps.qcm.mappers.CategoryMapper;
-import com.emu.apps.qcm.domain.dtos.CategoryDto;
+import com.emu.apps.qcm.models.CategoryDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;

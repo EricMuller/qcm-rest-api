@@ -52,13 +52,10 @@
 
         <dependency>
             <groupId>com.emu.apps.qcm</groupId>
-            <artifactId>qcm-dto</artifactId>
+            <artifactId>qcm-model</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.emu.apps.qcm</groupId>
-            <artifactId>qcm-mapper</artifactId>
-        </dependency>
+
 
         <!--  tools  -->
         <dependency>

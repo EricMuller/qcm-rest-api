@@ -2,7 +2,7 @@ package com.emu.apps.qcm.infrastructure.ports;
 
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.category.Type;
 import com.emu.apps.qcm.infrastructure.exceptions.TechnicalException;
-import com.emu.apps.qcm.domain.dtos.CategoryDto;
+import com.emu.apps.qcm.models.CategoryDto;
 
 import java.util.Optional;
 import java.util.UUID;

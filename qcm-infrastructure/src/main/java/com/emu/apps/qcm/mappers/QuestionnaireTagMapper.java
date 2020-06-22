@@ -28,7 +28,7 @@
 
 package com.emu.apps.qcm.mappers;
 
-import com.emu.apps.qcm.domain.dtos.QuestionnaireTagDto;
+import com.emu.apps.qcm.models.QuestionnaireTagDto;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.tags.QuestionnaireTag;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.tags.Tag;
 import org.mapstruct.Mapper;

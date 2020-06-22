@@ -47,7 +47,7 @@
 
     <modules>
         <module>qcm-shared</module>
-        <module>qcm-dto</module>
+        <module>qcm-model</module>
         <module>qcm-infrastructure</module>
         <module>qcm-domain</module>
         <module>qcm-reporting</module>
@@ -92,7 +92,7 @@
 
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-dto</artifactId>
+                <artifactId>qcm-model</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

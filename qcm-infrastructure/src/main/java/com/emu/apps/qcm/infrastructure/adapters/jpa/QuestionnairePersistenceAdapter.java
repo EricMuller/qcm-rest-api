@@ -1,11 +1,11 @@
 package com.emu.apps.qcm.infrastructure.adapters.jpa;
 
 
-import com.emu.apps.qcm.domain.dtos.QuestionDto;
-import com.emu.apps.qcm.domain.dtos.QuestionnaireDto;
-import com.emu.apps.qcm.domain.dtos.QuestionnaireTagDto;
-import com.emu.apps.qcm.guest.GuestCategoryDto;
-import com.emu.apps.qcm.guest.GuestTagDto;
+import com.emu.apps.qcm.models.QuestionDto;
+import com.emu.apps.qcm.models.QuestionnaireDto;
+import com.emu.apps.qcm.models.QuestionnaireTagDto;
+import com.emu.apps.qcm.dtos.published.PublishedCategoryDto;
+import com.emu.apps.qcm.dtos.published.PublishedTagDto;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.builders.QuestionnaireTagBuilder;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.category.Category;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questionnaires.Questionnaire;
@@ -189,11 +189,11 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
     }
 
     @Override
-    public Iterable <GuestCategoryDto> getPublicCategories() {
+    public Iterable <PublishedCategoryDto> getPublicCategories() {
         return guestMapper.categoriesToDtos(questionnaireRepository.getAllPublicCategories());
     }
 
-    public Iterable <GuestTagDto> getPublicTags() {
+    public Iterable <PublishedTagDto> getPublicTags() {
         return guestMapper.tagsToDtos(questionnaireTagRepository.getPublicTags());
     }
 }

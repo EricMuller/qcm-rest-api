@@ -32,7 +32,7 @@ import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.users.User;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.repositories.UserRepository;
 import com.emu.apps.qcm.infrastructure.ports.UserPersistencePort;
 import com.emu.apps.qcm.mappers.UserMapper;
-import com.emu.apps.qcm.domain.dtos.UserDto;
+import com.emu.apps.qcm.models.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -72,6 +72,7 @@ public class UserPersistenceAdapter implements UserPersistencePort {
 
 
     @Override
+    @Transactional(readOnly = true)
     public UserDto findByEmailContaining(String email) {
         return userMapper.modelToDto(userRepository.findByEmailContaining(email).orElse(null));
     }

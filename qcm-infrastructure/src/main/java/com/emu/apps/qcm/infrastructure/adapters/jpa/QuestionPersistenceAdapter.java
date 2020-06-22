@@ -10,9 +10,9 @@ import com.emu.apps.qcm.infrastructure.adapters.jpa.specifications.QuestionSpeci
 import com.emu.apps.qcm.infrastructure.ports.QuestionPersistencePort;
 import com.emu.apps.qcm.mappers.QuestionMapper;
 import com.emu.apps.qcm.mappers.UuidMapper;
-import com.emu.apps.qcm.domain.dtos.QuestionDto;
-import com.emu.apps.qcm.domain.dtos.QuestionTagDto;
-import com.emu.apps.qcm.domain.dtos.question.QuestionTagsDto;
+import com.emu.apps.qcm.models.QuestionDto;
+import com.emu.apps.qcm.models.QuestionTagDto;
+import com.emu.apps.qcm.models.question.QuestionTagsDto;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

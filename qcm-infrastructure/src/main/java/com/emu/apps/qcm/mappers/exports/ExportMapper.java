@@ -29,14 +29,14 @@
 package com.emu.apps.qcm.mappers.exports;
 
 
+import com.emu.apps.qcm.dtos.export.*;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.category.Category;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questionnaires.QuestionnaireQuestion;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questions.Question;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questions.Response;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.tags.QuestionTag;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.tags.QuestionnaireTag;
-import com.emu.apps.qcm.domain.dtos.QuestionnaireDto;
-import com.emu.apps.qcm.web.dtos.export.*;
+import com.emu.apps.qcm.models.QuestionnaireDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
@@ -48,7 +48,6 @@ import java.util.stream.StreamSupport;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ExportMapper {
-
 
     ExportDto toDto(QuestionnaireDto questionnaire, Iterable <QuestionnaireQuestion> questions, String name);
 

@@ -29,7 +29,7 @@
 package com.emu.apps.qcm.mappers;
 
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.category.Category;
-import com.emu.apps.qcm.domain.dtos.CategoryDto;
+import com.emu.apps.qcm.models.CategoryDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 

@@ -30,7 +30,7 @@ package com.emu.apps.qcm.mappers;
 
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.tags.Tag;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.projections.QuestionnaireProjection;
-import com.emu.apps.qcm.web.dtos.SuggestDto;
+import com.emu.apps.qcm.dtos.SuggestDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;

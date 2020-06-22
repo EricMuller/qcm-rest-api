@@ -2,11 +2,11 @@ package com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questions;
 
 
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.Status;
+import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.category.Category;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.common.AuditableEntity;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.converters.BooleanTFConverter;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questionnaires.QuestionnaireQuestion;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.tags.QuestionTag;
-import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.category.Category;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -37,7 +37,7 @@ public class Question extends AuditableEntity <String> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "question_generator")
-    @SequenceGenerator(name = "question_generator", sequenceName = "question_seq")
+    @SequenceGenerator(name = "question_generator", sequenceName = "question_seq", allocationSize = 1)
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 

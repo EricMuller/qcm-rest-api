@@ -3,7 +3,7 @@ package com.emu.apps.qcm.infrastructure.adapters.jpa.repositories;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.config.SpringBootTestConfig;
 import com.emu.apps.qcm.infrastructure.exceptions.FunctionnalException;
 import com.emu.apps.qcm.infrastructure.ports.CategoryPersistencePort;
-import com.emu.apps.qcm.domain.dtos.CategoryDto;
+import com.emu.apps.qcm.models.CategoryDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

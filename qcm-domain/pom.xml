@@ -59,12 +59,7 @@
 
         <dependency>
             <groupId>com.emu.apps.qcm</groupId>
-            <artifactId>qcm-dto</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.emu.apps.qcm</groupId>
-            <artifactId>qcm-mapper</artifactId>
+            <artifactId>qcm-model</artifactId>
         </dependency>
 
         <!--  tools  -->

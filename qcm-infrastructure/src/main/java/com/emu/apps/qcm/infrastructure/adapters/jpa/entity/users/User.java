@@ -4,6 +4,8 @@ import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.common.AuditableEntit
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
@@ -11,12 +13,14 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "account",indexes = { @Index(name = "IDX_USR_EMAIL_IDX", columnList = "email") })
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Table(name = "account", indexes = {@Index(name = "IDX_USR_EMAIL_IDX", columnList = "email")})
 public class User extends AuditableEntity <String> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_generator")
-    @SequenceGenerator(name="user_generator", sequenceName = "user_seq", allocationSize=50)
+    @SequenceGenerator(name = "user_generator", sequenceName = "user_seq", allocationSize = 1)
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 

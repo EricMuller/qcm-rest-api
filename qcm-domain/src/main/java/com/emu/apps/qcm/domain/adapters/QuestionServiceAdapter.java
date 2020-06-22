@@ -1,17 +1,15 @@
 package com.emu.apps.qcm.domain.adapters;
 
+import com.emu.apps.qcm.models.QuestionDto;
+import com.emu.apps.qcm.models.question.QuestionTagsDto;
 import com.emu.apps.qcm.domain.ports.QuestionServicePort;
 import com.emu.apps.qcm.infrastructure.exceptions.EntityExceptionUtil;
 import com.emu.apps.qcm.infrastructure.exceptions.MessageSupport;
 import com.emu.apps.qcm.infrastructure.ports.QuestionPersistencePort;
-import com.emu.apps.qcm.domain.dtos.QuestionDto;
-import com.emu.apps.qcm.domain.dtos.question.QuestionTagsDto;
-import com.emu.apps.shared.security.PrincipalUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.security.Principal;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -36,9 +34,9 @@ public class QuestionServiceAdapter implements QuestionServicePort {
     @Override
     public Iterable <QuestionTagsDto> getQuestions(String[] tagUuid,
                                                    String[] questionnaireUuid,
-                                                   Pageable pageable, Principal principal) {
+                                                   Pageable pageable, String principal) {
 
-        return questionPersistencePort.findAllByPage(questionnaireUuid, tagUuid, pageable,PrincipalUtils.getEmail(principal));
+        return questionPersistencePort.findAllByPage(questionnaireUuid, tagUuid, pageable, principal);
     }
 
 
@@ -48,13 +46,13 @@ public class QuestionServiceAdapter implements QuestionServicePort {
     }
 
     @Override
-    public QuestionDto updateQuestion(QuestionDto questionDto, Principal principal) {
-        return questionPersistencePort.saveQuestion(questionDto, PrincipalUtils.getEmail(principal));
+    public QuestionDto updateQuestion(QuestionDto questionDto, String principal) {
+        return questionPersistencePort.saveQuestion(questionDto, principal);
     }
 
     @Override
     @Transactional
-    public Collection <QuestionDto> saveQuestions(Collection <QuestionDto> questionDtos, final Principal principal) {
+    public Collection <QuestionDto> saveQuestions(Collection <QuestionDto> questionDtos, final String principal) {
 
         return questionDtos
                 .stream()
@@ -64,9 +62,9 @@ public class QuestionServiceAdapter implements QuestionServicePort {
 
     @Override
     @Transactional
-    public QuestionDto saveQuestion(QuestionDto questionDto, Principal principal) {
+    public QuestionDto saveQuestion(QuestionDto questionDto, String principal) {
 
-        return questionPersistencePort.saveQuestion(questionDto, PrincipalUtils.getEmail(principal));
+        return questionPersistencePort.saveQuestion(questionDto, principal);
 
         //fixme: em
 //        Question newQuestion = questionMapper.dtoToModel(questionDto);

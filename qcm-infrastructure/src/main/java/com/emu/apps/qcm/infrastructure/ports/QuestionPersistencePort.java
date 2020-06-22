@@ -2,8 +2,8 @@ package com.emu.apps.qcm.infrastructure.ports;
 
 
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questionnaires.QuestionnaireQuestion;
-import com.emu.apps.qcm.domain.dtos.QuestionDto;
-import com.emu.apps.qcm.domain.dtos.question.QuestionTagsDto;
+import com.emu.apps.qcm.models.QuestionDto;
+import com.emu.apps.qcm.models.question.QuestionTagsDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

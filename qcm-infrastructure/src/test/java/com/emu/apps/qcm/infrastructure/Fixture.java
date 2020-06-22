@@ -11,10 +11,11 @@ import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questions.Response;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.tags.QuestionTag;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.tags.Tag;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.upload.Upload;
+import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.users.User;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.repositories.*;
 import com.emu.apps.qcm.infrastructure.ports.CategoryPersistencePort;
 import com.emu.apps.qcm.mappers.CategoryMapper;
-import com.emu.apps.qcm.domain.dtos.CategoryDto;
+import com.emu.apps.qcm.models.CategoryDto;
 import com.emu.apps.shared.security.PrincipalUtils;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
@@ -99,6 +100,9 @@ public class Fixture {
     @Autowired
     private CategoryMapper categoryMapper;
 
+    @Autowired
+    private UserRepository userRepository;
+
     public Fixture() {
     }
 
@@ -118,6 +122,11 @@ public class Fixture {
         questionnaireJpaRepository.deleteAll();
         entityManager.flush();
         categoryRepository.deleteAll();
+        userRepository.deleteAll();
+        User user = new User();
+        user.setEmail(USER);
+        userRepository.save(user);
+        entityManager.flush();
     }
 
 

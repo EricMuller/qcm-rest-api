@@ -2,9 +2,9 @@ package com.emu.apps.qcm.webmvc.rest.controllers;
 
 
 import com.emu.apps.qcm.infrastructure.adapters.jpa.config.SpringBootTestConfig;
-import com.emu.apps.qcm.domain.dtos.QuestionDto;
-import com.emu.apps.qcm.domain.dtos.QuestionTagDto;
-import com.emu.apps.qcm.domain.dtos.ResponseDto;
+import com.emu.apps.qcm.models.QuestionDto;
+import com.emu.apps.qcm.models.QuestionTagDto;
+import com.emu.apps.qcm.models.ResponseDto;
 import com.emu.apps.qcm.webmvc.rest.ApiRestMappings;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
@@ -29,7 +29,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 @ActiveProfiles(value = "webmvc")
 public class QuestionRestControllerTest {
 
-    private static final String QUESTIONS_URI = ApiRestMappings.PUBLIC_API + "/questions/";
+    private static final String QUESTIONS_URI = ApiRestMappings.PUBLIC_API + ApiRestMappings.QUESTIONS;
 
     private static final String QUESTION1 = "Question 1";
 
@@ -142,7 +142,7 @@ public class QuestionRestControllerTest {
 
         // get the question
         String uuid = postResponse.getBody().getUuid();
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getURL(QUESTIONS_URI + "{uuid}"));
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getURL(QUESTIONS_URI + "/{uuid}"));
         URI uri = builder.build().expand(uuid).encode().toUri();
 
         final ResponseEntity <QuestionDto> getResponse = restTemplate
@@ -182,5 +182,6 @@ public class QuestionRestControllerTest {
         assertThat(firstResponse).isNotNull();
         assertThat(firstResponse.getResponse()).isNotNull().isEqualTo(RESPONSE2);
     }
+
 }
 

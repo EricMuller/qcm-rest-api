@@ -2,7 +2,7 @@ package com.emu.apps.qcm.webmvc.rest.controllers;
 
 
 import com.emu.apps.qcm.infrastructure.adapters.jpa.config.SpringBootTestConfig;
-import com.emu.apps.qcm.domain.dtos.UploadDto;
+import com.emu.apps.qcm.models.UploadDto;
 import com.emu.apps.qcm.webmvc.rest.ApiRestMappings;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

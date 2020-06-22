@@ -30,7 +30,7 @@ package com.emu.apps.qcm.mappers;
 
 
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questionnaires.Questionnaire;
-import com.emu.apps.qcm.domain.dtos.QuestionnaireDto;
+import com.emu.apps.qcm.models.QuestionnaireDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;

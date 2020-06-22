@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.webmvc.rest;
 
+import com.emu.apps.qcm.models.UserDto;
 import com.emu.apps.qcm.domain.ports.UserServicePort;
-import com.emu.apps.qcm.domain.dtos.UserDto;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -9,9 +9,12 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.Map;
 
+import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.PUBLIC_API;
+import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.USERS;
+
 @RestController
 @Profile("webmvc")
-@RequestMapping(ApiRestMappings.PUBLIC_USERS)
+@RequestMapping(PUBLIC_API + USERS)
 public class UserRestController {
 
     private final UserServicePort userServicePort;

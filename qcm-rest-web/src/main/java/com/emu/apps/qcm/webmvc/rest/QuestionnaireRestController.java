@@ -1,11 +1,12 @@
 package com.emu.apps.qcm.webmvc.rest;
 
 
+import com.emu.apps.qcm.models.QuestionDto;
+import com.emu.apps.qcm.models.QuestionnaireDto;
 import com.emu.apps.qcm.domain.ports.QuestionnaireServicePort;
-import com.emu.apps.qcm.domain.dtos.QuestionDto;
-import com.emu.apps.qcm.domain.dtos.QuestionnaireDto;
 import com.emu.apps.qcm.webmvc.rest.caches.CacheName;
 import com.emu.apps.shared.annotations.Timer;
+import com.emu.apps.shared.security.UserContextHolder;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -20,12 +21,13 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.Optional;
 
-import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.PUBLIC_QUESTIONNAIRES;
+import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.PUBLIC_API;
+import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.QUESTIONNAIRES;
 
 
 @RestController
 @Profile("webmvc")
-@RequestMapping(value = PUBLIC_QUESTIONNAIRES, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = PUBLIC_API + QUESTIONNAIRES, produces = MediaType.APPLICATION_JSON_VALUE)
 public class QuestionnaireRestController {
 
     private final QuestionnaireServicePort questionnaireServicePort;
@@ -56,13 +58,13 @@ public class QuestionnaireRestController {
     @Timer
     @ResponseBody
     public QuestionnaireDto updateQuestionnaire(@RequestBody QuestionnaireDto questionnaireDto, Principal principal) {
-        return questionnaireServicePort.updateQuestionnaire(questionnaireDto, principal);
+        return questionnaireServicePort.updateQuestionnaire(questionnaireDto, UserContextHolder.getUser());
     }
 
     @PostMapping()
     @ResponseBody
     public QuestionnaireDto saveQuestionnaire(@RequestBody QuestionnaireDto questionnaireDto, Principal principal) {
-        return questionnaireServicePort.saveQuestionnaire(questionnaireDto, principal);
+        return questionnaireServicePort.saveQuestionnaire(questionnaireDto, UserContextHolder.getUser());
     }
 
     /* /{id:[\d]+}/questions*/
@@ -77,7 +79,7 @@ public class QuestionnaireRestController {
     @ResponseBody
     public Page <QuestionnaireDto> getQuestionnaires(@RequestParam(value = "tag_uuid", required = false) String[] tagUuid,
                                                      Pageable pageable, Principal principal) {
-        return questionnaireServicePort.getQuestionnaires(tagUuid, pageable, principal);
+        return questionnaireServicePort.getQuestionnaires(tagUuid, pageable, UserContextHolder.getUser());
     }
 
     @PutMapping(value = "/{uuid}/questions")

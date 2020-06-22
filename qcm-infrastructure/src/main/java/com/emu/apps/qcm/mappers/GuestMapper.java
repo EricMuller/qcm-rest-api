@@ -28,8 +28,8 @@
 
 package com.emu.apps.qcm.mappers;
 
-import com.emu.apps.qcm.guest.GuestCategoryDto;
-import com.emu.apps.qcm.guest.GuestTagDto;
+import com.emu.apps.qcm.dtos.published.PublishedCategoryDto;
+import com.emu.apps.qcm.dtos.published.PublishedTagDto;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.category.Category;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.tags.Tag;
 import org.mapstruct.Mapper;
@@ -38,11 +38,11 @@ import org.mapstruct.ReportingPolicy;
 @Mapper(componentModel = "spring", uses = {UuidMapper.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface GuestMapper {
 
-    GuestCategoryDto categoryToDto(Category category);
+    PublishedCategoryDto categoryToDto(Category category);
 
-    Iterable <GuestCategoryDto> categoriesToDtos(Iterable <Category> categories);
+    Iterable <PublishedCategoryDto> categoriesToDtos(Iterable <Category> categories);
 
-    GuestTagDto tagToDto(Tag tag);
+    PublishedTagDto tagToDto(Tag tag);
 
-    Iterable <GuestTagDto> tagsToDtos(Iterable <Tag> tags);
+    Iterable <PublishedTagDto> tagsToDtos(Iterable <Tag> tags);
 }

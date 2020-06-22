@@ -2,8 +2,8 @@ package com.emu.apps.qcm.webmvc.rest.controllers;
 
 
 import com.emu.apps.qcm.infrastructure.adapters.jpa.config.SpringBootTestConfig;
-import com.emu.apps.qcm.domain.dtos.QuestionDto;
-import com.emu.apps.qcm.domain.dtos.ResponseDto;
+import com.emu.apps.qcm.models.QuestionDto;
+import com.emu.apps.qcm.models.ResponseDto;
 import com.emu.apps.qcm.webmvc.rest.ApiRestMappings;
 import com.google.common.collect.Iterables;
 import org.junit.jupiter.api.Test;
@@ -29,8 +29,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 @TestPropertySource("classpath:application-test.properties")
 @ActiveProfiles(value = "webmvc")
 public class QuestionRestControllerSearchTest {
-
-    private static final String QUESTIONS_URI = ApiRestMappings.PUBLIC_API + "/questions/";
+    private static final String QUESTIONS_URI = ApiRestMappings.PUBLIC_API + ApiRestMappings.QUESTIONS;
 
     private static final String QUESTION1 = "Question 1";
 
@@ -46,7 +45,6 @@ public class QuestionRestControllerSearchTest {
     private String getURL(String uri) {
         return "http://localhost:" + port + uri;
     }
-
 
     private QuestionDto createQuestionDto() {
         QuestionDto questionDto = new QuestionDto();
@@ -66,17 +64,17 @@ public class QuestionRestControllerSearchTest {
     public void getQuestionByIdShouldReturnQuestion() {
 
         // create a new question
-        final ResponseEntity<QuestionDto> postResponse = restTemplate
-                .exchange(getURL(QUESTIONS_URI), HttpMethod.POST, new HttpEntity<>(createQuestionDto(), headers()), QuestionDto.class);
+        final ResponseEntity <QuestionDto> postResponse = restTemplate
+                .exchange(getURL(QUESTIONS_URI), HttpMethod.POST, new HttpEntity <>(createQuestionDto(), headers()), QuestionDto.class);
         assertThat(postResponse.getBody()).isNotNull();
 
         // get the question
         String uuid = postResponse.getBody().getUuid();
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getURL(QUESTIONS_URI + "{uuid}"));
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getURL(QUESTIONS_URI + "/{uuid}"));
         URI uri = builder.build().expand(uuid).encode().toUri();
 
-        final ResponseEntity<QuestionDto> getResponse = restTemplate
-                .exchange(uri, HttpMethod.GET, new HttpEntity<>(headers()), QuestionDto.class);
+        final ResponseEntity <QuestionDto> getResponse = restTemplate
+                .exchange(uri, HttpMethod.GET, new HttpEntity <>(headers()), QuestionDto.class);
 
         assertThat(getResponse.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
 
@@ -85,6 +83,7 @@ public class QuestionRestControllerSearchTest {
         ResponseDto firstResponse = Iterables.getFirst(getResponse.getBody().getResponses(), null);
         assertThat(firstResponse).isNotNull();
         assertThat(firstResponse.getResponse()).isNotNull().isEqualTo(RESPONSE1);
+
     }
 
 

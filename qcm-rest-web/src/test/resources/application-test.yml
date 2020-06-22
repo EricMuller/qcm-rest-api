@@ -1,19 +1,63 @@
-
 keycloak:
   enabled: false
 
 spring:
+  application:
+    name: qcm-service
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.xml
+
   jpa:
-#    database-platform: org.hibernate.dialect.H2Dialect
+    #    database-platform: org.hibernate.dialect.H2Dialect
     generate-ddl: false
     show-sql: false
     hibernate:
       ddl-auto: create-drop
       dialect: org.hibernate.dialect.PostgreSQLDialect
-  application:
-    name: qcm-service
-  liquibase:
-    change-log: classpath:/db/changelog/db.changelog-master.xml
+
+    properties:
+      javax:
+        persistence:
+          sharedCache:
+            mode: ENABLE_SELECTIVE
+
+      hibernate:
+        generate_statistics: false
+        current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
+        hikari:
+          maximumPoolSize: 30
+        cache:
+          #required - turn on L2 cache.
+          use_second_level_cache: true
+          #optional - turn on query cache.
+          use_query_cache: true
+          region:
+            #required - classpath to cache region factory.
+            factory_class:  org.hibernate.cache.jcache.JCacheRegionFactory
+
+        javax:
+          cache:
+            provider: org.ehcache.jsr107.EhcacheCachingProvider
+            uri: classpath:ehcache.xml
+
+  cache:
+    jcache:
+      config: classpath:ehcache.xml
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   datasource:
     type: com.zaxxer.hikari.HikariDataSource

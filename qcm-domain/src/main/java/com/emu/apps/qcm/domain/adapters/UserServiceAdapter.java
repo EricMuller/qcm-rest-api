@@ -2,7 +2,7 @@ package com.emu.apps.qcm.domain.adapters;
 
 import com.emu.apps.qcm.domain.ports.UserServicePort;
 import com.emu.apps.qcm.infrastructure.ports.UserPersistencePort;
-import com.emu.apps.qcm.domain.dtos.UserDto;
+import com.emu.apps.qcm.models.UserDto;
 import com.emu.apps.shared.security.PrincipalUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

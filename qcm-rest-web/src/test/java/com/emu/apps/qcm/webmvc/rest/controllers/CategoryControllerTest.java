@@ -4,7 +4,7 @@ package com.emu.apps.qcm.webmvc.rest.controllers;
 import com.emu.apps.qcm.infrastructure.Fixture;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.config.SpringBootTestConfig;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.category.Type;
-import com.emu.apps.qcm.domain.dtos.CategoryDto;
+import com.emu.apps.qcm.models.CategoryDto;
 import com.emu.apps.qcm.webmvc.rest.ApiRestMappings;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,7 +30,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 @ActiveProfiles(value = "webmvc")
 public class CategoryControllerTest {
 
-    private static final String CATEGORY_URI = ApiRestMappings.PUBLIC_API + "/categories/";
+    private static final String CATEGORY_URI = ApiRestMappings.PUBLIC_API + ApiRestMappings.CATEGORIES;
 
     private static final String LIBELLE = "cate 1";
 
@@ -57,7 +57,7 @@ public class CategoryControllerTest {
     }
 
     @BeforeEach
-    public void setup(){
+    public void setup() {
         fixture.emptyDatabase();
     }
 
@@ -87,7 +87,7 @@ public class CategoryControllerTest {
         assertThat(postResponse.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
 
         String uuid = postResponse.getBody().getUuid();
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getURL(CATEGORY_URI + "{id}"));
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getURL(CATEGORY_URI + "/{uuid}"));
         URI uri = builder.build().expand(uuid).encode().toUri();
 
         final ResponseEntity <CategoryDto> getResponse = restTemplate
@@ -136,8 +136,6 @@ public class CategoryControllerTest {
         assertThat(getResponse2.getBody()).isEmpty();
 
     }
-
-
 
 
 }

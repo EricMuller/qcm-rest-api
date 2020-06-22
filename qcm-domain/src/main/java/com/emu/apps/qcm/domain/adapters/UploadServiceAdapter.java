@@ -1,11 +1,10 @@
 package com.emu.apps.qcm.domain.adapters;
 
+import com.emu.apps.qcm.models.UploadDto;
 import com.emu.apps.qcm.domain.ports.UploadServicePort;
 import com.emu.apps.qcm.infrastructure.exceptions.EntityExceptionUtil;
 import com.emu.apps.qcm.infrastructure.exceptions.MessageSupport;
 import com.emu.apps.qcm.infrastructure.ports.UploadPersistencePort;
-import com.emu.apps.qcm.domain.dtos.UploadDto;
-import com.emu.apps.shared.security.PrincipalUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -13,7 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.security.Principal;
 
 /**
  * Upload Business Delegate
@@ -35,7 +33,7 @@ public class UploadServiceAdapter implements UploadServicePort {
     public UploadDto uploadFile(String fileType,
                                 MultipartFile multipartFile,
                                 Boolean async,
-                                Principal principal) throws IOException {
+                                String principal) throws IOException {
 
         final byte[] bytes;
         try (InputStream inputStream = multipartFile.getInputStream()) {
@@ -51,9 +49,9 @@ public class UploadServiceAdapter implements UploadServicePort {
     }
 
     @Override
-    public Iterable <UploadDto> getUploads(Pageable pageable, Principal principal) {
+    public Iterable <UploadDto> getUploads(Pageable pageable, String principal) {
 
-        return uploadPersistencePort.findAllByPage( pageable,PrincipalUtils.getEmail(principal));
+        return uploadPersistencePort.findAllByPage(pageable, principal);
     }
 
     @Override

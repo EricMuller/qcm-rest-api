@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.reporting;
 
-import com.emu.apps.qcm.web.dtos.export.ExportDto;
+import com.emu.apps.qcm.dtos.export.ExportDto;
 
 import java.io.ByteArrayOutputStream;
 

@@ -14,7 +14,7 @@ public class Response extends AuditableEntity<String> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "response_generator")
-    @SequenceGenerator(name="response_generator", sequenceName = "response_seq", allocationSize=50)
+    @SequenceGenerator(name="response_generator", sequenceName = "response_seq", allocationSize=1)
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 

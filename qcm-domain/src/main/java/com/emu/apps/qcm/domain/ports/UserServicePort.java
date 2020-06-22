@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.domain.ports;
 
-import com.emu.apps.qcm.domain.dtos.UserDto;
+import com.emu.apps.qcm.models.UserDto;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.security.Principal;

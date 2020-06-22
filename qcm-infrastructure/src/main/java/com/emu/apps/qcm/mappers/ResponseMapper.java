@@ -29,7 +29,7 @@
 package com.emu.apps.qcm.mappers;
 
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questions.Response;
-import com.emu.apps.qcm.domain.dtos.ResponseDto;
+import com.emu.apps.qcm.models.ResponseDto;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring", uses = UuidMapper.class)

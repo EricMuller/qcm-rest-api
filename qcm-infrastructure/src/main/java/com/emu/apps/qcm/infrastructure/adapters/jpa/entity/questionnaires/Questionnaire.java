@@ -37,7 +37,7 @@ public class Questionnaire extends AuditableEntity <String> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "questionnaire_generator")
-    @SequenceGenerator(name = "questionnaire_generator", sequenceName = "questionnaire_seq")
+    @SequenceGenerator(name = "questionnaire_generator", sequenceName = "questionnaire_seq",allocationSize = 1)
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 

@@ -33,7 +33,7 @@ import com.emu.apps.qcm.infrastructure.adapters.jpa.repositories.TagRepository;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.specifications.TagSpecificationBuilder;
 import com.emu.apps.qcm.infrastructure.ports.TagPersistencePort;
 import com.emu.apps.qcm.mappers.TagMapper;
-import com.emu.apps.qcm.domain.dtos.TagDto;
+import com.emu.apps.qcm.models.TagDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -1,19 +1,18 @@
 package com.emu.apps.qcm.domain.ports;
 
-import com.emu.apps.qcm.domain.dtos.UploadDto;
+import com.emu.apps.qcm.models.UploadDto;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.security.Principal;
 
 public interface UploadServicePort {
     UploadDto uploadFile(String fileType,
                          MultipartFile multipartFile,
                          Boolean async,
-                         Principal principal) throws IOException;
+                         String principal) throws IOException;
 
-    Iterable <UploadDto> getUploads(Pageable pageable, Principal principal);
+    Iterable <UploadDto> getUploads(Pageable pageable, String principal);
 
     void deleteUploadByUuid(String uuid);
 

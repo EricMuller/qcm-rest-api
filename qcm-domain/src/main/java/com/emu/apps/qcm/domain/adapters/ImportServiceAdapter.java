@@ -1,9 +1,9 @@
 package com.emu.apps.qcm.domain.adapters;
 
-import com.emu.apps.qcm.domain.dtos.*;
 import com.emu.apps.qcm.domain.ports.ImportServicePort;
 import com.emu.apps.qcm.domain.ports.QuestionServicePort;
 import com.emu.apps.qcm.domain.ports.QuestionnaireServicePort;
+import com.emu.apps.qcm.dtos.FileQuestionDto;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.Status;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questions.TypeQuestion;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.upload.ImportStatus;
@@ -13,8 +13,7 @@ import com.emu.apps.qcm.infrastructure.exceptions.TechnicalException;
 import com.emu.apps.qcm.infrastructure.ports.CategoryPersistencePort;
 import com.emu.apps.qcm.infrastructure.ports.TagPersistencePort;
 import com.emu.apps.qcm.infrastructure.ports.UploadPersistencePort;
-import com.emu.apps.qcm.web.dtos.*;
-import com.emu.apps.shared.security.PrincipalUtils;
+import com.emu.apps.qcm.models.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
@@ -24,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.security.Principal;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -60,7 +58,7 @@ public class ImportServiceAdapter implements ImportServicePort {
     }
 
     @Override
-    public UploadDto importFile(String uploadUuid, Principal principal) throws IOException {
+    public UploadDto importFile(String uploadUuid, String principal) throws IOException {
 
         var uploadDto = uploadPersistencePort.findByUuid(uploadUuid);
 
@@ -102,7 +100,7 @@ public class ImportServiceAdapter implements ImportServicePort {
 
     @Override
     @Transactional
-    public ImportStatus importQuestionnaire(String name, FileQuestionDto[] fileQuestionDtos, Principal principal) {
+    public ImportStatus importQuestionnaire(String name, FileQuestionDto[] fileQuestionDtos, String principal) {
 
         if (ArrayUtils.isNotEmpty(fileQuestionDtos)) {
             try {
@@ -111,7 +109,7 @@ public class ImportServiceAdapter implements ImportServicePort {
                 questionnaireDto.setTitle(IMPORT);
                 questionnaireDto.setStatus(Status.DRAFT.name());
 
-                final var tagQuestionnaire = tagPersistencePort.findOrCreateByLibelle(IMPORT, PrincipalUtils.getEmail(principal));
+                final var tagQuestionnaire = tagPersistencePort.findOrCreateByLibelle(IMPORT, principal);
 
                 QuestionnaireTagDto questionnaireTagDto = new QuestionnaireTagDto();
                 questionnaireTagDto.setUuid(tagQuestionnaire.getUuid().toString());
@@ -121,7 +119,7 @@ public class ImportServiceAdapter implements ImportServicePort {
                 CategoryDto importCategoryQuestionDto = new CategoryDto();
                 importCategoryQuestionDto.setLibelle(IMPORT);
                 importCategoryQuestionDto.setType(QUESTION.name());
-                importCategoryQuestionDto.setUserId(PrincipalUtils.getEmail(principal));
+                importCategoryQuestionDto.setUserId(principal);
 
                 final CategoryDto categoryDto = categoryPersistencePort.saveCategory(importCategoryQuestionDto);
 

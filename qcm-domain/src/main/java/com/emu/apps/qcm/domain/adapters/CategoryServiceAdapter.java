@@ -1,13 +1,10 @@
 package com.emu.apps.qcm.domain.adapters;
 
+import com.emu.apps.qcm.models.CategoryDto;
 import com.emu.apps.qcm.domain.ports.CategoryServicePort;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.category.Type;
 import com.emu.apps.qcm.infrastructure.ports.CategoryPersistencePort;
-import com.emu.apps.qcm.domain.dtos.CategoryDto;
-import com.emu.apps.shared.security.PrincipalUtils;
 import org.springframework.stereotype.Service;
-
-import java.security.Principal;
 
 
 /**
@@ -34,14 +31,14 @@ public class CategoryServiceAdapter implements CategoryServicePort {
 
 
     @Override
-    public Iterable <CategoryDto> getCategories(Principal principal, Type type) {
-        return categoryPersistencePort.findCategories(PrincipalUtils.getEmail(principal), type);
+    public Iterable <CategoryDto> getCategories(String principal, Type type) {
+        return categoryPersistencePort.findCategories(principal, type);
     }
 
 
     @Override
-    public CategoryDto saveCategory(CategoryDto categoryDto, Principal principal) {
-        categoryDto.setUserId(PrincipalUtils.getEmail(principal));
+    public CategoryDto saveCategory(CategoryDto categoryDto, String principal) {
+        categoryDto.setUserId(principal);
         return categoryPersistencePort.saveCategory(categoryDto);
     }
 

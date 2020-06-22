@@ -29,7 +29,7 @@
 package com.emu.apps.qcm.mappers;
 
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questions.Question;
-import com.emu.apps.qcm.domain.dtos.question.QuestionTagsDto;
+import com.emu.apps.qcm.models.question.QuestionTagsDto;
 import org.mapstruct.Mapper;
 import org.springframework.data.domain.Page;
 

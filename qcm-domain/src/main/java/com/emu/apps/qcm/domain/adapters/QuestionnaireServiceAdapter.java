@@ -1,14 +1,13 @@
 package com.emu.apps.qcm.domain.adapters;
 
-import com.emu.apps.qcm.domain.dtos.QuestionDto;
-import com.emu.apps.qcm.domain.dtos.QuestionnaireDto;
+import com.emu.apps.qcm.models.QuestionDto;
+import com.emu.apps.qcm.models.QuestionnaireDto;
 import com.emu.apps.qcm.domain.ports.QuestionnaireServicePort;
-import com.emu.apps.qcm.guest.GuestCategoryDto;
-import com.emu.apps.qcm.guest.GuestTagDto;
+import com.emu.apps.qcm.dtos.published.PublishedCategoryDto;
+import com.emu.apps.qcm.dtos.published.PublishedTagDto;
 import com.emu.apps.qcm.infrastructure.exceptions.EntityExceptionUtil;
 import com.emu.apps.qcm.infrastructure.ports.QuestionPersistencePort;
 import com.emu.apps.qcm.infrastructure.ports.QuestionnairePersistencePort;
-import com.emu.apps.shared.security.PrincipalUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -16,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.security.Principal;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -76,8 +74,8 @@ public class QuestionnaireServiceAdapter implements QuestionnaireServicePort {
      * @return the updated questionnaire
      */
     @Override
-    public QuestionnaireDto updateQuestionnaire(QuestionnaireDto aQuestionnaireDto, Principal principal) {
-        return questionnairePersistencePort.saveQuestionnaire(aQuestionnaireDto, PrincipalUtils.getEmail(principal));
+    public QuestionnaireDto updateQuestionnaire(QuestionnaireDto aQuestionnaireDto, String principal) {
+        return questionnairePersistencePort.saveQuestionnaire(aQuestionnaireDto, principal);
     }
 
     /**
@@ -87,8 +85,8 @@ public class QuestionnaireServiceAdapter implements QuestionnaireServicePort {
      * @return the created questionnaire
      */
     @Override
-    public QuestionnaireDto saveQuestionnaire(QuestionnaireDto questionnaireDto, Principal principal) {
-        return questionnairePersistencePort.saveQuestionnaire(questionnaireDto, PrincipalUtils.getEmail(principal));
+    public QuestionnaireDto saveQuestionnaire(QuestionnaireDto questionnaireDto, String principal) {
+        return questionnairePersistencePort.saveQuestionnaire(questionnaireDto, principal);
     }
 
     public Page <QuestionDto> getQuestionsByQuestionnaireUuid(String questionnaireUuid, Pageable pageable) {
@@ -109,18 +107,18 @@ public class QuestionnaireServiceAdapter implements QuestionnaireServicePort {
     }
 
     @Transactional(readOnly = true)
-    public Iterable <GuestCategoryDto> getPublicCategories() {
+    public Iterable <PublishedCategoryDto> getPublicCategories() {
         return questionnairePersistencePort.getPublicCategories();
     }
     @Transactional(readOnly = true)
-    public Iterable <GuestTagDto> getPublicTags() {
+    public Iterable <PublishedTagDto> getPublicTags() {
         return questionnairePersistencePort.getPublicTags();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Page <QuestionnaireDto> getQuestionnaires(String[] tagUuid, Pageable pageable, Principal principal) {
-        return questionnairePersistencePort.findAllByPage(tagUuid, PrincipalUtils.getEmail(principal), pageable);
+    public Page <QuestionnaireDto> getQuestionnaires(String[] tagUuid, Pageable pageable, String principal) {
+        return questionnairePersistencePort.findAllByPage(tagUuid, principal, pageable);
     }
 
     /**

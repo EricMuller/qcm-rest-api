@@ -4,7 +4,7 @@ package com.emu.apps.qcm.webmvc.rest;
 import com.emu.apps.qcm.domain.ports.ExportServicePort;
 import com.emu.apps.qcm.reporting.ReportServicePort;
 import com.emu.apps.qcm.reporting.TypeReport;
-import com.emu.apps.qcm.web.dtos.export.ExportDto;
+import com.emu.apps.qcm.dtos.export.ExportDto;
 import com.emu.apps.shared.annotations.Timer;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ByteArrayResource;
@@ -16,12 +16,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayOutputStream;
 
-import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.GUEST_EXPORTS;
+import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.EXPORTS;
+import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.PUBLIC_API;
 
 
 @RestController
 @Profile("webmvc")
-@RequestMapping(value = GUEST_EXPORTS, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = PUBLIC_API + EXPORTS, produces = MediaType.APPLICATION_JSON_VALUE)
 public class ExportRestController {
 
     private final ExportServicePort exportServicePort;
@@ -39,7 +40,6 @@ public class ExportRestController {
     public ExportDto getQuestionnaireById(@PathVariable("uuid") String id) {
         return exportServicePort.getbyQuestionnaireUuid(id);
     }
-
 
 
     @GetMapping(value = "/{uuid}/{type-report}")
