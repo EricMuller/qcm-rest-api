@@ -22,7 +22,7 @@ import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.PUBLIC_API;
 
 @RestController
 @Profile("webmvc")
-@RequestMapping(value = PUBLIC_API + EXPORTS, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = PUBLIC_API + EXPORTS)
 public class ExportRestController {
 
     private final ExportServicePort exportServicePort;
@@ -34,7 +34,7 @@ public class ExportRestController {
         this.reportServicePort = reportServicePort;
     }
 
-    @GetMapping(value = "/{uuid}")
+    @GetMapping(value = "/{uuid}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Timer
     @ResponseBody
     public ExportDto getQuestionnaireById(@PathVariable("uuid") String id) {
@@ -48,7 +48,7 @@ public class ExportRestController {
 
         final ExportDto exportDto = exportServicePort.getbyQuestionnaireUuid(uuid);
 
-        ByteArrayOutputStream outputStream = reportServicePort.getReportStream(exportDto, TypeReport.getByName(typeReport));
+        ByteArrayOutputStream outputStream = reportServicePort.getReportStream(exportDto, TypeReport.getByName(typeReport.toUpperCase()));
 
         ByteArrayResource resource = new ByteArrayResource(outputStream.toByteArray());
 

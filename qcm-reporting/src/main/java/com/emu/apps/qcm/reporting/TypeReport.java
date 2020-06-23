@@ -7,7 +7,7 @@ public enum TypeReport {
 
     public static TypeReport getByName(String type) {
         return Arrays.stream(values())
-                .filter(typeReport -> typeReport.name().toLowerCase().equals(type))
+                .filter(typeReport -> typeReport.name().equals(type))
                 .findFirst().orElse(null);
     }
 }

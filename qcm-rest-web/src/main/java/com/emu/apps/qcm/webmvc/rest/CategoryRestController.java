@@ -34,7 +34,7 @@ public class CategoryRestController {
         this.categoryServicePort = categoryServicePort;
     }
 
-    @GetMapping(value = "{uuid}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{uuid}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public CategoryDto getCategory(@PathVariable("uuid") String uuid) {
         return categoryServicePort.getCategoryByUuid(uuid);
