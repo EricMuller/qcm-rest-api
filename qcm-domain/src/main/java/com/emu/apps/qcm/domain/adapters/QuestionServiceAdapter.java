@@ -3,7 +3,7 @@ package com.emu.apps.qcm.domain.adapters;
 import com.emu.apps.qcm.models.QuestionDto;
 import com.emu.apps.qcm.models.question.QuestionTagsDto;
 import com.emu.apps.qcm.domain.ports.QuestionServicePort;
-import com.emu.apps.qcm.infrastructure.exceptions.EntityExceptionUtil;
+import com.emu.apps.qcm.infrastructure.exceptions.RaiseExceptionUtil;
 import com.emu.apps.qcm.infrastructure.exceptions.MessageSupport;
 import com.emu.apps.qcm.infrastructure.ports.QuestionPersistencePort;
 import org.springframework.data.domain.Pageable;
@@ -92,7 +92,7 @@ public class QuestionServiceAdapter implements QuestionServicePort {
     @Override
     public void deleteQuestionByUuid(String uuid) {
         var questionOptional = questionPersistencePort.findByUuid(uuid);
-        EntityExceptionUtil.raiseExceptionIfNull(uuid, questionOptional, MessageSupport.UNKNOWN_UUID_QUESTION);
+        RaiseExceptionUtil.raiseIfNull(uuid, questionOptional, MessageSupport.UNKNOWN_UUID_QUESTION);
         questionPersistencePort.deleteByUuid(uuid);
     }
 

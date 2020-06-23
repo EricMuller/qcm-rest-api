@@ -49,7 +49,7 @@ import java.util.stream.StreamSupport;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ExportMapper {
 
-    ExportDto toDto(QuestionnaireDto questionnaire, Iterable <QuestionnaireQuestion> questions, String name);
+    ExportDataDto toDto(QuestionnaireDto questionnaire, Iterable <QuestionnaireQuestion> questions, String name);
 
     QuestionnaireExportDto modelToDto(QuestionnaireDto questionnaire);
 

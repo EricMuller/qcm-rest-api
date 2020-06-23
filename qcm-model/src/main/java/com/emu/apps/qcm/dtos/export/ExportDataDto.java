@@ -14,7 +14,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ExportDto {
+public class ExportDataDto {
 
     @JsonProperty("name")
     private String name;

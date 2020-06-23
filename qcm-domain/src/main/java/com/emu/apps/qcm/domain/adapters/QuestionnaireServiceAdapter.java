@@ -5,7 +5,7 @@ import com.emu.apps.qcm.models.QuestionnaireDto;
 import com.emu.apps.qcm.domain.ports.QuestionnaireServicePort;
 import com.emu.apps.qcm.dtos.published.PublishedCategoryDto;
 import com.emu.apps.qcm.dtos.published.PublishedTagDto;
-import com.emu.apps.qcm.infrastructure.exceptions.EntityExceptionUtil;
+import com.emu.apps.qcm.infrastructure.exceptions.RaiseExceptionUtil;
 import com.emu.apps.qcm.infrastructure.ports.QuestionPersistencePort;
 import com.emu.apps.qcm.infrastructure.ports.QuestionnairePersistencePort;
 import org.springframework.data.domain.Page;
@@ -51,7 +51,7 @@ public class QuestionnaireServiceAdapter implements QuestionnaireServicePort {
     @Transactional(readOnly = true)
     public QuestionnaireDto getQuestionnaireByUuid(String questionnaireUuid) {
         var questionnaire = questionnairePersistencePort.findByUuid(questionnaireUuid);
-        EntityExceptionUtil.raiseExceptionIfNull(questionnaireUuid, questionnaire, String.valueOf(questionnaireUuid));
+        RaiseExceptionUtil.raiseIfNull(questionnaireUuid, questionnaire, String.valueOf(questionnaireUuid));
         return questionnaire;
     }
 

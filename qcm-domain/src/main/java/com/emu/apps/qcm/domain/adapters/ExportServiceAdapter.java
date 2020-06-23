@@ -1,12 +1,12 @@
 package com.emu.apps.qcm.domain.adapters;
 
 import com.emu.apps.qcm.domain.ports.ExportServicePort;
-import com.emu.apps.qcm.infrastructure.exceptions.EntityExceptionUtil;
+import com.emu.apps.qcm.dtos.export.ExportDataDto;
+import com.emu.apps.qcm.infrastructure.exceptions.RaiseExceptionUtil;
 import com.emu.apps.qcm.infrastructure.exceptions.MessageSupport;
 import com.emu.apps.qcm.infrastructure.ports.QuestionPersistencePort;
 import com.emu.apps.qcm.infrastructure.ports.QuestionnairePersistencePort;
 import com.emu.apps.qcm.mappers.exports.ExportMapper;
-import com.emu.apps.qcm.dtos.export.ExportDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,9 +33,10 @@ public class ExportServiceAdapter implements ExportServicePort {
     }
 
     @Override
-    public ExportDto getbyQuestionnaireUuid(String uuid) {
+    public ExportDataDto getbyQuestionnaireUuid(String uuid) {
         var questionnaire = questionnairePersistencePort.findByUuid(uuid);
-        EntityExceptionUtil.raiseExceptionIfNull(uuid, questionnaire, MessageSupport.UNKNOWN_UUID_QUESTIONNAIRE);
+
+        RaiseExceptionUtil.raiseIfNull(uuid, questionnaire, MessageSupport.UNKNOWN_UUID_QUESTIONNAIRE);
 
         var questions = questionPersistencePort.findAllWithTagsAndResponseByQuestionnaireUuid(uuid);
 
@@ -43,6 +44,5 @@ public class ExportServiceAdapter implements ExportServicePort {
 
         return exportMapper.toDto(questionnaire, questions, name);
     }
-
 
 }

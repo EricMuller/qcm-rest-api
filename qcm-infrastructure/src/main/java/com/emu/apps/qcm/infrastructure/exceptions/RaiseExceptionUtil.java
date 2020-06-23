@@ -33,25 +33,25 @@ import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.common.AuditableEntit
 import java.util.Objects;
 import java.util.Optional;
 
-public final class EntityExceptionUtil {
+public final class RaiseExceptionUtil {
 
-    private EntityExceptionUtil() {
+    private RaiseExceptionUtil() {
         //nope
     }
 
-    public static <T extends Object> void raiseExceptionIfNull(String uuid, T entity, String message) {
+    public static <T extends Object> void raiseIfNull(String uuid, T entity, String message) {
         if (Objects.isNull(entity)) {
             throw new EntityNotFoundException(uuid, message);
         }
     }
 
-    public static <T extends AuditableEntity> void raiseExceptionIfNull(T entity, String message) {
+    public static <T extends AuditableEntity> void raiseIfNull(T entity, String message) {
         if (Objects.isNull(entity)) {
             throw new EntityNotFoundException(message);
         }
     }
 
-    public static void raiseExceptionIfNull(Optional <? extends AuditableEntity> entity, String message) {
+    public static void raiseIfNull(Optional <? extends AuditableEntity> entity, String message) {
         if (!entity.isPresent()) {
             throw new EntityNotFoundException(message);
         }

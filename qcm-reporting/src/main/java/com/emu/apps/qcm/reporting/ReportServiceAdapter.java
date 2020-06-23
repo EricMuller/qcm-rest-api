@@ -1,20 +1,11 @@
 package com.emu.apps.qcm.reporting;
 
-import com.emu.apps.qcm.dtos.export.ExportDto;
-import fr.opensagres.poi.xwpf.converter.pdf.PdfConverter;
-import fr.opensagres.poi.xwpf.converter.pdf.PdfOptions;
-import fr.opensagres.xdocreport.document.IXDocReport;
-import fr.opensagres.xdocreport.document.registry.XDocReportRegistry;
-import fr.opensagres.xdocreport.template.IContext;
-import fr.opensagres.xdocreport.template.TemplateEngineKind;
+import com.emu.apps.qcm.dtos.export.ExportDataDto;
+import com.emu.apps.qcm.reporting.services.*;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.springframework.stereotype.Service;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-
 /**
  *
  */
@@ -22,40 +13,36 @@ import java.io.InputStream;
 @Slf4j
 public class ReportServiceAdapter implements ReportServicePort {
 
-    @Override
-    public ByteArrayOutputStream getReportStream(ExportDto exportDto, TypeReport typeReport) {
+    private ReportServicePdf reportServicePdf;
 
-        InputStream in = ReportServiceAdapter.class.getResourceAsStream("/template_questionnaire.docx");
+    private ReportServiceWord reportServiceWord;
 
-        try {
+    private ReportServiceJson reportServiceJson;
 
-            IXDocReport report = XDocReportRegistry
-                    .getRegistry()
-                    .loadReport(in, TemplateEngineKind.Velocity);
-
-            IContext context = report.createContext();
-            context.put("questionnaire", exportDto.getQuestionnaire());
-            context.put("questions", exportDto.getQuestions());
-
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-
-            if (TypeReport.PDF.equals(typeReport)) {
-                ByteArrayOutputStream outDocx = new ByteArrayOutputStream();
-                report.process(context, outDocx);
-                ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(outDocx.toByteArray());
-                XWPFDocument document = new XWPFDocument(byteArrayInputStream);
-                PdfOptions options = PdfOptions.create();
-                PdfConverter.getInstance().convert(document, out, options);
-            } else {
-                report.process(context, out);
-            }
-
-            return out;
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
-        }
-        return null;
+    public ReportServiceAdapter(ReportServicePdf reportServicePdf, ReportServiceWord reportServiceWord, ReportServiceJson reportServiceJson) {
+        this.reportServicePdf = reportServicePdf;
+        this.reportServiceWord = reportServiceWord;
+        this.reportServiceJson = reportServiceJson;
     }
 
+    @Override
+    public ByteArrayOutputStream getReportStream(ExportDataDto exportDataDto, TypeReport typeReport) {
+
+        ReportService reportService = getReportServiceByType(typeReport);
+        return reportService.getReportStream(exportDataDto);
+    }
+
+    private ReportService getReportServiceByType(TypeReport typeReport) {
+
+        switch (typeReport) {
+            case PDF:
+                return reportServicePdf;
+            case DOCX:
+                return reportServiceWord;
+            case JSON:
+                return reportServiceJson;
+        }
+        return exportDataDto -> null;
+    }
 
 }

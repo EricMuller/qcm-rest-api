@@ -1,6 +1,5 @@
 package com.emu.apps.qcm.infrastructure.adapters.jpa.repositories;
 
-
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questionnaires.QuestionnaireQuestion;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questionnaires.QuestionnaireQuestionId;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.projections.QuestionResponseProjection;
@@ -45,7 +44,7 @@ public interface QuestionnaireQuestionRepository extends JpaRepository<Questionn
     void deleteByQuestionnaireId(@Param("id") Long questionnaireId);
 
     @EntityGraph(value = "QuestionnaireQuestion.question")
-    @Query("SELECT qq FROM QuestionnaireQuestion  qq  WHERE qq.question.uuid = :questionnaireUuid")
+    @Query("SELECT qq FROM QuestionnaireQuestion  qq  WHERE qq.questionnaire.uuid = :questionnaireUuid")
     @NotNull
     Iterable<QuestionnaireQuestion> findAllWithTagsAndResponseByQuestionnaireUuid(@Param("questionnaireUuid") UUID uuid);
 

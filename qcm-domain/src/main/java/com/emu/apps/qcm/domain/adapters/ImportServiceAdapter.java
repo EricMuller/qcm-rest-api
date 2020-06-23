@@ -7,7 +7,7 @@ import com.emu.apps.qcm.dtos.FileQuestionDto;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.Status;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questions.TypeQuestion;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.upload.ImportStatus;
-import com.emu.apps.qcm.infrastructure.exceptions.EntityExceptionUtil;
+import com.emu.apps.qcm.infrastructure.exceptions.RaiseExceptionUtil;
 import com.emu.apps.qcm.infrastructure.exceptions.MessageSupport;
 import com.emu.apps.qcm.infrastructure.exceptions.TechnicalException;
 import com.emu.apps.qcm.infrastructure.ports.CategoryPersistencePort;
@@ -62,7 +62,7 @@ public class ImportServiceAdapter implements ImportServicePort {
 
         var uploadDto = uploadPersistencePort.findByUuid(uploadUuid);
 
-        EntityExceptionUtil.raiseExceptionIfNull(uploadUuid, uploadDto, MessageSupport.UNKNOWN_UUID_UPLOAD);
+        RaiseExceptionUtil.raiseIfNull(uploadUuid, uploadDto, MessageSupport.UNKNOWN_UUID_UPLOAD);
 
         final FileQuestionDto[] fileQuestionDtos = new ObjectMapper().readValue(new ByteArrayInputStream(uploadDto.getData()), FileQuestionDto[].class);
 

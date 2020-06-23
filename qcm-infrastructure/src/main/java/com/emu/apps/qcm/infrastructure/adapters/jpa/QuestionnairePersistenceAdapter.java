@@ -15,7 +15,7 @@ import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.tags.Tag;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.projections.QuestionnaireProjection;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.repositories.*;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.specifications.QuestionnaireSpecificationBuilder;
-import com.emu.apps.qcm.infrastructure.exceptions.EntityExceptionUtil;
+import com.emu.apps.qcm.infrastructure.exceptions.RaiseExceptionUtil;
 import com.emu.apps.qcm.infrastructure.exceptions.MessageSupport;
 import com.emu.apps.qcm.infrastructure.ports.QuestionnairePersistencePort;
 import com.emu.apps.qcm.mappers.GuestMapper;
@@ -174,7 +174,7 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
     public QuestionDto addQuestion(String uuid, QuestionDto questionDto, Optional <Long> positionOpt) {
 
         var questionnaire = questionnaireRepository.findByUuid(UUID.fromString(uuid)).orElse(null);
-        EntityExceptionUtil.raiseExceptionIfNull(uuid, questionnaire, MessageSupport.UNKNOWN_UUID_QUESTIONNAIRE);
+        RaiseExceptionUtil.raiseIfNull(uuid, questionnaire, MessageSupport.UNKNOWN_UUID_QUESTIONNAIRE);
 
         Long position = positionOpt.isEmpty() ? questionnaire.getQuestionnaireQuestions().size() + 1L : positionOpt.get();
 

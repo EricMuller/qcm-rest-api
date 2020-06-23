@@ -2,7 +2,7 @@ package com.emu.apps.qcm.domain.adapters;
 
 import com.emu.apps.qcm.models.UploadDto;
 import com.emu.apps.qcm.domain.ports.UploadServicePort;
-import com.emu.apps.qcm.infrastructure.exceptions.EntityExceptionUtil;
+import com.emu.apps.qcm.infrastructure.exceptions.RaiseExceptionUtil;
 import com.emu.apps.qcm.infrastructure.exceptions.MessageSupport;
 import com.emu.apps.qcm.infrastructure.ports.UploadPersistencePort;
 import org.apache.commons.io.FilenameUtils;
@@ -58,7 +58,7 @@ public class UploadServiceAdapter implements UploadServicePort {
     public void deleteUploadByUuid(String uuid) {
         var uploadDto = uploadPersistencePort.findByUuid(uuid);
 
-        EntityExceptionUtil.raiseExceptionIfNull(uuid, uploadDto, MessageSupport.UNKNOWN_UUID_UPLOAD);
+        RaiseExceptionUtil.raiseIfNull(uuid, uploadDto, MessageSupport.UNKNOWN_UUID_UPLOAD);
 
         uploadPersistencePort.deleteByUuid(uuid);
 
@@ -69,7 +69,7 @@ public class UploadServiceAdapter implements UploadServicePort {
 
         var uploadDto = uploadPersistencePort.findByUuid(uuid);
 
-        EntityExceptionUtil.raiseExceptionIfNull(uuid, uploadDto, MessageSupport.UNKNOWN_UUID_UPLOAD);
+        RaiseExceptionUtil.raiseIfNull(uuid, uploadDto, MessageSupport.UNKNOWN_UUID_UPLOAD);
 
         return uploadDto;
 
