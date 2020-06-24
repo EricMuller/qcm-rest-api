@@ -4,7 +4,7 @@ package com.emu.apps.qcm.infrastructure.adapters.jpa.projections;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questions.TypeQuestion;
 import org.hibernate.annotations.Immutable;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Immutable
 public interface QuestionProjection {
@@ -13,7 +13,7 @@ public interface QuestionProjection {
 
     Long getVersion();
 
-    Date getDateCreation();
+    LocalDateTime getDateCreation();
 
     Boolean getMandatory();
 
