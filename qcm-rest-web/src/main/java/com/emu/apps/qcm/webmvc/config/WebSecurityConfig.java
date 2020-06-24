@@ -45,8 +45,8 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .oauth2ResourceServer().jwt().jwtAuthenticationConverter(new GrantedAuthoritiesConverter()).and()
                 .and()
                 .authorizeRequests()
-                .antMatchers(ApiRestMappings.PUBLIC_API + "/**").authenticated()
                 .antMatchers(ApiRestMappings.PUBLISHED_API + "/**").permitAll()
+                .antMatchers(ApiRestMappings.PUBLIC_API + "/**").authenticated()
                 .antMatchers("/actuator/**").permitAll()
 //                .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .anyRequest().permitAll();

@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
+
 /**
  *
  */
@@ -42,7 +43,7 @@ public class ReportServiceAdapter implements ReportServicePort {
             case JSON:
                 return reportServiceJson;
         }
-        return exportDataDto -> null;
+        throw new IllegalArgumentException(typeReport.name());
     }
 
 }

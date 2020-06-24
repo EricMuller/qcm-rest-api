@@ -32,7 +32,7 @@ public final class ApiRestMappings {
 
     public static final String PUBLIC_API = "/qcm/api/v1";
 
-    public static final String PUBLISHED_API = "/published/qcm/api/v1";
+    public static final String PUBLISHED_API = "/qcm/api/v1/published";
 
     public static final String QUESTIONNAIRES =  "/questionnaires";
 
