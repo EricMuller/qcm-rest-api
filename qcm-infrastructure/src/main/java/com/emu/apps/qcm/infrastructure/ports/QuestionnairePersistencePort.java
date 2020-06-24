@@ -29,4 +29,6 @@ public interface QuestionnairePersistencePort {
     Iterable <PublishedCategoryDto> getPublicCategories();
 
     Iterable <PublishedTagDto> getPublicTags();
+
+    void deleteQuestion(String questionnaireUuid, String questionUuid) ;
 }

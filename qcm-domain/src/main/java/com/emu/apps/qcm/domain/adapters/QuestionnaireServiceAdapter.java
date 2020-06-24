@@ -1,13 +1,13 @@
 package com.emu.apps.qcm.domain.adapters;
 
-import com.emu.apps.qcm.models.QuestionDto;
-import com.emu.apps.qcm.models.QuestionnaireDto;
 import com.emu.apps.qcm.domain.ports.QuestionnaireServicePort;
 import com.emu.apps.qcm.dtos.published.PublishedCategoryDto;
 import com.emu.apps.qcm.dtos.published.PublishedTagDto;
 import com.emu.apps.qcm.infrastructure.exceptions.RaiseExceptionUtil;
 import com.emu.apps.qcm.infrastructure.ports.QuestionPersistencePort;
 import com.emu.apps.qcm.infrastructure.ports.QuestionnairePersistencePort;
+import com.emu.apps.qcm.models.QuestionDto;
+import com.emu.apps.qcm.models.QuestionnaireDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -110,6 +110,7 @@ public class QuestionnaireServiceAdapter implements QuestionnaireServicePort {
     public Iterable <PublishedCategoryDto> getPublicCategories() {
         return questionnairePersistencePort.getPublicCategories();
     }
+
     @Transactional(readOnly = true)
     public Iterable <PublishedTagDto> getPublicTags() {
         return questionnairePersistencePort.getPublicTags();
@@ -150,4 +151,8 @@ public class QuestionnaireServiceAdapter implements QuestionnaireServicePort {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public void deleteQuestion(String questionnaireUuid, String questionUuid) {
+        questionnairePersistencePort.deleteQuestion(questionnaireUuid,questionUuid);
+    }
 }

@@ -1,9 +1,6 @@
 package com.emu.apps.qcm.infrastructure.adapters.jpa;
 
 
-import com.emu.apps.qcm.models.QuestionDto;
-import com.emu.apps.qcm.models.QuestionnaireDto;
-import com.emu.apps.qcm.models.QuestionnaireTagDto;
 import com.emu.apps.qcm.dtos.published.PublishedCategoryDto;
 import com.emu.apps.qcm.dtos.published.PublishedTagDto;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.builders.QuestionnaireTagBuilder;
@@ -15,12 +12,15 @@ import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.tags.Tag;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.projections.QuestionnaireProjection;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.repositories.*;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.specifications.QuestionnaireSpecificationBuilder;
-import com.emu.apps.qcm.infrastructure.exceptions.RaiseExceptionUtil;
 import com.emu.apps.qcm.infrastructure.exceptions.MessageSupport;
+import com.emu.apps.qcm.infrastructure.exceptions.RaiseExceptionUtil;
 import com.emu.apps.qcm.infrastructure.ports.QuestionnairePersistencePort;
 import com.emu.apps.qcm.mappers.GuestMapper;
 import com.emu.apps.qcm.mappers.QuestionnaireMapper;
 import com.emu.apps.qcm.mappers.UuidMapper;
+import com.emu.apps.qcm.models.QuestionDto;
+import com.emu.apps.qcm.models.QuestionnaireDto;
+import com.emu.apps.qcm.models.QuestionnaireTagDto;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -195,5 +195,12 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
 
     public Iterable <PublishedTagDto> getPublicTags() {
         return guestMapper.tagsToDtos(questionnaireTagRepository.getPublicTags());
+    }
+
+    @Override
+    public void deleteQuestion(String questionnaireUuid, String questionUuid) {
+
+        QuestionnaireQuestion questionnaireQuestion = questionnaireQuestionRepository.findByQuestionUuid(UUID.fromString(questionnaireUuid), UUID.fromString(questionUuid));
+        questionnaireQuestionRepository.delete(questionnaireQuestion);
     }
 }

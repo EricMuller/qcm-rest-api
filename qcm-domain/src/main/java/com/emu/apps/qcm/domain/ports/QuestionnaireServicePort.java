@@ -1,9 +1,9 @@
 package com.emu.apps.qcm.domain.ports;
 
-import com.emu.apps.qcm.models.QuestionDto;
-import com.emu.apps.qcm.models.QuestionnaireDto;
 import com.emu.apps.qcm.dtos.published.PublishedCategoryDto;
 import com.emu.apps.qcm.dtos.published.PublishedTagDto;
+import com.emu.apps.qcm.models.QuestionDto;
+import com.emu.apps.qcm.models.QuestionnaireDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -34,5 +34,7 @@ public interface QuestionnaireServicePort {
     Iterable <PublishedCategoryDto> getPublicCategories();
 
     Iterable <PublishedTagDto> getPublicTags();
+
+    void  deleteQuestion(String questionnaireUuid,  String questionUuid) ;
 
 }

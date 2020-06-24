@@ -1,9 +1,9 @@
 package com.emu.apps.qcm.webmvc.rest;
 
 
+import com.emu.apps.qcm.domain.ports.QuestionnaireServicePort;
 import com.emu.apps.qcm.models.QuestionDto;
 import com.emu.apps.qcm.models.QuestionnaireDto;
-import com.emu.apps.qcm.domain.ports.QuestionnaireServicePort;
 import com.emu.apps.qcm.webmvc.rest.caches.CacheName;
 import com.emu.apps.shared.annotations.Timer;
 import com.emu.apps.shared.security.UserContextHolder;
@@ -88,6 +88,13 @@ public class QuestionnaireRestController {
 
         // todo send QuestionnaireQuestionDto
         return questionnaireServicePort.addQuestion(uuid, questionDto, Optional.empty());
+    }
+
+    @DeleteMapping(value = "/{uuid}/questions/{question_uuid}")
+    @ResponseBody
+    public ResponseEntity deleteQuestion(@PathVariable("uuid") String uuid, @PathVariable("question_uuid") String questionUuid) {
+        questionnaireServicePort.deleteQuestion(uuid, questionUuid);
+        return new ResponseEntity <>(HttpStatus.NO_CONTENT);
     }
 
 }
