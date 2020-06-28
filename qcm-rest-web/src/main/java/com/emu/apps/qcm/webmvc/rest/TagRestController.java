@@ -32,7 +32,7 @@ public class TagRestController {
 
     @GetMapping
     @ResponseBody
-    public Page <TagDto> getTagsByPAge(@RequestParam(value = "search", required = false) String search, Pageable pageable, Principal principal) throws IOException {
+    public Page <TagDto> getTagsByPAge(@RequestParam(value = "search", required = false) String search, Pageable pageable) throws IOException {
         return tagServicePort.getTagsByPAge(search, pageable, UserContextHolder.getUser());
     }
 

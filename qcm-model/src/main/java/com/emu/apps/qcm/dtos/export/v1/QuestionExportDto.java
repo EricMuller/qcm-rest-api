@@ -1,4 +1,4 @@
-package com.emu.apps.qcm.dtos.export;
+package com.emu.apps.qcm.dtos.export.v1;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;

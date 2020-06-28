@@ -2,6 +2,7 @@ package com.emu.apps.qcm.webmvc.rest;
 
 
 import com.emu.apps.qcm.domain.ports.QuestionnaireServicePort;
+import com.emu.apps.qcm.dtos.question.QuestionPatchDto;
 import com.emu.apps.qcm.models.QuestionDto;
 import com.emu.apps.qcm.models.QuestionnaireDto;
 import com.emu.apps.qcm.webmvc.rest.caches.CacheName;
@@ -18,7 +19,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.Optional;
 
 import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.PUBLIC_API;
@@ -57,13 +57,13 @@ public class QuestionnaireRestController {
     @CachePut(cacheNames = CacheName.Names.QUESTIONNAIRE, condition = "#questionnaireDto != null", key = "#questionnaireDto.uuid")
     @Timer
     @ResponseBody
-    public QuestionnaireDto updateQuestionnaire(@RequestBody QuestionnaireDto questionnaireDto, Principal principal) {
+    public QuestionnaireDto updateQuestionnaire(@RequestBody QuestionnaireDto questionnaireDto) {
         return questionnaireServicePort.updateQuestionnaire(questionnaireDto, UserContextHolder.getUser());
     }
 
     @PostMapping()
     @ResponseBody
-    public QuestionnaireDto saveQuestionnaire(@RequestBody QuestionnaireDto questionnaireDto, Principal principal) {
+    public QuestionnaireDto saveQuestionnaire(@RequestBody QuestionnaireDto questionnaireDto) {
         return questionnaireServicePort.saveQuestionnaire(questionnaireDto, UserContextHolder.getUser());
     }
 
@@ -78,17 +78,18 @@ public class QuestionnaireRestController {
     @Timer
     @ResponseBody
     public Page <QuestionnaireDto> getQuestionnaires(@RequestParam(value = "tag_uuid", required = false) String[] tagUuid,
-                                                     Pageable pageable, Principal principal) {
+                                                     Pageable pageable) {
         return questionnaireServicePort.getQuestionnaires(tagUuid, pageable, UserContextHolder.getUser());
     }
 
     @PutMapping(value = "/{uuid}/questions")
     @ResponseBody
     public QuestionDto addQuestion(@PathVariable("uuid") String uuid, @RequestBody QuestionDto questionDto) {
-
         // todo send QuestionnaireQuestionDto
         return questionnaireServicePort.addQuestion(uuid, questionDto, Optional.empty());
     }
+
+
 
     @DeleteMapping(value = "/{uuid}/questions/{question_uuid}")
     @ResponseBody

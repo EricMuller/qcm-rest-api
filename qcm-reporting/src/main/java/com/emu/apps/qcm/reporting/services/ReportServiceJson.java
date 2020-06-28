@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.reporting.services;
 
-import com.emu.apps.qcm.dtos.export.ExportDataDto;
+import com.emu.apps.qcm.dtos.export.v1.ExportDataDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.extern.slf4j.Slf4j;

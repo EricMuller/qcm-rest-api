@@ -2,7 +2,7 @@ package com.emu.apps.qcm.webmvc.rest;
 
 
 import com.emu.apps.qcm.domain.ports.ExportServicePort;
-import com.emu.apps.qcm.dtos.export.ExportDataDto;
+import com.emu.apps.qcm.dtos.export.v1.ExportDataDto;
 import com.emu.apps.qcm.reporting.ReportServicePort;
 import com.emu.apps.qcm.reporting.services.TypeReport;
 import com.emu.apps.shared.annotations.Timer;
@@ -47,12 +47,12 @@ public class ExportRestController {
     @Timer
     public ResponseEntity <Resource> getReportById(@PathVariable("uuid") String uuid, @PathVariable("type-report") String type) {
 
-        final ExportDataDto exportDto = exportServicePort.getbyQuestionnaireUuid(uuid);
-
         TypeReport typeReport = TypeReport.getByName(type.toUpperCase());
         if (Objects.isNull(type)) {
             throw new IllegalArgumentException(type);
         }
+
+        final ExportDataDto exportDto = exportServicePort.getbyQuestionnaireUuid(uuid);
 
         ByteArrayOutputStream outputStream = reportServicePort.getReportStream(exportDto, typeReport);
 

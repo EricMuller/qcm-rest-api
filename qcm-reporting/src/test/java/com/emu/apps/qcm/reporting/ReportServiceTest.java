@@ -1,10 +1,11 @@
 package com.emu.apps.qcm.reporting;
 
+import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.Status;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questions.TypeQuestion;
-import com.emu.apps.qcm.dtos.export.CategoryExportDto;
-import com.emu.apps.qcm.dtos.export.QuestionExportDto;
-import com.emu.apps.qcm.dtos.export.QuestionnaireExportDto;
-import com.emu.apps.qcm.dtos.export.ResponseExportDto;
+import com.emu.apps.qcm.dtos.export.v1.CategoryExportDto;
+import com.emu.apps.qcm.dtos.export.v1.QuestionExportDto;
+import com.emu.apps.qcm.dtos.export.v1.QuestionnaireExportDto;
+import com.emu.apps.qcm.dtos.export.v1.ResponseExportDto;
 import fr.opensagres.xdocreport.core.XDocReportException;
 import fr.opensagres.xdocreport.core.utils.Assert;
 import fr.opensagres.xdocreport.document.IXDocReport;
@@ -30,6 +31,8 @@ class ReportServiceTest {
         QuestionnaireExportDto questionnaireExportDto = new QuestionnaireExportDto();
         questionnaireExportDto.setTitle("Java Thread");
         questionnaireExportDto.setWebsite("http://qcm.webmarks.net");
+
+        questionnaireExportDto.setStatus(Status.DRAFT.name());
 
         CategoryExportDto categoryExportDto = new CategoryExportDto();
         categoryExportDto.setLibelle("Java");

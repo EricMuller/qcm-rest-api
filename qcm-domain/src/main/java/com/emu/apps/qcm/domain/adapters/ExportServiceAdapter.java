@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.domain.adapters;
 
 import com.emu.apps.qcm.domain.ports.ExportServicePort;
-import com.emu.apps.qcm.dtos.export.ExportDataDto;
+import com.emu.apps.qcm.dtos.export.v1.ExportDataDto;
 import com.emu.apps.qcm.infrastructure.exceptions.RaiseExceptionUtil;
 import com.emu.apps.qcm.infrastructure.exceptions.MessageSupport;
 import com.emu.apps.qcm.infrastructure.ports.QuestionPersistencePort;

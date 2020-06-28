@@ -1,10 +1,11 @@
 package com.emu.apps.qcm.webmvc.rest;
 
+import com.emu.apps.qcm.domain.ports.QuestionServicePort;
+import com.emu.apps.qcm.dtos.MessageDto;
+import com.emu.apps.qcm.dtos.question.QuestionPatchDto;
+import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questions.Question;
 import com.emu.apps.qcm.models.QuestionDto;
 import com.emu.apps.qcm.models.question.QuestionTagsDto;
-import com.emu.apps.qcm.domain.ports.QuestionServicePort;
-import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questions.Question;
-import com.emu.apps.qcm.dtos.MessageDto;
 import com.emu.apps.qcm.webmvc.rest.caches.CacheName;
 import com.emu.apps.shared.annotations.Timer;
 import com.emu.apps.shared.security.UserContextHolder;
@@ -20,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
-import java.security.Principal;
 
 import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.PUBLIC_API;
 import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.QUESTIONS;
@@ -43,7 +43,7 @@ public class QuestionRestController {
     @Timer
     public Iterable <QuestionTagsDto> getQuestions(@RequestParam(value = "tag_uuid", required = false) String[] tagUuid,
                                                    @RequestParam(value = "questionnaire_uuid", required = false) String[] questionnaireUuid,
-                                                   Pageable pageable, Principal principal) {
+                                                   Pageable pageable) {
 
         return questionServicePort.getQuestions(tagUuid, questionnaireUuid, pageable, UserContextHolder.getUser());
     }
@@ -60,13 +60,13 @@ public class QuestionRestController {
     @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @CachePut(cacheNames = CacheName.Names.QUESTION, condition = "#questionDto != null", key = "#questionDto.uuid")
     @ResponseBody
-    public QuestionDto updateQuestion(@RequestBody @Valid QuestionDto questionDto, Principal principal) {
+    public QuestionDto updateQuestion(@RequestBody @Valid QuestionDto questionDto) {
         return questionServicePort.updateQuestion(questionDto, UserContextHolder.getUser());
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public QuestionDto saveQuestion(@RequestBody @Valid QuestionDto questionDto, Principal principal) {
+    public QuestionDto saveQuestion(@RequestBody @Valid QuestionDto questionDto) {
         return questionServicePort.saveQuestion(questionDto, UserContextHolder.getUser());
     }
 
@@ -76,6 +76,15 @@ public class QuestionRestController {
     public ResponseEntity <Question> deleteQuestionById(@PathVariable("uuid") String uuid) {
         questionServicePort.deleteQuestionByUuid(uuid);
         return ResponseEntity.noContent().build();
+    }
+
+
+    @PatchMapping(value = "/{uuid}")
+    @ResponseBody
+    public QuestionDto patchQuestion(@PathVariable("uuid") String uuid, @RequestBody QuestionPatchDto patchDto) {
+        QuestionDto dto = questionServicePort.getQuestionByUuId(uuid);
+        dto.setStatus(patchDto.getStatus());
+        return questionServicePort.saveQuestion(dto, UserContextHolder.getUser());
     }
 
     @ExceptionHandler({JsonProcessingException.class, IOException.class})

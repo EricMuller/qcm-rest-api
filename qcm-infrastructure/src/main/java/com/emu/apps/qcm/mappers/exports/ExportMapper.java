@@ -29,7 +29,7 @@
 package com.emu.apps.qcm.mappers.exports;
 
 
-import com.emu.apps.qcm.dtos.export.*;
+import com.emu.apps.qcm.dtos.export.v1.*;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.category.Category;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questionnaires.QuestionnaireQuestion;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questions.Question;

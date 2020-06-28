@@ -1,8 +1,8 @@
 package com.emu.apps.qcm.webmvc.rest;
 
-import com.emu.apps.qcm.models.UploadDto;
 import com.emu.apps.qcm.domain.ports.ImportServicePort;
 import com.emu.apps.qcm.domain.ports.UploadServicePort;
+import com.emu.apps.qcm.models.UploadDto;
 import com.emu.apps.shared.annotations.Timer;
 import com.emu.apps.shared.security.UserContextHolder;
 import org.springframework.context.annotation.Profile;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.security.Principal;
 
 import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.PUBLIC_API;
 import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.UPLOADS;
@@ -36,21 +35,20 @@ public class UploadRestController {
     @PostMapping(value = "/{fileType}")
     public UploadDto uploadFile(@PathVariable("fileType") String fileType,
                                 @RequestParam("file") MultipartFile multipartFile,
-                                @RequestParam(value = "async", required = false) Boolean async,
-                                Principal principal) throws IOException {
+                                @RequestParam(value = "async", required = false) Boolean async) throws IOException {
 
         return uploadServicePort.uploadFile(fileType, multipartFile, async, UserContextHolder.getUser());
     }
 
     @GetMapping()
     @Timer
-    public Iterable <UploadDto> getUploads(Pageable pageable, Principal principal) {
+    public Iterable <UploadDto> getUploads(Pageable pageable) {
         return uploadServicePort.getUploads(pageable, UserContextHolder.getUser());
     }
 
     @ResponseBody
     @GetMapping(value = "/{uuid}/import")
-    public UploadDto importFile(@PathVariable("uuid") String uploadUuid, Principal principal) throws IOException {
+    public UploadDto importFile(@PathVariable("uuid") String uploadUuid) throws IOException {
         return importServicePort.importFile(uploadUuid, UserContextHolder.getUser());
     }
 

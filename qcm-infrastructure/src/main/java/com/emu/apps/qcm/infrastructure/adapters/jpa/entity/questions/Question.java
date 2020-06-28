@@ -67,6 +67,7 @@ public class Question extends AuditableEntity <String> {
     @BatchSize(size = 100)
     private Set <QuestionTag> questionTags = new HashSet <>();
 
+    // used in QuestionSpecificationBuilder !
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set <QuestionnaireQuestion> questionnaireQuestions = new HashSet <>();
 
@@ -84,6 +85,5 @@ public class Question extends AuditableEntity <String> {
     public int hashCode() {
         return super.hashCode();
     }
-
 
 }

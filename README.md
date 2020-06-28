@@ -9,8 +9,9 @@ You can also:
   
   - Create some Questions.
   - Create some Questionnaires. 
-  - Create some Tags.
-  - Upload Questions from json files.
+  - Create some Categories.
+  - Export as WORD,PDF
+  - Import Questionnaires from file(s)
 
 ### Quality Gate
 
@@ -79,8 +80,9 @@ $ curl https://qcm-rest-api.herokuapp.com/ ...
 ### Todos
 
  - Write more features
- - Add reactive mode with webflux
  - Batch import with [Apache Kafka] - Distributed streaming platform
+ - Add Throttling
+ 
  
 ### License
 
