@@ -4,11 +4,14 @@ import com.emu.apps.qcm.domain.ports.ImportServicePort;
 import com.emu.apps.qcm.domain.ports.QuestionServicePort;
 import com.emu.apps.qcm.domain.ports.QuestionnaireServicePort;
 import com.emu.apps.qcm.dtos.FileQuestionDto;
+import com.emu.apps.qcm.dtos.export.v1.ExportDataDto;
+import com.emu.apps.qcm.dtos.export.v1.QuestionExportDto;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.Status;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questions.TypeQuestion;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.upload.ImportStatus;
-import com.emu.apps.qcm.infrastructure.exceptions.RaiseExceptionUtil;
+import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.upload.TypeUpload;
 import com.emu.apps.qcm.infrastructure.exceptions.MessageSupport;
+import com.emu.apps.qcm.infrastructure.exceptions.RaiseExceptionUtil;
 import com.emu.apps.qcm.infrastructure.exceptions.TechnicalException;
 import com.emu.apps.qcm.infrastructure.ports.CategoryPersistencePort;
 import com.emu.apps.qcm.infrastructure.ports.TagPersistencePort;
@@ -23,13 +26,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.emu.apps.qcm.infrastructure.adapters.jpa.entity.category.Type.QUESTION;
+import static com.emu.apps.qcm.infrastructure.adapters.jpa.entity.category.Type.QUESTIONNAIRE;
 
 @Service
 @Slf4j
@@ -64,13 +65,54 @@ public class ImportServiceAdapter implements ImportServicePort {
 
         RaiseExceptionUtil.raiseIfNull(uploadUuid, uploadDto, MessageSupport.UNKNOWN_UUID_UPLOAD);
 
-        final FileQuestionDto[] fileQuestionDtos = new ObjectMapper().readValue(new ByteArrayInputStream(uploadDto.getData()), FileQuestionDto[].class);
+        // todo: strategy
+        if (TypeUpload.EXPORT_JSON.name().equals(uploadDto.getType())) {
+            ExportDataDto exportDataDto = new ObjectMapper().readValue(new ByteArrayInputStream(uploadDto.getData()), ExportDataDto.class);
+            ImportStatus importStatus = importQuestionnaire(uploadDto.getFileName(), exportDataDto, principal);
+            uploadDto.setStatus(importStatus.name());
+        } else {
+            final FileQuestionDto[] fileQuestionDtos = new ObjectMapper().readValue(new ByteArrayInputStream(uploadDto.getData()), FileQuestionDto[].class);
+            ImportStatus importStatus = importQuestionnaire(uploadDto.getFileName(), fileQuestionDtos, principal);
+            uploadDto.setStatus(importStatus.name());
+        }
 
-        ImportStatus importStatus = importQuestionnaire(uploadDto.getFileName(), fileQuestionDtos, principal);
-
-        uploadDto.setStatus(importStatus.name());
 
         return uploadPersistencePort.saveUpload(uploadDto);
+
+    }
+
+    private QuestionDto mapToQuestionDto(QuestionExportDto questionExportDto, CategoryDto categoryDto) {
+
+        var questionDto = new QuestionDto();
+
+        questionDto.setQuestion(questionExportDto.getQuestion());
+        questionDto.setType(questionExportDto.getType());
+        questionDto.setStatus(questionExportDto.getStatus());
+
+        questionDto.setCategory(categoryDto);
+
+        List <ResponseDto> responseDtos = new ArrayList <>();
+        for (var response : questionExportDto.getResponses()) {
+
+            ResponseDto responseDto = new ResponseDto();
+            responseDto.setResponse(response.getResponse());
+            responseDto.setGood(response.getGood());
+            responseDto.setGood(response.getGood());
+
+            responseDtos.add(responseDto);
+        }
+
+        questionDto.setResponses(responseDtos);
+
+        Set <QuestionTagDto> questionTagDtos = new HashSet <>();
+
+        for (var qtag : questionExportDto.getQuestionTags()) {
+            QuestionTagDto questionTagDto = new QuestionTagDto();
+            questionTagDto.setLibelle(qtag.getLibelle());
+            questionTagDtos.add(questionTagDto);
+        }
+        questionDto.setQuestionTags(questionTagDtos);
+        return questionDto;
 
     }
 
@@ -100,6 +142,64 @@ public class ImportServiceAdapter implements ImportServicePort {
 
     @Override
     @Transactional
+    public ImportStatus importQuestionnaire(String name, ExportDataDto exportDataDto, String principal) {
+
+        QuestionnaireDto questionnaireDto = new QuestionnaireDto();
+
+        // questionnaire
+        questionnaireDto.setTitle(exportDataDto.getQuestionnaire().getTitle());
+        questionnaireDto.setStatus(exportDataDto.getQuestionnaire().getStatus());
+
+        // tags
+        HashSet <QuestionnaireTagDto> qtags = new HashSet();
+        if (Objects.nonNull(exportDataDto.getQuestionnaire().getQuestionnaireTags())) {
+            for (var qtag : exportDataDto.getQuestionnaire().getQuestionnaireTags()) {
+                QuestionnaireTagDto questionnaireTagDto = new QuestionnaireTagDto();
+                questionnaireTagDto.setLibelle(qtag.getLibelle());
+                qtags.add(questionnaireTagDto);
+            }
+        }
+        questionnaireDto.setQuestionnaireTags(qtags);
+
+        // categorie
+        if (Objects.nonNull(exportDataDto.getQuestionnaire().getCategory())) {
+            CategoryDto categoryDto = new CategoryDto();
+            categoryDto.setLibelle(exportDataDto.getQuestionnaire().getCategory().getLibelle());
+            categoryDto.setType(QUESTIONNAIRE.name());
+            categoryDto.setUserId(principal);
+            categoryDto = categoryPersistencePort.saveCategory(categoryDto);
+            questionnaireDto.setCategory(categoryDto);
+        }
+
+        QuestionnaireDto questionnaire = questionnaireService.saveQuestionnaire(questionnaireDto, principal);
+
+        //questions
+        List <QuestionDto> questions = exportDataDto.getQuestions()
+                .stream()
+                .map(questionExportDto ->
+                {
+                    CategoryDto categoryDto = null;
+                    if (Objects.nonNull(questionExportDto.getCategory())) {
+                        categoryDto = new CategoryDto();
+                        categoryDto.setLibelle(questionExportDto.getCategory().getLibelle());
+                        categoryDto.setType(QUESTION.name());
+                        categoryDto.setUserId(principal);
+                        categoryDto = categoryPersistencePort.saveCategory(categoryDto);
+                    }
+
+                    return mapToQuestionDto(questionExportDto, categoryDto);
+                })
+                .collect(Collectors.toList());
+
+        Collection questionDtos = questionService.saveQuestions(questions, principal);
+
+        questionnaireService.addQuestions(questionnaire.getUuid(), questionDtos);
+
+        return ImportStatus.DONE;
+    }
+
+    @Override
+    @Transactional
     public ImportStatus importQuestionnaire(String name, FileQuestionDto[] fileQuestionDtos, String principal) {
 
         if (ArrayUtils.isNotEmpty(fileQuestionDtos)) {
@@ -112,7 +212,7 @@ public class ImportServiceAdapter implements ImportServicePort {
                 final var tagQuestionnaire = tagPersistencePort.findOrCreateByLibelle(IMPORT, principal);
 
                 QuestionnaireTagDto questionnaireTagDto = new QuestionnaireTagDto();
-                questionnaireTagDto.setUuid(tagQuestionnaire.getUuid().toString());
+                questionnaireTagDto.setUuid(tagQuestionnaire.getUuid());
                 questionnaireDto.setQuestionnaireTags(new HashSet <>(Arrays.asList(questionnaireTagDto)));
                 QuestionnaireDto questionnaire = questionnaireService.saveQuestionnaire(questionnaireDto, principal);
 

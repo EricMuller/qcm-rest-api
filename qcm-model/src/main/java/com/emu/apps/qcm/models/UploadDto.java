@@ -35,4 +35,7 @@ public class UploadDto {
     @JsonProperty("libelle")
     private String libelle;
 
+    @JsonProperty("type")
+    private String type;
+
 }

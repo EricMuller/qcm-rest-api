@@ -45,6 +45,9 @@ public class Upload extends AuditableEntity <String> {
     @Column(name = "LIBELLE")
     private String libelle;
 
+    @Enumerated(EnumType.STRING)
+    private TypeUpload type = TypeUpload.EXPORT_JSON;
+
     @Override
     public boolean equals(Object obj) {
         return super.equals(obj);

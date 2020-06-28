@@ -72,7 +72,7 @@ public class QuestionRestController {
 
     @DeleteMapping(value = "/{uuid}")
     @ResponseBody
-    @CacheEvict(cacheNames = CacheName.Names.QUESTION, condition = "#questionDto != null", key = "#questionDto.uuid")
+    @CacheEvict(cacheNames = CacheName.Names.QUESTION, condition = "#uuid != null", key = "#uuid")
     public ResponseEntity <Question> deleteQuestionById(@PathVariable("uuid") String uuid) {
         questionServicePort.deleteQuestionByUuid(uuid);
         return ResponseEntity.noContent().build();
@@ -81,6 +81,7 @@ public class QuestionRestController {
 
     @PatchMapping(value = "/{uuid}")
     @ResponseBody
+    @CacheEvict(cacheNames = CacheName.Names.QUESTION, condition = "#uuid != null", key = "#uuid")
     public QuestionDto patchQuestion(@PathVariable("uuid") String uuid, @RequestBody QuestionPatchDto patchDto) {
         QuestionDto dto = questionServicePort.getQuestionByUuId(uuid);
         dto.setStatus(patchDto.getStatus());
