@@ -28,7 +28,7 @@ You can also:
 qcm-rest-api uses a number of open source projects to work properly:
 
 * [SpringBoot] - Create stand-alone backend Spring applications
-* [Spring WebFlux] - Reactive-stack web framework 
+* [Spring Mvc] -  Framework provides Model-View-Controller (MVC) architecture
 * [Spring Data JPA]  - Provides repository support for the Java Persistence API (JPA)
 * [MapStruct] - code generator that greatly simplifies the implementation of mappings between Java bean types  
 * [keycloak] - an open source identity and access management solution
