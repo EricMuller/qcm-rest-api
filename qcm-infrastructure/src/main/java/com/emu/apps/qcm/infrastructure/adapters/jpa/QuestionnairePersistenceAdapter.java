@@ -16,9 +16,11 @@ import com.emu.apps.qcm.infrastructure.exceptions.RaiseExceptionUtil;
 import com.emu.apps.qcm.infrastructure.ports.QuestionnairePersistencePort;
 import com.emu.apps.qcm.mappers.PublishedMapper;
 import com.emu.apps.qcm.mappers.QuestionnaireMapper;
+import com.emu.apps.qcm.mappers.QuestionnaireQuestionMapper;
 import com.emu.apps.qcm.mappers.UuidMapper;
 import com.emu.apps.qcm.models.QuestionDto;
 import com.emu.apps.qcm.models.QuestionnaireDto;
+import com.emu.apps.qcm.models.QuestionnaireQuestionDto;
 import com.emu.apps.qcm.models.QuestionnaireTagDto;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
@@ -52,11 +54,13 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
 
     private PublishedMapper publishedMapper;
 
+    private QuestionnaireQuestionMapper questionnaireQuestionMapper;
+
     public QuestionnairePersistenceAdapter(QuestionnaireRepository questionnaireRepository, QuestionRepository questionRepository,
                                            QuestionnaireQuestionRepository questionnaireQuestionRepository,
                                            CategoryRepository categoryRepository, QuestionnaireMapper questionnaireMapper,
                                            UuidMapper uuidMapper, TagRepository tagRepository,
-                                           QuestionnaireTagRepository questionnaireTagRepository, PublishedMapper guestMapper) {
+                                           QuestionnaireTagRepository questionnaireTagRepository, PublishedMapper guestMapper, QuestionnaireQuestionMapper questionnaireQuestionMapper) {
         this.questionnaireRepository = questionnaireRepository;
         this.questionRepository = questionRepository;
         this.questionnaireQuestionRepository = questionnaireQuestionRepository;
@@ -67,6 +71,7 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
         this.questionnaireTagRepository = questionnaireTagRepository;
         this.publishedMapper = guestMapper;
 
+        this.questionnaireQuestionMapper = questionnaireQuestionMapper;
     }
 
     @Override
@@ -202,5 +207,10 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
 
         QuestionnaireQuestion questionnaireQuestion = questionnaireQuestionRepository.findByQuestionUuid(UUID.fromString(questionnaireUuid), UUID.fromString(questionUuid));
         questionnaireQuestionRepository.delete(questionnaireQuestion);
+    }
+
+    @Transactional(readOnly = true)
+    public Page <QuestionnaireQuestionDto> getQuestionsProjectionByQuestionnaireUuid(String questionnaireUuid, Pageable pageable) {
+        return questionnaireQuestionMapper.pageQuestionResponseProjectionToDto(questionnaireQuestionRepository.findQuestionsByQuestionnaireUuiId(UUID.fromString(questionnaireUuid), pageable));
     }
 }

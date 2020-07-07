@@ -6,6 +6,7 @@ import com.emu.apps.qcm.infrastructure.ports.QuestionPersistencePort;
 import com.emu.apps.qcm.infrastructure.ports.QuestionnairePersistencePort;
 import com.emu.apps.qcm.models.QuestionDto;
 import com.emu.apps.qcm.models.QuestionnaireDto;
+import com.emu.apps.qcm.models.QuestionnaireQuestionDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -87,8 +88,8 @@ public class QuestionnaireServiceAdapter implements QuestionnaireServicePort {
         return questionnairePersistencePort.saveQuestionnaire(questionnaireDto, principal);
     }
 
-    public Page <QuestionDto> getQuestionsByQuestionnaireUuid(String questionnaireUuid, Pageable pageable) {
-        return questionPersistencePort.getQuestionsProjectionByQuestionnaireUuid(questionnaireUuid, pageable);
+    public Page <QuestionnaireQuestionDto> getQuestionsByQuestionnaireUuid(String questionnaireUuid, Pageable pageable) {
+        return questionnairePersistencePort.getQuestionsProjectionByQuestionnaireUuid(questionnaireUuid, pageable);
     }
 
     @Override

@@ -17,8 +17,6 @@ public interface QuestionPersistencePort {
 
     Page <QuestionTagsDto> findAllByPage(String[] questionnaireUuids, String[] tagUuids, Pageable pageable, String principal);
 
-    Page <QuestionDto> getQuestionsProjectionByQuestionnaireUuid(String questionnaireUuid, Pageable pageable);
-
     Iterable <QuestionnaireQuestion> findAllWithTagsAndResponseByQuestionnaireUuid(String questionnaireUuid);
 
 }

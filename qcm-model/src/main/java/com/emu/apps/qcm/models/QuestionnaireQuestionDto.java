@@ -22,7 +22,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class QuestionDto extends DomainDto {
+public class QuestionnaireQuestionDto extends DomainDto {
 
     @JsonProperty("question")
     @NotNull(message = "{question.question.notNull}")
@@ -46,5 +46,7 @@ public class QuestionDto extends DomainDto {
 
     @JsonProperty("tip")
     private String tip;
-    
+
+    @JsonProperty(value = "position",required = false)
+    private Long position;
 }

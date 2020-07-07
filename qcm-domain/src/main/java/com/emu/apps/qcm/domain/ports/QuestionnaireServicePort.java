@@ -2,6 +2,7 @@ package com.emu.apps.qcm.domain.ports;
 
 import com.emu.apps.qcm.models.QuestionDto;
 import com.emu.apps.qcm.models.QuestionnaireDto;
+import com.emu.apps.qcm.models.QuestionnaireQuestionDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,7 @@ public interface QuestionnaireServicePort {
 
     ResponseEntity <QuestionnaireDto> deleteQuestionnaireByUuid(String uuid);
 
-    Page <QuestionDto> getQuestionsByQuestionnaireUuid(String uuid, Pageable pageable);
+    Page <QuestionnaireQuestionDto> getQuestionsByQuestionnaireUuid(String uuid, Pageable pageable);
 
     QuestionDto addQuestion(String questionnaireUuid, QuestionDto questionDto, Optional <Long> position);
 

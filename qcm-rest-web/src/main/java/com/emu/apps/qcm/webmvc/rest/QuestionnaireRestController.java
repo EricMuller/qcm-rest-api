@@ -4,6 +4,7 @@ package com.emu.apps.qcm.webmvc.rest;
 import com.emu.apps.qcm.domain.ports.QuestionnaireServicePort;
 import com.emu.apps.qcm.models.QuestionDto;
 import com.emu.apps.qcm.models.QuestionnaireDto;
+import com.emu.apps.qcm.models.QuestionnaireQuestionDto;
 import com.emu.apps.qcm.webmvc.rest.caches.CacheName;
 import com.emu.apps.shared.annotations.Timer;
 import com.emu.apps.shared.security.AuthentificationContextHolder;
@@ -20,8 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.PUBLIC_API;
-import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.QUESTIONNAIRES;
+import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.*;
 
 
 @RestController
@@ -67,9 +67,9 @@ public class QuestionnaireRestController {
     }
 
     /* /{id:[\d]+}/questions*/
-    @GetMapping(value = "/{uuid}/questions")
+    @GetMapping(value = "/{uuid}" + QUESTIONS)
     @ResponseBody
-    public Page <QuestionDto> getQuestionsByQuestionnaireId(@PathVariable("uuid") String uuid, Pageable pageable) {
+    public Page <QuestionnaireQuestionDto> getQuestionsByQuestionnaireId(@PathVariable("uuid") String uuid, Pageable pageable) {
         return questionnaireServicePort.getQuestionsByQuestionnaireUuid(uuid, pageable);
     }
 
@@ -87,7 +87,6 @@ public class QuestionnaireRestController {
         // todo send QuestionnaireQuestionDto
         return questionnaireServicePort.addQuestion(uuid, questionDto, Optional.empty());
     }
-
 
 
     @DeleteMapping(value = "/{uuid}/questions/{question_uuid}")

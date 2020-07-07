@@ -119,10 +119,7 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
         return questionMapper.pageToPageTagDto(questionRepository.findAll(questionSpecificationBuilder.build(), pageable));
     }
 
-    @Transactional(readOnly = true)
-    public Page <QuestionDto> getQuestionsProjectionByQuestionnaireUuid(String questionnaireUuid, Pageable pageable) {
-        return questionMapper.pageQuestionResponseProjectionToDto(questionnaireQuestionRepository.findQuestionsByQuestionnaireUuiId(UUID.fromString(questionnaireUuid), pageable));
-    }
+
 
 
     @Override
