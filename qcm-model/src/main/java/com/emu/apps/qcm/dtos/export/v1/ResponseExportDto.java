@@ -22,4 +22,5 @@ public class ResponseExportDto {
 
     private Long version;
 
+    private Long number;
 }

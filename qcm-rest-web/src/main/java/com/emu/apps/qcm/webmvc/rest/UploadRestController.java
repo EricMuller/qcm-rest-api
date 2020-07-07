@@ -1,10 +1,9 @@
 package com.emu.apps.qcm.webmvc.rest;
 
-import com.emu.apps.qcm.domain.ports.ImportServicePort;
 import com.emu.apps.qcm.domain.ports.UploadServicePort;
 import com.emu.apps.qcm.models.UploadDto;
 import com.emu.apps.shared.annotations.Timer;
-import com.emu.apps.shared.security.UserContextHolder;
+import com.emu.apps.shared.security.AuthentificationContextHolder;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -24,11 +23,8 @@ public class UploadRestController {
 
     private final UploadServicePort uploadServicePort;
 
-    private final ImportServicePort importServicePort;
-
-    public UploadRestController(UploadServicePort uploadServicePort, ImportServicePort importServicePort) {
+    public UploadRestController(UploadServicePort uploadServicePort) {
         this.uploadServicePort = uploadServicePort;
-        this.importServicePort = importServicePort;
     }
 
     @ResponseBody
@@ -37,20 +33,15 @@ public class UploadRestController {
                                 @RequestParam("file") MultipartFile multipartFile,
                                 @RequestParam(value = "async", required = false) Boolean async) throws IOException {
 
-        return uploadServicePort.uploadFile(fileType, multipartFile, async, UserContextHolder.getUser());
+        return uploadServicePort.uploadFile(fileType, multipartFile, async, AuthentificationContextHolder.getUser());
     }
 
     @GetMapping()
     @Timer
     public Iterable <UploadDto> getUploads(Pageable pageable) {
-        return uploadServicePort.getUploads(pageable, UserContextHolder.getUser());
+        return uploadServicePort.getUploads(pageable, AuthentificationContextHolder.getUser());
     }
 
-    @ResponseBody
-    @GetMapping(value = "/{uuid}/import")
-    public UploadDto importFile(@PathVariable("uuid") String uploadUuid) throws IOException {
-        return importServicePort.importFile(uploadUuid, UserContextHolder.getUser());
-    }
 
     @DeleteMapping(value = "/{uuid}")
     @ResponseBody
@@ -64,5 +55,6 @@ public class UploadRestController {
     public UploadDto getUploadById(@PathVariable("uuid") String uuid) {
         return uploadServicePort.getUploadByUuid(uuid);
     }
+
 
 }

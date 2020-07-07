@@ -1,8 +1,6 @@
 package com.emu.apps.qcm.domain.adapters;
 
 import com.emu.apps.qcm.domain.ports.QuestionnaireServicePort;
-import com.emu.apps.qcm.dtos.published.PublishedCategoryDto;
-import com.emu.apps.qcm.dtos.published.PublishedTagDto;
 import com.emu.apps.qcm.infrastructure.exceptions.RaiseExceptionUtil;
 import com.emu.apps.qcm.infrastructure.ports.QuestionPersistencePort;
 import com.emu.apps.qcm.infrastructure.ports.QuestionnairePersistencePort;
@@ -93,29 +91,6 @@ public class QuestionnaireServiceAdapter implements QuestionnaireServicePort {
         return questionPersistencePort.getQuestionsProjectionByQuestionnaireUuid(questionnaireUuid, pageable);
     }
 
-    /**
-     * find  a list of questionnaires
-     *
-     * @param tagUuid   array of technical tag UUID
-     * @param pageable
-     * @param principal
-     * @return a list of questionnaires with the specified tag
-     */
-    @Transactional(readOnly = true)
-    public Page <QuestionnaireDto> getPublicQuestionnaires(String[] tagUuid, Pageable pageable, String principal) {
-        return questionnairePersistencePort.findAllPublicByPage(tagUuid, principal, pageable);
-    }
-
-    @Transactional(readOnly = true)
-    public Iterable <PublishedCategoryDto> getPublicCategories() {
-        return questionnairePersistencePort.getPublicCategories();
-    }
-
-    @Transactional(readOnly = true)
-    public Iterable <PublishedTagDto> getPublicTags() {
-        return questionnairePersistencePort.getPublicTags();
-    }
-
     @Override
     @Transactional(readOnly = true)
     public Page <QuestionnaireDto> getQuestionnaires(String[] tagUuid, Pageable pageable, String principal) {
@@ -153,6 +128,8 @@ public class QuestionnaireServiceAdapter implements QuestionnaireServicePort {
 
     @Override
     public void deleteQuestion(String questionnaireUuid, String questionUuid) {
-        questionnairePersistencePort.deleteQuestion(questionnaireUuid,questionUuid);
+        questionnairePersistencePort.deleteQuestion(questionnaireUuid, questionUuid);
     }
+
+
 }

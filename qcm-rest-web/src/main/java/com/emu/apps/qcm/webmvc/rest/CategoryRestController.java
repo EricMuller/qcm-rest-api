@@ -5,7 +5,7 @@ import com.emu.apps.qcm.dtos.MessageDto;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.category.Type;
 import com.emu.apps.qcm.infrastructure.exceptions.FunctionnalException;
 import com.emu.apps.qcm.models.CategoryDto;
-import com.emu.apps.shared.security.UserContextHolder;
+import com.emu.apps.shared.security.AuthentificationContextHolder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
@@ -42,13 +42,13 @@ public class CategoryRestController {
     @GetMapping()
     @ResponseBody
     public Iterable <CategoryDto> getCategories( @RequestParam("type") Type type) throws FunctionnalException {
-        return categoryServicePort.getCategories(UserContextHolder.getUser(), type);
+        return categoryServicePort.getCategories(AuthentificationContextHolder.getUser(), type);
     }
 
     @PostMapping()
     @ResponseBody
     public CategoryDto saveCategory(@RequestBody CategoryDto categoryDto) throws FunctionnalException {
-        return categoryServicePort.saveCategory(categoryDto, UserContextHolder.getUser());
+        return categoryServicePort.saveCategory(categoryDto, AuthentificationContextHolder.getUser());
     }
 
     @ExceptionHandler({JsonProcessingException.class, IOException.class})

@@ -8,7 +8,7 @@ import com.emu.apps.qcm.models.QuestionDto;
 import com.emu.apps.qcm.models.question.QuestionTagsDto;
 import com.emu.apps.qcm.webmvc.rest.caches.CacheName;
 import com.emu.apps.shared.annotations.Timer;
-import com.emu.apps.shared.security.UserContextHolder;
+import com.emu.apps.shared.security.AuthentificationContextHolder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -45,7 +45,7 @@ public class QuestionRestController {
                                                    @RequestParam(value = "questionnaire_uuid", required = false) String[] questionnaireUuid,
                                                    Pageable pageable) {
 
-        return questionServicePort.getQuestions(tagUuid, questionnaireUuid, pageable, UserContextHolder.getUser());
+        return questionServicePort.getQuestions(tagUuid, questionnaireUuid, pageable, AuthentificationContextHolder.getUser());
     }
 
 
@@ -61,13 +61,13 @@ public class QuestionRestController {
     @CachePut(cacheNames = CacheName.Names.QUESTION, condition = "#questionDto != null", key = "#questionDto.uuid")
     @ResponseBody
     public QuestionDto updateQuestion(@RequestBody @Valid QuestionDto questionDto) {
-        return questionServicePort.updateQuestion(questionDto, UserContextHolder.getUser());
+        return questionServicePort.updateQuestion(questionDto, AuthentificationContextHolder.getUser());
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public QuestionDto saveQuestion(@RequestBody @Valid QuestionDto questionDto) {
-        return questionServicePort.saveQuestion(questionDto, UserContextHolder.getUser());
+        return questionServicePort.saveQuestion(questionDto, AuthentificationContextHolder.getUser());
     }
 
     @DeleteMapping(value = "/{uuid}")
@@ -85,7 +85,7 @@ public class QuestionRestController {
     public QuestionDto patchQuestion(@PathVariable("uuid") String uuid, @RequestBody QuestionPatchDto patchDto) {
         QuestionDto dto = questionServicePort.getQuestionByUuId(uuid);
         dto.setStatus(patchDto.getStatus());
-        return questionServicePort.saveQuestion(dto, UserContextHolder.getUser());
+        return questionServicePort.saveQuestion(dto, AuthentificationContextHolder.getUser());
     }
 
     @ExceptionHandler({JsonProcessingException.class, IOException.class})

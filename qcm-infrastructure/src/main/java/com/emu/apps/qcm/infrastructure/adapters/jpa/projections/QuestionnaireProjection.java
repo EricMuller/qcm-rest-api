@@ -6,25 +6,25 @@ import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.category.Category;
 import org.hibernate.annotations.Immutable;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Immutable
 public interface QuestionnaireProjection {
 
-    Long getId();
-
-    Long getVersion();
+    Category getCategory();
 
     Date getDateCreation();
 
-    String getTitle();
-
-    Category getCategory();
-
-    Status getStatus();
-
-    String getDescription();
+    Date getDateModification();
 
     String getLocale();
 
+    UUID getUuid();
+
+    Status getStatus();
+
+    String getTitle();
+
+    Long getVersion();
 
 }

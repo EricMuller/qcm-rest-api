@@ -86,11 +86,11 @@ public class QuestionnaireRepositoryTest {
 
         QuestionnaireProjection questionnaire = questionnaireRepository.findQuestionnaireById(q.getId());
 
-        assertNotNull(questionnaire.getId());
+        assertNotNull(questionnaire.getUuid());
         assertNotNull(questionnaire.getCategory());
         assertEquals(Fixture.CATEGORIE_LIBELLE, questionnaire.getCategory().getLibelle());
-        assertNotNull(questionnaire.getDescription());
-        assertEquals(Fixture.QUESTIONNAIRE_DESC, questionnaire.getDescription());
+        assertNotNull(questionnaire.getTitle());
+        assertEquals(Fixture.QUESTIONNAIRE_TITLE, questionnaire.getTitle());
     }
 
     @Test

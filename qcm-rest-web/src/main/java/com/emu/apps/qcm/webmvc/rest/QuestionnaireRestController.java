@@ -2,12 +2,11 @@ package com.emu.apps.qcm.webmvc.rest;
 
 
 import com.emu.apps.qcm.domain.ports.QuestionnaireServicePort;
-import com.emu.apps.qcm.dtos.question.QuestionPatchDto;
 import com.emu.apps.qcm.models.QuestionDto;
 import com.emu.apps.qcm.models.QuestionnaireDto;
 import com.emu.apps.qcm.webmvc.rest.caches.CacheName;
 import com.emu.apps.shared.annotations.Timer;
-import com.emu.apps.shared.security.UserContextHolder;
+import com.emu.apps.shared.security.AuthentificationContextHolder;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -58,13 +57,13 @@ public class QuestionnaireRestController {
     @Timer
     @ResponseBody
     public QuestionnaireDto updateQuestionnaire(@RequestBody QuestionnaireDto questionnaireDto) {
-        return questionnaireServicePort.updateQuestionnaire(questionnaireDto, UserContextHolder.getUser());
+        return questionnaireServicePort.updateQuestionnaire(questionnaireDto, AuthentificationContextHolder.getUser());
     }
 
     @PostMapping()
     @ResponseBody
     public QuestionnaireDto saveQuestionnaire(@RequestBody QuestionnaireDto questionnaireDto) {
-        return questionnaireServicePort.saveQuestionnaire(questionnaireDto, UserContextHolder.getUser());
+        return questionnaireServicePort.saveQuestionnaire(questionnaireDto, AuthentificationContextHolder.getUser());
     }
 
     /* /{id:[\d]+}/questions*/
@@ -79,7 +78,7 @@ public class QuestionnaireRestController {
     @ResponseBody
     public Page <QuestionnaireDto> getQuestionnaires(@RequestParam(value = "tag_uuid", required = false) String[] tagUuid,
                                                      Pageable pageable) {
-        return questionnaireServicePort.getQuestionnaires(tagUuid, pageable, UserContextHolder.getUser());
+        return questionnaireServicePort.getQuestionnaires(tagUuid, pageable, AuthentificationContextHolder.getUser());
     }
 
     @PutMapping(value = "/{uuid}/questions")

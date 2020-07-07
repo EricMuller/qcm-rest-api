@@ -1,8 +1,7 @@
 package com.emu.apps.qcm.infrastructure.adapters.jpa.repositories;
 
-import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.category.Category;
-import com.emu.apps.qcm.infrastructure.adapters.jpa.projections.QuestionnaireProjection;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questionnaires.Questionnaire;
+import com.emu.apps.qcm.infrastructure.adapters.jpa.projections.QuestionnaireProjection;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,7 +22,7 @@ import java.util.UUID;
 @Repository
 public interface QuestionnaireRepository extends JpaRepository<Questionnaire, Long>, JpaSpecificationExecutor<Questionnaire> {
 
-    @Query("SELECT q.id as id, q.version as version,  q.dateCreation as date, q.title as title, q.description as description, q.category as category ,q.status as status from Questionnaire q  WHERE q.id = :id ")
+    @Query("SELECT q.uuid as uuid, q.version as version,  q.dateCreation as dateCreation, q.dateModification as dateModification, q.title as title, q.category as category ,q.status as status from Questionnaire q  WHERE q.id = :id ")
     QuestionnaireProjection findQuestionnaireById(@Param("id") Long questionnaireId);
 
     Iterable<QuestionnaireProjection> findByTitleContaining(String title);
@@ -36,7 +35,6 @@ public interface QuestionnaireRepository extends JpaRepository<Questionnaire, Lo
     @EntityGraph(value = "Questionnaire.questionnaireTags")
     @NotNull
     Optional<Questionnaire> findById(@NotNull Long id);
-
 
     @EntityGraph(value = "Questionnaire.questionnaireTags")
     @NotNull
@@ -51,6 +49,10 @@ public interface QuestionnaireRepository extends JpaRepository<Questionnaire, Lo
 
     void deleteByUuid(UUID uuid);
 
-    @Query("SELECT distinct q.category FROM Questionnaire  q  WHERE q.published = true")
-    Iterable<Category> getAllPublicCategories();
+    @Query("SELECT distinct q.category.libelle FROM Questionnaire  q  WHERE q.published = true")
+    Iterable<String> findAllDistinctCategory_LibelleByPublishedTrue();
+
+
+    Iterable<QuestionnaireProjection> findAllByPublishedTrue();
+
 }

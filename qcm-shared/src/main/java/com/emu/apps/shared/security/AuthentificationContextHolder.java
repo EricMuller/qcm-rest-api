@@ -1,6 +1,6 @@
 package com.emu.apps.shared.security;
 
-public final class UserContextHolder {
+public final class AuthentificationContextHolder {
 
     private static ThreadLocal <String> context = new ThreadLocal();
 

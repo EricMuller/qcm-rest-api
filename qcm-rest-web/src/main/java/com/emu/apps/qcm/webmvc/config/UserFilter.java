@@ -2,7 +2,7 @@ package com.emu.apps.qcm.webmvc.config;
 
 import com.emu.apps.qcm.models.UserDto;
 import com.emu.apps.qcm.domain.ports.UserServicePort;
-import com.emu.apps.shared.security.UserContextHolder;
+import com.emu.apps.shared.security.AuthentificationContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,10 +29,10 @@ public class UserFilter implements Filter {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (Objects.nonNull(authentication)) {
             UserDto userDto = userServicePort.user(authentication);
-            UserContextHolder.setUser(userDto.getUuid());
+            AuthentificationContextHolder.setUser(userDto.getUuid());
             // LOGGER.info("{}: {}", PrincipalUtils.getEmail(authentication), userDto.getUuid());
         } else {
-            UserContextHolder.setUser(null);
+            AuthentificationContextHolder.setUser(null);
         }
         filterChain.doFilter(servletRequest, servletResponse);
     }

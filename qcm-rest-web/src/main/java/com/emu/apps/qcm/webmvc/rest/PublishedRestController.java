@@ -1,10 +1,9 @@
 package com.emu.apps.qcm.webmvc.rest;
 
 
-import com.emu.apps.qcm.models.QuestionnaireDto;
-import com.emu.apps.qcm.domain.ports.QuestionnaireServicePort;
-import com.emu.apps.qcm.dtos.published.PublishedCategoryDto;
-import com.emu.apps.qcm.dtos.published.PublishedTagDto;
+import com.emu.apps.qcm.domain.ports.PublishedServicePort;
+import com.emu.apps.qcm.dtos.published.PublishedQuestionnaireDto;
+import com.emu.apps.qcm.dtos.published.PushishedQuestionnaireQuestionDto;
 import com.emu.apps.shared.annotations.Timer;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
@@ -20,30 +19,36 @@ import static com.emu.apps.qcm.webmvc.rest.ApiRestMappings.*;
 @RequestMapping(value = PUBLISHED_API, produces = MediaType.APPLICATION_JSON_VALUE)
 public class PublishedRestController {
 
-    private final QuestionnaireServicePort questionnaireServicePort;
+    private final PublishedServicePort questionnaireServicePort;
 
-    public PublishedRestController(QuestionnaireServicePort questionnaireServicePort) {
-        this.questionnaireServicePort = questionnaireServicePort;
+    public PublishedRestController(PublishedServicePort publishedServicePort) {
+        this.questionnaireServicePort = publishedServicePort;
     }
 
     @GetMapping(value = QUESTIONNAIRES)
     @Timer
     @ResponseBody
-    public Page <QuestionnaireDto> getQuestionnaires(@RequestParam(value = "tag_uuid", required = false) String[] tagUuid,
-                                                     Pageable pageable, @RequestParam(value = "principal", required = false) String principal) {
-        return questionnaireServicePort.getPublicQuestionnaires(tagUuid, pageable, principal);
+    public Page <PublishedQuestionnaireDto> getQuestionnaires(Pageable pageable) {
+        return questionnaireServicePort.getPublishedQuestionnaires(pageable);
     }
 
     @GetMapping(value = CATEGORIES)
     @ResponseBody
-    public Iterable <PublishedCategoryDto> getCategories() {
-        return questionnaireServicePort.getPublicCategories();
+    public Iterable <String> getCategories() {
+        return questionnaireServicePort.getPublishedCategories();
     }
 
     @GetMapping(value = TAGS)
     @ResponseBody
-    public Iterable <PublishedTagDto> getTags() {
-        return questionnaireServicePort.getPublicTags();
+    public Iterable <String> getTags() {
+        return questionnaireServicePort.getPublishedTags();
     }
+
+    @GetMapping(value = QUESTIONNAIRES + "/{uuid}/" + QUESTIONS)
+    @ResponseBody
+    public Iterable <PushishedQuestionnaireQuestionDto> getQuestionByQuestionnaireUuid(@PathVariable("uuid") String uuid) {
+        return questionnaireServicePort.getPublishedQuestionsByQuestionnaireUuid(uuid);
+    }
+
 
 }

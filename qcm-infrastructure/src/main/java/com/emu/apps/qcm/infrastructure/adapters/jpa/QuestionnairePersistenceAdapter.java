@@ -1,8 +1,7 @@
 package com.emu.apps.qcm.infrastructure.adapters.jpa;
 
 
-import com.emu.apps.qcm.dtos.published.PublishedCategoryDto;
-import com.emu.apps.qcm.dtos.published.PublishedTagDto;
+import com.emu.apps.qcm.dtos.published.PublishedQuestionnaireDto;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.builders.QuestionnaireTagBuilder;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.category.Category;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questionnaires.Questionnaire;
@@ -15,7 +14,7 @@ import com.emu.apps.qcm.infrastructure.adapters.jpa.specifications.Questionnaire
 import com.emu.apps.qcm.infrastructure.exceptions.MessageSupport;
 import com.emu.apps.qcm.infrastructure.exceptions.RaiseExceptionUtil;
 import com.emu.apps.qcm.infrastructure.ports.QuestionnairePersistencePort;
-import com.emu.apps.qcm.mappers.GuestMapper;
+import com.emu.apps.qcm.mappers.PublishedMapper;
 import com.emu.apps.qcm.mappers.QuestionnaireMapper;
 import com.emu.apps.qcm.mappers.UuidMapper;
 import com.emu.apps.qcm.models.QuestionDto;
@@ -51,13 +50,13 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
 
     private QuestionnaireTagRepository questionnaireTagRepository;
 
-    private GuestMapper guestMapper;
+    private PublishedMapper publishedMapper;
 
     public QuestionnairePersistenceAdapter(QuestionnaireRepository questionnaireRepository, QuestionRepository questionRepository,
                                            QuestionnaireQuestionRepository questionnaireQuestionRepository,
                                            CategoryRepository categoryRepository, QuestionnaireMapper questionnaireMapper,
                                            UuidMapper uuidMapper, TagRepository tagRepository,
-                                           QuestionnaireTagRepository questionnaireTagRepository, GuestMapper guestMapper) {
+                                           QuestionnaireTagRepository questionnaireTagRepository, PublishedMapper guestMapper) {
         this.questionnaireRepository = questionnaireRepository;
         this.questionRepository = questionRepository;
         this.questionnaireQuestionRepository = questionnaireQuestionRepository;
@@ -66,7 +65,7 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
         this.uuidMapper = uuidMapper;
         this.tagRepository = tagRepository;
         this.questionnaireTagRepository = questionnaireTagRepository;
-        this.guestMapper = guestMapper;
+        this.publishedMapper = guestMapper;
 
     }
 
@@ -124,22 +123,9 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
         specificationBuilder.setTagUuids(uuidMapper.toUUIDs(tagUuid));
 
         return questionnaireMapper.pageToDto(questionnaireRepository.findAll(specificationBuilder.build(), pageable));
-
     }
 
-    @Override
-    @Transactional(readOnly = true)
-    public Page <QuestionnaireDto> findAllPublicByPage(String[] tagUuid, String principal, Pageable pageable) {
 
-        var specificationBuilder = new QuestionnaireSpecificationBuilder();
-
-        specificationBuilder.setPrincipal(principal);
-        specificationBuilder.setPublished(Boolean.TRUE);
-        specificationBuilder.setTagUuids(uuidMapper.toUUIDs(tagUuid));
-
-        return questionnaireMapper.pageToDto(questionnaireRepository.findAll(specificationBuilder.build(), pageable));
-
-    }
 
     private Questionnaire saveQuestionnaireTags(Questionnaire questionnaire, Iterable <QuestionnaireTagDto> questionnaireTagDtos, String principal) {
 
@@ -188,13 +174,27 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
         return questionDto;
     }
 
+
     @Override
-    public Iterable <PublishedCategoryDto> getPublicCategories() {
-        return guestMapper.categoriesToDtos(questionnaireRepository.getAllPublicCategories());
+    @Transactional(readOnly = true)
+    public Page <PublishedQuestionnaireDto> findAllPublishedByPage(  Pageable pageable) {
+
+        var specificationBuilder = new QuestionnaireSpecificationBuilder();
+
+        specificationBuilder.setPublished(Boolean.TRUE);
+
+        return publishedMapper.pageQuestionnaireToPublishedQuestionnaireDto(questionnaireRepository.findAll(specificationBuilder.build(), pageable));
+
     }
 
-    public Iterable <PublishedTagDto> getPublicTags() {
-        return guestMapper.tagsToDtos(questionnaireTagRepository.getPublicTags());
+    @Override
+    public Iterable <String> findPublishedCategories() {
+        return questionnaireRepository.findAllDistinctCategory_LibelleByPublishedTrue();
+    }
+
+    public Iterable <String> findPublishedTags() {
+
+        return questionnaireTagRepository.findDistinctTagLibelleByDeletedFalseAndQuestionnaire_PublishedTrue();
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.infrastructure.adapters.jpa.config;
 
 import com.emu.apps.qcm.infrastructure.exceptions.TechnicalException;
-import com.emu.apps.shared.security.UserContextHolder;
+import com.emu.apps.shared.security.AuthentificationContextHolder;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,8 +21,8 @@ public class AuditorAwareImpl implements AuditorAware <String> {
         if (authentication == null || !authentication.isAuthenticated()) {
             throw new TechnicalException("authent");
         } else {
-            String user = UserContextHolder.getUser();
-            return Objects.nonNull(user) ? Optional.of(UserContextHolder.getUser()) : Optional.empty();
+            String user = AuthentificationContextHolder.getUser();
+            return Objects.nonNull(user) ? Optional.of(AuthentificationContextHolder.getUser()) : Optional.empty();
 
 //            if (Objects.isNull(user)) {
 //                user = userRepository.findByEmailContaining(PrincipalUtils.getEmail(authentication)).orElse(null);

@@ -1,16 +1,18 @@
 package com.emu.apps.qcm.domain.adapters;
 
-import com.emu.apps.qcm.models.QuestionDto;
-import com.emu.apps.qcm.models.question.QuestionTagsDto;
 import com.emu.apps.qcm.domain.ports.QuestionServicePort;
-import com.emu.apps.qcm.infrastructure.exceptions.RaiseExceptionUtil;
 import com.emu.apps.qcm.infrastructure.exceptions.MessageSupport;
+import com.emu.apps.qcm.infrastructure.exceptions.RaiseExceptionUtil;
 import com.emu.apps.qcm.infrastructure.ports.QuestionPersistencePort;
+import com.emu.apps.qcm.models.QuestionDto;
+import com.emu.apps.qcm.models.ResponseDto;
+import com.emu.apps.qcm.models.question.QuestionTagsDto;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 /**
@@ -47,13 +49,14 @@ public class QuestionServiceAdapter implements QuestionServicePort {
 
     @Override
     public QuestionDto updateQuestion(QuestionDto questionDto, String principal) {
+
+
         return questionPersistencePort.saveQuestion(questionDto, principal);
     }
 
     @Override
     @Transactional
     public Collection <QuestionDto> saveQuestions(Collection <QuestionDto> questionDtos, final String principal) {
-
         return questionDtos
                 .stream()
                 .map(questionDto -> saveQuestion(questionDto, principal))
@@ -64,29 +67,11 @@ public class QuestionServiceAdapter implements QuestionServicePort {
     @Transactional
     public QuestionDto saveQuestion(QuestionDto questionDto, String principal) {
 
+        AtomicLong atomicLong = new AtomicLong(0);
+        for(ResponseDto responseDto :questionDto.getResponses()){
+            responseDto.setNumber(atomicLong.incrementAndGet());
+        }
         return questionPersistencePort.saveQuestion(questionDto, principal);
-
-        //fixme: em
-//        Question newQuestion = questionMapper.dtoToModel(questionDto);
-//
-//        CategoryDto categoryDto = questionDto.getCategory();
-//        if (Objects.nonNull(categoryDto)) {
-//
-//            Category category = categoryDOService.findOrCreateByLibelle(
-//                    categoryDto.getUserId(), Type.valueOf(categoryDto.getType()), categoryDto.getLibelle());
-//
-//            newQuestion.setCategory(category);
-//        }
-//
-//        Question question = questionDOService.saveQuestion(newQuestion);
-//
-//        Iterable <QuestionTag> questionTags = questionTagMapper.dtosToModels(questionDto.getQuestionTags());
-//
-//        question = questionTagDOService.saveQuestionTags(question.getId(), questionTags, principal);
-//
-//        return questionMapper.modelToDto(question);
-
-
     }
 
     @Override

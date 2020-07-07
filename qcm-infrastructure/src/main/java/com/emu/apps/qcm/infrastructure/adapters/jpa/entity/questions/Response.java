@@ -38,5 +38,4 @@ public class Response extends AuditableEntity<String> {
         return String.format("Response[id=%d,  response='%s']", getId(), response);
     }
 
-
 }

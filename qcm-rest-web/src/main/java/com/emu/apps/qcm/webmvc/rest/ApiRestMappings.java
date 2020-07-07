@@ -50,6 +50,7 @@ public final class ApiRestMappings {
 
     public static final String EXPORTS =  "/exports";
 
+    public static final String IMPORTS =  "/imports";
 
     private ApiRestMappings() {
         //nop

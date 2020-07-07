@@ -1,4 +1,4 @@
-package com.emu.apps.qcm.models;
+package com.emu.apps.qcm.dtos.published;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -14,11 +14,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ResponseDto {
-
-    private String uuid;
+public class PublishedResponseDto {
 
     private String response;
+
+    private String status;
 
     private Boolean good;
 

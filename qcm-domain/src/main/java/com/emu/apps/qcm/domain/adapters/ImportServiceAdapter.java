@@ -76,7 +76,6 @@ public class ImportServiceAdapter implements ImportServicePort {
             uploadDto.setStatus(importStatus.name());
         }
 
-
         return uploadPersistencePort.saveUpload(uploadDto);
 
     }
@@ -241,7 +240,6 @@ public class ImportServiceAdapter implements ImportServicePort {
         }
 
         return ImportStatus.DONE;
-
     }
 
 }
