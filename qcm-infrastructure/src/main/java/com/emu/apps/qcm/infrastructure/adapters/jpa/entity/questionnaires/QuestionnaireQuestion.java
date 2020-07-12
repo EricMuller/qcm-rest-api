@@ -19,8 +19,8 @@ import java.util.Objects;
         subgraphs = {
 //                @NamedSubgraph(name = "question", attributeNodes =@NamedAttributeNode(value = "questionTags", subgraph = "tags")),
                 @NamedSubgraph(name = "tags", attributeNodes = @NamedAttributeNode("tag"))
-                }
-        )
+        }
+)
 
 @Table(name = "questionnaire_question")
 @Getter
@@ -43,9 +43,12 @@ public class QuestionnaireQuestion implements Serializable {
     private boolean deleted;
 
     @Column(name = "POSITION", nullable = false)
-    private Long position;
+    private Integer position;
 
-    public QuestionnaireQuestion(@NotNull Questionnaire questionnaire, @NotNull Question question, Long position) {
+    @Column(name = "POINTS", nullable = false)
+    private Integer points = 1;
+
+    public QuestionnaireQuestion(@NotNull Questionnaire questionnaire, @NotNull Question question, Integer position) {
         this.id = new QuestionnaireQuestionId(questionnaire.getId(), question.getId());
         this.questionnaire = questionnaire;
         this.question = question;

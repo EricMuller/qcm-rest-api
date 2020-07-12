@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.webmvc.rest.controllers;
 
 
-import com.emu.apps.qcm.infrastructure.Fixture;
+import com.emu.apps.qcm.infrastructure.DbFixture;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.config.SpringBootTestConfig;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.category.Type;
 import com.emu.apps.qcm.models.CategoryDto;
@@ -38,7 +38,7 @@ public class CategoryControllerTest {
     private int port;
 
     @Autowired
-    private Fixture fixture;
+    private DbFixture fixture;
 
     private final TestRestTemplate restTemplate = new TestRestTemplate();
 

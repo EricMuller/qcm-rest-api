@@ -40,9 +40,9 @@ public class UploadRestControllerTest {
         map.add("file", resource);
         map.add("fileType", MediaType.APPLICATION_JSON_VALUE);
 
-        final ResponseEntity<UploadDto> postResponse = restTemplate
-                .withBasicAuth(SpringBootTestConfig.USER_TEST,SpringBootTestConfig.USER_PASSWORD)
-                .exchange(getURL(ApiRestMappings.PUBLIC_API + "/upload/json"), HttpMethod.POST, new HttpEntity<>(map), UploadDto.class);
+        final ResponseEntity <UploadDto> postResponse = restTemplate
+                .withBasicAuth(SpringBootTestConfig.USER_TEST, SpringBootTestConfig.USER_PASSWORD)
+                .exchange(getURL(ApiRestMappings.PUBLIC_API + ApiRestMappings.UPLOADS + "/json"), HttpMethod.POST, new HttpEntity <>(map), UploadDto.class);
         assertThat(postResponse.getBody()).isNotNull();
 
 

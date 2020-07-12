@@ -11,7 +11,7 @@ public interface ExportServicePort {
     default String generateName(QuestionnaireDto questionnaire) {
 
         return (Objects.nonNull(questionnaire.getCategory()) ? questionnaire.getCategory().getLibelle() : "")
-                + "-" + questionnaire.getTitle() + "-" + questionnaire.getStatus();
+                + "-" + questionnaire.getTitle() + "-" + questionnaire.getStatus() + "-" + questionnaire.getVersion();
 
     }
 }

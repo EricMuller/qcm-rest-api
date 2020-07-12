@@ -47,4 +47,8 @@ public class QuestionExportDto {
     @JsonProperty("position")
     private Long position;
 
+    @JsonProperty("points")
+    private Long points;
+
+
 }

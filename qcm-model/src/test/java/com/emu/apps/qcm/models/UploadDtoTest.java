@@ -1,9 +1,8 @@
 package com.emu.apps.qcm.models;
 
-import com.emu.apps.qcm.models.UploadDto;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -30,7 +29,7 @@ assertEquals(param, result);
 
 @Test
 public void testDateCreation() {
-LocalDateTime param = LocalDateTime.now();
+    ZonedDateTime param = ZonedDateTime.now();
 pojoObject.setDateCreation(param);
 Object result = pojoObject.getDateCreation();
 assertEquals(param, result);

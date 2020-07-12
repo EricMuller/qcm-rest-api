@@ -79,6 +79,7 @@
 
         <!-- xdocreport-->
 
+
         <dependency>
             <groupId>fr.opensagres.xdocreport</groupId>
             <artifactId>fr.opensagres.xdocreport.document</artifactId>

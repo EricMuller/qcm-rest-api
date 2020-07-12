@@ -46,6 +46,11 @@ public class PublishedServiceAdapter implements PublishedServicePort {
     }
 
     @Transactional(readOnly = true)
+    public PublishedQuestionnaireDto getPublishedQuestionnaireByUuid(String uuid){
+        return questionnairePersistencePort.findOnePublishedByUuid(uuid);
+    }
+
+    @Transactional(readOnly = true)
     public Iterable <String> getPublishedCategories() {
         return questionnairePersistencePort.findPublishedCategories();
     }
@@ -63,5 +68,7 @@ public class PublishedServiceAdapter implements PublishedServicePort {
         return publishedMapper.questionnaireQuestionsToPublishedDtos(questionnaireQuestions);
 
     }
+
+
 
 }

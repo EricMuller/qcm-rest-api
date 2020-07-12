@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.infrastructure.adapters.jpa.repositories;
 
-import com.emu.apps.qcm.infrastructure.Fixture;
+import com.emu.apps.qcm.infrastructure.DbFixture;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.config.SpringBootTestConfig;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questions.Question;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questions.Response;
@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import static com.emu.apps.qcm.infrastructure.Fixture.QUESTION_TAG_LIBELLE_1;
+import static com.emu.apps.qcm.infrastructure.DbFixture.QUESTION_TAG_LIBELLE_1;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(classes = SpringBootTestConfig.class)
@@ -35,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class QuestionRepositoryTest {
 
     @Autowired
-    private Fixture fixture;
+    private DbFixture fixture;
 
     @Autowired
     private QuestionRepository questionRepository;
@@ -48,7 +48,7 @@ public class QuestionRepositoryTest {
         Optional <Question> newQuestion = questionRepository.findById(question.getId());
         assertNotNull(newQuestion.orElse(null));
         assertNotNull(newQuestion.orElse(null).getId());
-        assertEquals(Fixture.QUESTION_QUESTION_1, newQuestion.get().getQuestion());
+        assertEquals(DbFixture.QUESTION_QUESTION_1, newQuestion.get().getQuestion());
         // Assert.assertEquals(RESPONSE, newQuestion.getResponse());
     }
 

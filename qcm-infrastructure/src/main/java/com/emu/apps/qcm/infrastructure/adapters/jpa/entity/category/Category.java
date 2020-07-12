@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.infrastructure.adapters.jpa.entity.category;
 
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.common.AuditableEntity;
-import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.mptt.MpttHierarchicalEntity;
+import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.common.MpttHierarchicalEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

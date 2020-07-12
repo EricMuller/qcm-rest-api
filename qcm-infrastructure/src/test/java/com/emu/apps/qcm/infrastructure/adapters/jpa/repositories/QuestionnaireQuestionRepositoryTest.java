@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.infrastructure.adapters.jpa.repositories;
 
-import com.emu.apps.qcm.infrastructure.Fixture;
+import com.emu.apps.qcm.infrastructure.DbFixture;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.config.SpringBootTestConfig;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questionnaires.Questionnaire;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.projections.QuestionResponseProjection;
@@ -20,7 +20,7 @@ import java.util.List;
 public class QuestionnaireQuestionRepositoryTest {
 
     @Autowired
-    private Fixture fixture;
+    private DbFixture fixture;
 
     @Autowired
     private QuestionnaireQuestionRepository questionnaireQuestionRepository;
@@ -43,7 +43,7 @@ public class QuestionnaireQuestionRepositoryTest {
         QuestionResponseProjection question = Iterables.getFirst(questions, null);
         Assertions.assertThat(question).isNotNull();
         Assertions.assertThat(question.getId()).isNotNull();
-        Assertions.assertThat(question.getQuestion()).isNotNull().isEqualTo(Fixture.QUESTION_QUESTION_1);
+        Assertions.assertThat(question.getQuestion()).isNotNull().isEqualTo(DbFixture.QUESTION_QUESTION_1);
         Assertions.assertThat(question.getPosition()).isNotNull().isEqualTo(1L);
     }
 
@@ -68,7 +68,7 @@ public class QuestionnaireQuestionRepositoryTest {
         QuestionResponseProjection question = Iterables.getFirst(questions.getContent(), null);
         Assertions.assertThat(question).isNotNull();
         Assertions.assertThat(question.getId()).isNotNull();
-        Assertions.assertThat(question.getQuestion()).isNotNull().isEqualTo(Fixture.QUESTION_QUESTION_1);
+        Assertions.assertThat(question.getQuestion()).isNotNull().isEqualTo(DbFixture.QUESTION_QUESTION_1);
         Assertions.assertThat(question.getPosition()).isNotNull().isEqualTo(1L);
     }
 

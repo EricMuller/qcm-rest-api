@@ -14,20 +14,20 @@ client.global.set("auth_token", "Bearer " + response.body.access_token);
 ###
 
 ###
-GET http://{{host}}:{{port}}/qcm/api/v1/upload
+GET http://{{host}}:{{port}}/qcm/api/v1/uploads
 Accept: application/json
 Content-Type: application/json
 Authorization: {{auth_token}}
 
 
 ###
-GET http://{{host}}:{{port}}/qcm/api/v1/upload/152/import
+GET http://{{host}}:{{port}}/qcm/api/v1/uploads/152/import
 Accept: application/json
 Content-Type: application/json
 Authorization: {{auth_token}}
 
 ###
-OPTIONS https://{{host}}/qcm/api/v1/upload/json
+OPTIONS https://{{host}}/qcm/api/v1/uploads/json
 Accept: application/json, text/plain, */*
 Accept-Encoding: gzip, deflate, br
 Content-Type: multipart/form-data;

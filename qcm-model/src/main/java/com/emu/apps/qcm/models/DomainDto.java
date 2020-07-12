@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 @Getter
 @Setter
@@ -21,9 +21,9 @@ public abstract class DomainDto {
     private Long version;
 
     @JsonProperty("dateCreation")
-    private LocalDateTime dateCreation;
+    private ZonedDateTime dateCreation;
 
     @JsonProperty("dateModification")
-    private LocalDateTime dateModification;
+    private ZonedDateTime dateModification;
 
 }

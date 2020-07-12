@@ -8,10 +8,11 @@ import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questionnaires.Questi
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questionnaires.QuestionnaireQuestion;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questions.Question;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questions.Response;
+import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.settings.WebHook;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.tags.QuestionTag;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.tags.Tag;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.upload.Upload;
-import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.users.User;
+import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.settings.User;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.repositories.*;
 import com.emu.apps.qcm.infrastructure.ports.CategoryPersistencePort;
 import com.emu.apps.qcm.mappers.CategoryMapper;
@@ -36,7 +37,7 @@ import static com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questions.Type
 
 @Component
 @Slf4j
-public class Fixture {
+public class DbFixture {
 
     public static final String QUESTION_QUESTION_1 = "a cool question";
 
@@ -95,6 +96,9 @@ public class Fixture {
     private UploadRepository uploadRepository;
 
     @Autowired
+    private WebHookRepository webHookRepository;
+
+    @Autowired
     private CategoryPersistencePort categoryService;
 
     @Autowired
@@ -103,7 +107,7 @@ public class Fixture {
     @Autowired
     private UserRepository userRepository;
 
-    public Fixture() {
+    public DbFixture() {
     }
 
     @Transactional(readOnly = true)
@@ -188,9 +192,9 @@ public class Fixture {
             questionTagRepository.save(new QuestionTag(question2, tag2));
 
 
-            questionnaireQuestionRepository.save(new QuestionnaireQuestion(questionnaire, question1, 1L));
+            questionnaireQuestionRepository.save(new QuestionnaireQuestion(questionnaire, question1, 1));
 
-            questionnaireQuestionRepository.save(new QuestionnaireQuestion(questionnaire, question2, 2L));
+            questionnaireQuestionRepository.save(new QuestionnaireQuestion(questionnaire, question2, 2));
 
             //questionnaireTag
             Tag questionnaireTag1 = tagRepository.save(new Tag(QUESTIONNAIRE_TAG_LIBELLE_1, false));
@@ -212,6 +216,21 @@ public class Fixture {
         upload.setPathfileName("/data/");
         return uploadRepository.save(upload);
     }
+
+    public User createUser(String email) {
+        User user = new User();
+        user.setEmail(email);
+        return userRepository.save(user);
+    }
+
+    public WebHook createWebhook(User user) {
+        WebHook webhook = new WebHook();
+        webhook.setSecret("secret");
+        webhook.setContentType("content-type");
+        webhook.setUser(user);
+        return webHookRepository.save(webhook);
+    }
+
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Question createQuestionsAndGetFirst() {

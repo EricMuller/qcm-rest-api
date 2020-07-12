@@ -9,7 +9,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @SuppressWarnings("serial")
@@ -17,7 +17,11 @@ import java.util.UUID;
 @EntityListeners(AuditingEntityListener.class)
 public abstract class AuditableEntity<U extends Serializable> implements Serializable {
 
-    @Column(name = "created_by")
+    @Column(unique = true, name = "uuid", nullable = false, updatable = false)
+    @Type(type = "org.hibernate.type.UUIDCharType")
+    private UUID uuid = UUID.randomUUID();
+
+    @Column(name = "created_by", updatable = false)
     @CreatedBy
     protected U createdBy;
 
@@ -28,16 +32,13 @@ public abstract class AuditableEntity<U extends Serializable> implements Seriali
     @SuppressWarnings("squid:S3437")
     @Column(name = "created_date", nullable = false, updatable = false)
     @CreatedDate
-    private LocalDateTime dateCreation;
+    private ZonedDateTime dateCreation;
 
     @SuppressWarnings("squid:S3437")
     @Column(name = "modified_date")
     @LastModifiedDate
-    private LocalDateTime dateModification;
+    private ZonedDateTime dateModification;
 
-    @Column(unique = true, name = "uuid", nullable = false)
-    @Type(type="org.hibernate.type.UUIDCharType")
-    private UUID uuid = UUID.randomUUID();
 
     @Version
     private Long version;
@@ -65,19 +66,19 @@ public abstract class AuditableEntity<U extends Serializable> implements Seriali
         this.version = version;
     }
 
-    public LocalDateTime getDateCreation() {
+    public ZonedDateTime getDateCreation() {
         return dateCreation;
     }
 
-    public void setDateCreation(LocalDateTime dateCreation) {
+    public void setDateCreation(ZonedDateTime dateCreation) {
         this.dateCreation = dateCreation;
     }
 
-    public LocalDateTime getDateModification() {
+    public ZonedDateTime getDateModification() {
         return dateModification;
     }
 
-    public void setDateModification(LocalDateTime dateModification) {
+    public void setDateModification(ZonedDateTime dateModification) {
         this.dateModification = dateModification;
     }
 

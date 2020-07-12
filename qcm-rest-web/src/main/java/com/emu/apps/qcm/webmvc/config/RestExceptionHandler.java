@@ -1,5 +1,6 @@
 package com.emu.apps.qcm.webmvc.config;
 
+import com.emu.apps.qcm.infrastructure.exceptions.EntityNotFoundException;
 import com.emu.apps.qcm.webmvc.exceptions.ExceptionMessage;
 import com.emu.apps.qcm.webmvc.exceptions.FieldErrorMessage;
 import com.emu.apps.qcm.webmvc.exceptions.builders.ExceptionMessageBuilder;
@@ -22,8 +23,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.lang.reflect.InvocationTargetException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,6 +33,22 @@ import static org.springframework.http.HttpStatus.*;
 @Profile("webmvc")
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(RestExceptionHandler.class);
+
+    @ExceptionHandler({EntityNotFoundException.class})
+    @ResponseBody
+    public ResponseEntity <Object> handleEntityNotFoundException(Exception e) {
+
+        LOGGER.error("EntityNotFoundException caught: {}", e.getMessage());
+
+        ExceptionMessage exceptionMessage = new ExceptionMessageBuilder()
+                .setStatus(NOT_FOUND.value())
+                .setException(NOT_FOUND.getReasonPhrase())
+                .setError(e.getClass().getName())
+                .setTimestamp(ZonedDateTime.now())
+                .setMessage(e.getMessage()).createExceptionMessage();
+
+        return response(exceptionMessage, NOT_FOUND);
+    }
 
 
     /**
@@ -50,7 +66,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 .setStatus(INTERNAL_SERVER_ERROR.value())
                 .setException(INTERNAL_SERVER_ERROR.getReasonPhrase())
                 .setError(e.getClass().getName())
-                .setTimestamp(LocalDateTime.now())
+                .setTimestamp(ZonedDateTime.now())
                 .setMessage(e.getMessage()).createExceptionMessage();
 
         return response(exceptionMessage, INTERNAL_SERVER_ERROR);
@@ -75,7 +91,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 .setStatus(BAD_REQUEST.value())
                 .setError(BAD_REQUEST.getReasonPhrase())
                 .setException(t.getClass().getName())
-                .setTimestamp(LocalDateTime.now())
+                .setTimestamp(ZonedDateTime.now())
                 .setMessage(t.getMessage()).createExceptionMessage();
 
         return response(exceptionMessage, BAD_REQUEST);
@@ -103,7 +119,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 .setError(CONFLICT.getReasonPhrase())
                 .setException(ex.getClass().getName())
                 .setMessage(ex.getMessage())
-                .setTimestamp(LocalDateTime.now()).createExceptionMessage();
+                .setTimestamp(ZonedDateTime.now()).createExceptionMessage();
 
         return response(response, CONFLICT);
     }
@@ -137,7 +153,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 .setStatus(BAD_REQUEST.value())
                 .setError(BAD_REQUEST.getReasonPhrase())
                 .setException(ex.getClass().getName())
-                .setTimestamp(LocalDateTime.now())
+                .setTimestamp(ZonedDateTime.now())
                 .setMessage(ex.getMessage())
                 .setErrors(fieldErrors).createExceptionMessage();
 

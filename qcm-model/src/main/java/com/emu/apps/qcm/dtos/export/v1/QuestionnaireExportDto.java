@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.ZonedDateTime;
 import java.util.Set;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -14,7 +15,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class QuestionnaireExportDto {
+public class QuestionnaireExportDto  {
 
     @JsonProperty("title")
     private String title;
@@ -33,5 +34,17 @@ public class QuestionnaireExportDto {
 
     @JsonProperty("website")
     private String website;
+
+    @JsonProperty("uuid")
+    private String uuid;
+
+    @JsonProperty("version")
+    private Long version;
+
+    @JsonProperty("dateCreation")
+    private ZonedDateTime dateCreation;
+
+    @JsonProperty("dateModification")
+    private ZonedDateTime dateModification;
 
 }

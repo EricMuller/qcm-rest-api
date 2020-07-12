@@ -18,10 +18,15 @@ public class ReportServiceJson implements ReportService {
     @Override
     public ByteArrayOutputStream getReportStream(ExportDataDto exportDataDto) {
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+            ObjectMapper mapper = new ObjectMapper()
+                    .findAndRegisterModules()
+                    .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+                    .configure(SerializationFeature.INDENT_OUTPUT, true);
+
+            //objectMapper.configure(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS,true);
+
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            objectMapper.writeValue(byteArrayOutputStream, exportDataDto);
+            mapper.writeValue(byteArrayOutputStream, exportDataDto);
             return byteArrayOutputStream;
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);

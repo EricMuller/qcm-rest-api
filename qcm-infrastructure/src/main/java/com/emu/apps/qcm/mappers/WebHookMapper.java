@@ -26,35 +26,28 @@
  *
  */
 
-package com.emu.apps.qcm.webmvc.rest;
+package com.emu.apps.qcm.mappers;
 
-public final class ApiRestMappings {
+import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.settings.WebHook;
+import com.emu.apps.qcm.models.WebHookDto;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.ReportingPolicy;
+import org.springframework.data.domain.Page;
 
-    public static final String PUBLIC_API = "/qcm/api/v1";
+@Mapper(componentModel = "spring", uses = UuidMapper.class  , unmappedTargetPolicy = ReportingPolicy.IGNORE)
+public interface WebHookMapper {
 
-    public static final String PUBLISHED_API = "/qcm/api/v1/published";
+    WebHookDto modelToDto(WebHook webhook);
 
-    public static final String QUESTIONNAIRES =  "/questionnaires";
+    WebHook dtoToModel(WebHookDto webhookDto);
 
-    public static final String CATEGORIES = "/categories";
+    @Mapping(target = "user", ignore = true)
+    WebHook dtoToModel(@MappingTarget WebHook webhook, WebHookDto webhookDto);
 
-    public static final String QUESTIONS =  "/questions";
-
-    public static final String SUGGEST = "/suggest";
-
-    public static final String TAGS =  "/tags";
-
-    public static final String UPLOADS =  "/uploads";
-
-    public static final String WEBHOOKS =  "/webhooks";
-
-    public static final String USERS =  "/users";
-
-    public static final String EXPORTS =  "/exports";
-
-    public static final String IMPORTS =  "/imports";
-
-    private ApiRestMappings() {
-        //nop
+    default Page <WebHookDto> pageToPageDto(Page <WebHook> page) {
+        return page.map(this::modelToDto);
     }
+
 }

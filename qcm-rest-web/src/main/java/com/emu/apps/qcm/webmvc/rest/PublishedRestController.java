@@ -32,6 +32,12 @@ public class PublishedRestController {
         return questionnaireServicePort.getPublishedQuestionnaires(pageable);
     }
 
+    @GetMapping(value = QUESTIONNAIRES + "/{uuid}")
+    @ResponseBody
+    public PublishedQuestionnaireDto getQuestionnaireByUuid(@PathVariable("uuid") String uuid) {
+        return questionnaireServicePort.getPublishedQuestionnaireByUuid(uuid);
+    }
+
     @GetMapping(value = CATEGORIES)
     @ResponseBody
     public Iterable <String> getCategories() {

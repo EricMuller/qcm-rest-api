@@ -38,30 +38,10 @@ import org.springframework.data.domain.Page;
         , unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface QuestionnaireQuestionMapper {
 
-//    @Mapping(target = "questionTags", ignore = true)
-//    Question dtoToModel(QuestionDto questionDto);
-//
-//
-//    @Mapping(target = "questionTags", ignore = true)
-//    @Mapping(target = "uuid", ignore = true)
-//    @Mapping(target = "dateCreation", ignore = true)
-//    @Mapping(target = "dateModification", ignore = true)
-//    Question dtoToModel(@MappingTarget Question question, QuestionDto questionDto);
-//
-//    QuestionDto modelToDto(Question question);
-//
-//    QuestionTagsDto modelToPageTagDto(Question question);
-
     QuestionnaireQuestionDto questionResponseProjectionToDto(QuestionResponseProjection questionProjection);
 
     default Page <QuestionnaireQuestionDto> pageQuestionResponseProjectionToDto(Page <QuestionResponseProjection> page) {
         return page.map(this::questionResponseProjectionToDto);
     }
-
-//    default Page <QuestionTagsDto> pageToPageTagDto(Page <Question> page) {
-//        return page.map(this::modelToPageTagDto);
-//    }
-
-//    List <QuestionDto> modelToDtos(List <Question> questions);
 
 }

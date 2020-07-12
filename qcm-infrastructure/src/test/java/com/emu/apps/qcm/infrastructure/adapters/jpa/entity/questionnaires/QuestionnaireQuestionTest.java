@@ -36,7 +36,7 @@ assertEquals(param, result);
 
 @Test
 public void testPosition() {
-Long param = Long.valueOf(123);
+Integer param = Integer.valueOf(123);
 pojoObject.setPosition(param);
 Object result = pojoObject.getPosition();
 assertEquals(param, result);

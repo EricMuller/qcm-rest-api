@@ -1,4 +1,4 @@
-package com.emu.apps.qcm.infrastructure.adapters.jpa.entity.notifications;
+package com.emu.apps.qcm.infrastructure.adapters.jpa.entity.settings;
 
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.common.AuditableEntity;
 import lombok.Getter;
@@ -17,7 +17,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Notification extends AuditableEntity <String> {
+public class WebHookNotification extends AuditableEntity <String> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "notification_generator")
@@ -26,7 +26,7 @@ public class Notification extends AuditableEntity <String> {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private NotificationAction action;
+    private NotificationActionEnum action;
 
     @Column(name = "origin", nullable = false)
     @Type(type = "org.hibernate.type.UUIDCharType")

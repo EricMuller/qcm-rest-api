@@ -18,6 +18,7 @@ import com.emu.apps.qcm.infrastructure.ports.TagPersistencePort;
 import com.emu.apps.qcm.infrastructure.ports.UploadPersistencePort;
 import com.emu.apps.qcm.models.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -67,7 +68,12 @@ public class ImportServiceAdapter implements ImportServicePort {
 
         // todo: strategy
         if (TypeUpload.EXPORT_JSON.name().equals(uploadDto.getType())) {
-            ExportDataDto exportDataDto = new ObjectMapper().readValue(new ByteArrayInputStream(uploadDto.getData()), ExportDataDto.class);
+            ObjectMapper mapper = new ObjectMapper()
+                    .findAndRegisterModules()
+                    .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+                    .configure(SerializationFeature.INDENT_OUTPUT, true);
+
+            ExportDataDto exportDataDto = mapper.readValue(new ByteArrayInputStream(uploadDto.getData()), ExportDataDto.class);
             ImportStatus importStatus = importQuestionnaire(uploadDto.getFileName(), exportDataDto, principal);
             uploadDto.setStatus(importStatus.name());
         } else {
@@ -148,6 +154,12 @@ public class ImportServiceAdapter implements ImportServicePort {
         // questionnaire
         questionnaireDto.setTitle(exportDataDto.getQuestionnaire().getTitle());
         questionnaireDto.setStatus(exportDataDto.getQuestionnaire().getStatus());
+        if(StringUtils.isNotBlank(exportDataDto.getQuestionnaire().getUuid())) {
+            questionnaireDto.setUuid(exportDataDto.getQuestionnaire().getUuid());
+            questionnaireDto.setVersion(exportDataDto.getQuestionnaire().getVersion());
+            questionnaireDto.setDateCreation(exportDataDto.getQuestionnaire().getDateCreation());
+            questionnaireDto.setDateModification(exportDataDto.getQuestionnaire().getDateModification());
+        }
 
         // tags
         HashSet <QuestionnaireTagDto> qtags = new HashSet();

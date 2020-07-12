@@ -50,10 +50,7 @@ public interface QuestionnaireMapper {
 
     @Mapping(target = "questionnaireQuestions", ignore = true)
     @Mapping(target = "questionnaireTags", ignore = true)
-    @Mapping(target = "uuid", ignore = true)
-    @Mapping(target = "dateCreation", ignore = true)
     @Mapping(target = "dateModification", ignore = true)
-    @Mapping(target = "createdBy", ignore = true)
     @Mapping(target = "lastModifiedBy", ignore = true)
     Questionnaire dtoToModel(@MappingTarget Questionnaire questionnaire, QuestionnaireDto questionnaireDto);
 

@@ -74,6 +74,7 @@ public interface ExportMapper {
     @Mapping(source = "question.responses", target = "responses")
     @Mapping(source = "question.questionTags", target = "questionTags")
     @Mapping(source = "question.tip", target = "tip")
+    @Mapping(source = "points", target = "points")
     QuestionExportDto modelToDto(QuestionnaireQuestion questionnaireQuestion);
 
     default List <QuestionExportDto> modelToDtos(Iterable <QuestionnaireQuestion> value) {

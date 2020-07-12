@@ -3,8 +3,7 @@ package com.emu.apps.qcm.webmvc.exceptions.builders;
 import com.emu.apps.qcm.webmvc.exceptions.ExceptionMessage;
 import com.emu.apps.qcm.webmvc.exceptions.FieldErrorMessage;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 public class ExceptionMessageBuilder {
@@ -18,7 +17,7 @@ public class ExceptionMessageBuilder {
 
     private List<FieldErrorMessage> errors;
 
-    private LocalDateTime timestamp;
+    private ZonedDateTime timestamp;
 
     public ExceptionMessageBuilder setStatus(int status) {
         this.status = status;
@@ -45,7 +44,7 @@ public class ExceptionMessageBuilder {
         return this;
     }
 
-    public ExceptionMessageBuilder setTimestamp(LocalDateTime timestamp) {
+    public ExceptionMessageBuilder setTimestamp(ZonedDateTime timestamp) {
         this.timestamp = timestamp;
         return this;
     }

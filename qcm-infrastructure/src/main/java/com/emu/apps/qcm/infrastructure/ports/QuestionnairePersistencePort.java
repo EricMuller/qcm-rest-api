@@ -20,11 +20,13 @@ public interface QuestionnairePersistencePort {
 
     QuestionnaireDto saveQuestionnaire(QuestionnaireDto questionnaireDto, String principal);
 
-    QuestionDto addQuestion(String uuid, QuestionDto questionDto, Optional <Long> position);
+    QuestionDto addQuestion(String uuid, QuestionDto questionDto, Optional <Integer> position);
 
     Iterable <QuestionnaireProjection> findByTitleContaining(String title);
 
     Page <PublishedQuestionnaireDto> findAllPublishedByPage( Pageable pageable);
+
+    PublishedQuestionnaireDto findOnePublishedByUuid(String uuid) ;
 
     Iterable <String> findPublishedCategories();
 

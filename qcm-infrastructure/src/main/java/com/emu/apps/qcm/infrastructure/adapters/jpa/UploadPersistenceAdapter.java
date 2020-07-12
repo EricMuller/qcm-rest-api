@@ -63,7 +63,6 @@ public class UploadPersistenceAdapter implements UploadPersistencePort {
     @Override
     @Transactional(readOnly = true)
     public UploadDto findByUuid(String id) {
-
         return uploadMapper.modelToDto(uploadRepository.findByUuid(UUID.fromString(id)).orElse(null));
     }
 

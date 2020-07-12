@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
@@ -106,7 +106,7 @@ public class QuestionnaireServiceAdapter implements QuestionnaireServicePort {
      * @return QuestionDto
      */
     @Override
-    public QuestionDto addQuestion(String uuid, QuestionDto questionDto, Optional <Long> position) {
+    public QuestionDto addQuestion(String uuid, QuestionDto questionDto, Optional <Integer> position) {
 
         return questionnairePersistencePort.addQuestion(uuid, questionDto, position);
     }
@@ -120,10 +120,10 @@ public class QuestionnaireServiceAdapter implements QuestionnaireServicePort {
     @Override
     public List <QuestionDto> addQuestions(String questionnaireUuid, Collection <QuestionDto> questionDtos) {
 
-        AtomicLong atomicLong = new AtomicLong(0);
+        AtomicInteger position = new AtomicInteger(0);
         return questionDtos
                 .stream()
-                .map(questionDto -> addQuestion(questionnaireUuid, questionDto, Optional.of(atomicLong.incrementAndGet())))
+                .map(questionDto -> addQuestion(questionnaireUuid, questionDto, Optional.of(position.incrementAndGet())))
                 .collect(Collectors.toList());
     }
 

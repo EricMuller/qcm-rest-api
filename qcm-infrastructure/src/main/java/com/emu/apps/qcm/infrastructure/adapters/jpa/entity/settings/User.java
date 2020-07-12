@@ -1,4 +1,4 @@
-package com.emu.apps.qcm.infrastructure.adapters.jpa.entity.users;
+package com.emu.apps.qcm.infrastructure.adapters.jpa.entity.settings;
 
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.common.AuditableEntity;
 import lombok.Getter;

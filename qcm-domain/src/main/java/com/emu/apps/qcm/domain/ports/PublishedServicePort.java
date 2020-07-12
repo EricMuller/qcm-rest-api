@@ -15,4 +15,5 @@ public interface PublishedServicePort {
 
     Iterable <PushishedQuestionnaireQuestionDto> getPublishedQuestionsByQuestionnaireUuid(String uuid);
 
+    PublishedQuestionnaireDto getPublishedQuestionnaireByUuid(String uuid);
 }

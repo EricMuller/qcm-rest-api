@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.infrastructure.adapters.jpa.repositories;
 
-import com.emu.apps.qcm.infrastructure.Fixture;
+import com.emu.apps.qcm.infrastructure.DbFixture;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.upload.Upload;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.config.SpringBootTestConfig;
 import org.assertj.core.api.Assertions;
@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class UploadRepositoryTest {
 
     @Autowired
-    private Fixture fixture;
+    private DbFixture fixture;
 
     @Autowired
     private UploadRepository uploadRepository;

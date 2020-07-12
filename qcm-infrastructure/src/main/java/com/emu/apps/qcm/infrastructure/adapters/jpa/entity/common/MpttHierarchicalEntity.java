@@ -1,4 +1,4 @@
-package com.emu.apps.qcm.infrastructure.adapters.jpa.entity.mptt;
+package com.emu.apps.qcm.infrastructure.adapters.jpa.entity.common;
 
 
 public interface MpttHierarchicalEntity<T extends MpttHierarchicalEntity <T>> {

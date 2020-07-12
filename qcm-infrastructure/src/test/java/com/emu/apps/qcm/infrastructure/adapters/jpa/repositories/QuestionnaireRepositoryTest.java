@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.infrastructure.adapters.jpa.repositories;
 
-import com.emu.apps.qcm.infrastructure.Fixture;
+import com.emu.apps.qcm.infrastructure.DbFixture;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.config.SpringBootTestConfig;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questionnaires.Questionnaire;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questionnaires.QuestionnaireQuestion;
@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class QuestionnaireRepositoryTest {
 
     @Autowired
-    private Fixture fixture;
+    private DbFixture fixture;
 
     @Autowired
     private QuestionnaireRepository questionnaireRepository;
@@ -51,9 +51,9 @@ public class QuestionnaireRepositoryTest {
         assertNotNull(questionnaire);
         assertNotNull(questionnaire.getId());
         assertNotNull(questionnaire.getCategory());
-        assertEquals(Fixture.CATEGORIE_LIBELLE, questionnaire.getCategory().getLibelle());
+        assertEquals(DbFixture.CATEGORIE_LIBELLE, questionnaire.getCategory().getLibelle());
         assertNotNull(questionnaire.getDescription());
-        assertEquals(Fixture.QUESTIONNAIRE_DESC, questionnaire.getDescription());
+        assertEquals(DbFixture.QUESTIONNAIRE_DESC, questionnaire.getDescription());
 
         assertEquals(2, questionnaire.getQuestionnaireQuestions().size());
 
@@ -64,7 +64,7 @@ public class QuestionnaireRepositoryTest {
         assertEquals(2, questionnaireQuestion1.getQuestion().getResponses().size());
 
         Response response1 = Iterables.getFirst(questionnaireQuestion1.getQuestion().getResponses(), null);
-        assertEquals(Fixture.RESPONSE_RESPONSE_1, response1.getResponse());
+        assertEquals(DbFixture.RESPONSE_RESPONSE_1, response1.getResponse());
 
         Question question = questionnaireQuestion1.getQuestion();
         //tags
@@ -73,7 +73,7 @@ public class QuestionnaireRepositoryTest {
 
         QuestionTag questionTag = Iterables.getFirst(question.getQuestionTags(), null);
         Assertions.assertThat(questionTag.getTag()).isNotNull();
-        Assertions.assertThat(questionTag.getTag().getLibelle()).isNotNull().startsWith(Fixture.QUESTION_TAG_LIBELLE_1.substring(0, 3));
+        Assertions.assertThat(questionTag.getTag().getLibelle()).isNotNull().startsWith(DbFixture.QUESTION_TAG_LIBELLE_1.substring(0, 3));
 
     }
 
@@ -88,9 +88,9 @@ public class QuestionnaireRepositoryTest {
 
         assertNotNull(questionnaire.getUuid());
         assertNotNull(questionnaire.getCategory());
-        assertEquals(Fixture.CATEGORIE_LIBELLE, questionnaire.getCategory().getLibelle());
+        assertEquals(DbFixture.CATEGORIE_LIBELLE, questionnaire.getCategory().getLibelle());
         assertNotNull(questionnaire.getTitle());
-        assertEquals(Fixture.QUESTIONNAIRE_TITLE, questionnaire.getTitle());
+        assertEquals(DbFixture.QUESTIONNAIRE_TITLE, questionnaire.getTitle());
     }
 
     @Test

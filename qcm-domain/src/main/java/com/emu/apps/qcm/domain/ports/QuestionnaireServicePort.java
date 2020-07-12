@@ -18,7 +18,7 @@ public interface QuestionnaireServicePort {
 
     Page <QuestionnaireQuestionDto> getQuestionsByQuestionnaireUuid(String uuid, Pageable pageable);
 
-    QuestionDto addQuestion(String questionnaireUuid, QuestionDto questionDto, Optional <Long> position);
+    QuestionDto addQuestion(String questionnaireUuid, QuestionDto questionDto, Optional <Integer> position);
 
     List <QuestionDto> addQuestions(String uuid, Collection <QuestionDto> questionDtos);
 

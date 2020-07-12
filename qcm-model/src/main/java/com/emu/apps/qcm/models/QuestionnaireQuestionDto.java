@@ -48,5 +48,10 @@ public class QuestionnaireQuestionDto extends DomainDto {
     private String tip;
 
     @JsonProperty(value = "position",required = false)
-    private Long position;
+    private Integer position;
+
+    @JsonProperty(value = "points",required = false)
+    private Integer points;
+
+
 }

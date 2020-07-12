@@ -7,18 +7,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter@Setter
+@NoArgsConstructor@AllArgsConstructor
 public class UploadDto {
 
     private String uuid;
 
-    private LocalDateTime dateCreation;
+    private ZonedDateTime dateCreation;
 
     @JsonProperty("contentType")
     private String contentType;

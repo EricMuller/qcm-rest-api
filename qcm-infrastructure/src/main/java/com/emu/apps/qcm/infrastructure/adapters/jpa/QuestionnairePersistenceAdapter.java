@@ -97,15 +97,19 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
             category = categoryRepository.findByUuid(uuid);
         }
 
-        Questionnaire questionnaire;
+        Questionnaire questionnaire =null;
         if (StringUtils.isNotBlank(questionnaireDto.getUuid())) {
-            questionnaire = questionnaireRepository.findByUuid(UUID.fromString(questionnaireDto.getUuid())).get();
+            questionnaire = questionnaireRepository.findByUuid(UUID.fromString(questionnaireDto.getUuid())).orElse(null);
+        }
+
+        if(Objects.nonNull(questionnaire)){
             questionnaire = questionnaireMapper.dtoToModel(questionnaire, questionnaireDto);
+            questionnaire.setCategory(category);
         } else {
             questionnaire = questionnaireMapper.dtoToModel(questionnaireDto);
-            questionnaireRepository.save(questionnaire);
+            questionnaire.setCategory(category);
+            questionnaire = questionnaireRepository.save(questionnaire);
         }
-        questionnaire.setCategory(category);
 
         saveQuestionnaireTags(questionnaire, questionnaireDto.getQuestionnaireTags(), principal);
 
@@ -129,7 +133,6 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
 
         return questionnaireMapper.pageToDto(questionnaireRepository.findAll(specificationBuilder.build(), pageable));
     }
-
 
 
     private Questionnaire saveQuestionnaireTags(Questionnaire questionnaire, Iterable <QuestionnaireTagDto> questionnaireTagDtos, String principal) {
@@ -162,12 +165,12 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
     }
 
     @Override
-    public QuestionDto addQuestion(String uuid, QuestionDto questionDto, Optional <Long> positionOpt) {
+    public QuestionDto addQuestion(String uuid, QuestionDto questionDto, Optional <Integer> positionOpt) {
 
         var questionnaire = questionnaireRepository.findByUuid(UUID.fromString(uuid)).orElse(null);
         RaiseExceptionUtil.raiseIfNull(uuid, questionnaire, MessageSupport.UNKNOWN_UUID_QUESTIONNAIRE);
 
-        Long position = positionOpt.isEmpty() ? questionnaire.getQuestionnaireQuestions().size() + 1L : positionOpt.get();
+        Integer position = positionOpt.isEmpty() ? questionnaire.getQuestionnaireQuestions().size() + 1 : positionOpt.get();
 
         if (Objects.nonNull(questionDto.getUuid())) {
             var question = questionRepository.findByUuid(UUID.fromString(questionDto.getUuid())).orElse(null);
@@ -182,7 +185,19 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
 
     @Override
     @Transactional(readOnly = true)
-    public Page <PublishedQuestionnaireDto> findAllPublishedByPage(  Pageable pageable) {
+    public PublishedQuestionnaireDto findOnePublishedByUuid(String uuid) {
+
+        Questionnaire questionnaire = questionnaireRepository.findByUuid(UUID.fromString(uuid)).orElse(null);
+
+        RaiseExceptionUtil.raiseIfNull(uuid, questionnaire, MessageSupport.UNKNOWN_UUID_QUESTIONNAIRE);
+
+        return publishedMapper.questionnaireToPublishedQuestionnaireDto(questionnaire);
+
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page <PublishedQuestionnaireDto> findAllPublishedByPage(Pageable pageable) {
 
         var specificationBuilder = new QuestionnaireSpecificationBuilder();
 

@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.infrastructure.adapters.jpa.repositories;
 
-import com.emu.apps.qcm.infrastructure.Fixture;
+import com.emu.apps.qcm.infrastructure.DbFixture;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.config.SpringBootTestConfig;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.questions.Question;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.tags.Tag;
@@ -15,7 +15,7 @@ import org.springframework.test.context.ActiveProfiles;
 public class QuestionTagRepositoryTest {
 
     @Autowired
-    private Fixture fixture;
+    private DbFixture fixture;
 
     @Autowired
     private QuestionTagRepository questionTagRepository;

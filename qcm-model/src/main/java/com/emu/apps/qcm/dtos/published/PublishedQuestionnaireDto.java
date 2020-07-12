@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Set;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -48,9 +48,9 @@ public class PublishedQuestionnaireDto {
     private Long version;
 
     @JsonProperty("dateCreation")
-    private LocalDateTime dateCreation;
+    private ZonedDateTime dateCreation;
 
     @JsonProperty("dateModification")
-    private LocalDateTime dateModification;
+    private ZonedDateTime dateModification;
 
 }

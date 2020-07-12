@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.infrastructure.adapters.jpa.repositories.mptt;
 
-import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.mptt.MpttHierarchicalEntity;
+import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.common.MpttHierarchicalEntity;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
