@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.infrastructure.adapters.jpa.repositories;
 
-import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.settings.User;
+import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.events.User;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.PagingAndSortingRepository;

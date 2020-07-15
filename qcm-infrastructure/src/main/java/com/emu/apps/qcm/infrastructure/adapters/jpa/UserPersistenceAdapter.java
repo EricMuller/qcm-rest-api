@@ -28,7 +28,7 @@
 
 package com.emu.apps.qcm.infrastructure.adapters.jpa;
 
-import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.settings.User;
+import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.events.User;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.repositories.UserRepository;
 import com.emu.apps.qcm.infrastructure.ports.UserPersistencePort;
 import com.emu.apps.qcm.mappers.UserMapper;

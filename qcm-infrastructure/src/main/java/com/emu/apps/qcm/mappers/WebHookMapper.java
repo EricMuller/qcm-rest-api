@@ -28,7 +28,7 @@
 
 package com.emu.apps.qcm.mappers;
 
-import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.settings.WebHook;
+import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.events.WebHook;
 import com.emu.apps.qcm.models.WebHookDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

@@ -1,8 +1,8 @@
 package com.emu.apps.qcm.infrastructure.adapters.jpa;
 
 
-import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.settings.User;
-import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.settings.WebHook;
+import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.events.User;
+import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.events.WebHook;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.repositories.UserRepository;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.repositories.WebHookRepository;
 import com.emu.apps.qcm.infrastructure.exceptions.MessageSupport;

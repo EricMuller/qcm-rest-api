@@ -1,4 +1,4 @@
-package com.emu.apps.qcm.infrastructure.adapters.jpa.entity.settings;
+package com.emu.apps.qcm.infrastructure.adapters.jpa.entity.events;
 
 import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.common.AuditableEntity;
 import lombok.Getter;

@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.infrastructure.adapters.jpa.repositories;
 
-import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.settings.WebHook;
+import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.events.WebHook;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;

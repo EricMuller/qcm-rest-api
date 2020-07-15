@@ -46,19 +46,6 @@ spring:
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driverClassName: org.h2.Driver

@@ -7,9 +7,9 @@ import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 @Profile("webmvc")
-public class InfoController {
+public class SwaggerController {
     @GetMapping("/")
-    public RedirectView getInfoPage() {
-        return new RedirectView("/actuator/info");
+    public RedirectView swagger() {
+        return new RedirectView("/swagger-ui.html");
     }
 }

@@ -13,7 +13,7 @@
         <heap>100</heap>
     </cache-template>
 
-    <cache alias="com.emu.apps.qcm.infrastructure.adapters.jpa.entity.settings.User" uses-template="simple">
+    <cache alias="com.emu.apps.qcm.infrastructure.adapters.jpa.entity.events.User" uses-template="simple">
         <listeners>
             <listener>
                 <class>com.emu.apps.qcm.infrastructure.cache.CacheLogger</class>

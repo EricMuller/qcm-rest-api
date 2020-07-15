@@ -2,8 +2,8 @@ package com.emu.apps.qcm.infrastructure.adapters.jpa.repositories;
 
 import com.emu.apps.qcm.infrastructure.DbFixture;
 import com.emu.apps.qcm.infrastructure.adapters.jpa.config.SpringBootTestConfig;
-import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.settings.User;
-import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.settings.WebHook;
+import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.events.User;
+import com.emu.apps.qcm.infrastructure.adapters.jpa.entity.events.WebHook;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
