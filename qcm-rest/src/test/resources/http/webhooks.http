@@ -31,9 +31,10 @@ Content-Type: application/json
 Authorization: {{auth_token}}
 
 {
-  "uuid" :"fb02b493-f2e2-4d25-a59a-244db47817c2",
+  "uuid" :"08f84e05-51cf-477b-88d4-84196068f6bb",
   "secret": "QUESTION2",
-  "url": "http://{{host}}:{{port}}/qcm/api/v1/webhooks/catch"
+  "url": "http://{{host}}:{{port}}/qcm/api/v1/webhooks/catch",
+  "defaultTimeOut": "120"
 }
 
 ###

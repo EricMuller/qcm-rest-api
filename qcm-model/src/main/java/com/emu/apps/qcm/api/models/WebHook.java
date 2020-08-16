@@ -20,4 +20,7 @@ public class WebHook extends Domain {
     @JsonProperty("secret")
     private String secret;
 
+    @JsonProperty("defaultTimeOut")
+    private Long defaultTimeOut;
+
 }
