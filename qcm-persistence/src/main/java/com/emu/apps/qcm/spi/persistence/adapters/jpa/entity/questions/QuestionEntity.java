@@ -49,7 +49,8 @@ public class QuestionEntity extends AuditableEntity <String> {
     @Column(name = "question", nullable = false, length = 1024)
     private String question;
 
-    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "question_id")
     private List <ResponseEntity> responses;
 
     @Enumerated(EnumType.STRING)
