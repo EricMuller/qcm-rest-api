@@ -1,8 +1,8 @@
 package com.emu.apps.qcm.domain.adapters;
 
+import com.emu.apps.qcm.api.models.User;
 import com.emu.apps.qcm.domain.ports.UserServicePort;
-import com.emu.apps.qcm.infrastructure.ports.UserPersistencePort;
-import com.emu.apps.qcm.models.UserDto;
+import com.emu.apps.qcm.spi.persistence.UserPersistencePort;
 import com.emu.apps.shared.security.PrincipalUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -47,17 +47,17 @@ public class UserServiceAdapter implements UserServicePort {
      * @return the current user
      */
     @Override
-    public UserDto user(Principal principal) {
-        UserDto userDto;
+    public User user(Principal principal) {
+        User userDto;
         if (Objects.nonNull(principal)) {
             String email = PrincipalUtils.getEmail(principal);
             userDto = userPersistencePort.findByEmailContaining(email);
             if (Objects.isNull(userDto)) {
-                userDto = new UserDto();
+                userDto = new User();
                 userDto.setEmail(email);
             }
         } else {
-            userDto = new UserDto();
+            userDto = new User();
         }
 
         return userDto;
@@ -72,7 +72,7 @@ public class UserServiceAdapter implements UserServicePort {
      */
 
     @Override
-    public UserDto updateUser(@RequestBody UserDto userDto, Principal principal) {
+    public User updateUser(@RequestBody User userDto, Principal principal) {
 
         return userPersistencePort.save(userDto);
 

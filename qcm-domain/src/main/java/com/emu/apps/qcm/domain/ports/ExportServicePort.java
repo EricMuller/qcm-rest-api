@@ -1,14 +1,14 @@
 package com.emu.apps.qcm.domain.ports;
 
-import com.emu.apps.qcm.dtos.export.v1.ExportDataDto;
-import com.emu.apps.qcm.models.QuestionnaireDto;
+import com.emu.apps.qcm.api.dtos.export.v1.ExportDto;
+import com.emu.apps.qcm.api.models.Questionnaire;
 
 import java.util.Objects;
 
 public interface ExportServicePort {
-    ExportDataDto getbyQuestionnaireUuid(String id);
+    ExportDto getbyQuestionnaireUuid(String id);
 
-    default String generateName(QuestionnaireDto questionnaire) {
+    default String generateName(Questionnaire questionnaire) {
 
         return (Objects.nonNull(questionnaire.getCategory()) ? questionnaire.getCategory().getLibelle() : "")
                 + "-" + questionnaire.getTitle() + "-" + questionnaire.getStatus() + "-" + questionnaire.getVersion();

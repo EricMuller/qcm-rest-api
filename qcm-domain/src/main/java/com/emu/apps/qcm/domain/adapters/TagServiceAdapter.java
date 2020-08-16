@@ -1,9 +1,9 @@
 package com.emu.apps.qcm.domain.adapters;
 
 
-import com.emu.apps.qcm.models.TagDto;
+import com.emu.apps.qcm.api.models.Tag;
 import com.emu.apps.qcm.domain.ports.TagServicePort;
-import com.emu.apps.qcm.infrastructure.ports.TagPersistencePort;
+import com.emu.apps.qcm.spi.persistence.TagPersistencePort;
 import com.emu.apps.shared.parsers.rsql.CriteriaUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,7 +29,7 @@ public class TagServiceAdapter implements TagServicePort {
     }
 
     @Override
-    public Page <TagDto> getTagsByPAge(String search, Pageable pageable, String principal) throws IOException {
+    public Page <Tag> getTagsByPAge(String search, Pageable pageable, String principal) throws IOException {
 
         var criterias = CriteriaUtils.toCriteria(search);
         Optional <String> firstLetter = CriteriaUtils.getAttribute("firstLetter", criterias);
@@ -38,12 +38,12 @@ public class TagServiceAdapter implements TagServicePort {
     }
 
     @Override
-    public TagDto getTagById(Long id) {
+    public Tag getTagById(Long id) {
         return tagInfraService.findById(id);
     }
 
     @Override
-    public TagDto saveTag(TagDto tagDto) {
+    public Tag saveTag(Tag tagDto) {
         return tagInfraService.save(tagDto);
     }
 

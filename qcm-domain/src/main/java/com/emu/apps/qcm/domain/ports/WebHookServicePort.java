@@ -1,15 +1,15 @@
 package com.emu.apps.qcm.domain.ports;
 
-import com.emu.apps.qcm.models.WebHookDto;
+import com.emu.apps.qcm.api.models.WebHook;
 import org.springframework.data.domain.Pageable;
 
 public interface WebHookServicePort {
 
-    Iterable <WebHookDto> getWebHooks(Pageable pageable, String principal);
+    Iterable <WebHook> getWebHooks(Pageable pageable, String principal);
 
     void deleteWebHookByUuid(String uuid);
 
-    WebHookDto getWebHookByUuid(String uuid);
+    WebHook getWebHookByUuid(String uuid);
 
-    WebHookDto saveWebHook(WebHookDto webHookDto, String user);
+    WebHook saveWebHook(WebHook webHookDto, String user);
 }

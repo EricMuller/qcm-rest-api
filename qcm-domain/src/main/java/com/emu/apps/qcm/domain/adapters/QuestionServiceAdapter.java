@@ -1,12 +1,12 @@
 package com.emu.apps.qcm.domain.adapters;
 
+import com.emu.apps.qcm.api.models.Response;
+import com.emu.apps.qcm.api.models.question.QuestionTags;
 import com.emu.apps.qcm.domain.ports.QuestionServicePort;
-import com.emu.apps.qcm.infrastructure.exceptions.MessageSupport;
-import com.emu.apps.qcm.infrastructure.exceptions.RaiseExceptionUtil;
-import com.emu.apps.qcm.infrastructure.ports.QuestionPersistencePort;
-import com.emu.apps.qcm.models.QuestionDto;
-import com.emu.apps.qcm.models.ResponseDto;
-import com.emu.apps.qcm.models.question.QuestionTagsDto;
+import com.emu.apps.qcm.spi.persistence.exceptions.MessageSupport;
+import com.emu.apps.qcm.spi.persistence.exceptions.RaiseExceptionUtil;
+import com.emu.apps.qcm.spi.persistence.QuestionPersistencePort;
+import com.emu.apps.qcm.api.models.Question;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,21 +34,21 @@ public class QuestionServiceAdapter implements QuestionServicePort {
     }
 
     @Override
-    public Iterable <QuestionTagsDto> getQuestions(String[] tagUuid,
-                                                   String[] questionnaireUuid,
-                                                   Pageable pageable, String principal) {
+    public Iterable <QuestionTags> getQuestions(String[] tagUuid,
+                                                String[] questionnaireUuid,
+                                                Pageable pageable, String principal) {
 
         return questionPersistencePort.findAllByPage(questionnaireUuid, tagUuid, pageable, principal);
     }
 
 
     @Override
-    public QuestionDto getQuestionByUuId(String uuid) {
+    public Question getQuestionByUuId(String uuid) {
         return questionPersistencePort.findByUuid(uuid);
     }
 
     @Override
-    public QuestionDto updateQuestion(QuestionDto questionDto, String principal) {
+    public Question updateQuestion(Question questionDto, String principal) {
 
 
         return questionPersistencePort.saveQuestion(questionDto, principal);
@@ -56,7 +56,7 @@ public class QuestionServiceAdapter implements QuestionServicePort {
 
     @Override
     @Transactional
-    public Collection <QuestionDto> saveQuestions(Collection <QuestionDto> questionDtos, final String principal) {
+    public Collection <Question> saveQuestions(Collection <Question> questionDtos, final String principal) {
         return questionDtos
                 .stream()
                 .map(questionDto -> saveQuestion(questionDto, principal))
@@ -65,10 +65,10 @@ public class QuestionServiceAdapter implements QuestionServicePort {
 
     @Override
     @Transactional
-    public QuestionDto saveQuestion(QuestionDto questionDto, String principal) {
+    public Question saveQuestion(Question questionDto, String principal) {
 
         AtomicLong atomicLong = new AtomicLong(0);
-        for(ResponseDto responseDto :questionDto.getResponses()){
+        for(Response responseDto :questionDto.getResponses()){
             responseDto.setNumber(atomicLong.incrementAndGet());
         }
         return questionPersistencePort.saveQuestion(questionDto, principal);

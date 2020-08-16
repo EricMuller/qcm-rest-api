@@ -1,10 +1,10 @@
 package com.emu.apps.qcm.domain.adapters;
 
-import com.emu.apps.qcm.models.UploadDto;
+import com.emu.apps.qcm.api.models.Upload;
 import com.emu.apps.qcm.domain.ports.UploadServicePort;
-import com.emu.apps.qcm.infrastructure.exceptions.RaiseExceptionUtil;
-import com.emu.apps.qcm.infrastructure.exceptions.MessageSupport;
-import com.emu.apps.qcm.infrastructure.ports.UploadPersistencePort;
+import com.emu.apps.qcm.spi.persistence.exceptions.RaiseExceptionUtil;
+import com.emu.apps.qcm.spi.persistence.exceptions.MessageSupport;
+import com.emu.apps.qcm.spi.persistence.UploadPersistencePort;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -30,17 +30,17 @@ public class UploadServiceAdapter implements UploadServicePort {
     }
 
     @Override
-    public UploadDto uploadFile(String fileType,
-                                MultipartFile multipartFile,
-                                Boolean async,
-                                String principal) throws IOException {
+    public Upload uploadFile(String fileType,
+                             MultipartFile multipartFile,
+                             Boolean async,
+                             String principal) throws IOException {
 
         final byte[] bytes;
         try (InputStream inputStream = multipartFile.getInputStream()) {
             bytes = inputStream.readAllBytes();
         }
 
-        UploadDto uploadDto = new UploadDto();
+        Upload uploadDto = new Upload();
         uploadDto.setFileName(FilenameUtils.getName(multipartFile.getOriginalFilename()));
         uploadDto.setContentType(multipartFile.getContentType());
         uploadDto.setData(bytes);
@@ -49,7 +49,7 @@ public class UploadServiceAdapter implements UploadServicePort {
     }
 
     @Override
-    public Iterable <UploadDto> getUploads(Pageable pageable, String principal) {
+    public Iterable <Upload> getUploads(Pageable pageable, String principal) {
 
         return uploadPersistencePort.findAllByPage(pageable, principal);
     }
@@ -65,7 +65,7 @@ public class UploadServiceAdapter implements UploadServicePort {
     }
 
     @Override
-    public UploadDto getUploadByUuid(String uuid) {
+    public Upload getUploadByUuid(String uuid) {
 
         var uploadDto = uploadPersistencePort.findByUuid(uuid);
 

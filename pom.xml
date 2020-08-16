@@ -48,10 +48,10 @@
     <modules>
         <module>qcm-shared</module>
         <module>qcm-model</module>
-        <module>qcm-infrastructure</module>
+        <module>qcm-persistence</module>
         <module>qcm-domain</module>
-        <module>qcm-reporting</module>
-        <module>qcm-rest-web</module>
+        <module>qcm-report</module>
+        <module>qcm-rest</module>
     </modules>
 
     <repositories>
@@ -104,13 +104,13 @@
 
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-infrastructure</artifactId>
+                <artifactId>qcm-spi-persistence</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-infrastructure</artifactId>
+                <artifactId>qcm-spi-persistence</artifactId>
                 <version>${project.version}</version>
                 <scope>test</scope>
                 <type>test-jar</type>
@@ -124,7 +124,7 @@
 
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-reporting</artifactId>
+                <artifactId>qcm-spi-report</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

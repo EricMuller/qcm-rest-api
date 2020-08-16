@@ -1,12 +1,12 @@
 package com.emu.apps.qcm.domain.adapters;
 
+import com.emu.apps.qcm.api.dtos.export.v1.ExportDto;
 import com.emu.apps.qcm.domain.ports.ExportServicePort;
-import com.emu.apps.qcm.dtos.export.v1.ExportDataDto;
-import com.emu.apps.qcm.infrastructure.exceptions.RaiseExceptionUtil;
-import com.emu.apps.qcm.infrastructure.exceptions.MessageSupport;
-import com.emu.apps.qcm.infrastructure.ports.QuestionPersistencePort;
-import com.emu.apps.qcm.infrastructure.ports.QuestionnairePersistencePort;
-import com.emu.apps.qcm.mappers.exports.ExportMapper;
+import com.emu.apps.qcm.spi.persistence.exceptions.RaiseExceptionUtil;
+import com.emu.apps.qcm.spi.persistence.exceptions.MessageSupport;
+import com.emu.apps.qcm.spi.persistence.QuestionPersistencePort;
+import com.emu.apps.qcm.spi.persistence.QuestionnairePersistencePort;
+import com.emu.apps.qcm.spi.persistence.mappers.exports.ExportMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,7 +33,7 @@ public class ExportServiceAdapter implements ExportServicePort {
     }
 
     @Override
-    public ExportDataDto getbyQuestionnaireUuid(String uuid) {
+    public ExportDto getbyQuestionnaireUuid(String uuid) {
         var questionnaire = questionnairePersistencePort.findByUuid(uuid);
 
         RaiseExceptionUtil.raiseIfNull(uuid, questionnaire, MessageSupport.UNKNOWN_UUID_QUESTIONNAIRE);

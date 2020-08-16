@@ -2,9 +2,9 @@ package com.emu.apps.qcm.domain.adapters;
 
 
 import com.emu.apps.qcm.domain.ports.SuggestServicePort;
-import com.emu.apps.qcm.infrastructure.ports.QuestionnairePersistencePort;
-import com.emu.apps.qcm.dtos.SuggestDto;
-import com.emu.apps.qcm.mappers.SuggestMapper;
+import com.emu.apps.qcm.spi.persistence.QuestionnairePersistencePort;
+import com.emu.apps.qcm.api.dtos.SuggestDto;
+import com.emu.apps.qcm.spi.persistence.mappers.SuggestMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 

@@ -1,12 +1,12 @@
 package com.emu.apps.qcm.domain.adapters;
 
+import com.emu.apps.qcm.api.models.QuestionnaireQuestion;
 import com.emu.apps.qcm.domain.ports.QuestionnaireServicePort;
-import com.emu.apps.qcm.infrastructure.exceptions.RaiseExceptionUtil;
-import com.emu.apps.qcm.infrastructure.ports.QuestionPersistencePort;
-import com.emu.apps.qcm.infrastructure.ports.QuestionnairePersistencePort;
-import com.emu.apps.qcm.models.QuestionDto;
-import com.emu.apps.qcm.models.QuestionnaireDto;
-import com.emu.apps.qcm.models.QuestionnaireQuestionDto;
+import com.emu.apps.qcm.spi.persistence.exceptions.RaiseExceptionUtil;
+import com.emu.apps.qcm.spi.persistence.QuestionPersistencePort;
+import com.emu.apps.qcm.spi.persistence.QuestionnairePersistencePort;
+import com.emu.apps.qcm.api.models.Question;
+import com.emu.apps.qcm.api.models.Questionnaire;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -48,7 +48,7 @@ public class QuestionnaireServiceAdapter implements QuestionnaireServicePort {
      */
     @Override
     @Transactional(readOnly = true)
-    public QuestionnaireDto getQuestionnaireByUuid(String questionnaireUuid) {
+    public Questionnaire getQuestionnaireByUuid(String questionnaireUuid) {
         var questionnaire = questionnairePersistencePort.findByUuid(questionnaireUuid);
         RaiseExceptionUtil.raiseIfNull(questionnaireUuid, questionnaire, String.valueOf(questionnaireUuid));
         return questionnaire;
@@ -61,7 +61,7 @@ public class QuestionnaireServiceAdapter implements QuestionnaireServicePort {
      * @return Nocontent
      */
     @Override
-    public ResponseEntity <QuestionnaireDto> deleteQuestionnaireByUuid(String questionnaireUuid) {
+    public ResponseEntity <Questionnaire> deleteQuestionnaireByUuid(String questionnaireUuid) {
         questionnairePersistencePort.deleteByUuid(questionnaireUuid);
         return new ResponseEntity <>(HttpStatus.NO_CONTENT);
     }
@@ -73,7 +73,7 @@ public class QuestionnaireServiceAdapter implements QuestionnaireServicePort {
      * @return the updated questionnaire
      */
     @Override
-    public QuestionnaireDto updateQuestionnaire(QuestionnaireDto aQuestionnaireDto, String principal) {
+    public Questionnaire updateQuestionnaire(Questionnaire aQuestionnaireDto, String principal) {
         return questionnairePersistencePort.saveQuestionnaire(aQuestionnaireDto, principal);
     }
 
@@ -84,17 +84,17 @@ public class QuestionnaireServiceAdapter implements QuestionnaireServicePort {
      * @return the created questionnaire
      */
     @Override
-    public QuestionnaireDto saveQuestionnaire(QuestionnaireDto questionnaireDto, String principal) {
+    public Questionnaire saveQuestionnaire(Questionnaire questionnaireDto, String principal) {
         return questionnairePersistencePort.saveQuestionnaire(questionnaireDto, principal);
     }
 
-    public Page <QuestionnaireQuestionDto> getQuestionsByQuestionnaireUuid(String questionnaireUuid, Pageable pageable) {
+    public Page <QuestionnaireQuestion> getQuestionsByQuestionnaireUuid(String questionnaireUuid, Pageable pageable) {
         return questionnairePersistencePort.getQuestionsProjectionByQuestionnaireUuid(questionnaireUuid, pageable);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Page <QuestionnaireDto> getQuestionnaires(String[] tagUuid, Pageable pageable, String principal) {
+    public Page <Questionnaire> getQuestionnaires(String[] tagUuid, Pageable pageable, String principal) {
         return questionnairePersistencePort.findAllByPage(tagUuid, principal, pageable);
     }
 
@@ -106,7 +106,7 @@ public class QuestionnaireServiceAdapter implements QuestionnaireServicePort {
      * @return QuestionDto
      */
     @Override
-    public QuestionDto addQuestion(String uuid, QuestionDto questionDto, Optional <Integer> position) {
+    public Question addQuestion(String uuid, Question questionDto, Optional <Integer> position) {
 
         return questionnairePersistencePort.addQuestion(uuid, questionDto, position);
     }
@@ -118,7 +118,7 @@ public class QuestionnaireServiceAdapter implements QuestionnaireServicePort {
      * @param questionDtos      List of questions to add
      */
     @Override
-    public List <QuestionDto> addQuestions(String questionnaireUuid, Collection <QuestionDto> questionDtos) {
+    public List <Question> addQuestions(String questionnaireUuid, Collection <Question> questionDtos) {
 
         AtomicInteger position = new AtomicInteger(0);
         return questionDtos

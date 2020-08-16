@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.domain.ports;
 
-import com.emu.apps.qcm.dtos.published.PublishedQuestionnaireDto;
-import com.emu.apps.qcm.dtos.published.PushishedQuestionnaireQuestionDto;
+import com.emu.apps.qcm.api.dtos.published.PublishedQuestionnaireDto;
+import com.emu.apps.qcm.api.dtos.published.PushishedQuestionnaireQuestionDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

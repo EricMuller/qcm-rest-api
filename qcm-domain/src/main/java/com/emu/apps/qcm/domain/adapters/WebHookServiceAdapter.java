@@ -1,8 +1,8 @@
 package com.emu.apps.qcm.domain.adapters;
 
+import com.emu.apps.qcm.api.models.WebHook;
 import com.emu.apps.qcm.domain.ports.WebHookServicePort;
-import com.emu.apps.qcm.infrastructure.ports.WebHookPersistencePort;
-import com.emu.apps.qcm.models.WebHookDto;
+import com.emu.apps.qcm.spi.persistence.WebHookPersistencePort;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +24,7 @@ public class WebHookServiceAdapter implements WebHookServicePort {
     }
 
     @Override
-    public Iterable <WebHookDto> getWebHooks(Pageable pageable, String principal) {
+    public Iterable <WebHook> getWebHooks(Pageable pageable, String principal) {
        return  this.webHookPersistencePort.findOneByUuid(pageable, principal);
     }
 
@@ -34,12 +34,12 @@ public class WebHookServiceAdapter implements WebHookServicePort {
     }
 
     @Override
-    public WebHookDto getWebHookByUuid(String uuid) {
+    public WebHook getWebHookByUuid(String uuid) {
         return webHookPersistencePort.findOneByUuid(uuid);
     }
 
     @Override
-    public WebHookDto saveWebHook(WebHookDto webHookDto, String user) {
+    public WebHook saveWebHook(WebHook webHookDto, String user) {
         return webHookPersistencePort.saveWebHook( webHookDto, user);
     }
 }

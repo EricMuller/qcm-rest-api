@@ -47,12 +47,12 @@
 
         <dependency>
             <groupId>com.emu.apps.qcm</groupId>
-            <artifactId>qcm-infrastructure</artifactId>
+            <artifactId>qcm-spi-persistence</artifactId>
         </dependency>
 
         <dependency>
             <groupId>com.emu.apps.qcm</groupId>
-            <artifactId>qcm-infrastructure</artifactId>
+            <artifactId>qcm-spi-persistence</artifactId>
             <scope>test</scope>
             <type>test-jar</type>
         </dependency>
