@@ -52,6 +52,7 @@
         <module>qcm-domain</module>
         <module>qcm-report</module>
         <module>qcm-rest</module>
+        <module>qcm-coverage-report</module>
     </modules>
 
     <repositories>
@@ -78,12 +79,8 @@
         <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
         <sonar.coverage.exclusions>${jacoco.excludePattern}</sonar.coverage.exclusions>
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
-        <!-- Tell sonar where to look for the coverage file. Property inherited by submodules -->
-        <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
-
-        <jacoco.reportPath>${project.basedir}/../target/jacoco.exec</jacoco.reportPath>
-
         <!--        <argLine>-server -ea -Xmx2g ${coverageAgent}</argLine>-->
+
 
     </properties>
 
@@ -137,6 +134,12 @@
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>
                 <artifactId>qcm-shared</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.emu.apps.qcm</groupId>
+                <artifactId>qcm-spi-rest</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -244,28 +247,28 @@
                 <artifactId>maven-source-plugin</artifactId>
             </plugin>
 
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <configuration>
-                    <append>true</append>
-                    <propertyName>coverageAgent</propertyName>
-                </configuration>
+<!--            <plugin>-->
+<!--                <groupId>org.jacoco</groupId>-->
+<!--                <artifactId>jacoco-maven-plugin</artifactId>-->
+<!--                <configuration>-->
+<!--                    <append>true</append>-->
+<!--                    <propertyName>coverageAgent</propertyName>-->
+<!--                </configuration>-->
 
-                <executions>
-                    <execution>
-                        <id>coverage-agent</id>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                        <configuration>
-                            <append>true</append>
-                            <destFile>${jacoco.reportPath}</destFile>
-                        </configuration>
-                    </execution>
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>coverage-agent</id>-->
+<!--                        <goals>-->
+<!--                            <goal>prepare-agent</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <append>true</append>-->
+<!--                            <destFile>${jacoco.reportPath}</destFile>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
 
-                </executions>
-            </plugin>
+<!--                </executions>-->
+<!--            </plugin>-->
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

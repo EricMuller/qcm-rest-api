@@ -12,7 +12,7 @@ addons:
 
 
 script:
-  - mvn clean verify sonar:sonar -Prun-sonar -Dsonar.login=$SONAR_API_KEY
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent verify sonar:sonar -Dsonar.login=$SONAR_API_KEY
 
 
 

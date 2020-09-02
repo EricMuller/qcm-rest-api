@@ -38,52 +38,51 @@
     </parent>
 
     <groupId>com.emu.apps.qcm</groupId>
-    <artifactId>qcm-model</artifactId>
+    <artifactId>qcm-coverage-report</artifactId>
 
-    <name>Qcm Model</name>
-    <description>Qcm Model</description>
+    <name>Qcm Coverage</name>
+    <description>Qcm Coverage</description>
 
-
+    <properties>
+        <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/../qcm-coverage-report/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+    </properties>
 
     <dependencies>
 
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
+            <groupId>com.emu.apps.qcm</groupId>
+            <artifactId>qcm-spi-persistence</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
+            <groupId>com.emu.apps.qcm</groupId>
+            <artifactId>qcm-spi-rest</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jsr310</artifactId>
-        </dependency>
-
-
-        <dependency>
-            <groupId>jakarta.validation</groupId>
-            <artifactId>jakarta.validation-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <scope>test</scope>
+            <groupId>com.emu.apps.qcm</groupId>
+            <artifactId>qcm-model</artifactId>
         </dependency>
 
     </dependencies>
 
     <build>
 
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>report</id>
+                        <goals>
+                            <goal>report-aggregate</goal>
+                        </goals>
+                        <phase>verify</phase>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
 
     </build>
 
