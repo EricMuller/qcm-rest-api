@@ -5,6 +5,7 @@ import com.emu.apps.qcm.domain.ports.PublishedServicePort;
 import com.emu.apps.qcm.api.dtos.published.PublishedQuestionnaireDto;
 import com.emu.apps.qcm.api.dtos.published.PushishedQuestionnaireQuestionDto;
 import com.emu.apps.shared.annotations.Timer;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +17,7 @@ import static com.emu.apps.qcm.spi.webmvc.rest.ApiRestMappings.*;
 
 @RestController
 @Profile("webmvc")
+@Tag(name = "Published")
 @RequestMapping(value = PUBLISHED_API, produces = MediaType.APPLICATION_JSON_VALUE)
 public class PublishedRestController {
 
@@ -28,31 +30,31 @@ public class PublishedRestController {
     @GetMapping(value = QUESTIONNAIRES)
     @Timer
     @ResponseBody
-    public Page <PublishedQuestionnaireDto> getQuestionnaires(Pageable pageable) {
+    public Page <PublishedQuestionnaireDto> getPublishedQuestionnaires(Pageable pageable) {
         return questionnaireServicePort.getPublishedQuestionnaires(pageable);
     }
 
     @GetMapping(value = QUESTIONNAIRES + "/{uuid}")
     @ResponseBody
-    public PublishedQuestionnaireDto getQuestionnaireByUuid(@PathVariable("uuid") String uuid) {
+    public PublishedQuestionnaireDto getPublishedQuestionnaireByUuid(@PathVariable("uuid") String uuid) {
         return questionnaireServicePort.getPublishedQuestionnaireByUuid(uuid);
     }
 
     @GetMapping(value = CATEGORIES)
     @ResponseBody
-    public Iterable <String> getCategories() {
+    public Iterable <String> getPublishedCategories() {
         return questionnaireServicePort.getPublishedCategories();
     }
 
     @GetMapping(value = TAGS)
     @ResponseBody
-    public Iterable <String> getTags() {
+    public Iterable <String> getPublishedTags() {
         return questionnaireServicePort.getPublishedTags();
     }
 
     @GetMapping(value = QUESTIONNAIRES + "/{uuid}/" + QUESTIONS)
     @ResponseBody
-    public Iterable <PushishedQuestionnaireQuestionDto> getQuestionByQuestionnaireUuid(@PathVariable("uuid") String uuid) {
+    public Iterable <PushishedQuestionnaireQuestionDto> getPublishedQuestionByQuestionnaireUuid(@PathVariable("uuid") String uuid) {
         return questionnaireServicePort.getPublishedQuestionsByQuestionnaireUuid(uuid);
     }
 

@@ -40,14 +40,14 @@ public class ExportRestController {
     @Timer
     @GetMapping(value = "/{uuid}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ExportDto getQuestionnaireById(@PathVariable("uuid") String id) {
+    public ExportDto getExportByQuestionnaireUuid(@PathVariable("uuid") String id) {
         return exportServicePort.getbyQuestionnaireUuid(id);
     }
 
 
     @Timer
     @GetMapping(value = "/{uuid}/{type-report}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public ResponseEntity <Resource> getReportById(@PathVariable("uuid") String uuid, @PathVariable("type-report") String type) {
+    public ResponseEntity <Resource> getReportByQuestionnaireUuid(@PathVariable("uuid") String uuid, @PathVariable("type-report") String type) {
 
         TypeReport typeReport = TypeReport.getByName(type.toUpperCase());
         if (Objects.isNull(type)) {

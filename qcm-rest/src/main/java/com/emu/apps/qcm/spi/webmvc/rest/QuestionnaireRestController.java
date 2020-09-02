@@ -49,7 +49,7 @@ public class QuestionnaireRestController {
     @DeleteMapping(value = "/{uuid}")
     @CacheEvict(cacheNames = CacheName.Names.QUESTIONNAIRE, key = "#uuid")
     @ResponseBody
-    public ResponseEntity <Questionnaire> deleteQuestionnaireById(@PathVariable("uuid") String uuid) {
+    public ResponseEntity <Questionnaire> deleteQuestionnaireByUuid(@PathVariable("uuid") String uuid) {
         questionnaireServicePort.deleteQuestionnaireByUuid(uuid);
         return new ResponseEntity <>(HttpStatus.NO_CONTENT);
     }
@@ -62,7 +62,7 @@ public class QuestionnaireRestController {
         return questionnaireServicePort.updateQuestionnaire(questionnaireDto, AuthentificationContextHolder.getUser());
     }
 
-    @PostMapping()
+    @PostMapping
     @ResponseBody
     public Questionnaire saveQuestionnaire(@RequestBody Questionnaire questionnaireDto) {
         return questionnaireServicePort.saveQuestionnaire(questionnaireDto, AuthentificationContextHolder.getUser());
@@ -71,7 +71,7 @@ public class QuestionnaireRestController {
     /* /{id:[\d]+}/questions*/
     @GetMapping(value = "/{uuid}" + QUESTIONS)
     @ResponseBody
-    public Page <QuestionnaireQuestion> getQuestionsByQuestionnaireId(@PathVariable("uuid") String uuid, Pageable pageable) {
+    public Page <QuestionnaireQuestion> getQuestionsByQuestionnaireUuid(@PathVariable("uuid") String uuid, Pageable pageable) {
         return questionnaireServicePort.getQuestionsByQuestionnaireUuid(uuid, pageable);
     }
 
@@ -85,7 +85,7 @@ public class QuestionnaireRestController {
 
     @PutMapping(value = "/{uuid}/questions")
     @ResponseBody
-    public Question addQuestion(@PathVariable("uuid") String uuid, @RequestBody Question questionDto) {
+    public Question addQuestionByQuestionnaireUuid(@PathVariable("uuid") String uuid, @RequestBody Question questionDto) {
         // todo send QuestionnaireQuestionDto
         return questionnaireServicePort.addQuestion(uuid, questionDto, Optional.empty());
     }
@@ -93,7 +93,7 @@ public class QuestionnaireRestController {
 
     @DeleteMapping(value = "/{uuid}/questions/{question_uuid}")
     @ResponseBody
-    public ResponseEntity deleteQuestion(@PathVariable("uuid") String uuid, @PathVariable("question_uuid") String questionUuid) {
+    public ResponseEntity deleteQuestionByQuestionnaireUuid(@PathVariable("uuid") String uuid, @PathVariable("question_uuid") String questionUuid) {
         questionnaireServicePort.deleteQuestion(uuid, questionUuid);
         return new ResponseEntity <>(HttpStatus.NO_CONTENT);
     }

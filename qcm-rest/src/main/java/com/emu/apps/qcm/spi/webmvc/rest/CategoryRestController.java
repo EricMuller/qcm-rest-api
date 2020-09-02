@@ -37,17 +37,17 @@ public class CategoryRestController {
 
     @GetMapping(value = "/{uuid}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Category getCategory(@PathVariable("uuid") String uuid) {
+    public Category getCategoryByUuid(@PathVariable("uuid") String uuid) {
         return categoryServicePort.getCategoryByUuid(uuid);
     }
 
-    @GetMapping()
+    @GetMapping
     @ResponseBody
-    public Iterable <Category> getCategories(@RequestParam("type") Type type) throws FunctionnalException {
+    public Iterable <Category> getCategoriesByType(@RequestParam("type") Type type) throws FunctionnalException {
         return categoryServicePort.getCategories(AuthentificationContextHolder.getUser(), type);
     }
 
-    @PostMapping()
+    @PostMapping
     @ResponseBody
     public Category saveCategory(@RequestBody Category categoryDto) throws FunctionnalException {
         return categoryServicePort.saveCategory(categoryDto, AuthentificationContextHolder.getUser());

@@ -55,7 +55,7 @@ public class WebHookRestController {
     @DeleteMapping(value = "/{uuid}")
     @ResponseBody
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void deleteUploadById(@PathVariable("uuid") String uuid) {
+    public void deleteWebhookByUuid(@PathVariable("uuid") String uuid) {
         webHookServicePort.deleteWebHookByUuid(uuid);
     }
 

@@ -31,9 +31,9 @@ public class UploadRestController {
 
     @ResponseBody
     @PostMapping(value = "/{fileType}")
-    public Upload uploadFile(@PathVariable("fileType") String fileType,
-                             @RequestParam("file") MultipartFile multipartFile,
-                             @RequestParam(value = "async", required = false) Boolean async) throws IOException {
+    public Upload uploadFileByType(@PathVariable("fileType") String fileType,
+                                   @RequestParam("file") MultipartFile multipartFile,
+                                   @RequestParam(value = "async", required = false) Boolean async) throws IOException {
 
         return uploadServicePort.uploadFile(fileType, multipartFile, async, AuthentificationContextHolder.getUser());
     }
@@ -48,13 +48,13 @@ public class UploadRestController {
     @DeleteMapping(value = "/{uuid}")
     @ResponseBody
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void deleteUploadById(@PathVariable("uuid") String uuid) {
+    public void deleteUploadByUuid(@PathVariable("uuid") String uuid) {
         uploadServicePort.deleteUploadByUuid(uuid);
     }
 
     @GetMapping(value = "/{uuid}")
     @ResponseBody
-    public Upload getUploadById(@PathVariable("uuid") String uuid) {
+    public Upload getUploadByUuid(@PathVariable("uuid") String uuid) {
         return uploadServicePort.getUploadByUuid(uuid);
     }
 

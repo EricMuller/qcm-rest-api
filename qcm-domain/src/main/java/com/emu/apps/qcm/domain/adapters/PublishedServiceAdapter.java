@@ -37,7 +37,7 @@ public class PublishedServiceAdapter implements PublishedServicePort {
      * find  a list of questionnaires
      *
      *
-     * @param pageable
+     * @param pageable : paging
      * @return a list of questionnaires with the specified tag
      */
     @Transactional(readOnly = true)

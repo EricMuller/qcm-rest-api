@@ -30,12 +30,13 @@ public class UserRestController {
     }
 
     /**
-     * @param principal
-     * @return the current UserDto
+     *
+     * @param principal : authentified user
+     * @return User
      */
     @GetMapping(value = "/me", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public User user(Principal principal) {
+    public User getUser(Principal principal) {
         return userServicePort.user(principal);
     }
 

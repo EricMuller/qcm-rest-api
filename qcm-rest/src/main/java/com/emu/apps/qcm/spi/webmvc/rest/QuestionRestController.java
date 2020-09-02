@@ -74,7 +74,7 @@ public class QuestionRestController {
     @DeleteMapping(value = "/{uuid}")
     @ResponseBody
     @CacheEvict(cacheNames = CacheName.Names.QUESTION, condition = "#uuid != null", key = "#uuid")
-    public ResponseEntity <Void> deleteQuestionById(@PathVariable("uuid") String uuid) {
+    public ResponseEntity <Void> deleteQuestionByUuid(@PathVariable("uuid") String uuid) {
         questionServicePort.deleteQuestionByUuid(uuid);
         return ResponseEntity.noContent().build();
     }
@@ -83,7 +83,7 @@ public class QuestionRestController {
     @PatchMapping(value = "/{uuid}")
     @ResponseBody
     @CacheEvict(cacheNames = CacheName.Names.QUESTION, condition = "#uuid != null", key = "#uuid")
-    public Question patchQuestion(@PathVariable("uuid") String uuid, @RequestBody QuestionPatchDto patchDto) {
+    public Question patchQuestionByUuid(@PathVariable("uuid") String uuid, @RequestBody QuestionPatchDto patchDto) {
         Question dto = questionServicePort.getQuestionByUuId(uuid);
         dto.setStatus(patchDto.getStatus());
         return questionServicePort.saveQuestion(dto, AuthentificationContextHolder.getUser());

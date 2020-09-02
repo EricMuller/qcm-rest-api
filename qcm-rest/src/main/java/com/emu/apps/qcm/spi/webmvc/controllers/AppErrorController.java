@@ -1,5 +1,6 @@
 package com.emu.apps.qcm.spi.webmvc.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.boot.web.servlet.error.ErrorController;
@@ -38,6 +39,7 @@ public class AppErrorController implements ErrorController {
      * @return  view /errors/error
      */
     @GetMapping(value = ERROR_PATH, produces = "text/html")
+    @Operation(hidden = true)
     public ModelAndView errorHtml(HttpServletRequest request) {
         ServletWebRequest servletWebRequest = new ServletWebRequest(request);
         return new ModelAndView("/errors/error", getErrorAttributes(servletWebRequest, false));
@@ -51,6 +53,7 @@ public class AppErrorController implements ErrorController {
      */
     @GetMapping(value = ERROR_PATH)
     @ResponseBody
+    @Operation(hidden = true)
     public ResponseEntity <Map <String, Object>> error(HttpServletRequest request) {
         ServletWebRequest servletWebRequest = new ServletWebRequest(request);
         Map <String, Object> body = getErrorAttributes(servletWebRequest, getTraceParameter(request));

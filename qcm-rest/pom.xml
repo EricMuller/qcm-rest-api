@@ -192,7 +192,7 @@
             </resource>
         </resources>
 
-        <finalName>qcm-admin-${version}</finalName>
+        <finalName>qcm-admin-${project.version}</finalName>
 
         <plugins>
 

@@ -29,7 +29,7 @@ public class TagServiceAdapter implements TagServicePort {
     }
 
     @Override
-    public Page <Tag> getTagsByPAge(String search, Pageable pageable, String principal) throws IOException {
+    public Page <Tag> getTags(String search, Pageable pageable, String principal) throws IOException {
 
         var criterias = CriteriaUtils.toCriteria(search);
         Optional <String> firstLetter = CriteriaUtils.getAttribute("firstLetter", criterias);
@@ -38,8 +38,8 @@ public class TagServiceAdapter implements TagServicePort {
     }
 
     @Override
-    public Tag getTagById(Long id) {
-        return tagInfraService.findById(id);
+    public Tag getTagByUuid(String uuid) {
+        return tagInfraService.findByUuid(uuid);
     }
 
     @Override

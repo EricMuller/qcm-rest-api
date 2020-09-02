@@ -32,19 +32,26 @@ public class TagRestController {
 
     @GetMapping
     @ResponseBody
-    public Page <Tag> getTagsByPAge(@RequestParam(value = "search", required = false) String search, Pageable pageable) throws IOException {
-        return tagServicePort.getTagsByPAge(search, pageable, AuthentificationContextHolder.getUser());
+    public Page <Tag> getTags(@RequestParam(value = "search", required = false) String search, Pageable pageable) throws IOException {
+        return tagServicePort.getTags(search, pageable, AuthentificationContextHolder.getUser());
     }
 
-    @GetMapping(value = "{id}")
+    @GetMapping(value = "{uuid}")
     @ResponseBody
-    public Tag getTagById(@PathVariable("id") Long id) {
-        return tagServicePort.getTagById(id);
+    public Tag getTagByUuid(@PathVariable("uuid") String uuid) {
+        return tagServicePort.getTagByUuid(uuid);
     }
 
-    @RequestMapping(method = {RequestMethod.PUT, RequestMethod.POST})
+    @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public Tag saveTag(@RequestBody Tag tagDto) {
+    public Tag createTag(@RequestBody Tag tagDto) {
+        return tagServicePort.saveTag(tagDto);
+    }
+
+
+    @RequestMapping(method = RequestMethod.PUT)
+    @ResponseBody
+    public Tag updateTag(@RequestBody Tag tagDto) {
         return tagServicePort.saveTag(tagDto);
     }
 

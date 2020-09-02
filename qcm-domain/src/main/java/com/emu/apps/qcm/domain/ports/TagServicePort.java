@@ -7,9 +7,9 @@ import org.springframework.data.domain.Pageable;
 import java.io.IOException;
 
 public interface TagServicePort {
-    Page <Tag> getTagsByPAge(String search, Pageable pageable, String principal) throws IOException;
+    Page <Tag> getTags(String search, Pageable pageable, String principal) throws IOException;
 
-    Tag getTagById(Long id);
+    Tag getTagByUuid(String uuid);
 
     Tag saveTag(Tag tagDto);
 }
