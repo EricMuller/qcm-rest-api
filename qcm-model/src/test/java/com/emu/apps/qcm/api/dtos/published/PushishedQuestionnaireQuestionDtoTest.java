@@ -18,10 +18,10 @@ assertEquals(param, result);
 }
 
 @Test
-void testQuestion() {
+void testLibelle() {
 String param = "123";
-pojoObject.setQuestion(param);
-Object result = pojoObject.getQuestion();
+pojoObject.setLibelle(param);
+Object result = pojoObject.getLibelle();
 assertEquals(param, result);
 }
 

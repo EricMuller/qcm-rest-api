@@ -11,10 +11,10 @@ public QuestionExportDtoTest() {
 this.pojoObject = new com.emu.apps.qcm.api.dtos.export.v1.QuestionExportDto();
 }
 @Test
-void testQuestion() {
+void testLibelle() {
 String param = "123";
-pojoObject.setQuestion(param);
-Object result = pojoObject.getQuestion();
+pojoObject.setLibelle(param);
+Object result = pojoObject.getLibelle();
 assertEquals(param, result);
 }
 

@@ -19,24 +19,33 @@ import java.util.UUID;
 @Repository
 public interface QuestionnaireQuestionRepository extends JpaRepository <QuestionnaireQuestionEntity, QuestionnaireQuestionId> {
 
-    @Query("SELECT qq.question.id as id, qq.question.uuid as uuid, qq.question.dateCreation as dateCreation,qq.question.version as version,qq.question.question as question ,qq.question.type as type,qq.position as position " +
+    @Query("SELECT qq.question.id as id, qq.question.uuid as uuid, qq.question.dateCreation as dateCreation,qq.question.version as version,qq.question.libelle as question ,qq.question.type as type,qq.position as position " +
             " FROM QuestionnaireQuestionEntity  qq " +
             " WHERE qq.questionnaire.uuid = :questionnaireUuid  ")
     Iterable <QuestionResponseProjection> findQuestionsByQuestionnaireUuiId(@Param("questionnaireUuid") UUID questionnaireUuid);
 
 
-    @Query("SELECT qq.question.id as id, qq.question.uuid as uuid, qq.question.dateCreation as dateCreation,qq.question.version as version,qq.question.question as question ,qq.question.type as type,qq.position as position " +
+    @Query("SELECT qq.question.id as id, qq.question.uuid as uuid, qq.question.dateCreation as dateCreation,qq.question.version as version,qq.question.libelle as question ,qq.question.type as type,qq.position as position " +
             " FROM QuestionnaireQuestionEntity  qq " +
             " WHERE qq.questionnaire.uuid = :questionnaireUuid")
     Page <QuestionResponseProjection> findQuestionsByQuestionnaireUuiId(@Param("questionnaireUuid") UUID questionnaireUuid, Pageable pageable);
 
-    @Query("SELECT distinct qq.question.id as id, qq.question.uuid as uuid, qq.question.dateCreation as dateCreation,qq.question.version as version,qq.question.question as question ,qq.question.type as type,qq.position as position " +
+    /**
+     *
+     *
+     * @deprecated ("id no longer used")
+     * @param questionnaireIds
+     * @param tagIds
+     * @param pageable
+     * @return
+     */
+    @Query("SELECT distinct qq.question.id as id, qq.question.uuid as uuid, qq.question.dateCreation as dateCreation,qq.question.version as version,qq.question.libelle as question ,qq.question.type as type,qq.position as position " +
             " FROM QuestionnaireQuestionEntity qq " +
             " join qq.question q " +
             " left join q.questionTags  qt " +
             " join qt.tag t  " +
             " WHERE qq.id.questionnaireId in :questionnaireIds  and t.id in :tagIds  order by qq.position")
-    @Deprecated
+    @Deprecated(forRemoval=true)
     Page <QuestionResponseProjection> findQuestionsByQuestionnaireIdsAndTagIds(@Param("questionnaireIds") List <Long> questionnaireIds, @Param("tagIds") List <Long> tagIds, Pageable pageable);
 
     @Modifying

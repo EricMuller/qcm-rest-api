@@ -11,18 +11,18 @@ public QuestionTest() {
 this.pojoObject = new com.emu.apps.qcm.api.models.Question();
 }
 @Test
-void testQuestion() {
-String param = "123";
-pojoObject.setQuestion(param);
-Object result = pojoObject.getQuestion();
-assertEquals(param, result);
-}
-
-@Test
 void testType() {
 String param = "123";
 pojoObject.setType(param);
 Object result = pojoObject.getType();
+assertEquals(param, result);
+}
+
+@Test
+void testLibelle() {
+String param = "123";
+pojoObject.setLibelle(param);
+Object result = pojoObject.getLibelle();
 assertEquals(param, result);
 }
 

@@ -43,7 +43,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class,
         DataSourceTransactionManagerAutoConfiguration.class
         , WebFluxAutoConfiguration.class, ReactiveSecurityAutoConfiguration.class},
-scanBasePackages =   "com.emu.apps.qcm" )
+        scanBasePackages = "com.emu.apps.qcm")
 @EnableScheduling
 public class WebMvcApplication {
 
@@ -61,10 +61,6 @@ public class WebMvcApplication {
         propsConfig.setIgnoreUnresolvablePlaceholders(true);
         return propsConfig;
     }
-
-//    static {
-//        System.setProperty("springdoc.pathsToExclude", "/api/**, /test/**");
-//    }
 
 }
 

@@ -20,10 +20,9 @@ public interface QuestionnaireTagRepository extends JpaRepository<QuestionnaireT
     @Query("delete from QuestionnaireTagEntity qt where qt.id.questionnaireId = :id")
     void deleteByQuestionnaireId(@Param("id") Long questionId);
 
-
-    Iterable<QuestionnaireTagEntity> findDistinctByDeletedFalseAndQuestionnaire_PublishedTrue();
+    Iterable<QuestionnaireTagEntity> findDistinctByDeletedFalseAndQuestionnairePublishedTrue();
 
     @Query("SELECT distinct qt.tag.libelle  from QuestionnaireTagEntity  qt WHERE qt.questionnaire.published = true ")
-    Iterable<String> findDistinctTagLibelleByDeletedFalseAndQuestionnaire_PublishedTrue();
+    Iterable<String> findDistinctTagLibelleByDeletedFalseAndQuestionnairePublishedTrue();
 
 }

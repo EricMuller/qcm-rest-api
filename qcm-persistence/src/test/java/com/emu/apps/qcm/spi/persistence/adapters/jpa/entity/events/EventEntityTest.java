@@ -1,10 +1,9 @@
 package com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.events;
 
+import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
-import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class EventEntityTest {
 private EventEntity pojoObject;

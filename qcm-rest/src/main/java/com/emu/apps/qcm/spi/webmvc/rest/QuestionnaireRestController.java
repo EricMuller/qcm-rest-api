@@ -86,14 +86,15 @@ public class QuestionnaireRestController {
     @PutMapping(value = "/{uuid}/questions")
     @ResponseBody
     public Question addQuestionByQuestionnaireUuid(@PathVariable("uuid") String uuid, @RequestBody Question questionDto) {
-        // todo send QuestionnaireQuestionDto
+
+        // send QuestionnaireQuestionDto
         return questionnaireServicePort.addQuestion(uuid, questionDto, Optional.empty());
     }
 
 
     @DeleteMapping(value = "/{uuid}/questions/{question_uuid}")
     @ResponseBody
-    public ResponseEntity deleteQuestionByQuestionnaireUuid(@PathVariable("uuid") String uuid, @PathVariable("question_uuid") String questionUuid) {
+    public ResponseEntity<Void> deleteQuestionByQuestionnaireUuid(@PathVariable("uuid") String uuid, @PathVariable("question_uuid") String questionUuid) {
         questionnaireServicePort.deleteQuestion(uuid, questionUuid);
         return new ResponseEntity <>(HttpStatus.NO_CONTENT);
     }

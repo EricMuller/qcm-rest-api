@@ -2,11 +2,16 @@ package com.emu.apps.qcm.spi.persistence.exceptions;
 
 public class MessageSupport {
 
-    public final static String UNKNOWN_UUID_QUESTIONNAIRE = "questionnaire.uuid.unknown";
-    public final static String UNKNOWN_UUID_QUESTION = "question.uuid.unknown";
-    public final static String UNKNOWN_UUID_UPLOAD = "upload.uuid.unknown";
+    private MessageSupport() {
+    }
 
-    public final static String UNKNOWN_UUID_USER = "user.uuid.unknown";
+    public static final String UNKNOWN_UUID_QUESTIONNAIRE = "questionnaire.uuid.unknown";
 
-    public final static String UNKNOWN_UUID_WEBHOOK = "webhook.uuid.unknown";
+    public static final String UNKNOWN_UUID_QUESTION = "question.uuid.unknown";
+
+    public static final String UNKNOWN_UUID_UPLOAD = "upload.uuid.unknown";
+
+    public static final String UNKNOWN_UUID_USER = "user.uuid.unknown";
+
+    public static final String UNKNOWN_UUID_WEBHOOK = "webhook.uuid.unknown";
 }

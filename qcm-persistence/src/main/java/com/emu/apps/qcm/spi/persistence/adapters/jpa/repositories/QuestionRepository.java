@@ -43,8 +43,13 @@ public interface QuestionRepository extends JpaRepository <QuestionEntity, Long>
     @NotNull
     Page <QuestionEntity> findAll(Specification <QuestionEntity> specification, @NotNull Pageable pageable);
 
+    /**
+     * @deprecated
+     * @param specification
+     * @return List of QuestionEntity
+     */
     @Query(value = " SELECT distinct q  from  QuestionEntity  q left join fetch q.questionTags qt   join fetch qt.tag t",
             countQuery = "SELECT COUNT(distinct q) FROM QuestionEntity q left JOIN  q.questionTags qt  join  qt.tag t")
-    @Deprecated
-    Iterable <QuestionEntity> findAllQuestionByQuestionnaireId(Specification <QuestionEntity> specification);
+    @Deprecated(forRemoval = true)
+    Iterable <QuestionEntity> findAllQuestionWithTags(Specification <QuestionEntity> specification);
 }

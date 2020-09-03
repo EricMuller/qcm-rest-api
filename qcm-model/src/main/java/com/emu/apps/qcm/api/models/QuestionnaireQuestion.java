@@ -47,10 +47,10 @@ public class QuestionnaireQuestion extends Domain {
     @JsonProperty("tip")
     private String tip;
 
-    @JsonProperty(value = "position",required = false)
+    @JsonProperty(value = "position")
     private Integer position;
 
-    @JsonProperty(value = "points",required = false)
+    @JsonProperty(value = "points")
     private Integer points;
 
 

@@ -42,14 +42,14 @@ public class TagRestController {
         return tagServicePort.getTagByUuid(uuid);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @PostMapping
     @ResponseBody
     public Tag createTag(@RequestBody Tag tagDto) {
         return tagServicePort.saveTag(tagDto);
     }
 
 
-    @RequestMapping(method = RequestMethod.PUT)
+    @PutMapping
     @ResponseBody
     public Tag updateTag(@RequestBody Tag tagDto) {
         return tagServicePort.saveTag(tagDto);

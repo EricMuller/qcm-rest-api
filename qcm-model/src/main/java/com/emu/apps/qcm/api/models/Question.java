@@ -24,13 +24,13 @@ import java.util.Set;
 @AllArgsConstructor
 public class Question extends Domain {
 
+    @JsonProperty("type")
+    private String type;
+
     @JsonProperty("question")
     @NotNull(message = "{question.question.notNull}")
     @Size(min = 1, max = 1024, message = "{question.question.size}")
-    private String question;
-
-    @JsonProperty("type")
-    private String type;
+    private String libelle;
 
     @JsonProperty("status")
     private String status;

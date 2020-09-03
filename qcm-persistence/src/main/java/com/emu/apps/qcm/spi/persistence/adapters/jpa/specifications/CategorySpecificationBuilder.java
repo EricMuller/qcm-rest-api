@@ -14,18 +14,18 @@ import static org.springframework.data.jpa.domain.Specification.where;
 @NoArgsConstructor
 public final class CategorySpecificationBuilder<T> extends BaseSpecification <T> {
 
-    private static String TYPE_FIELD_NAME = "type";
+    private static final String TYPE_FIELD_NAME = "type";
 
     private String principal;
 
     private Type type;
 
-    public CategorySpecificationBuilder setPrincipal(String principal) {
+    public CategorySpecificationBuilder<T> setPrincipal(String principal) {
         this.principal = principal;
         return this;
     }
 
-    public CategorySpecificationBuilder setType(Type type) {
+    public CategorySpecificationBuilder<T> setType(Type type) {
         this.type = type;
         return this;
     }

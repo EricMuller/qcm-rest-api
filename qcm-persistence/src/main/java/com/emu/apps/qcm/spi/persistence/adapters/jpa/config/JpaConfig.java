@@ -13,14 +13,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @EnableCaching
 public class JpaConfig {
 
-//    @Autowired
-//    private AuditorAwareImpl auditorAware;
-
-//    @Bean
-//    public AuditorAware <String> auditorAware() {
-//        return auditorAware;
-//    }
-
     @Bean
     DateTimeProvider dateTimeProvider() {
             return new AuditingDateTimeProvider();

@@ -67,7 +67,7 @@ public interface ExportMapper {
 
     List <QuestionExportDto> modelToDtos(List <QuestionEntity> questions);
 
-    @Mapping(source = "question.question", target = "question")
+    @Mapping(source = "question.libelle", target = "libelle")
     @Mapping(source = "question.type", target = "type")
     @Mapping(source = "question.status", target = "status")
     @Mapping(source = "question.category", target = "category")

@@ -38,7 +38,7 @@ public class WebhookRepositoryTest {
 
         assertNotNull(webhook.getId());
 
-        Iterable <WebHookEntity> question = webHookRepository.findPageByUser_UuidEquals(user.getUuid());
+        Iterable <WebHookEntity> question = webHookRepository.findPageByUserUuidEquals(user.getUuid());
 
         WebHookEntity webhook1 = StreamSupport.stream(question.spliterator(), false).findFirst().orElse(null);
 
@@ -58,7 +58,7 @@ public class WebhookRepositoryTest {
 
         assertNotNull(webhook.getId());
 
-        Page <WebHookEntity> question = webHookRepository.findPageByUser_UuidEquals(user.getUuid(),PageRequest.of(0,10));
+        Page <WebHookEntity> question = webHookRepository.findPageByUserUuidEquals(user.getUuid(),PageRequest.of(0,10));
 
         WebHookEntity webhook1 = StreamSupport.stream(question.spliterator(), false).findFirst().orElse(null);
 

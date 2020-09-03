@@ -48,10 +48,10 @@ public class QuestionRestControllerSearchTest {
 
     private Question createQuestionDto() {
         Question questionDto = new Question();
-        questionDto.setQuestion(QUESTION1);
+        questionDto.setLibelle(QUESTION1);
 
         Response responseDto = new Response();
-        responseDto.setResponse(RESPONSE1);
+        responseDto.setLibelle(RESPONSE1);
         responseDto.setGood(true);
 
         questionDto.setResponses(Arrays.asList(responseDto));
@@ -82,7 +82,7 @@ public class QuestionRestControllerSearchTest {
 
         Response firstResponse = Iterables.getFirst(getResponse.getBody().getResponses(), null);
         assertThat(firstResponse).isNotNull();
-        assertThat(firstResponse.getResponse()).isNotNull().isEqualTo(RESPONSE1);
+        assertThat(firstResponse.getLibelle()).isNotNull().isEqualTo(RESPONSE1);
 
     }
 

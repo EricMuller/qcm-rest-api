@@ -53,10 +53,10 @@ public class QuestionRestControllerTest {
 
     private Question createQuestionDto() {
         Question questionDto = new Question();
-        questionDto.setQuestion(QUESTION1);
+        questionDto.setLibelle(QUESTION1);
 
         Response responseDto = new Response();
-        responseDto.setResponse(RESPONSE1);
+        responseDto.setLibelle(RESPONSE1);
         responseDto.setGood(true);
 
         questionDto.setResponses(Arrays.asList(responseDto));
@@ -84,7 +84,7 @@ public class QuestionRestControllerTest {
 
         Response firstResponse = Iterables.getFirst(postResponse.getBody().getResponses(), null);
         assertThat(firstResponse).isNotNull();
-        assertThat(firstResponse.getResponse()).isNotNull().isEqualTo(RESPONSE1);
+        assertThat(firstResponse.getLibelle()).isNotNull().isEqualTo(RESPONSE1);
 
         assertThat(postResponse.getBody().getQuestionTags()).isNotNull().isNotEmpty();
         QuestionTag questionTagDto = Iterables.getFirst(postResponse.getBody().getQuestionTags(), null);
@@ -97,14 +97,14 @@ public class QuestionRestControllerTest {
     public void postQuestionShouldCreateQuestionResponsesAndTags() {
 
         Question questionDto = new Question();
-        questionDto.setQuestion(QUESTION1);
+        questionDto.setLibelle(QUESTION1);
 
         Response responseDto1 = new Response();
-        responseDto1.setResponse(RESPONSE1);
+        responseDto1.setLibelle(RESPONSE1);
         responseDto1.setGood(true);
 
         Response responseDto2 = new Response();
-        responseDto2.setResponse(RESPONSE2);
+        responseDto2.setLibelle(RESPONSE2);
         responseDto2.setGood(true);
 
         questionDto.setResponses(Arrays.asList(responseDto1, responseDto2));
@@ -154,7 +154,7 @@ public class QuestionRestControllerTest {
 
         Response firstResponse = Iterables.getFirst(getResponse.getBody().getResponses(), null);
         assertThat(firstResponse).isNotNull();
-        assertThat(firstResponse.getResponse()).isNotNull().isEqualTo(RESPONSE1);
+        assertThat(firstResponse.getLibelle()).isNotNull().isEqualTo(RESPONSE1);
     }
 
     @Test
@@ -168,7 +168,7 @@ public class QuestionRestControllerTest {
         assertThat(postResponse.getBody()).isNotNull();
 
         Response firstResponse = Iterables.getFirst(postResponse.getBody().getResponses(), null);
-        firstResponse.setResponse(RESPONSE2);
+        firstResponse.setLibelle(RESPONSE2);
 
         // put the question
         final ResponseEntity <Question> putResponse = restTemplate.exchange(
@@ -180,7 +180,7 @@ public class QuestionRestControllerTest {
 
         firstResponse = Iterables.getFirst(putResponse.getBody().getResponses(), null);
         assertThat(firstResponse).isNotNull();
-        assertThat(firstResponse.getResponse()).isNotNull().isEqualTo(RESPONSE2);
+        assertThat(firstResponse.getLibelle()).isNotNull().isEqualTo(RESPONSE2);
     }
 
 }

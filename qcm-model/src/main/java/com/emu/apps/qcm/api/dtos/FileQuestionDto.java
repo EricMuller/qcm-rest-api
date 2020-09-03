@@ -14,8 +14,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class FileQuestionDto {
 
-   // private Long id;
-
     private Long number;
 
     private String question;

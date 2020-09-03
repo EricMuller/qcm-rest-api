@@ -23,14 +23,6 @@ public class AuditorAwareImpl implements AuditorAware <String> {
         } else {
             String user = AuthentificationContextHolder.getUser();
             return Objects.nonNull(user) ? Optional.of(AuthentificationContextHolder.getUser()) : Optional.empty();
-
-//            if (Objects.isNull(user)) {
-//                user = userRepository.findByEmailContaining(PrincipalUtils.getEmail(authentication)).orElse(null);
-//                userLocal.set(user);
-//            }
-//            return Objects.isNull(user) ? Optional.empty() : Optional.of(user.getUuid().toString());
-
-            //return Optional.of(PrincipalUtils.getEmail(authentication));
         }
     }
 }

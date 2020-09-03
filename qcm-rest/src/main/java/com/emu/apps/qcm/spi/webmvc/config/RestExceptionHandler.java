@@ -32,13 +32,13 @@ import static org.springframework.http.HttpStatus.*;
 @ControllerAdvice
 @Profile("webmvc")
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
-    private static final Logger LOGGER = LoggerFactory.getLogger(RestExceptionHandler.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RestExceptionHandler.class);
 
     @ExceptionHandler({EntityNotFoundException.class})
     @ResponseBody
     public ResponseEntity <Object> handleEntityNotFoundException(Exception e) {
 
-        LOGGER.error("EntityNotFoundException caught: {}", e.getMessage());
+        LOG.error("EntityNotFoundException caught: {}", e.getMessage());
 
         ExceptionMessage exceptionMessage = new ExceptionMessageBuilder()
                 .setStatus(NOT_FOUND.value())
@@ -60,7 +60,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ResponseBody
     public ResponseEntity <Object> handleAnyException(Exception e) {
 
-        LOGGER.error("Exception caught: {}", e);
+        LOG.error("AnyException caught: ", e);
 
         ExceptionMessage exceptionMessage = new ExceptionMessageBuilder()
                 .setStatus(INTERNAL_SERVER_ERROR.value())
@@ -83,9 +83,9 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
             ClassCastException.class,
             ConversionFailedException.class})
     @ResponseBody
-    public ResponseEntity handleMiscFailures(Throwable t) {
+    public ResponseEntity<ExceptionMessage> handleMiscFailures(Throwable t) {
 
-        LOGGER.error("Misc Exception caught: {}", t);
+        LOG.error("Misc Exception caught: ", t);
 
         ExceptionMessage exceptionMessage = new ExceptionMessageBuilder()
                 .setStatus(BAD_REQUEST.value())
@@ -110,9 +110,9 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
             OptimisticLockingFailureException.class,
             DataIntegrityViolationException.class})
     @ResponseBody
-    public ResponseEntity handleConflict(Exception ex) {
+    public ResponseEntity<ExceptionMessage> handleConflict(Exception ex) {
 
-        LOGGER.error("Conflict Exception caught: {}", ex);
+        LOG.error("Conflict Exception caught: ", ex);
 
         ExceptionMessage response = new ExceptionMessageBuilder()
                 .setStatus(CONFLICT.value())
@@ -125,7 +125,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     protected <T> ResponseEntity <T> response(T body, HttpStatus status) {
-        LOGGER.debug("Responding with a status of {}", status);
+        LOG.debug("Responding with a status of {}", status);
         return new ResponseEntity <>(body, new HttpHeaders(), status);
     }
 

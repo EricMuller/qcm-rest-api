@@ -44,15 +44,6 @@ import java.util.Objects;
 @Mapper(componentModel = "spring", uses = {UuidMapper.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface PublishedMapper {
 
- /*default Iterable <PublishedTagDto> questionnaireTagsToPublishedTagDtos(Iterable <String> questionnaireTags){
-
-        return StreamSupport.stream(questionnaireTags.spliterator(), false)
-                .map(questionnaireTag -> tagToDto(questionnaireTag.getTag()))
-                .collect(Collectors.toList());
-
-    }*/
-
-
     default String categoryToString(CategoryEntity category) {
         return Objects.nonNull(category) ? category.getLibelle() : null;
     }
@@ -73,7 +64,7 @@ public interface PublishedMapper {
 
     @Mapping(source = "questionnaire.uuid", target = "questionnaireUuid")
     @Mapping(source = "question.type", target = "type")
-    @Mapping(source = "question.question", target = "question")
+    @Mapping(source = "question.libelle", target = "libelle")
     @Mapping(source = "question.status", target = "status")
     @Mapping(source = "question.category", target = "category")
     @Mapping(source = "question.responses", target = "responses")

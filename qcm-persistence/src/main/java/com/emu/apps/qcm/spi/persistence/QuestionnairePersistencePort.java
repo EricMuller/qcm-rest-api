@@ -16,7 +16,7 @@ public interface QuestionnairePersistencePort {
 
     void deleteByUuid(String uuid);
 
-    Page <Questionnaire> findAllByPage(String tagUuids[], String principal, Pageable pageable);
+    Page <Questionnaire> findAllByPage(String[] tagUuids, String principal, Pageable pageable);
 
     Questionnaire saveQuestionnaire(Questionnaire questionnaireDto, String principal);
 

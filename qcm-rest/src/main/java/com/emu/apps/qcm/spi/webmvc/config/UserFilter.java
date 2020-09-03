@@ -30,7 +30,6 @@ public class UserFilter implements Filter {
         if (Objects.nonNull(authentication)) {
             User userDto = userServicePort.user(authentication);
             AuthentificationContextHolder.setUser(userDto.getUuid());
-            // LOGGER.info("{}: {}", PrincipalUtils.getEmail(authentication), userDto.getUuid());
         } else {
             AuthentificationContextHolder.setUser(null);
         }

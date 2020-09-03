@@ -1,12 +1,11 @@
 package com.emu.apps.qcm.domain.adapters;
 
-import com.emu.apps.qcm.api.models.QuestionnaireQuestion;
-import com.emu.apps.qcm.domain.ports.QuestionnaireServicePort;
-import com.emu.apps.qcm.spi.persistence.exceptions.RaiseExceptionUtil;
-import com.emu.apps.qcm.spi.persistence.QuestionPersistencePort;
-import com.emu.apps.qcm.spi.persistence.QuestionnairePersistencePort;
 import com.emu.apps.qcm.api.models.Question;
 import com.emu.apps.qcm.api.models.Questionnaire;
+import com.emu.apps.qcm.api.models.QuestionnaireQuestion;
+import com.emu.apps.qcm.domain.ports.QuestionnaireServicePort;
+import com.emu.apps.qcm.spi.persistence.QuestionnairePersistencePort;
+import com.emu.apps.qcm.spi.persistence.exceptions.RaiseExceptionUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -32,12 +31,8 @@ public class QuestionnaireServiceAdapter implements QuestionnaireServicePort {
 
     private final QuestionnairePersistencePort questionnairePersistencePort;
 
-    private final QuestionPersistencePort questionPersistencePort;
-
-    public QuestionnaireServiceAdapter(QuestionnairePersistencePort questionnairePersistencePort,
-                                       QuestionPersistencePort questionPersistencePort) {
+    public QuestionnaireServiceAdapter(QuestionnairePersistencePort questionnairePersistencePort) {
         this.questionnairePersistencePort = questionnairePersistencePort;
-        this.questionPersistencePort = questionPersistencePort;
     }
 
     /**

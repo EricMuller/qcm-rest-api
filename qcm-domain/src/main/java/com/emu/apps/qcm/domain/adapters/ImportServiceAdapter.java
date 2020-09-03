@@ -66,7 +66,7 @@ public class ImportServiceAdapter implements ImportServicePort {
 
         RaiseExceptionUtil.raiseIfNull(uploadUuid, uploadDto, MessageSupport.UNKNOWN_UUID_UPLOAD);
 
-        // todo: strategy
+        //  use strategy
         if (TypeUpload.EXPORT_JSON.name().equals(uploadDto.getType())) {
             ObjectMapper mapper = new ObjectMapper()
                     .findAndRegisterModules()
@@ -90,7 +90,7 @@ public class ImportServiceAdapter implements ImportServicePort {
 
         var questionDto = new Question();
 
-        questionDto.setQuestion(questionExportDto.getQuestion());
+        questionDto.setLibelle(questionExportDto.getLibelle());
         questionDto.setType(questionExportDto.getType());
         questionDto.setStatus(questionExportDto.getStatus());
 
@@ -100,7 +100,7 @@ public class ImportServiceAdapter implements ImportServicePort {
         for (var response : questionExportDto.getResponses()) {
 
             Response responseDto = new Response();
-            responseDto.setResponse(response.getResponse());
+            responseDto.setLibelle(response.getResponse());
             responseDto.setGood(response.getGood());
             responseDto.setGood(response.getGood());
 
@@ -126,14 +126,14 @@ public class ImportServiceAdapter implements ImportServicePort {
 
         var questionDto = new Question();
 
-        questionDto.setQuestion(fileQuestionDto.getQuestion());
+        questionDto.setLibelle(fileQuestionDto.getQuestion());
         questionDto.setType(TypeQuestionEnum.FREE_TEXT.name());
         questionDto.setStatus(Status.DRAFT.name());
 
         questionDto.setCategory(categoryDto);
 
         Response responseDto = new Response();
-        responseDto.setResponse(fileQuestionDto.getResponse());
+        responseDto.setLibelle(fileQuestionDto.getResponse());
         questionDto.setResponses(Arrays.asList(responseDto));
 
         QuestionTag questionTagDto = new QuestionTag();
@@ -162,7 +162,7 @@ public class ImportServiceAdapter implements ImportServicePort {
         }
 
         // tags
-        HashSet <QuestionnaireTag> qtags = new HashSet();
+        HashSet <QuestionnaireTag> qtags = new HashSet<>();
         if (Objects.nonNull(exportDataDto.getQuestionnaire().getQuestionnaireTags())) {
             for (var qtag : exportDataDto.getQuestionnaire().getQuestionnaireTags()) {
                 QuestionnaireTag questionnaireTagDto = new QuestionnaireTag();
@@ -202,7 +202,7 @@ public class ImportServiceAdapter implements ImportServicePort {
                 })
                 .collect(Collectors.toList());
 
-        Collection questionDtos = questionService.saveQuestions(questions, principal);
+        Collection<Question> questionDtos = questionService.saveQuestions(questions, principal);
 
         questionnaireService.addQuestions(questionnaire.getUuid(), questionDtos);
 
@@ -240,7 +240,7 @@ public class ImportServiceAdapter implements ImportServicePort {
                         .map(fileQuestionDto -> mapToQuestionDto(fileQuestionDto, categoryDto))
                         .collect(Collectors.toList());
 
-                Collection questionDtos = questionService.saveQuestions(questions, principal);
+                Collection<Question> questionDtos = questionService.saveQuestions(questions, principal);
 
                 questionnaireService.addQuestions(questionnaire.getUuid(), questionDtos);
 

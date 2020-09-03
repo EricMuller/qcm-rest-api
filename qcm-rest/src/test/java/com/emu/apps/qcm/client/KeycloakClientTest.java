@@ -4,7 +4,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import lombok.extern.slf4j.Slf4j;
-
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URI;
@@ -16,14 +17,13 @@ import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.concurrent.CompletionException;
 import java.util.stream.Collectors;
-import org.junit.jupiter.api.Test;
 
 @Slf4j
-public class KeycloakClientTest {
+class KeycloakClientTest {
 
 
     @Test
-    public void grantPasswordTest() throws IOException, InterruptedException {
+    void grantPasswordTest() throws IOException, InterruptedException {
 
         Multimap <String, String> parameters = ArrayListMultimap.create();
         parameters.put("grant_type", "password");
@@ -59,11 +59,13 @@ public class KeycloakClientTest {
 
         LOGGER.info("Body  map  : {} ", map);
 
+        Assertions.assertTrue(map.size() > 0);
+
     }
 
 
     @Test
-    public void authorisationCodePasswordTest() throws IOException, InterruptedException {
+    void authorisationCodePasswordTest() throws IOException, InterruptedException {
 
         Multimap <String, String> parameters = ArrayListMultimap.create();
         parameters.put("response_type", "code");
@@ -99,6 +101,7 @@ public class KeycloakClientTest {
 
         LOGGER.info("Body  map  : {}", map);
 
+        Assertions.assertTrue(map.size() > 0);
     }
 
 

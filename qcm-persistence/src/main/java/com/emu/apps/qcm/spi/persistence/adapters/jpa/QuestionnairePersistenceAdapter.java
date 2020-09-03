@@ -209,12 +209,12 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
 
     @Override
     public Iterable <String> findPublishedCategories() {
-        return questionnaireRepository.findAllDistinctCategory_LibelleByPublishedTrue();
+        return questionnaireRepository.findAllDistinctCategoryLibelleByPublishedTrue();
     }
 
     public Iterable <String> findPublishedTags() {
 
-        return questionnaireTagRepository.findDistinctTagLibelleByDeletedFalseAndQuestionnaire_PublishedTrue();
+        return questionnaireTagRepository.findDistinctTagLibelleByDeletedFalseAndQuestionnairePublishedTrue();
     }
 
     @Override

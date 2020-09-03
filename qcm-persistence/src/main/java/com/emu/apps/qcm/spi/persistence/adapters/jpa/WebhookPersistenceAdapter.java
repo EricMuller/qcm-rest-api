@@ -59,7 +59,7 @@ public class WebhookPersistenceAdapter implements WebHookPersistencePort {
 
     @Override
     public Page <WebHook> findOneByUuid(Pageable pageable, String principal) {
-        return webHookMapper.pageToPageDto(webHookRepository.findPageByUser_UuidEquals(UUID.fromString(principal), pageable));
+        return webHookMapper.pageToPageDto(webHookRepository.findPageByUserUuidEquals(UUID.fromString(principal), pageable));
     }
 
     @Override

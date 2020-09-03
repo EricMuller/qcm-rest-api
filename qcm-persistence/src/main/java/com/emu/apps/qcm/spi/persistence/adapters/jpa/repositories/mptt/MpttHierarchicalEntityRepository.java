@@ -33,9 +33,6 @@ public interface MpttHierarchicalEntityRepository<T extends MpttHierarchicalEnti
 
     T findParent(T node);
 
-
-//    void setClazz(Class <T> clazzToSet);
-
     T createChild(T parent, T child) throws MpttExceptions.HierarchyIdAlreadySetException, MpttExceptions.HierarchyIdNotSetException;
 
     void removeChild(T parent, T child) throws MpttExceptions.NotADescendantException, MpttExceptions.HierarchyIdNotSetException, MpttExceptions.NotInTheSameHierarchyException;

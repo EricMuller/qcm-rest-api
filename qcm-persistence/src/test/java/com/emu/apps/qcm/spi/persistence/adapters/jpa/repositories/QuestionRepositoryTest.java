@@ -49,7 +49,7 @@ public class QuestionRepositoryTest {
         Optional <QuestionEntity> newQuestion = questionRepository.findById(question.getId());
         assertNotNull(newQuestion.orElse(null));
         assertNotNull(newQuestion.orElse(null).getId());
-        assertEquals(DbFixture.QUESTION_QUESTION_1, newQuestion.get().getQuestion());
+        assertEquals(DbFixture.QUESTION_QUESTION_1, newQuestion.get().getLibelle());
         // Assert.assertEquals(RESPONSE, newQuestion.getResponse());
     }
 

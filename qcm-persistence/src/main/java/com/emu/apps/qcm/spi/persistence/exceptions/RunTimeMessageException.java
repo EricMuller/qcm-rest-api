@@ -5,9 +5,9 @@ package com.emu.apps.qcm.spi.persistence.exceptions;
  */
 public class RunTimeMessageException extends RuntimeException {
 
-    private String codeMessage; // code message
+    private final String codeMessage; // code message
 
-    private String uuid; // code message
+    private final String uuid; // code message
 
     public RunTimeMessageException(String uuid, String message) {
         super(message);

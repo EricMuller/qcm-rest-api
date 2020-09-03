@@ -95,7 +95,7 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
 
         question = questionRepository.save(question);
 
-        question = saveQuestionTags(question, questionDto.getQuestionTags(), principal);
+        saveQuestionWithTags(question, questionDto.getQuestionTags(), principal);
 
         return questionMapper.modelToDto(question);
 
@@ -127,7 +127,7 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
 
 
 
-    private QuestionEntity saveQuestionTags(QuestionEntity question, Iterable <QuestionTag> questionTags, String principal) {
+    private QuestionEntity saveQuestionWithTags(QuestionEntity question, Iterable <QuestionTag> questionTags, String principal) {
 
         if (Objects.nonNull(question)) {
             question.getQuestionTags().clear();

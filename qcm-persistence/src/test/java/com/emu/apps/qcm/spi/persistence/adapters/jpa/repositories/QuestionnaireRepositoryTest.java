@@ -64,7 +64,7 @@ public class QuestionnaireRepositoryTest {
         assertEquals(2, questionnaireQuestion1.getQuestion().getResponses().size());
 
         ResponseEntity response1 = Iterables.getFirst(questionnaireQuestion1.getQuestion().getResponses(), null);
-        assertEquals(DbFixture.RESPONSE_RESPONSE_1, response1.getResponse());
+        assertEquals(DbFixture.RESPONSE_RESPONSE_1, response1.getLibelle());
 
         QuestionEntity question = questionnaireQuestion1.getQuestion();
         //tags

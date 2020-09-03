@@ -50,7 +50,7 @@ public interface QuestionnaireRepository extends JpaRepository<QuestionnaireEnti
     void deleteByUuid(UUID uuid);
 
     @Query("SELECT distinct q.category.libelle FROM QuestionnaireEntity  q  WHERE q.published = true")
-    Iterable<String> findAllDistinctCategory_LibelleByPublishedTrue();
+    Iterable<String> findAllDistinctCategoryLibelleByPublishedTrue();
 
 
     Iterable<QuestionnaireProjection> findAllByPublishedTrue();

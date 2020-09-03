@@ -34,6 +34,14 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new NullAuthenticatedSessionStrategy();
     }
 
+    /**
+     *
+     *
+     * http.authorizeRequests().requestMatchers(EndpointRequest.toAnyEndpoint()).authenticated().anyRequest().permitAll();
+     *
+     * @param http
+     * @throws Exception
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
@@ -48,13 +56,10 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(ApiRestMappings.PUBLISHED_API + "/**").permitAll()
                 .antMatchers(ApiRestMappings.PUBLIC_API + "/**").authenticated()
                 .antMatchers("/actuator/**").permitAll()
-//                .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .anyRequest().permitAll();
 
             http.addFilterAfter(userFilter, OAuth2LoginAuthenticationFilter.class);
 
-
-        // http.authorizeRequests().requestMatchers(EndpointRequest.toAnyEndpoint()).authenticated().anyRequest().permitAll();
     }
 
     @Bean

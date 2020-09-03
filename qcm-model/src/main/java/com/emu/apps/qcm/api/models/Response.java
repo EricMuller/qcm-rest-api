@@ -19,7 +19,7 @@ public class Response {
 
     private String uuid;
 
-    private String response;
+    private String libelle;
 
     private Boolean good;
 
