@@ -4,8 +4,6 @@ import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.common.AuditableEnti
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
@@ -13,8 +11,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@Cacheable
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+// @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "account",
         indexes = {@Index(name = "IDX_USR_EMAIL_IDX", columnList = "email")})
 public class UserEntity extends AuditableEntity <String> {

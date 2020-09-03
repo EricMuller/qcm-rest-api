@@ -15,7 +15,7 @@ import java.util.UUID;
 public interface UserRepository extends PagingAndSortingRepository <UserEntity, Long>, JpaSpecificationExecutor <UserEntity> {
 
     @QueryHints(@QueryHint(name = org.hibernate.annotations.QueryHints.CACHEABLE, value = "true"))
-    Optional<UserEntity> findByEmailContaining(String libelle);
+    Optional<UserEntity> findByEmailEquals(String libelle);
 
     Optional<UserEntity> findByUuid(UUID uuid);
 

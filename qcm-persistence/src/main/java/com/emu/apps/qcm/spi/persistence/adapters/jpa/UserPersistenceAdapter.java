@@ -77,8 +77,8 @@ public class UserPersistenceAdapter implements UserPersistencePort {
 
     @Override
     @Transactional(readOnly = true)
-    public User findByEmailContaining(String email) {
-        return userMapper.modelToDto(userRepository.findByEmailContaining(email).orElse(null));
+    public User findByEmailEquals(String email) {
+        return userMapper.modelToDto(userRepository.findByEmailEquals(email).orElse(null));
     }
 
 }

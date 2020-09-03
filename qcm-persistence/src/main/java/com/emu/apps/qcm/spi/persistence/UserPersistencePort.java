@@ -6,5 +6,5 @@ public interface UserPersistencePort {
 
     User save(User tag);
 
-    User findByEmailContaining(String email);
+    User findByEmailEquals(String email);
 }

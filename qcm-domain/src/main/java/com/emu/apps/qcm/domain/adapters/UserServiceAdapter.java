@@ -51,7 +51,7 @@ public class UserServiceAdapter implements UserServicePort {
         User userDto;
         if (Objects.nonNull(principal)) {
             String email = PrincipalUtils.getEmail(principal);
-            userDto = userPersistencePort.findByEmailContaining(email);
+            userDto = userPersistencePort.findByEmailEquals(email);
             if (Objects.isNull(userDto)) {
                 userDto = new User();
                 userDto.setEmail(email);

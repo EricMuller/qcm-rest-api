@@ -46,7 +46,6 @@
     <description>Qcm Coverage</description>
 
     <properties>
-        <sonar.skip>true</sonar.skip>
         <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/../qcm-coverage-report/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
     </properties>
 
