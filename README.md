@@ -1,8 +1,4 @@
-# Qcm Api
-
-![Java CI with M](https://github.com/EricMuller/qcm-rest-api/workflows/Java%20CI%20with%20Maven/badge.svg)
-[![Travis Status](https://travis-ci.com/EricMuller/qcm-rest-api.svg?branch=master)](https://travis-ci.com/EricMuller/qcm-rest-api)
-[![License](http://img.shields.io/:license-mit-blue.svg)](https://opensource.org/licenses/mit-license.php)
+# Qcm Api  [![License](http://img.shields.io/:license-mit-blue.svg)](https://opensource.org/licenses/mit-license.php)
  
  
 
@@ -17,6 +13,8 @@ You can also:
   - Import Questionnaires from file(s)
 
 ### Quality Gate
+![Java CI with M](https://github.com/EricMuller/qcm-rest-api/workflows/Java%20CI%20with%20Maven/badge.svg) [![Travis Status](https://travis-ci.com/EricMuller/qcm-rest-api.svg?branch=master)](https://travis-ci.com/EricMuller/qcm-rest-api)
+
 [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=com.emu.apps.qcm%3Aqcm-rest-api&metric=alert_status)](https://sonarcloud.io/dashboard/index/com.emu.apps.qcm:qcm-rest-api) 
 
 [![Known Vulnerabilities](https://snyk.io/test/github/EricMuller/qcm-rest-api/badge.svg)](https://snyk.io/test/github/EricMuller/qcm-rest-api) 
