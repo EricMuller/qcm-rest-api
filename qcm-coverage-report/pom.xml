@@ -39,11 +39,14 @@
 
     <groupId>com.emu.apps.qcm</groupId>
     <artifactId>qcm-coverage-report</artifactId>
+    <packaging>pom</packaging>
+
 
     <name>Qcm Coverage</name>
     <description>Qcm Coverage</description>
 
     <properties>
+        <sonar.skip>true</sonar.skip>
         <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/../qcm-coverage-report/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
     </properties>
 
@@ -62,6 +65,11 @@
         <dependency>
             <groupId>com.emu.apps.qcm</groupId>
             <artifactId>qcm-model</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.emu.apps.qcm</groupId>
+            <artifactId>qcm-spi-report</artifactId>
         </dependency>
 
     </dependencies>

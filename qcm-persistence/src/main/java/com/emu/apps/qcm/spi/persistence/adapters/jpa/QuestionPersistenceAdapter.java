@@ -3,6 +3,7 @@ package com.emu.apps.qcm.spi.persistence.adapters.jpa;
 import com.emu.apps.qcm.api.models.Question;
 import com.emu.apps.qcm.api.models.QuestionTag;
 import com.emu.apps.qcm.api.models.question.QuestionTags;
+import com.emu.apps.qcm.spi.persistence.QuestionPersistencePort;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.builders.QuestionTagBuilder;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.category.CategoryEntity;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.questionnaires.QuestionnaireQuestionEntity;
@@ -10,7 +11,6 @@ import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.questions.QuestionEn
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.tags.Tag;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.repositories.*;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.specifications.QuestionSpecificationBuilder;
-import com.emu.apps.qcm.spi.persistence.QuestionPersistencePort;
 import com.emu.apps.qcm.spi.persistence.mappers.QuestionMapper;
 import com.emu.apps.qcm.spi.persistence.mappers.UuidMapper;
 import org.apache.commons.lang3.StringUtils;
@@ -101,11 +101,6 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
 
     }
 
-//    @Override
-//    public QuestionTag saveQuestionTag(QuestionTag questionTag) {
-//        return questionTagCrudRepository.save(questionTag);
-//    }
-
     @Override
     @Transactional(readOnly = true)
     public Page <QuestionTags> findAllByPage(String[] questionnaireUuids, String[] tagUuids, Pageable pageable, String principal) {
@@ -139,15 +134,7 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
             if (Objects.nonNull(questionTags)) {
                 StreamSupport.stream(questionTags.spliterator(), false)
                         .forEach(questionTag -> {
-                            Tag tag;
-                            if (Objects.nonNull(questionTag.getUuid())) {
-                                tag = tagRepository.findByUuid(UUID.fromString(questionTag.getUuid())).orElse(null);
-                            } else {
-                                tag = tagRepository.findByLibelle(questionTag.getLibelle(), principal);
-                                if (Objects.isNull(tag)) {
-                                    tag = tagRepository.save(new Tag(questionTag.getLibelle(), true));
-                                }
-                            }
+                            Tag tag = findTag(questionTag,principal);
                             if (Objects.nonNull(tag)) {
                                 var newQuestionTag = new QuestionTagBuilder()
                                         .setQuestion(question)
@@ -159,5 +146,18 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
             }
         }
         return question;
+    }
+
+    private Tag findTag(QuestionTag questionTag, String principal){
+        Tag tag;
+        if (Objects.nonNull(questionTag.getUuid())) {
+            tag = tagRepository.findByUuid(UUID.fromString(questionTag.getUuid())).orElse(null);
+        } else {
+            tag = tagRepository.findByLibelle(questionTag.getLibelle(), principal);
+            if (Objects.isNull(tag)) {
+                tag = tagRepository.save(new Tag(questionTag.getLibelle(), true));
+            }
+        }
+        return tag;
     }
 }

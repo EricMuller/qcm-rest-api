@@ -68,6 +68,7 @@
 
     <properties>
         <sonar.host.url>http://localhost:9000</sonar.host.url>
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <start-class>com.emu.apps.qcm.Application</start-class>
         <springdoc.version>1.1.41</springdoc.version>
@@ -242,11 +243,6 @@
 
 
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-            </plugin>
-
 <!--            <plugin>-->
 <!--                <groupId>org.jacoco</groupId>-->
 <!--                <artifactId>jacoco-maven-plugin</artifactId>-->
@@ -275,27 +271,54 @@
                 <artifactId>maven-surefire-plugin</artifactId>
             </plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.2.0</version>
-
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration >
-                    <show>public</show>
-                    <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
-                </configuration>
-            </plugin>
-
         </plugins>
 
     </build>
+
+        <profiles>
+            <profile>
+                <id>run-javadoc</id>
+                <activation>
+                    <activeByDefault>false</activeByDefault>
+                    <property>
+                        <name>run-javadoc</name>
+                    </property>
+                </activation>
+
+                <properties>
+                    <myProfile>run-javadoc</myProfile>
+                </properties>
+
+                <build>
+                    <plugins>
+
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-source-plugin</artifactId>
+                        </plugin>
+
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-javadoc-plugin</artifactId>
+                            <version>3.2.0</version>
+
+                            <executions>
+                                <execution>
+                                    <id>attach-javadocs</id>
+                                    <goals>
+                                        <goal>jar</goal>
+                                    </goals>
+                                </execution>
+                            </executions>
+                            <configuration >
+                                <show>public</show>
+                                <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </build>
+
+            </profile>
+        </profiles>
 
 </project>

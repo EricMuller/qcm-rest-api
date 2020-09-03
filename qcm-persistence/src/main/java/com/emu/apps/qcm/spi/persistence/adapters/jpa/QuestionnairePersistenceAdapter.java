@@ -2,8 +2,11 @@ package com.emu.apps.qcm.spi.persistence.adapters.jpa;
 
 
 import com.emu.apps.qcm.api.dtos.published.PublishedQuestionnaireDto;
+import com.emu.apps.qcm.api.models.Question;
 import com.emu.apps.qcm.api.models.Questionnaire;
+import com.emu.apps.qcm.api.models.QuestionnaireQuestion;
 import com.emu.apps.qcm.api.models.QuestionnaireTag;
+import com.emu.apps.qcm.spi.persistence.QuestionnairePersistencePort;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.builders.QuestionnaireTagBuilder;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.category.CategoryEntity;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.questionnaires.QuestionnaireEntity;
@@ -15,13 +18,10 @@ import com.emu.apps.qcm.spi.persistence.adapters.jpa.repositories.*;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.specifications.QuestionnaireSpecificationBuilder;
 import com.emu.apps.qcm.spi.persistence.exceptions.MessageSupport;
 import com.emu.apps.qcm.spi.persistence.exceptions.RaiseExceptionUtil;
-import com.emu.apps.qcm.spi.persistence.QuestionnairePersistencePort;
 import com.emu.apps.qcm.spi.persistence.mappers.PublishedMapper;
 import com.emu.apps.qcm.spi.persistence.mappers.QuestionnaireMapper;
 import com.emu.apps.qcm.spi.persistence.mappers.QuestionnaireQuestionMapper;
 import com.emu.apps.qcm.spi.persistence.mappers.UuidMapper;
-import com.emu.apps.qcm.api.models.Question;
-import com.emu.apps.qcm.api.models.QuestionnaireQuestion;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -97,12 +97,12 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
             category = categoryRepository.findByUuid(uuid);
         }
 
-        QuestionnaireEntity questionnaire =null;
+        QuestionnaireEntity questionnaire = null;
         if (StringUtils.isNotBlank(questionnaireDto.getUuid())) {
             questionnaire = questionnaireRepository.findByUuid(UUID.fromString(questionnaireDto.getUuid())).orElse(null);
         }
 
-        if(Objects.nonNull(questionnaire)){
+        if (Objects.nonNull(questionnaire)) {
             questionnaire = questionnaireMapper.dtoToModel(questionnaire, questionnaireDto);
             questionnaire.setCategory(category);
         } else {
@@ -170,9 +170,9 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
         var questionnaire = questionnaireRepository.findByUuid(UUID.fromString(uuid)).orElse(null);
         RaiseExceptionUtil.raiseIfNull(uuid, questionnaire, MessageSupport.UNKNOWN_UUID_QUESTIONNAIRE);
 
-        Integer position = positionOpt.isEmpty() ? questionnaire.getQuestionnaireQuestions().size() + 1 : positionOpt.get();
+        if (Objects.nonNull(questionnaire) && Objects.nonNull(questionDto.getUuid())) {
 
-        if (Objects.nonNull(questionDto.getUuid())) {
+            Integer position = positionOpt.isEmpty() ? questionnaire.getQuestionnaireQuestions().size() + 1 : positionOpt.get();
             var question = questionRepository.findByUuid(UUID.fromString(questionDto.getUuid())).orElse(null);
             if (Objects.nonNull(question)) {
                 questionnaireQuestionRepository.save(new QuestionnaireQuestionEntity(questionnaire, question, position));

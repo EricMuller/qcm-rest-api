@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 import static com.emu.apps.qcm.spi.infrastructure.DbFixture.QUESTION_TAG_LIBELLE_1;
 import static org.junit.jupiter.api.Assertions.*;
@@ -168,7 +169,7 @@ public class QuestionRepositoryTest {
         Assertions.assertThat(tag1).isNotNull();
 
         Specification <QuestionEntity> specification = new QuestionSpecificationBuilder()
-                .setTagIds(new Long[]{tag1.getId()})
+                .setTagUuids(new UUID[]{tag1.getUuid()})
                 .setPrincipal(PrincipalUtils.getEmail(() -> SpringBootTestConfig.USER_TEST)).build();
 
         Pageable pageable = PageRequest.of(0, 3, Sort.by("id"));

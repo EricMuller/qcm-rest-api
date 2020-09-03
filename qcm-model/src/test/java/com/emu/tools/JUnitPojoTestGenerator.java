@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.*;
 
 public class JUnitPojoTestGenerator {
@@ -31,6 +32,9 @@ public class JUnitPojoTestGenerator {
 
         pojoTestGenerator.writePackageTest("qcm-model", "com.emu.apps.qcm.web.dtos", Version.JUPITER);
         pojoTestGenerator.writePackageTest("qcm-model", "com.emu.apps.qcm.web.dtos.question", Version.JUPITER);
+
+        pojoTestGenerator.writePackageTest("qcm-model", "com.emu.apps.qcm.api.dtos.published", Version.JUPITER);
+        pojoTestGenerator.writePackageTest("qcm-model", "com.emu.apps.qcm.api.dtos.export.v1", Version.JUPITER);
 
         pojoTestGenerator.writePackageTest("qcm-entity", "com.emu.apps.qcm.services.jpa.entity.tags", Version.JUPITER);
         pojoTestGenerator.writePackageTest("qcm-entity", "com.emu.apps.qcm.services.jpa.entity.questions", Version.JUPITER);
@@ -84,7 +88,7 @@ public class JUnitPojoTestGenerator {
 
     public static boolean isInstantiable(Class <?> clz) {
         if (clz.isPrimitive() || Modifier.isAbstract(clz.getModifiers()) || clz.isInterface() || clz.isEnum() || clz.isArray()
-        //        || String.class.getName().equals(clz.getName()) || Integer.class.getName().equals(clz.getName())
+            //        || String.class.getName().equals(clz.getName()) || Integer.class.getName().equals(clz.getName())
         ) {
             return false;
         }
@@ -97,6 +101,9 @@ public class JUnitPojoTestGenerator {
         for (Field field : targetClass.getDeclaredFields()) {
 //            try {
             if (SERIAL_VERSION_UID.equals(field.getType())) {
+                continue;
+            }
+            if (java.lang.reflect.Modifier.isStatic(field.getModifiers())) {
                 continue;
             }
             if (isInstantiable(field.getType())) {
@@ -159,7 +166,7 @@ public class JUnitPojoTestGenerator {
         builder.append(String.format("public class %sTest {\n", targetClass.getSimpleName()));
 
         builder.append(String.format("private %s pojoObject;\n", targetClass.getSimpleName()));
-        builder.append(String.format("public %sTest() throws Exception {\n", targetClass.getSimpleName()));
+        builder.append(String.format("public %sTest() {\n", targetClass.getSimpleName()));
         builder.append(String.format("this.pojoObject = new %s();\n", targetClass.getName()));
         builder.append("}\n");
 
@@ -208,10 +215,11 @@ public class JUnitPojoTestGenerator {
             builder.append("Set param = new java.util.HashSet<>();");
         } else if (parameterType.equals(LocalDateTime.class)) {
             builder.append("LocalDateTime param = LocalDateTime.now();");
-        }  else if (parameterType.equals(String.class)) {
+        } else if (parameterType.equals(String.class)) {
             builder.append("String param = \"123\";");
-        }
-        else {
+        } else if (parameterType.equals(ZonedDateTime.class)) {
+            builder.append("ZonedDateTime param = ZonedDateTime.now();");
+        } else {
             builder.append(String.format("%s param = new %s();", parameterType.getSimpleName(), parameterType.getSimpleName()));
         }
         builder.append("\n");

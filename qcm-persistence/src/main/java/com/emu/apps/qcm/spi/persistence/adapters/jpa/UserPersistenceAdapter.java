@@ -29,9 +29,10 @@
 package com.emu.apps.qcm.spi.persistence.adapters.jpa;
 
 import com.emu.apps.qcm.api.models.User;
+import com.emu.apps.qcm.spi.persistence.UserPersistencePort;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.UserEntity;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.repositories.UserRepository;
-import com.emu.apps.qcm.spi.persistence.UserPersistencePort;
+import com.emu.apps.qcm.spi.persistence.exceptions.RaiseExceptionUtil;
 import com.emu.apps.qcm.spi.persistence.mappers.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
 import java.util.UUID;
+
+import static com.emu.apps.qcm.spi.persistence.exceptions.MessageSupport.UNKNOWN_UUID_USER;
 
 /**
  * Created by eric on 14/06/2017.
@@ -59,17 +62,18 @@ public class UserPersistenceAdapter implements UserPersistencePort {
 
     @Override
     public User save(User userDto) {
-        UserEntity user ;
+        UserEntity user;
         if (Objects.isNull(userDto.getUuid())) {
             user = userMapper.dtoToModel(userDto);
         } else {
             user = userRepository.findByUuid(UUID.fromString(userDto.getUuid())).orElse(null);
+            RaiseExceptionUtil.raiseIfNull(userDto.getUuid(), user, UNKNOWN_UUID_USER);
             userMapper.dtoToModel(user, userDto);
         }
+        user = Objects.nonNull(user) ? userRepository.save(user) : null;
 
-        return userMapper.modelToDto(userRepository.save(user));
+        return userMapper.modelToDto(user);
     }
-
 
     @Override
     @Transactional(readOnly = true)

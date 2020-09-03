@@ -1,12 +1,12 @@
 package com.emu.apps.qcm.spi.persistence.adapters.jpa;
 
 import com.emu.apps.qcm.api.models.Category;
+import com.emu.apps.qcm.spi.persistence.CategoryPersistencePort;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.category.CategoryEntity;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.category.Type;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.repositories.CategoryRepository;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.repositories.mptt.MpttExceptions;
 import com.emu.apps.qcm.spi.persistence.exceptions.TechnicalException;
-import com.emu.apps.qcm.spi.persistence.CategoryPersistencePort;
 import com.emu.apps.qcm.spi.persistence.mappers.CategoryMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -22,7 +22,7 @@ import static com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.category.Cate
  * Created by eric on 14/06/2017.
  */
 @Service
-@Transactional
+
 public class CategoryPersistenceAdpater implements CategoryPersistencePort {
 
     private final CategoryRepository categoryRepository;
@@ -36,13 +36,15 @@ public class CategoryPersistenceAdpater implements CategoryPersistencePort {
 
 
     @Override
-    public Category saveCategory(Category categoryDto)  {
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public Category saveCategory(Category categoryDto) {
         CategoryEntity category = categoryMapper.dtoToModel(categoryDto);
-        return findOrCreateByLibelle(category.getUserId(), category.getType(), category.getLibelle());
+        return findOrCreate(category.getUserId(), category.getType(), category.getLibelle());
     }
 
 
     @Override
+    @Transactional(readOnly = true)
     public Iterable <Category> findCategories(String userId, Type type) {
         CategoryEntity category = findOrCreateRoot(userId, type);
         return categoryMapper.modelsToDtos(categoryRepository.findSubTree(category));
@@ -95,7 +97,7 @@ public class CategoryPersistenceAdpater implements CategoryPersistencePort {
         return category;
     }
 
-    private CategoryEntity findOrCreateRoot(String userId, Type type) throws TechnicalException {
+    private CategoryEntity findOrCreateRoot(String userId, Type type) {
         try {
 
             CategoryEntity userRoot = findOrCreateRoot(userId);
@@ -116,7 +118,20 @@ public class CategoryPersistenceAdpater implements CategoryPersistencePort {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public Category findOrCreateByLibelle(String userId, Type type, String libelle) throws TechnicalException {
+    public Category findOrCreateByLibelle(String userId, Type type, String libelle) {
+
+        return findOrCreate(userId, type, libelle);
+
+    }
+
+    /**
+     *  java:S2229 workaround
+     * @param userId
+     * @param type
+     * @param libelle
+     * @return
+     */
+    private Category findOrCreate(String userId, Type type, String libelle) {
 
         try {
             CategoryEntity categoryRoot = findOrCreateRoot(userId, type);
@@ -131,7 +146,7 @@ public class CategoryPersistenceAdpater implements CategoryPersistencePort {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public Category findOrCreateChildByLibelle(UUID parentId, Type type, String libelle) throws TechnicalException {
+    public Category findOrCreateChildByLibelle(UUID parentId, Type type, String libelle) {
 
         try {
             CategoryEntity parentCategory = categoryRepository.findByUuid(parentId);

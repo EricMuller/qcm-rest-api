@@ -6,17 +6,13 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
-
 import javax.persistence.criteria.JoinType;
-
 import java.util.UUID;
 
 import static org.springframework.data.jpa.domain.Specification.where;
 
 @Component
 public final class QuestionSpecificationBuilder extends BaseSpecification<QuestionEntity> {
-
-    private Long[] tagIds;
 
     private UUID[] tagUuids;
 
@@ -27,13 +23,6 @@ public final class QuestionSpecificationBuilder extends BaseSpecification<Questi
     public QuestionSpecificationBuilder() {
         // nope
     }
-
-    public QuestionSpecificationBuilder setTagIds(Long[] tagIds) {
-        this.tagIds = tagIds;
-        return this;
-    }
-
-
 
     public QuestionSpecificationBuilder setPrincipal(String principal) {
         this.principal = principal;
@@ -53,7 +42,7 @@ public final class QuestionSpecificationBuilder extends BaseSpecification<Questi
     @Override
     public Specification<QuestionEntity> build() {
 
-        Specification where = fieldEquals(CREATED_BY, principal)
+        Specification<QuestionEntity> where = fieldEquals(CREATED_BY, principal)
                 .and(questionnaireQuestionsUuidIn(questionnaireUuids))
                 .and(questionnaireTagsUuidIn(tagUuids));
 
