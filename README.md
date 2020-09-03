@@ -15,9 +15,15 @@ You can also:
 ### Quality Gate
 ![Java CI with M](https://github.com/EricMuller/qcm-rest-api/workflows/Java%20CI%20with%20Maven/badge.svg) [![Travis Status](https://travis-ci.com/EricMuller/qcm-rest-api.svg?branch=master)](https://travis-ci.com/EricMuller/qcm-rest-api)
 
-[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=com.emu.apps.qcm%3Aqcm-rest-api&metric=alert_status)](https://sonarcloud.io/dashboard/index/com.emu.apps.qcm:qcm-rest-api) 
 
-[![Known Vulnerabilities](https://snyk.io/test/github/EricMuller/qcm-rest-api/badge.svg)](https://snyk.io/test/github/EricMuller/qcm-rest-api) 
+
+[![Code Quality Score](https://www.code-inspector.com/project/13123/score/svg)](https://frontend.code-inspector.com/public/project/13123/qcm-rest-api/dashboard)
+[![Code Quality Grade](https://www.code-inspector.com/project/13123/status/svg)](https://frontend.code-inspector.com/public/project/13123/qcm-rest-api/dashboard)
+
+
+[![Known Vulnerabilities](https://snyk.io/test/github/EricMuller/qcm-rest-api/badge.svg)](https://snyk.io/test/github/EricMuller/qcm-rest-api)
+
+[![Sonar Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=com.emu.apps.qcm%3Aqcm-rest-api&metric=alert_status)](https://sonarcloud.io/dashboard/index/com.emu.apps.qcm:qcm-rest-api) 
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=com.emu.apps.qcm%3Aqcm-rest-api&metric=bugs)](https://sonarcloud.io/component_measures?id=com.emu.apps.qcm%3Aqcm-rest-api&metric=bugs) 
 [![Code smells](https://sonarcloud.io/api/project_badges/measure?project=com.emu.apps.qcm%3Aqcm-rest-api&metric=code_smells)](https://sonarcloud.io/component_measures?id=com.emu.apps.qcm%3Aqcm-rest-api&metric=code_smells) 
 [![Duplicated lines](https://sonarcloud.io/api/project_badges/measure?project=com.emu.apps.qcm%3Aqcm-rest-api&metric=duplicated_lines_density)](https://sonarcloud.io/component_measures?id=com.emu.apps.qcm%3Aqcm-rest-api&metric=duplicated_lines_density)

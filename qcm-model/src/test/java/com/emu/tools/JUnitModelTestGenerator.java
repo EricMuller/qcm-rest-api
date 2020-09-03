@@ -6,6 +6,8 @@ import java.util.List;
 
 public class JUnitModelTestGenerator {
 
+    private JUnitModelTestGenerator() {
+    }
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
 

@@ -4,7 +4,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 
 import java.security.Principal;
 
-public class PrincipalUtils {
+public final class PrincipalUtils {
 
     private PrincipalUtils() {
     }

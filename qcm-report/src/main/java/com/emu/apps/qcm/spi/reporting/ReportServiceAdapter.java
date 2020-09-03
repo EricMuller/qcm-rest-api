@@ -14,11 +14,11 @@ import java.io.ByteArrayOutputStream;
 @Slf4j
 public class ReportServiceAdapter implements ReportServicePort {
 
-    private ReportServicePdf reportServicePdf;
+    private final ReportServicePdf reportServicePdf;
 
-    private ReportServiceWord reportServiceWord;
+    private final ReportServiceWord reportServiceWord;
 
-    private ReportServiceJson reportServiceJson;
+    private final ReportServiceJson reportServiceJson;
 
     public ReportServiceAdapter(ReportServicePdf reportServicePdf, ReportServiceWord reportServiceWord, ReportServiceJson reportServiceJson) {
         this.reportServicePdf = reportServicePdf;
@@ -42,6 +42,8 @@ public class ReportServiceAdapter implements ReportServicePort {
                 return reportServiceWord;
             case JSON:
                 return reportServiceJson;
+            default:
+                break;
         }
         throw new IllegalArgumentException(typeReport.name());
     }
