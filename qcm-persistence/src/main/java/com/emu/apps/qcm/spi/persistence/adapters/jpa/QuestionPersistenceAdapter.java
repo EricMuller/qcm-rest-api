@@ -105,9 +105,9 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
     @Transactional(readOnly = true)
     public Page <QuestionTags> findAllByPage(String[] questionnaireUuids, String[] tagUuids, Pageable pageable, String principal) {
 
-        var questionSpecificationBuilder = new QuestionSpecificationBuilder();
+        var questionSpecificationBuilder = new QuestionSpecificationBuilder(principal);
 
-        questionSpecificationBuilder.setPrincipal(principal);
+
         questionSpecificationBuilder.setQuestionnaireUuids(uuidMapper.toUUIDs(questionnaireUuids));
         questionSpecificationBuilder.setTagUuids(uuidMapper.toUUIDs(tagUuids));
 

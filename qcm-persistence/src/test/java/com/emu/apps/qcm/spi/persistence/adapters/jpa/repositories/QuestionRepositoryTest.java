@@ -168,9 +168,9 @@ public class QuestionRepositoryTest {
         Tag tag1 = fixture.findTagbyLibelle(fixture.QUESTION_TAG_LIBELLE_1, () -> SpringBootTestConfig.USER_TEST);
         Assertions.assertThat(tag1).isNotNull();
 
-        Specification <QuestionEntity> specification = new QuestionSpecificationBuilder()
+        Specification <QuestionEntity> specification = new QuestionSpecificationBuilder(PrincipalUtils.getEmail(() -> SpringBootTestConfig.USER_TEST))
                 .setTagUuids(new UUID[]{tag1.getUuid()})
-                .setPrincipal(PrincipalUtils.getEmail(() -> SpringBootTestConfig.USER_TEST)).build();
+                .build();
 
         Pageable pageable = PageRequest.of(0, 3, Sort.by("id"));
 

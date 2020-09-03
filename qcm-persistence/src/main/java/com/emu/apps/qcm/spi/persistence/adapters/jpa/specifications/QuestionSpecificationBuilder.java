@@ -4,29 +4,22 @@ import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.questions.QuestionEn
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.lang.Nullable;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.criteria.JoinType;
 import java.util.UUID;
 
 import static org.springframework.data.jpa.domain.Specification.where;
 
-@Component
 public final class QuestionSpecificationBuilder extends BaseSpecification<QuestionEntity> {
 
     private UUID[] tagUuids;
 
     private UUID[] questionnaireUuids;
 
-    private String principal;
+    private final String principal;
 
-    public QuestionSpecificationBuilder() {
-        // nope
-    }
-
-    public QuestionSpecificationBuilder setPrincipal(String principal) {
+    public QuestionSpecificationBuilder(String principal) {
         this.principal = principal;
-        return this;
     }
 
     public QuestionSpecificationBuilder setTagUuids(UUID[] tagUuids) {

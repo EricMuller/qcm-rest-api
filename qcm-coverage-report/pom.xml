@@ -37,7 +37,7 @@
         <version>2.2.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.emu.apps.qcm</groupId>
+
     <artifactId>qcm-coverage-report</artifactId>
     <packaging>pom</packaging>
 
@@ -45,9 +45,9 @@
     <name>Qcm Coverage</name>
     <description>Qcm Coverage</description>
 
-    <properties>
-        <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/../qcm-coverage-report/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
-    </properties>
+<!--    <properties>-->
+<!--        <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/../qcm-coverage-report/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>-->
+<!--    </properties>-->
 
     <dependencies>
 
@@ -79,6 +79,9 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
+                <configuration>
+                    <append>true</append>
+                </configuration>
                 <executions>
                     <execution>
                         <id>report</id>
