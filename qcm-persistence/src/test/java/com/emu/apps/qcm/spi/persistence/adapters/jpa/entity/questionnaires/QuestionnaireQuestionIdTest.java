@@ -4,13 +4,13 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class QuestionnaireQuestionIdTest {
+class QuestionnaireQuestionIdTest {
 private QuestionnaireQuestionId pojoObject;
-public QuestionnaireQuestionIdTest() throws Exception {
-this.pojoObject = new QuestionnaireQuestionId();
+public QuestionnaireQuestionIdTest() {
+this.pojoObject = new com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.questionnaires.QuestionnaireQuestionId();
 }
 @Test
-public void testQuestionnaireId() {
+void testQuestionnaireId() {
 Long param = Long.valueOf(123);
 pojoObject.setQuestionnaireId(param);
 Object result = pojoObject.getQuestionnaireId();
@@ -18,7 +18,7 @@ assertEquals(param, result);
 }
 
 @Test
-public void testQuestionId() {
+void testQuestionId() {
 Long param = Long.valueOf(123);
 pojoObject.setQuestionId(param);
 Object result = pojoObject.getQuestionId();

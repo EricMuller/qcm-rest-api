@@ -44,8 +44,15 @@
     <description>Qcm Model</description>
 
 
-
     <dependencies>
+
+        <dependency>
+            <groupId>com.emu.apps.qcm</groupId>
+            <artifactId>qcm-shared</artifactId>
+            <scope>test</scope>
+            <type>test-jar</type>
+        </dependency>
+
 
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -84,6 +91,8 @@
                 <filtering>true</filtering>
             </resource>
         </resources>
+
+
 
     </build>
 

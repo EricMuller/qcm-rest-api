@@ -47,9 +47,11 @@ public class ExportRestController {
 
     @Timer
     @GetMapping(value = "/{uuid}/{type-report}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @SuppressWarnings("squid:S2583")
     public ResponseEntity <Resource> getReportByQuestionnaireUuid(@PathVariable("uuid") String uuid, @PathVariable("type-report") String type) {
 
         TypeReport typeReport = TypeReport.getByName(type.toUpperCase());
+
         if (Objects.isNull(type)) {
             throw new IllegalArgumentException(type);
         }
@@ -66,28 +68,5 @@ public class ExportRestController {
                 .body(resource);
     }
 
-
-//    public static final String MS_DOC = "application/msword";
-//    @GetMapping(value = "/{id}/docx")
-//    @Timer
-//    public StreamingResponseBody  getReportById(@PathVariable("id") long id, HttpServletResponse response) {
-//
-//        final ExportDto exportDto = exportService.getbyQuestionnaireId(id);
-//
-//        ByteArrayOutputStream byteArrayOutputStream = reportService.getReportAstream(exportDto);
-//
-//        response.setContentType(MS_DOC);
-//        response.setHeader(
-//                HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=\"" +"test.docx" + "\"");
-//        response.setContentLength(byteArrayOutputStream.size());
-//
-//        return outputStream -> {
-//
-//            try (ObjectOutputStream oos = new ObjectOutputStream(outputStream)) {
-//                byteArrayOutputStream.writeTo(oos);
-//                byteArrayOutputStream.flush();
-//            }
-//        };
-//    }
 
 }

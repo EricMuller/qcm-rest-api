@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.spi.persistence.adapters.jpa.repositories;
 
-import com.emu.apps.qcm.spi.persistence.adapters.jpa.repositories.mptt.MpttHierarchicalEntityRepositoryImpl;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.category.CategoryEntity;
+import com.emu.apps.qcm.spi.persistence.adapters.jpa.repositories.mptt.MpttHierarchicalEntityRepositoryImpl;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -13,11 +13,5 @@ public class CategoryRepository extends MpttHierarchicalEntityRepositoryImpl <Ca
     public CategoryRepository() {
         super(CategoryEntity.class);
     }
-
-    //    @Query("SELECT DISTINCT q FROM Category q WHERE q.libelle  = :libelle ")
-//    Category findByLibelle(@Param("libelle") String libelle);
-
-//    Category findByTypeAndLibelle(Type type, String libelle);
-
 
 }

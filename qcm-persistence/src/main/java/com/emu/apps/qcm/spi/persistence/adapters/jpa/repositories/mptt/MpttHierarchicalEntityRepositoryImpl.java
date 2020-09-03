@@ -15,6 +15,10 @@ import java.util.UUID;
 public class MpttHierarchicalEntityRepositoryImpl<T extends MpttHierarchicalEntity <T>>
         implements MpttHierarchicalEntityRepository <T> {
 
+    public static final String HIERARCHY_ID = "hierarchyId";
+
+    public static final String VALUE = "value";
+
     private Class <T> clazz;
 
     @PersistenceContext
@@ -25,7 +29,7 @@ public class MpttHierarchicalEntityRepositoryImpl<T extends MpttHierarchicalEnti
     }
 
     public void save(T t) {
-         entityManager.persist(t);
+        entityManager.persist(t);
     }
 
     public T findById(Long id) {
@@ -153,7 +157,7 @@ public class MpttHierarchicalEntityRepositoryImpl<T extends MpttHierarchicalEnti
     private void ensureNodeIsInTheSameHierarchy(T thisNode, T node)
             throws MpttExceptions.NotInTheSameHierarchyException {
         if (thisNode.getUserId() == null
-                || thisNode.getUserId() != node.getUserId())
+                || thisNode.getUserId().equals(node.getUserId()))
             throw new MpttExceptions.NotInTheSameHierarchyException();
     }
 
@@ -172,7 +176,7 @@ public class MpttHierarchicalEntityRepositoryImpl<T extends MpttHierarchicalEnti
 
             throw new MpttExceptions.HierarchyRootExistsException();
         } catch (MpttExceptions.HierarchyRootDoesNotExistException e) {
-            return;
+                // nope
         }
     }
 
@@ -182,7 +186,7 @@ public class MpttHierarchicalEntityRepositoryImpl<T extends MpttHierarchicalEnti
         try {
             return entityManager
                     .createNamedQuery("findHierarchyRoot", clazz)
-                    .setParameter("hierarchyId", hierarchyId)
+                    .setParameter(HIERARCHY_ID, hierarchyId)
                     .getSingleResult();
         } catch (NoResultException e) {
             throw new MpttExceptions.HierarchyRootDoesNotExistException();
@@ -193,27 +197,27 @@ public class MpttHierarchicalEntityRepositoryImpl<T extends MpttHierarchicalEnti
     public T findRightMostChild(T node) {
         return getSingleResultWithoutException(entityManager
                 .createNamedQuery("findEntityByRightValue", clazz)
-                .setParameter("hierarchyId", node.getUserId())
-                .setParameter("value", node.getRgt() - 1)
+                .setParameter(HIERARCHY_ID, node.getUserId())
+                .setParameter(VALUE, node.getRgt() - 1)
         );
     }
 
     @Override
     public Set <T> findEntitiesWhichLftIsGreaterThanOrEqualTo(String userId, Long value) {
-        return new HashSet <T>(entityManager
+        return new HashSet <>(entityManager
                 .createNamedQuery("findEntitiesWithLeftGreaterThanOrEqual", clazz)
-                .setParameter("hierarchyId", userId)
-                .setParameter("value", value)
+                .setParameter(HIERARCHY_ID, userId)
+                .setParameter(VALUE, value)
                 .getResultList()
         );
     }
 
     @Override
     public Set <T> findEntitiesWhichLftIsGreaterThan(T node, Long value) {
-        return new HashSet <T>(entityManager
+        return new HashSet <>(entityManager
                 .createNamedQuery("findEntitiesWithLeftGreaterThan", clazz)
-                .setParameter("hierarchyId", node.getUserId())
-                .setParameter("value", value)
+                .setParameter(HIERARCHY_ID, node.getUserId())
+                .setParameter(VALUE, value)
                 .getResultList()
         );
     }
@@ -221,29 +225,29 @@ public class MpttHierarchicalEntityRepositoryImpl<T extends MpttHierarchicalEnti
 
     @Override
     public Set <T> findEntitiesWhichRgtIsGreaterThan(String userID, Long value) {
-        return new HashSet <T>(entityManager
+        return new HashSet <>(entityManager
                 .createNamedQuery("findEntitiesWithRightGreaterThan", clazz)
-                .setParameter("hierarchyId", userID)
-                .setParameter("value", value)
+                .setParameter(HIERARCHY_ID, userID)
+                .setParameter(VALUE, value)
                 .getResultList()
         );
     }
 
     @Override
     public Set <T> findEntitiesWhichRgtIsGreaterThanOrEqual(String userID, Long value) {
-        return new HashSet <T>(entityManager
+        return new HashSet <>(entityManager
                 .createNamedQuery("findEntitiesWithRightGreaterThanOrEqual", clazz)
-                .setParameter("hierarchyId", userID)
-                .setParameter("value", value)
+                .setParameter(HIERARCHY_ID, userID)
+                .setParameter(VALUE, value)
                 .getResultList()
         );
     }
 
     @Override
     public Set <T> findSubTree(T node) {
-        return new HashSet <T>(entityManager
+        return new HashSet <>(entityManager
                 .createNamedQuery("findSubtree", clazz)
-                .setParameter("hierarchyId", node.getUserId())
+                .setParameter(HIERARCHY_ID, node.getUserId())
                 .setParameter("lft", node.getLft())
                 .setParameter("rgt", node.getRgt())
                 .setParameter("level", node.getLevel() + 1)
@@ -255,7 +259,7 @@ public class MpttHierarchicalEntityRepositoryImpl<T extends MpttHierarchicalEnti
     public List <T> findAncestors(T node) {
         return entityManager
                 .createNamedQuery("findAncestors", clazz)
-                .setParameter("hierarchyId", node.getUserId())
+                .setParameter(HIERARCHY_ID, node.getUserId())
                 .setParameter("lft", node.getLft())
                 .setParameter("rgt", node.getRgt())
                 .getResultList();
@@ -272,7 +276,7 @@ public class MpttHierarchicalEntityRepositoryImpl<T extends MpttHierarchicalEnti
     public List <T> findChildren(T node) {
         return entityManager
                 .createNamedQuery("findChildren", clazz)
-                .setParameter("hierarchyId", node.getUserId())
+                .setParameter(HIERARCHY_ID, node.getUserId())
                 .setParameter("lft", node.getLft())
                 .setParameter("rgt", node.getRgt())
                 .getResultList();
@@ -282,7 +286,7 @@ public class MpttHierarchicalEntityRepositoryImpl<T extends MpttHierarchicalEnti
     public T findParent(T node) {
         List <T> ancestors = findAncestors(node);
         return (
-                (ancestors != null) && ancestors.size() > 0)
+                (ancestors != null) && !ancestors.isEmpty())
                 ? ancestors.get(ancestors.size() - 1)
                 : null;
     }

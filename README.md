@@ -40,7 +40,7 @@ qcm-rest-api uses a number of open source projects to work properly:
 
 * [Maven] - the build system
 * [Travis] - Test and Deploy with Confidence [travis-ci](https://travis-ci.com/EricMuller/qcm-rest-api)
-* [SonarQube] - SonarQube on [sonarcloud.io](https://sonarcloud.io/about) is an open-source platform for continuous inspection of code quality.
+* [SonarQube] - SonarQube on [sonarcloud.io](https://sonarcloud.io/dashboard?id=com.emu.apps.qcm:qcm-rest-api) is an open-source platform for continuous inspection of code quality.
 * [Heroku] - Fully managed container-based cloud platform, with integrated data services. [heroku.com](https://www.heroku.com)
 * [Snyk] - Finding & fixing vulnerabilities in your dependencies. [snyk.io](https://snyk.io)
 
