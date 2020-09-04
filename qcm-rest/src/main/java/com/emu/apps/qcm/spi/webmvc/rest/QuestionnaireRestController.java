@@ -8,7 +8,6 @@ import com.emu.apps.qcm.domain.ports.QuestionnaireServicePort;
 import com.emu.apps.qcm.spi.webmvc.rest.caches.CacheName;
 import com.emu.apps.shared.annotations.Timer;
 import com.emu.apps.shared.security.AuthentificationContextHolder;
-import de.adesso.junitinsights.annotations.JUnitInsights;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;

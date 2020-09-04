@@ -8,7 +8,6 @@ import com.emu.apps.qcm.api.models.QuestionTag;
 import com.emu.apps.qcm.spi.webmvc.rest.ApiRestMappings;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
-import de.adesso.junitinsights.annotations.JUnitInsights;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -28,7 +27,6 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 @SpringBootTest(classes = {SpringBootTestConfig.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("classpath:application-test.properties")
 @ActiveProfiles(value = "webmvc")
-@JUnitInsights
 public class QuestionRestControllerTest {
 
     private static final String QUESTIONS_URI = ApiRestMappings.PUBLIC_API + ApiRestMappings.QUESTIONS;

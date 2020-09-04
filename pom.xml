@@ -165,11 +165,7 @@
     </dependencyManagement>
 
     <dependencies>
-        <dependency>
-            <groupId>de.adesso</groupId>
-            <artifactId>junit-insights</artifactId>
-            <version>1.1.0</version>
-        </dependency>
+
     </dependencies>
 
     <build>
