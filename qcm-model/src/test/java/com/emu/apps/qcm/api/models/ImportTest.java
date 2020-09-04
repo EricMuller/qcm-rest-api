@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ImportTest {
 
-	private Import aImport;
+	private final Import aImport;
 
 	public ImportTest() {
 		this.aImport = new Import();

@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PublishedResponseDtoTest {
 
-	private PublishedResponseDto aPublishedResponseDto;
+	private final PublishedResponseDto aPublishedResponseDto;
 
 	public PublishedResponseDtoTest() {
 		this.aPublishedResponseDto = new PublishedResponseDto();

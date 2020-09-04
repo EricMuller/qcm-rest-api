@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class QuestionnaireTagExportDtoTest {
 
-	private QuestionnaireTagExportDto aQuestionnaireTagExportDto;
+	private final QuestionnaireTagExportDto aQuestionnaireTagExportDto;
 
 	public QuestionnaireTagExportDtoTest() {
 		this.aQuestionnaireTagExportDto = new QuestionnaireTagExportDto();

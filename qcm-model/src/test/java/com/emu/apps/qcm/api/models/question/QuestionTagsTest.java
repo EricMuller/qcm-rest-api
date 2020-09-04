@@ -1,14 +1,13 @@
 package com.emu.apps.qcm.api.models.question;
 
+import java.time.ZonedDateTime;
 import org.junit.jupiter.api.Test;
 
-import java.time.ZonedDateTime;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class QuestionTagsTest {
 
-	private QuestionTags aQuestionTags;
+	private final QuestionTags aQuestionTags;
 
 	public QuestionTagsTest() {
 		this.aQuestionTags = new QuestionTags();

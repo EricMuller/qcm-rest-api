@@ -2,11 +2,14 @@ package com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.category;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.time.ZonedDateTime;
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CategoryEntityTest {
 
-	private CategoryEntity aCategoryEntity;
+	private final CategoryEntity aCategoryEntity;
 
 	public CategoryEntityTest() {
 		this.aCategoryEntity = new CategoryEntity();
@@ -56,6 +59,38 @@ class CategoryEntityTest {
 		Integer param = Integer.valueOf(123);
 		aCategoryEntity.setLevel(param);
 		Object result = aCategoryEntity.getLevel();
+		assertEquals(param, result);
+	}
+
+	@Test
+	void testUuid() {
+		UUID param = UUID.randomUUID();
+		aCategoryEntity.setUuid(param);
+		Object result = aCategoryEntity.getUuid();
+		assertEquals(param, result);
+	}
+
+	@Test
+	void testDateCreation() {
+		ZonedDateTime param = ZonedDateTime.now();
+		aCategoryEntity.setDateCreation(param);
+		Object result = aCategoryEntity.getDateCreation();
+		assertEquals(param, result);
+	}
+
+	@Test
+	void testDateModification() {
+		ZonedDateTime param = ZonedDateTime.now();
+		aCategoryEntity.setDateModification(param);
+		Object result = aCategoryEntity.getDateModification();
+		assertEquals(param, result);
+	}
+
+	@Test
+	void testVersion() {
+		Long param = Long.valueOf(123);
+		aCategoryEntity.setVersion(param);
+		Object result = aCategoryEntity.getVersion();
 		assertEquals(param, result);
 	}
 

@@ -1,13 +1,15 @@
 package com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.questionnaires;
 
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.category.CategoryEntity;
+import java.util.UUID;
+import java.time.ZonedDateTime;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class QuestionnaireEntityTest {
 
-	private QuestionnaireEntity aQuestionnaireEntity;
+	private final QuestionnaireEntity aQuestionnaireEntity;
 
 	public QuestionnaireEntityTest() {
 		this.aQuestionnaireEntity = new QuestionnaireEntity();
@@ -65,6 +67,38 @@ class QuestionnaireEntityTest {
 		CategoryEntity param = new CategoryEntity();
 		aQuestionnaireEntity.setCategory(param);
 		Object result = aQuestionnaireEntity.getCategory();
+		assertEquals(param, result);
+	}
+
+	@Test
+	void testUuid() {
+		UUID param = UUID.randomUUID();
+		aQuestionnaireEntity.setUuid(param);
+		Object result = aQuestionnaireEntity.getUuid();
+		assertEquals(param, result);
+	}
+
+	@Test
+	void testDateCreation() {
+		ZonedDateTime param = ZonedDateTime.now();
+		aQuestionnaireEntity.setDateCreation(param);
+		Object result = aQuestionnaireEntity.getDateCreation();
+		assertEquals(param, result);
+	}
+
+	@Test
+	void testDateModification() {
+		ZonedDateTime param = ZonedDateTime.now();
+		aQuestionnaireEntity.setDateModification(param);
+		Object result = aQuestionnaireEntity.getDateModification();
+		assertEquals(param, result);
+	}
+
+	@Test
+	void testVersion() {
+		Long param = Long.valueOf(123);
+		aQuestionnaireEntity.setVersion(param);
+		Object result = aQuestionnaireEntity.getVersion();
 		assertEquals(param, result);
 	}
 

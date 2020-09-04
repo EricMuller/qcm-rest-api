@@ -1,6 +1,10 @@
 package com.emu.apps.qcm.spi.persistence.exceptions;
 
-public class MessageSupport {
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class MessageSupport {
 
     public static final String UNKNOWN_UUID_QUESTIONNAIRE = "questionnaire.uuid.unknown";
 
@@ -12,6 +16,4 @@ public class MessageSupport {
 
     public static final String UNKNOWN_UUID_WEBHOOK = "webhook.uuid.unknown";
 
-    private MessageSupport() {
-    }
 }

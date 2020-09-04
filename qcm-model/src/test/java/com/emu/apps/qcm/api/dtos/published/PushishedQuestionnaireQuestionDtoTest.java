@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PushishedQuestionnaireQuestionDtoTest {
 
-	private PushishedQuestionnaireQuestionDto aPushishedQuestionnaireQuestionDto;
+	private final PushishedQuestionnaireQuestionDto aPushishedQuestionnaireQuestionDto;
 
 	public PushishedQuestionnaireQuestionDtoTest() {
 		this.aPushishedQuestionnaireQuestionDto = new PushishedQuestionnaireQuestionDto();

@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class QuestionnaireQuestionTest {
 
-	private QuestionnaireQuestion aQuestionnaireQuestion;
+	private final QuestionnaireQuestion aQuestionnaireQuestion;
 
 	public QuestionnaireQuestionTest() {
 		this.aQuestionnaireQuestion = new QuestionnaireQuestion();

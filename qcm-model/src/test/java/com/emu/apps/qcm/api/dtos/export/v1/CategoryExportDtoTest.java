@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CategoryExportDtoTest {
 
-	private CategoryExportDto aCategoryExportDto;
+	private final CategoryExportDto aCategoryExportDto;
 
 	public CategoryExportDtoTest() {
 		this.aCategoryExportDto = new CategoryExportDto();

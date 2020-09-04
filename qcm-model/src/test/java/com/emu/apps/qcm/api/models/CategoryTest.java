@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CategoryTest {
 
-	private Category aCategory;
+	private final Category aCategory;
 
 	public CategoryTest() {
 		this.aCategory = new Category();

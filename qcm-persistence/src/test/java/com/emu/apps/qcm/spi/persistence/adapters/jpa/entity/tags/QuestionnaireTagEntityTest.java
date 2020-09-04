@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class QuestionnaireTagEntityTest {
 
-	private QuestionnaireTagEntity aQuestionnaireTagEntity;
+	private final QuestionnaireTagEntity aQuestionnaireTagEntity;
 
 	public QuestionnaireTagEntityTest() {
 		this.aQuestionnaireTagEntity = new QuestionnaireTagEntity();

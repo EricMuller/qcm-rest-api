@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class QuestionTagIdTest {
 
-	private QuestionTagId aQuestionTagId;
+	private final QuestionTagId aQuestionTagId;
 
 	public QuestionTagIdTest() {
 		this.aQuestionTagId = new QuestionTagId();

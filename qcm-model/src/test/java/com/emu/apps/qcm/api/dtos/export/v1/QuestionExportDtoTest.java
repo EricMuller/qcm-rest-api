@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class QuestionExportDtoTest {
 
-	private QuestionExportDto aQuestionExportDto;
+	private final QuestionExportDto aQuestionExportDto;
 
 	public QuestionExportDtoTest() {
 		this.aQuestionExportDto = new QuestionExportDto();

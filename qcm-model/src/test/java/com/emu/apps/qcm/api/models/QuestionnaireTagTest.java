@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class QuestionnaireTagTest {
 
-	private QuestionnaireTag aQuestionnaireTag;
+	private final QuestionnaireTag aQuestionnaireTag;
 
 	public QuestionnaireTagTest() {
 		this.aQuestionnaireTag = new QuestionnaireTag();

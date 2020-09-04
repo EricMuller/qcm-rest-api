@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SuggestDtoTest {
 
-	private SuggestDto aSuggestDto;
+	private final SuggestDto aSuggestDto;
 
 	public SuggestDtoTest() {
 		this.aSuggestDto = new SuggestDto();

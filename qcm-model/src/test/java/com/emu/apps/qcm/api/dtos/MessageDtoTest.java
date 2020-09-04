@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class MessageDtoTest {
 
-	private MessageDto aMessageDto;
+	private final MessageDto aMessageDto;
 
 	public MessageDtoTest() {
 		this.aMessageDto = new MessageDto();

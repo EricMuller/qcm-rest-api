@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ResponseTest {
 
-	private Response aResponse;
+	private final Response aResponse;
 
 	public ResponseTest() {
 		this.aResponse = new Response();

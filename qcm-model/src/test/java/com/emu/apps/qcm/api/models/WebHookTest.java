@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class WebHookTest {
 
-	private WebHook aWebHook;
+	private final WebHook aWebHook;
 
 	public WebHookTest() {
 		this.aWebHook = new WebHook();

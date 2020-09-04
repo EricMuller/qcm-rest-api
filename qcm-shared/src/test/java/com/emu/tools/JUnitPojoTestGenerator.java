@@ -165,7 +165,7 @@ public class JUnitPojoTestGenerator {
         String className = targetClass.getSimpleName();
         String pojoObjectName = "a" + className;
 
-        builder.append(String.format("%n\tprivate %s %s;%n", className, pojoObjectName));
+        builder.append(String.format("%n\tprivate final %s %s;%n", className, pojoObjectName));
         builder.append(String.format("%n\tpublic %sTest() {%n", className));
         builder.append(String.format("\t\tthis.%s = new %s();%n", pojoObjectName, className));
         builder.append("\t}\n");

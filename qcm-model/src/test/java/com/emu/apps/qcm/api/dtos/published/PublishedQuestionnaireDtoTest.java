@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PublishedQuestionnaireDtoTest {
 
-	private PublishedQuestionnaireDto aPublishedQuestionnaireDto;
+	private final PublishedQuestionnaireDto aPublishedQuestionnaireDto;
 
 	public PublishedQuestionnaireDtoTest() {
 		this.aPublishedQuestionnaireDto = new PublishedQuestionnaireDto();

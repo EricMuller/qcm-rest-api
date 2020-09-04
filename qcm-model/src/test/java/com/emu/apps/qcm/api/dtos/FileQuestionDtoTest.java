@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class FileQuestionDtoTest {
 
-	private FileQuestionDto aFileQuestionDto;
+	private final FileQuestionDto aFileQuestionDto;
 
 	public FileQuestionDtoTest() {
 		this.aFileQuestionDto = new FileQuestionDto();

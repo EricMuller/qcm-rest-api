@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UserTest {
 
-	private User aUser;
+	private final User aUser;
 
 	public UserTest() {
 		this.aUser = new User();

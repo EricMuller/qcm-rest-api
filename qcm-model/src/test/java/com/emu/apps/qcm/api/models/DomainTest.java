@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DomainTest {
 
-	private Domain aDomain;
+	private final Domain aDomain;
 
 	public DomainTest() {
 		this.aDomain = new Domain();

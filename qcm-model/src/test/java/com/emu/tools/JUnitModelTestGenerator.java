@@ -1,13 +1,14 @@
 package com.emu.tools;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JUnitModelTestGenerator {
-
-    private JUnitModelTestGenerator() {
-    }
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class JUnitModelTestGenerator {
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
 

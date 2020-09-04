@@ -1,13 +1,15 @@
 package com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.events;
 
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.UserEntity;
+import java.util.UUID;
+import java.time.ZonedDateTime;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class WebHookEntityTest {
 
-	private WebHookEntity aWebHookEntity;
+	private final WebHookEntity aWebHookEntity;
 
 	public WebHookEntityTest() {
 		this.aWebHookEntity = new WebHookEntity();
@@ -57,6 +59,38 @@ class WebHookEntityTest {
 		Long param = Long.valueOf(123);
 		aWebHookEntity.setDefaultTimeOut(param);
 		Object result = aWebHookEntity.getDefaultTimeOut();
+		assertEquals(param, result);
+	}
+
+	@Test
+	void testUuid() {
+		UUID param = UUID.randomUUID();
+		aWebHookEntity.setUuid(param);
+		Object result = aWebHookEntity.getUuid();
+		assertEquals(param, result);
+	}
+
+	@Test
+	void testDateCreation() {
+		ZonedDateTime param = ZonedDateTime.now();
+		aWebHookEntity.setDateCreation(param);
+		Object result = aWebHookEntity.getDateCreation();
+		assertEquals(param, result);
+	}
+
+	@Test
+	void testDateModification() {
+		ZonedDateTime param = ZonedDateTime.now();
+		aWebHookEntity.setDateModification(param);
+		Object result = aWebHookEntity.getDateModification();
+		assertEquals(param, result);
+	}
+
+	@Test
+	void testVersion() {
+		Long param = Long.valueOf(123);
+		aWebHookEntity.setVersion(param);
+		Object result = aWebHookEntity.getVersion();
 		assertEquals(param, result);
 	}
 

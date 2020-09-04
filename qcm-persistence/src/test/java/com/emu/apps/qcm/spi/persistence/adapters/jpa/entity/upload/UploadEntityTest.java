@@ -1,12 +1,14 @@
 package com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.upload;
 
+import java.util.UUID;
+import java.time.ZonedDateTime;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class UploadEntityTest {
 
-	private UploadEntity aUploadEntity;
+	private final UploadEntity aUploadEntity;
 
 	public UploadEntityTest() {
 		this.aUploadEntity = new UploadEntity();
@@ -48,6 +50,38 @@ class UploadEntityTest {
 		String param = "123";
 		aUploadEntity.setLibelle(param);
 		Object result = aUploadEntity.getLibelle();
+		assertEquals(param, result);
+	}
+
+	@Test
+	void testUuid() {
+		UUID param = UUID.randomUUID();
+		aUploadEntity.setUuid(param);
+		Object result = aUploadEntity.getUuid();
+		assertEquals(param, result);
+	}
+
+	@Test
+	void testDateCreation() {
+		ZonedDateTime param = ZonedDateTime.now();
+		aUploadEntity.setDateCreation(param);
+		Object result = aUploadEntity.getDateCreation();
+		assertEquals(param, result);
+	}
+
+	@Test
+	void testDateModification() {
+		ZonedDateTime param = ZonedDateTime.now();
+		aUploadEntity.setDateModification(param);
+		Object result = aUploadEntity.getDateModification();
+		assertEquals(param, result);
+	}
+
+	@Test
+	void testVersion() {
+		Long param = Long.valueOf(123);
+		aUploadEntity.setVersion(param);
+		Object result = aUploadEntity.getVersion();
 		assertEquals(param, result);
 	}
 

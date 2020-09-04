@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UploadTest {
 
-	private Upload aUpload;
+	private final Upload aUpload;
 
 	public UploadTest() {
 		this.aUpload = new Upload();

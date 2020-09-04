@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class QuestionLightTest {
 
-	private QuestionLight aQuestionLight;
+	private final QuestionLight aQuestionLight;
 
 	public QuestionLightTest() {
 		this.aQuestionLight = new QuestionLight();

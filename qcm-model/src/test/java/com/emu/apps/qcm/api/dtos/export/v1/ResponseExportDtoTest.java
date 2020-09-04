@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ResponseExportDtoTest {
 
-	private ResponseExportDto aResponseExportDto;
+	private final ResponseExportDto aResponseExportDto;
 
 	public ResponseExportDtoTest() {
 		this.aResponseExportDto = new ResponseExportDto();

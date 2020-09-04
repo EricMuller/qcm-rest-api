@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class QuestionnaireQuestionIdTest {
 
-	private QuestionnaireQuestionId aQuestionnaireQuestionId;
+	private final QuestionnaireQuestionId aQuestionnaireQuestionId;
 
 	public QuestionnaireQuestionIdTest() {
 		this.aQuestionnaireQuestionId = new QuestionnaireQuestionId();

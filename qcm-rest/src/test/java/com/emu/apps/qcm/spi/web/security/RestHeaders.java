@@ -1,13 +1,14 @@
 package com.emu.apps.qcm.spi.web.security;
 
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.config.SpringBootTestConfig;
+import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
 import java.util.Base64;
 
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class RestHeaders {
 
     public static HttpHeaders headers() {
