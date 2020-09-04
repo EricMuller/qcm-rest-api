@@ -2,13 +2,10 @@ package com.emu.apps.qcm.spi.persistence.adapters.jpa.repositories;
 
 import com.emu.apps.qcm.api.models.Category;
 import com.emu.apps.qcm.spi.infrastructure.DbFixture;
-import com.emu.apps.qcm.spi.persistence.adapters.jpa.config.SpringBootTestConfig;
-import com.emu.apps.qcm.spi.persistence.exceptions.FunctionnalException;
 import com.emu.apps.qcm.spi.persistence.CategoryPersistencePort;
+import com.emu.apps.qcm.spi.persistence.adapters.jpa.config.SpringBootTestConfig;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -26,18 +23,17 @@ import static java.util.stream.Collectors.toList;
 @ActiveProfiles(value = "test")
 public class CategoryRepositoryTest {
 
-    private final Logger LOGGER = LoggerFactory.getLogger(CategoryRepositoryTest.class);
-
     private static final String USER_TEST = SpringBootTestConfig.USER_TEST;
 
     @Autowired
     private CategoryPersistencePort categoryService;
+
     @Autowired
     private DbFixture dbFixture;
 
     @Test
     @Transactional
-    public void findOrCreateByLibelle()  {
+    public void findOrCreateByLibelle() {
 
         dbFixture.emptyDatabase();
 
