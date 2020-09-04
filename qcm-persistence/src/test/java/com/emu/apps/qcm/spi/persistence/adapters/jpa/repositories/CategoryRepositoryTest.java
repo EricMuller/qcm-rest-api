@@ -6,6 +6,8 @@ import com.emu.apps.qcm.spi.persistence.exceptions.FunctionnalException;
 import com.emu.apps.qcm.spi.persistence.CategoryPersistencePort;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -23,6 +25,8 @@ import static java.util.stream.Collectors.toList;
 @ActiveProfiles(value = "test")
 public class CategoryRepositoryTest {
 
+    private final Logger LOGGER = LoggerFactory.getLogger(CategoryRepositoryTest.class);
+
     private static final String USER_TEST = SpringBootTestConfig.USER_TEST;
 
     @Autowired
@@ -30,7 +34,7 @@ public class CategoryRepositoryTest {
 
     @Test
     @Transactional
-    public void findOrCreateByLibelle() throws FunctionnalException {
+    public void findOrCreateByLibelle()  {
 
 
         Category categoryA = categoryService.findOrCreateByLibelle(USER_TEST, QUESTIONNAIRE, "InterviewsA");
@@ -59,6 +63,7 @@ public class CategoryRepositoryTest {
 
         List <Category> categories = StreamSupport.stream(iterable.spliterator(), false).collect(toList());
 
+        categories.stream().forEach(category -> LOGGER.error(category.getLibelle()));
         Assertions.assertEquals(3, categories.size());
 
         iterable = categoryService.findChildrenCategories(UUID.fromString(categoryC.getUuid()));
