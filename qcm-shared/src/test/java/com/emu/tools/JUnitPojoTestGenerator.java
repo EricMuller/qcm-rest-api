@@ -1,5 +1,7 @@
 package com.emu.tools;
 
+import org.apache.commons.lang3.reflect.FieldUtils;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileWriter;
@@ -7,7 +9,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
@@ -15,7 +17,8 @@ import java.util.*;
 
 public class JUnitPojoTestGenerator {
 
-    private final List<Package> packages;
+    private final List <Package> packages;
+
     public static class Package {
         String moduleName;
 
@@ -38,7 +41,7 @@ public class JUnitPojoTestGenerator {
     public static final String SERIAL_VERSION_UID = "serialVersionUID";
 
     private enum Version {
-        JUNIT, JUPITER;
+        JUNIT, JUPITER
     }
 
     private void log(String message) {
@@ -51,13 +54,13 @@ public class JUnitPojoTestGenerator {
 
     public void run() throws IOException, ClassNotFoundException {
 
-        for(Package aPackage : packages){
-            writePackageTest(aPackage.getModuleName(),aPackage.getPackageName(), Version.JUPITER);
+        for (Package aPackage : packages) {
+            writePackageTest(aPackage.getModuleName(), aPackage.getPackageName());
         }
     }
 
 
-    private void writePackageTest(String moduleName, String pojoPackage, Version version) throws ClassNotFoundException, IOException {
+    private void writePackageTest(String moduleName, String pojoPackage) throws ClassNotFoundException, IOException {
 
         String sourceFileDirectory = "./" + moduleName + "/src/main/java";
         String testFileDirectory = "./" + moduleName + "/src/test/java";
@@ -69,7 +72,7 @@ public class JUnitPojoTestGenerator {
             for (File javaFile : sourceFiles.listFiles(new JavaFileFilter())) {
                 Class <?> targetClass = Class.forName(getClassName(pojoPackage, javaFile.getName()));
                 if (!shouldExcludeClass(targetClass)) {
-                    writeJunitTest(targetClass, destFiles, pojoPackage, version);
+                    writeJunitTest(targetClass, destFiles, pojoPackage);
                 }
             }
         } else {
@@ -100,20 +103,16 @@ public class JUnitPojoTestGenerator {
     }
 
     public static boolean isInstantiable(Class <?> clz) {
-        if (clz.isPrimitive() || Modifier.isAbstract(clz.getModifiers()) || clz.isInterface() || clz.isEnum() || clz.isArray()
-            //        || String.class.getName().equals(clz.getName()) || Integer.class.getName().equals(clz.getName())
-        ) {
-            return false;
-        }
-        return true;
+        //        || String.class.getName().equals(clz.getName()) || Integer.class.getName().equals(clz.getName())
+        return !clz.isPrimitive() && !Modifier.isAbstract(clz.getModifiers()) && !clz.isInterface() && !clz.isEnum() && !clz.isArray();
     }
 
-    private void writeJunitTest(Class <?> targetClass, File destFiles, String packageName, Version version) throws IOException {
-        List <Field> fields = new ArrayList();
+    private void writeJunitTest(Class <?> targetClass, File destFiles, String packageName) throws IOException {
+        List <Field> fields = new ArrayList <>();
 
-        for (Field field : targetClass.getDeclaredFields()) {
+        for (Field field : FieldUtils.getAllFields(targetClass)) {
 
-            if (SERIAL_VERSION_UID.equals(field.getType())) {
+            if (SERIAL_VERSION_UID.equals(field.getName())) {
                 continue;
             }
             if (Modifier.isStatic(field.getModifiers())) {
@@ -127,11 +126,11 @@ public class JUnitPojoTestGenerator {
 
         }
 
-        writeJunitTestCode(targetClass, destFiles, fields, packageName, version);
+        writeJunitTestCode(targetClass, destFiles, fields, packageName, Version.JUPITER);
     }
 
     private void writeJunitTestCode(Class <?> targetClass, File destFiles, List <Field> fields, String packageName, Version version) throws IOException {
-        Set <String> importedClass = new HashSet();
+        Set <String> importedClass = new HashSet <>();
         StringBuilder builder = new StringBuilder();
 
         String testFileName = targetClass.getSimpleName() + "Test.java";
@@ -163,32 +162,36 @@ public class JUnitPojoTestGenerator {
 
         builder.append(String.format("class %sTest {%n", targetClass.getSimpleName()));
 
-        builder.append(String.format("private %s pojoObject;%n", targetClass.getSimpleName()));
-        builder.append(String.format("public %sTest() {%n", targetClass.getSimpleName()));
-        builder.append(String.format("this.pojoObject = new %s();%n", targetClass.getName()));
-        builder.append("}\n");
+        String className = targetClass.getSimpleName();
+        String pojoObjectName = "a" + className;
+
+        builder.append(String.format("%n\tprivate %s %s;%n", className, pojoObjectName));
+        builder.append(String.format("%n\tpublic %sTest() {%n", className));
+        builder.append(String.format("\t\tthis.%s = new %s();%n", pojoObjectName, className));
+        builder.append("\t}\n");
 
         for (Field field : fields) {
-            builder.append("@Test\n");
-            builder.append(String.format("void test" + getMethodName(field.getName()) + "() {%n"));
-            writeFieldTest(builder, field, version);
-            builder.append("}\n\n");
+            builder.append("\t@Test\n");
+            builder.append(String.format("\tvoid test" + getMethodName(field.getName()) + "() {%n"));
+            writeFieldTest(builder, field, version, pojoObjectName);
+            builder.append("\t}\n\n");
         }
         builder.append("}\n\n");
 
         outputFile.getParentFile().mkdirs();
-        try (FileWriter fileWriter = new FileWriter(outputFile, Charset.forName("UTF-8"), false)) {
+        try (FileWriter fileWriter = new FileWriter(outputFile, StandardCharsets.UTF_8, false)) {
             fileWriter.write(builder.toString());
         }
         log(testFileName + " Ok");
     }
 
-    private void writeFieldTest(StringBuilder builder, Field field, Version version) {
+    private void writeFieldTest(StringBuilder builder, Field field, Version version, String pojoObjectName) {
         Class <?> parameterType = field.getType();
+        builder.append("\t\t");
         if (parameterType.isPrimitive()) {
-            builder.append(parameterType.getName() + " param = 123;");
+            builder.append(parameterType.getName()).append(" param = 123;");
         } else if (parameterType.isArray()) {
-            builder.append(parameterType.getSimpleName() + " param = new " + parameterType.getSimpleName() + "{};");
+            builder.append(String.format("%s param = new %s{};", parameterType.getSimpleName(), parameterType.getSimpleName()));
         } else if (parameterType.equals(BigDecimal.class)) {
             builder.append("BigDecimal param = new BigDecimal(\"123\");");
         } else if (parameterType.equals(Boolean.class)) {
@@ -217,19 +220,19 @@ public class JUnitPojoTestGenerator {
             builder.append("String param = \"123\";");
         } else if (parameterType.equals(ZonedDateTime.class)) {
             builder.append("ZonedDateTime param = ZonedDateTime.now();");
-        } else if(parameterType.equals(UUID.class)){
+        } else if (parameterType.equals(UUID.class)) {
             builder.append("UUID param = UUID.randomUUID();");
         } else {
             builder.append(String.format("%s param = new %s();", parameterType.getSimpleName(), parameterType.getSimpleName()));
         }
 
         builder.append("\n");
-        builder.append(String.format("pojoObject." + getSetterName(field.getName()) + "(param);%n"));
-        builder.append(String.format("Object result = pojoObject." + getGetterName(field.getName()) + "();%n"));
+        builder.append("\t\t").append(String.format("%s.%s(param);%n", pojoObjectName, getSetterName(field.getName())));
+        builder.append("\t\t").append(String.format("Object result = %s.%s();%n", pojoObjectName, getGetterName(field.getName())));
         if (Version.JUPITER.equals(version)) {
-            builder.append(String.format("assertEquals(param, result);%n"));
+            builder.append("\t\t").append(String.format("assertEquals(param, result);%n"));
         } else {
-            builder.append(String.format("Assert.assertEquals(param, result);%n"));
+            builder.append("\t\t").append(String.format("Assert.assertEquals(param, result);%n"));
         }
     }
 
@@ -237,9 +240,6 @@ public class JUnitPojoTestGenerator {
         return Character.toUpperCase(name.charAt(0)) + name.substring(1);
     }
 
-    private String isGetterName(String name) {
-        return "is" + getMethodName(name);
-    }
 
     private String getGetterName(String name) {
         return "get" + getMethodName(name);

@@ -6,49 +6,51 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ImportTest {
-private Import pojoObject;
-public ImportTest() {
-this.pojoObject = new com.emu.apps.qcm.api.models.Import();
-}
-@Test
-void testUuid() {
-String param = "123";
-pojoObject.setUuid(param);
-Object result = pojoObject.getUuid();
-assertEquals(param, result);
-}
 
-@Test
-void testDateCreation() {
-LocalDateTime param = LocalDateTime.now();
-pojoObject.setDateCreation(param);
-Object result = pojoObject.getDateCreation();
-assertEquals(param, result);
-}
+	private Import aImport;
 
-@Test
-void testStatus() {
-String param = "123";
-pojoObject.setStatus(param);
-Object result = pojoObject.getStatus();
-assertEquals(param, result);
-}
+	public ImportTest() {
+		this.aImport = new Import();
+	}
+	@Test
+	void testUuid() {
+		String param = "123";
+		aImport.setUuid(param);
+		Object result = aImport.getUuid();
+		assertEquals(param, result);
+	}
 
-@Test
-void testLibelle() {
-String param = "123";
-pojoObject.setLibelle(param);
-Object result = pojoObject.getLibelle();
-assertEquals(param, result);
-}
+	@Test
+	void testDateCreation() {
+		LocalDateTime param = LocalDateTime.now();
+		aImport.setDateCreation(param);
+		Object result = aImport.getDateCreation();
+		assertEquals(param, result);
+	}
 
-@Test
-void testType() {
-String param = "123";
-pojoObject.setType(param);
-Object result = pojoObject.getType();
-assertEquals(param, result);
-}
+	@Test
+	void testStatus() {
+		String param = "123";
+		aImport.setStatus(param);
+		Object result = aImport.getStatus();
+		assertEquals(param, result);
+	}
+
+	@Test
+	void testLibelle() {
+		String param = "123";
+		aImport.setLibelle(param);
+		Object result = aImport.getLibelle();
+		assertEquals(param, result);
+	}
+
+	@Test
+	void testType() {
+		String param = "123";
+		aImport.setType(param);
+		Object result = aImport.getType();
+		assertEquals(param, result);
+	}
 
 }
 

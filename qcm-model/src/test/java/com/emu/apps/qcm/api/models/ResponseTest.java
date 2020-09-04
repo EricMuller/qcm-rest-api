@@ -5,49 +5,51 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ResponseTest {
-private Response pojoObject;
-public ResponseTest() {
-this.pojoObject = new com.emu.apps.qcm.api.models.Response();
-}
-@Test
-void testUuid() {
-String param = "123";
-pojoObject.setUuid(param);
-Object result = pojoObject.getUuid();
-assertEquals(param, result);
-}
 
-@Test
-void testLibelle() {
-String param = "123";
-pojoObject.setLibelle(param);
-Object result = pojoObject.getLibelle();
-assertEquals(param, result);
-}
+	private Response aResponse;
 
-@Test
-void testGood() {
-Boolean param = Boolean.valueOf(true);
-pojoObject.setGood(param);
-Object result = pojoObject.getGood();
-assertEquals(param, result);
-}
+	public ResponseTest() {
+		this.aResponse = new Response();
+	}
+	@Test
+	void testUuid() {
+		String param = "123";
+		aResponse.setUuid(param);
+		Object result = aResponse.getUuid();
+		assertEquals(param, result);
+	}
 
-@Test
-void testVersion() {
-Long param = Long.valueOf(123);
-pojoObject.setVersion(param);
-Object result = pojoObject.getVersion();
-assertEquals(param, result);
-}
+	@Test
+	void testLibelle() {
+		String param = "123";
+		aResponse.setLibelle(param);
+		Object result = aResponse.getLibelle();
+		assertEquals(param, result);
+	}
 
-@Test
-void testNumber() {
-Long param = Long.valueOf(123);
-pojoObject.setNumber(param);
-Object result = pojoObject.getNumber();
-assertEquals(param, result);
-}
+	@Test
+	void testGood() {
+		Boolean param = Boolean.valueOf(true);
+		aResponse.setGood(param);
+		Object result = aResponse.getGood();
+		assertEquals(param, result);
+	}
+
+	@Test
+	void testVersion() {
+		Long param = Long.valueOf(123);
+		aResponse.setVersion(param);
+		Object result = aResponse.getVersion();
+		assertEquals(param, result);
+	}
+
+	@Test
+	void testNumber() {
+		Long param = Long.valueOf(123);
+		aResponse.setNumber(param);
+		Object result = aResponse.getNumber();
+		assertEquals(param, result);
+	}
 
 }
 

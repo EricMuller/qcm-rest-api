@@ -31,22 +31,22 @@ package com.emu.apps.qcm.api.models.question;
 
 import com.emu.apps.qcm.api.models.QuestionTag;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Set;
 
 /**
  * Created by eric on 05/06/2017.
  */
+@Getter
+@Setter
+@NoArgsConstructor
 public class QuestionTags extends QuestionLight {
+
 
     @JsonProperty("tags")
     private Set<QuestionTag> questionTags;
 
-    public Set<QuestionTag> getQuestionTags() {
-        return questionTags;
-    }
-
-    public void setQuestionTags(Set<QuestionTag> questionTags) {
-        this.questionTags = questionTags;
-    }
 }

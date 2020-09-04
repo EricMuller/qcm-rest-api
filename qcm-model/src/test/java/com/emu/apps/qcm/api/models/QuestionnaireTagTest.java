@@ -5,25 +5,27 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class QuestionnaireTagTest {
-private QuestionnaireTag pojoObject;
-public QuestionnaireTagTest() {
-this.pojoObject = new com.emu.apps.qcm.api.models.QuestionnaireTag();
-}
-@Test
-void testUuid() {
-String param = "123";
-pojoObject.setUuid(param);
-Object result = pojoObject.getUuid();
-assertEquals(param, result);
-}
 
-@Test
-void testLibelle() {
-String param = "123";
-pojoObject.setLibelle(param);
-Object result = pojoObject.getLibelle();
-assertEquals(param, result);
-}
+	private QuestionnaireTag aQuestionnaireTag;
+
+	public QuestionnaireTagTest() {
+		this.aQuestionnaireTag = new QuestionnaireTag();
+	}
+	@Test
+	void testUuid() {
+		String param = "123";
+		aQuestionnaireTag.setUuid(param);
+		Object result = aQuestionnaireTag.getUuid();
+		assertEquals(param, result);
+	}
+
+	@Test
+	void testLibelle() {
+		String param = "123";
+		aQuestionnaireTag.setLibelle(param);
+		Object result = aQuestionnaireTag.getLibelle();
+		assertEquals(param, result);
+	}
 
 }
 

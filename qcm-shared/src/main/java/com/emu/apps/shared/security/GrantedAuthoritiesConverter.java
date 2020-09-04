@@ -41,10 +41,11 @@ import java.util.stream.Collectors;
 public class GrantedAuthoritiesConverter extends JwtAuthenticationConverter {
 
     @Override
+    @Deprecated
     protected Collection <GrantedAuthority> extractAuthorities(Jwt jwt) {
         var claims = jwt.getClaims();
-        var realm_access = (JSONObject) claims.get("realm_access");
-        var roles = (JSONArray) realm_access.get("roles");
+        var realmAccess = (JSONObject) claims.get("realm_access");
+        var roles = (JSONArray) realmAccess.get("roles");
 
         Collection <String> authorities = roles.stream()
                 .map(Object::toString)

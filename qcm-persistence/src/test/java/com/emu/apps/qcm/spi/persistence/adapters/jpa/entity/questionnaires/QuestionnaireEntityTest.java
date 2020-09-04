@@ -6,65 +6,67 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class QuestionnaireEntityTest {
-private QuestionnaireEntity pojoObject;
-public QuestionnaireEntityTest() {
-this.pojoObject = new com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.questionnaires.QuestionnaireEntity();
-}
-@Test
-void testId() {
-Long param = Long.valueOf(123);
-pojoObject.setId(param);
-Object result = pojoObject.getId();
-assertEquals(param, result);
-}
 
-@Test
-void testDescription() {
-String param = "123";
-pojoObject.setDescription(param);
-Object result = pojoObject.getDescription();
-assertEquals(param, result);
-}
+	private QuestionnaireEntity aQuestionnaireEntity;
 
-@Test
-void testTitle() {
-String param = "123";
-pojoObject.setTitle(param);
-Object result = pojoObject.getTitle();
-assertEquals(param, result);
-}
+	public QuestionnaireEntityTest() {
+		this.aQuestionnaireEntity = new QuestionnaireEntity();
+	}
+	@Test
+	void testId() {
+		Long param = Long.valueOf(123);
+		aQuestionnaireEntity.setId(param);
+		Object result = aQuestionnaireEntity.getId();
+		assertEquals(param, result);
+	}
 
-@Test
-void testLocale() {
-String param = "123";
-pojoObject.setLocale(param);
-Object result = pojoObject.getLocale();
-assertEquals(param, result);
-}
+	@Test
+	void testDescription() {
+		String param = "123";
+		aQuestionnaireEntity.setDescription(param);
+		Object result = aQuestionnaireEntity.getDescription();
+		assertEquals(param, result);
+	}
 
-@Test
-void testWebsite() {
-String param = "123";
-pojoObject.setWebsite(param);
-Object result = pojoObject.getWebsite();
-assertEquals(param, result);
-}
+	@Test
+	void testTitle() {
+		String param = "123";
+		aQuestionnaireEntity.setTitle(param);
+		Object result = aQuestionnaireEntity.getTitle();
+		assertEquals(param, result);
+	}
 
-@Test
-void testPublished() {
-Boolean param = Boolean.valueOf(true);
-pojoObject.setPublished(param);
-Object result = pojoObject.getPublished();
-assertEquals(param, result);
-}
+	@Test
+	void testLocale() {
+		String param = "123";
+		aQuestionnaireEntity.setLocale(param);
+		Object result = aQuestionnaireEntity.getLocale();
+		assertEquals(param, result);
+	}
 
-@Test
-void testCategory() {
-CategoryEntity param = new CategoryEntity();
-pojoObject.setCategory(param);
-Object result = pojoObject.getCategory();
-assertEquals(param, result);
-}
+	@Test
+	void testWebsite() {
+		String param = "123";
+		aQuestionnaireEntity.setWebsite(param);
+		Object result = aQuestionnaireEntity.getWebsite();
+		assertEquals(param, result);
+	}
+
+	@Test
+	void testPublished() {
+		Boolean param = Boolean.valueOf(true);
+		aQuestionnaireEntity.setPublished(param);
+		Object result = aQuestionnaireEntity.getPublished();
+		assertEquals(param, result);
+	}
+
+	@Test
+	void testCategory() {
+		CategoryEntity param = new CategoryEntity();
+		aQuestionnaireEntity.setCategory(param);
+		Object result = aQuestionnaireEntity.getCategory();
+		assertEquals(param, result);
+	}
 
 }
 

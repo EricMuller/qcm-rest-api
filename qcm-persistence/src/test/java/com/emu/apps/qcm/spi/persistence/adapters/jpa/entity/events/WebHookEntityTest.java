@@ -6,57 +6,59 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class WebHookEntityTest {
-private WebHookEntity pojoObject;
-public WebHookEntityTest() {
-this.pojoObject = new com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.events.WebHookEntity();
-}
-@Test
-void testId() {
-Long param = Long.valueOf(123);
-pojoObject.setId(param);
-Object result = pojoObject.getId();
-assertEquals(param, result);
-}
 
-@Test
-void testUrl() {
-String param = "123";
-pojoObject.setUrl(param);
-Object result = pojoObject.getUrl();
-assertEquals(param, result);
-}
+	private WebHookEntity aWebHookEntity;
 
-@Test
-void testContentType() {
-String param = "123";
-pojoObject.setContentType(param);
-Object result = pojoObject.getContentType();
-assertEquals(param, result);
-}
+	public WebHookEntityTest() {
+		this.aWebHookEntity = new WebHookEntity();
+	}
+	@Test
+	void testId() {
+		Long param = Long.valueOf(123);
+		aWebHookEntity.setId(param);
+		Object result = aWebHookEntity.getId();
+		assertEquals(param, result);
+	}
 
-@Test
-void testSecret() {
-String param = "123";
-pojoObject.setSecret(param);
-Object result = pojoObject.getSecret();
-assertEquals(param, result);
-}
+	@Test
+	void testUrl() {
+		String param = "123";
+		aWebHookEntity.setUrl(param);
+		Object result = aWebHookEntity.getUrl();
+		assertEquals(param, result);
+	}
 
-@Test
-void testUser() {
-UserEntity param = new UserEntity();
-pojoObject.setUser(param);
-Object result = pojoObject.getUser();
-assertEquals(param, result);
-}
+	@Test
+	void testContentType() {
+		String param = "123";
+		aWebHookEntity.setContentType(param);
+		Object result = aWebHookEntity.getContentType();
+		assertEquals(param, result);
+	}
 
-@Test
-void testDefaultTimeOut() {
-Long param = Long.valueOf(123);
-pojoObject.setDefaultTimeOut(param);
-Object result = pojoObject.getDefaultTimeOut();
-assertEquals(param, result);
-}
+	@Test
+	void testSecret() {
+		String param = "123";
+		aWebHookEntity.setSecret(param);
+		Object result = aWebHookEntity.getSecret();
+		assertEquals(param, result);
+	}
+
+	@Test
+	void testUser() {
+		UserEntity param = new UserEntity();
+		aWebHookEntity.setUser(param);
+		Object result = aWebHookEntity.getUser();
+		assertEquals(param, result);
+	}
+
+	@Test
+	void testDefaultTimeOut() {
+		Long param = Long.valueOf(123);
+		aWebHookEntity.setDefaultTimeOut(param);
+		Object result = aWebHookEntity.getDefaultTimeOut();
+		assertEquals(param, result);
+	}
 
 }
 

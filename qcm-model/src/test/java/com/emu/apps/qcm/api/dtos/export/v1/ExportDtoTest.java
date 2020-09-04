@@ -6,33 +6,35 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ExportDtoTest {
-private ExportDto pojoObject;
-public ExportDtoTest() {
-this.pojoObject = new com.emu.apps.qcm.api.dtos.export.v1.ExportDto();
-}
-@Test
-void testName() {
-String param = "123";
-pojoObject.setName(param);
-Object result = pojoObject.getName();
-assertEquals(param, result);
-}
 
-@Test
-void testVersionExport() {
-String param = "123";
-pojoObject.setVersionExport(param);
-Object result = pojoObject.getVersionExport();
-assertEquals(param, result);
-}
+	private ExportDto aExportDto;
 
-@Test
-void testQuestionnaire() {
-QuestionnaireExportDto param = new QuestionnaireExportDto();
-pojoObject.setQuestionnaire(param);
-Object result = pojoObject.getQuestionnaire();
-assertEquals(param, result);
-}
+	public ExportDtoTest() {
+		this.aExportDto = new ExportDto();
+	}
+	@Test
+	void testName() {
+		String param = "123";
+		aExportDto.setName(param);
+		Object result = aExportDto.getName();
+		assertEquals(param, result);
+	}
+
+	@Test
+	void testVersionExport() {
+		String param = "123";
+		aExportDto.setVersionExport(param);
+		Object result = aExportDto.getVersionExport();
+		assertEquals(param, result);
+	}
+
+	@Test
+	void testQuestionnaire() {
+		QuestionnaireExportDto param = new QuestionnaireExportDto();
+		aExportDto.setQuestionnaire(param);
+		Object result = aExportDto.getQuestionnaire();
+		assertEquals(param, result);
+	}
 
 }
 

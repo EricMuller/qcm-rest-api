@@ -3,7 +3,6 @@ package com.emu.apps.qcm.api.models;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,7 +20,6 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Question extends Domain {
 
     @JsonProperty("type")
@@ -32,9 +30,6 @@ public class Question extends Domain {
     @Size(min = 1, max = 1024, message = "{question.question.size}")
     private String libelle;
 
-    @JsonProperty("status")
-    private String status;
-
     @JsonProperty("category")
     private Category category;
 
@@ -43,6 +38,9 @@ public class Question extends Domain {
 
     @JsonProperty("tags")
     private Set <QuestionTag> questionTags;
+
+    @JsonProperty("status")
+    private String status;
 
     @JsonProperty("tip")
     private String tip;

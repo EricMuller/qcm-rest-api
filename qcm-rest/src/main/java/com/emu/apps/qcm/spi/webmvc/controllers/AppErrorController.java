@@ -2,6 +2,7 @@ package com.emu.apps.qcm.spi.webmvc.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.context.annotation.Profile;
@@ -25,7 +26,7 @@ import java.util.Objects;
 public class AppErrorController implements ErrorController {
 
 
-    private static final  String ERROR_PATH = "/error";
+    private static final String ERROR_PATH = "/error";
 
 
     @Autowired
@@ -33,10 +34,10 @@ public class AppErrorController implements ErrorController {
 
 
     /**
-     *  Supports the HTML Error View
+     * Supports the HTML Error View
      *
      * @param request HttpServletRequest
-     * @return  view /errors/error
+     * @return view /errors/error
      */
     @GetMapping(value = ERROR_PATH, produces = "text/html")
     @Operation(hidden = true)
@@ -46,7 +47,7 @@ public class AppErrorController implements ErrorController {
     }
 
     /**
-     *  Supports other formats like JSON, XML
+     * Supports other formats like JSON, XML
      *
      * @param request HttpServletRequest
      * @return Send status  specified in the request or Send Http 500 Internal erreur
@@ -58,7 +59,7 @@ public class AppErrorController implements ErrorController {
         ServletWebRequest servletWebRequest = new ServletWebRequest(request);
         Map <String, Object> body = getErrorAttributes(servletWebRequest, getTraceParameter(request));
         HttpStatus status = getStatus(request);
-        return new ResponseEntity<>(body, status);
+        return new ResponseEntity <>(body, status);
     }
 
     /**
@@ -80,16 +81,16 @@ public class AppErrorController implements ErrorController {
         return !"false".equalsIgnoreCase(parameter);
     }
 
-    private Map <String, Object> getErrorAttributes(ServletWebRequest servletWebRequest,
-                                                    boolean includeStackTrace) {
-        return this.errorAttributes.getErrorAttributes(servletWebRequest, includeStackTrace);
+    private Map <String, Object> getErrorAttributes(ServletWebRequest servletWebRequest, boolean includeStackTrace) {
+        ErrorAttributeOptions options = includeStackTrace ? ErrorAttributeOptions.of(ErrorAttributeOptions.Include.STACK_TRACE) : ErrorAttributeOptions.of();
+        return this.errorAttributes.getErrorAttributes(servletWebRequest, options);
     }
 
     private HttpStatus getStatus(HttpServletRequest request) {
         Integer statusCode = (Integer) request
                 .getAttribute("javax.servlet.error.status_code");
         if (Objects.nonNull(statusCode)) {
-                return HttpStatus.valueOf(statusCode);
+            return HttpStatus.valueOf(statusCode);
         }
         return HttpStatus.INTERNAL_SERVER_ERROR;
     }

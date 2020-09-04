@@ -5,49 +5,51 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PublishedResponseDtoTest {
-private PublishedResponseDto pojoObject;
-public PublishedResponseDtoTest() {
-this.pojoObject = new com.emu.apps.qcm.api.dtos.published.PublishedResponseDto();
-}
-@Test
-void testResponse() {
-String param = "123";
-pojoObject.setResponse(param);
-Object result = pojoObject.getResponse();
-assertEquals(param, result);
-}
 
-@Test
-void testStatus() {
-String param = "123";
-pojoObject.setStatus(param);
-Object result = pojoObject.getStatus();
-assertEquals(param, result);
-}
+	private PublishedResponseDto aPublishedResponseDto;
 
-@Test
-void testGood() {
-Boolean param = Boolean.valueOf(true);
-pojoObject.setGood(param);
-Object result = pojoObject.getGood();
-assertEquals(param, result);
-}
+	public PublishedResponseDtoTest() {
+		this.aPublishedResponseDto = new PublishedResponseDto();
+	}
+	@Test
+	void testResponse() {
+		String param = "123";
+		aPublishedResponseDto.setResponse(param);
+		Object result = aPublishedResponseDto.getResponse();
+		assertEquals(param, result);
+	}
 
-@Test
-void testVersion() {
-Long param = Long.valueOf(123);
-pojoObject.setVersion(param);
-Object result = pojoObject.getVersion();
-assertEquals(param, result);
-}
+	@Test
+	void testStatus() {
+		String param = "123";
+		aPublishedResponseDto.setStatus(param);
+		Object result = aPublishedResponseDto.getStatus();
+		assertEquals(param, result);
+	}
 
-@Test
-void testNumber() {
-Long param = Long.valueOf(123);
-pojoObject.setNumber(param);
-Object result = pojoObject.getNumber();
-assertEquals(param, result);
-}
+	@Test
+	void testGood() {
+		Boolean param = Boolean.valueOf(true);
+		aPublishedResponseDto.setGood(param);
+		Object result = aPublishedResponseDto.getGood();
+		assertEquals(param, result);
+	}
+
+	@Test
+	void testVersion() {
+		Long param = Long.valueOf(123);
+		aPublishedResponseDto.setVersion(param);
+		Object result = aPublishedResponseDto.getVersion();
+		assertEquals(param, result);
+	}
+
+	@Test
+	void testNumber() {
+		Long param = Long.valueOf(123);
+		aPublishedResponseDto.setNumber(param);
+		Object result = aPublishedResponseDto.getNumber();
+		assertEquals(param, result);
+	}
 
 }
 

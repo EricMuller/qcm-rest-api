@@ -5,50 +5,42 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TagTest {
+class DomainTest {
 
-	private Tag aTag;
+	private Domain aDomain;
 
-	public TagTest() {
-		this.aTag = new Tag();
+	public DomainTest() {
+		this.aDomain = new Domain();
 	}
-	@Test
-	void testLibelle() {
-		String param = "123";
-		aTag.setLibelle(param);
-		Object result = aTag.getLibelle();
-		assertEquals(param, result);
-	}
-
 	@Test
 	void testUuid() {
 		String param = "123";
-		aTag.setUuid(param);
-		Object result = aTag.getUuid();
+		aDomain.setUuid(param);
+		Object result = aDomain.getUuid();
 		assertEquals(param, result);
 	}
 
 	@Test
 	void testVersion() {
 		Long param = Long.valueOf(123);
-		aTag.setVersion(param);
-		Object result = aTag.getVersion();
+		aDomain.setVersion(param);
+		Object result = aDomain.getVersion();
 		assertEquals(param, result);
 	}
 
 	@Test
 	void testDateCreation() {
 		ZonedDateTime param = ZonedDateTime.now();
-		aTag.setDateCreation(param);
-		Object result = aTag.getDateCreation();
+		aDomain.setDateCreation(param);
+		Object result = aDomain.getDateCreation();
 		assertEquals(param, result);
 	}
 
 	@Test
 	void testDateModification() {
 		ZonedDateTime param = ZonedDateTime.now();
-		aTag.setDateModification(param);
-		Object result = aTag.getDateModification();
+		aDomain.setDateModification(param);
+		Object result = aDomain.getDateModification();
 		assertEquals(param, result);
 	}
 

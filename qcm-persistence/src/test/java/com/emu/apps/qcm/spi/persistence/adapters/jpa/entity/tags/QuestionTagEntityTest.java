@@ -8,33 +8,35 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class QuestionTagEntityTest {
-private QuestionTagEntity pojoObject;
-public QuestionTagEntityTest() {
-this.pojoObject = new com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.tags.QuestionTagEntity();
-}
-@Test
-void testId() {
-QuestionTagId param = new QuestionTagId();
-pojoObject.setId(param);
-Object result = pojoObject.getId();
-assertEquals(param, result);
-}
 
-@Test
-void testQuestion() {
-QuestionEntity param = new QuestionEntity();
-pojoObject.setQuestion(param);
-Object result = pojoObject.getQuestion();
-assertEquals(param, result);
-}
+	private QuestionTagEntity aQuestionTagEntity;
 
-@Test
-void testTag() {
-Tag param = new Tag();
-pojoObject.setTag(param);
-Object result = pojoObject.getTag();
-assertEquals(param, result);
-}
+	public QuestionTagEntityTest() {
+		this.aQuestionTagEntity = new QuestionTagEntity();
+	}
+	@Test
+	void testId() {
+		QuestionTagId param = new QuestionTagId();
+		aQuestionTagEntity.setId(param);
+		Object result = aQuestionTagEntity.getId();
+		assertEquals(param, result);
+	}
+
+	@Test
+	void testQuestion() {
+		QuestionEntity param = new QuestionEntity();
+		aQuestionTagEntity.setQuestion(param);
+		Object result = aQuestionTagEntity.getQuestion();
+		assertEquals(param, result);
+	}
+
+	@Test
+	void testTag() {
+		Tag param = new Tag();
+		aQuestionTagEntity.setTag(param);
+		Object result = aQuestionTagEntity.getTag();
+		assertEquals(param, result);
+	}
 
 }
 

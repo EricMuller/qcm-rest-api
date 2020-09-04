@@ -5,65 +5,67 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PushishedQuestionnaireQuestionDtoTest {
-private PushishedQuestionnaireQuestionDto pojoObject;
-public PushishedQuestionnaireQuestionDtoTest() {
-this.pojoObject = new com.emu.apps.qcm.api.dtos.published.PushishedQuestionnaireQuestionDto();
-}
-@Test
-void testQuestionnaireUuid() {
-String param = "123";
-pojoObject.setQuestionnaireUuid(param);
-Object result = pojoObject.getQuestionnaireUuid();
-assertEquals(param, result);
-}
 
-@Test
-void testLibelle() {
-String param = "123";
-pojoObject.setLibelle(param);
-Object result = pojoObject.getLibelle();
-assertEquals(param, result);
-}
+	private PushishedQuestionnaireQuestionDto aPushishedQuestionnaireQuestionDto;
 
-@Test
-void testType() {
-String param = "123";
-pojoObject.setType(param);
-Object result = pojoObject.getType();
-assertEquals(param, result);
-}
+	public PushishedQuestionnaireQuestionDtoTest() {
+		this.aPushishedQuestionnaireQuestionDto = new PushishedQuestionnaireQuestionDto();
+	}
+	@Test
+	void testQuestionnaireUuid() {
+		String param = "123";
+		aPushishedQuestionnaireQuestionDto.setQuestionnaireUuid(param);
+		Object result = aPushishedQuestionnaireQuestionDto.getQuestionnaireUuid();
+		assertEquals(param, result);
+	}
 
-@Test
-void testStatus() {
-String param = "123";
-pojoObject.setStatus(param);
-Object result = pojoObject.getStatus();
-assertEquals(param, result);
-}
+	@Test
+	void testLibelle() {
+		String param = "123";
+		aPushishedQuestionnaireQuestionDto.setLibelle(param);
+		Object result = aPushishedQuestionnaireQuestionDto.getLibelle();
+		assertEquals(param, result);
+	}
 
-@Test
-void testCategory() {
-String param = "123";
-pojoObject.setCategory(param);
-Object result = pojoObject.getCategory();
-assertEquals(param, result);
-}
+	@Test
+	void testType() {
+		String param = "123";
+		aPushishedQuestionnaireQuestionDto.setType(param);
+		Object result = aPushishedQuestionnaireQuestionDto.getType();
+		assertEquals(param, result);
+	}
 
-@Test
-void testTip() {
-String param = "123";
-pojoObject.setTip(param);
-Object result = pojoObject.getTip();
-assertEquals(param, result);
-}
+	@Test
+	void testStatus() {
+		String param = "123";
+		aPushishedQuestionnaireQuestionDto.setStatus(param);
+		Object result = aPushishedQuestionnaireQuestionDto.getStatus();
+		assertEquals(param, result);
+	}
 
-@Test
-void testPosition() {
-Long param = Long.valueOf(123);
-pojoObject.setPosition(param);
-Object result = pojoObject.getPosition();
-assertEquals(param, result);
-}
+	@Test
+	void testCategory() {
+		String param = "123";
+		aPushishedQuestionnaireQuestionDto.setCategory(param);
+		Object result = aPushishedQuestionnaireQuestionDto.getCategory();
+		assertEquals(param, result);
+	}
+
+	@Test
+	void testTip() {
+		String param = "123";
+		aPushishedQuestionnaireQuestionDto.setTip(param);
+		Object result = aPushishedQuestionnaireQuestionDto.getTip();
+		assertEquals(param, result);
+	}
+
+	@Test
+	void testPosition() {
+		Long param = Long.valueOf(123);
+		aPushishedQuestionnaireQuestionDto.setPosition(param);
+		Object result = aPushishedQuestionnaireQuestionDto.getPosition();
+		assertEquals(param, result);
+	}
 
 }
 
