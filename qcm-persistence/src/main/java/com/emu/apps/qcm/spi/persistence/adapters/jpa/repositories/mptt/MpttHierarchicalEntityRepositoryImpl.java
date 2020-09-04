@@ -19,7 +19,7 @@ public class MpttHierarchicalEntityRepositoryImpl<T extends MpttHierarchicalEnti
 
     public static final String VALUE = "value";
 
-    private Class <T> clazz;
+    private final Class <T> clazz;
 
     @PersistenceContext
     public EntityManager entityManager;

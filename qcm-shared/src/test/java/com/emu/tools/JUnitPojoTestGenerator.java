@@ -17,6 +17,8 @@ import java.util.*;
 
 public class JUnitPojoTestGenerator {
 
+    public static final String SERIAL_VERSION_UID = "serialVersionUID";
+
     private final List <Package> packages;
 
     public static class Package {
@@ -38,7 +40,6 @@ public class JUnitPojoTestGenerator {
         }
     }
 
-    public static final String SERIAL_VERSION_UID = "serialVersionUID";
 
     private enum Version {
         JUNIT, JUPITER

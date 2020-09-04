@@ -48,7 +48,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
         scanBasePackages = "com.emu.apps.qcm")
 @EnableScheduling
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
-public class WebMvcApplication {
+public abstract class WebMvcApplication {
 
     public static void main(String[] args) {
 

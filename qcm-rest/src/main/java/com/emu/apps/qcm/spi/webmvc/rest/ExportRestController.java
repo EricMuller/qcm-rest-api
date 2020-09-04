@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayOutputStream;
+import java.util.Locale;
 import java.util.Objects;
 
 import static com.emu.apps.qcm.spi.webmvc.rest.ApiRestMappings.EXPORTS;
@@ -50,7 +51,7 @@ public class ExportRestController {
     @SuppressWarnings("squid:S2583")
     public ResponseEntity <Resource> getReportByQuestionnaireUuid(@PathVariable("uuid") String uuid, @PathVariable("type-report") String type) {
 
-        TypeReport typeReport = TypeReport.getByName(type.toUpperCase());
+        TypeReport typeReport = TypeReport.getByName(type.toUpperCase(Locale.getDefault()));
 
         if (Objects.isNull(type)) {
             throw new IllegalArgumentException(type);

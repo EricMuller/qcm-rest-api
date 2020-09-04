@@ -31,17 +31,7 @@ class KeycloakClientTest {
         parameters.put("username", "demo");
         parameters.put("password", "demodemo");
 
-        String form = parameters.entries()
-                .stream()
-                .map(entry -> entry.getKey() + "=" + URLEncoder.encode(entry.getValue(), Charset.defaultCharset()))
-                .collect(Collectors.joining("&"));
-
-
-        HttpRequest requetePost = HttpRequest.newBuilder()
-                .uri(URI.create("https://keycloak.webmarks.net/auth/realms/qcm/protocol/openid-connect/token"))
-                .setHeader("Content-Type", "application/x-www-form-urlencoded")
-                .POST(HttpRequest.BodyPublishers.ofString(form))
-                .build();
+        HttpRequest requetePost = getHttpRequest(parameters);
 
         HttpClient httpClient = HttpClient.newBuilder()
                 .version(HttpClient.Version.HTTP_1_1)
@@ -59,7 +49,7 @@ class KeycloakClientTest {
 
         LOGGER.info("Body  map  : {} ", map);
 
-        Assertions.assertTrue(map.size() > 0);
+        Assertions.assertTrue(!map.isEmpty());
 
     }
 
@@ -73,17 +63,7 @@ class KeycloakClientTest {
 //        parameters.put("scope", "email");
         parameters.put("state", "123456");
 
-        String form = parameters.entries()
-                .stream()
-                .map(entry -> entry.getKey() + "=" + URLEncoder.encode(entry.getValue(), Charset.defaultCharset()))
-                .collect(Collectors.joining("&"));
-
-
-        HttpRequest requetePost = HttpRequest.newBuilder()
-                .uri(URI.create("https://keycloak.webmarks.net/auth/realms/qcm/protocol/openid-connect/token"))
-                .setHeader("Content-Type", "application/x-www-form-urlencoded")
-                .POST(HttpRequest.BodyPublishers.ofString(form))
-                .build();
+        HttpRequest requetePost = getHttpRequest(parameters);
 
         HttpClient httpClient = HttpClient.newBuilder()
                 .version(HttpClient.Version.HTTP_1_1)
@@ -101,7 +81,21 @@ class KeycloakClientTest {
 
         LOGGER.info("Body  map  : {}", map);
 
-        Assertions.assertTrue(map.size() > 0);
+        Assertions.assertTrue(!map.isEmpty());
+    }
+
+    private HttpRequest getHttpRequest(Multimap <String, String> parameters) {
+        String form = parameters.entries()
+                .stream()
+                .map(entry -> entry.getKey() + "=" + URLEncoder.encode(entry.getValue(), Charset.defaultCharset()))
+                .collect(Collectors.joining("&"));
+
+
+        return HttpRequest.newBuilder()
+                .uri(URI.create("https://keycloak.webmarks.net/auth/realms/qcm/protocol/openid-connect/token"))
+                .setHeader("Content-Type", "application/x-www-form-urlencoded")
+                .POST(HttpRequest.BodyPublishers.ofString(form))
+                .build();
     }
 
 

@@ -2,8 +2,10 @@ package com.emu.apps.qcm.spi.infrastructure;
 
 
 import com.emu.apps.qcm.api.models.Category;
+import com.emu.apps.qcm.spi.persistence.CategoryPersistencePort;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.builders.QuestionnaireTagBuilder;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.config.SpringBootTestConfig;
+import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.UserEntity;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.category.CategoryEntity;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.events.WebHookEntity;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.questionnaires.QuestionnaireEntity;
@@ -13,12 +15,10 @@ import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.questions.ResponseEn
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.tags.QuestionTagEntity;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.tags.Tag;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.upload.UploadEntity;
-import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.UserEntity;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.repositories.*;
-import com.emu.apps.qcm.spi.persistence.CategoryPersistencePort;
-import com.emu.apps.qcm.spi.persistence.mappers.CategoryMapper;
 import com.emu.apps.shared.security.PrincipalUtils;
 import com.google.common.collect.Lists;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -37,6 +37,7 @@ import static com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.questions.Typ
 
 @Component
 @Slf4j
+@NoArgsConstructor
 public class DbFixture {
 
     public static final String QUESTION_QUESTION_1 = "a cool question";
@@ -102,13 +103,7 @@ public class DbFixture {
     private CategoryPersistencePort categoryService;
 
     @Autowired
-    private CategoryMapper categoryMapper;
-
-    @Autowired
     private UserRepository userRepository;
-
-    public DbFixture() {
-    }
 
     @Transactional(readOnly = true)
     public Tag findTagbyLibelle(String name, Principal principal) {
