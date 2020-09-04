@@ -42,19 +42,19 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
 
     private final QuestionnaireQuestionRepository questionnaireQuestionRepository;
 
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
 
     private final QuestionnaireMapper questionnaireMapper;
 
-    private UuidMapper uuidMapper;
+    private final UuidMapper uuidMapper;
 
-    private TagRepository tagRepository;
+    private final TagRepository tagRepository;
 
-    private QuestionnaireTagRepository questionnaireTagRepository;
+    private final QuestionnaireTagRepository questionnaireTagRepository;
 
-    private PublishedMapper publishedMapper;
+    private final PublishedMapper publishedMapper;
 
-    private QuestionnaireQuestionMapper questionnaireQuestionMapper;
+    private final QuestionnaireQuestionMapper questionnaireQuestionMapper;
 
     public QuestionnairePersistenceAdapter(QuestionnaireRepository questionnaireRepository, QuestionRepository questionRepository,
                                            QuestionnaireQuestionRepository questionnaireQuestionRepository,

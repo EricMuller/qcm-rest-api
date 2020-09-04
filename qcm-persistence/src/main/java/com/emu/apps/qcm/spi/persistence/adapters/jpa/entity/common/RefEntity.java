@@ -5,6 +5,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -18,7 +19,7 @@ public abstract class RefEntity implements ID {
     private Long id;
 
     @Column(unique = true, name = "uuid", nullable = false)
-    protected String uuid = UUID.randomUUID().toString().toUpperCase();
+    protected String uuid = UUID.randomUUID().toString().toUpperCase(Locale.getDefault());
 
     @Column(name = "CREATED_DATE")
     private Date dateCreation;

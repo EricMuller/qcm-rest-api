@@ -29,7 +29,7 @@ class ResponseTest {
 
 	@Test
 	void testGood() {
-		Boolean param = Boolean.valueOf(true);
+		Boolean param = Boolean.TRUE;
 		aResponse.setGood(param);
 		Object result = aResponse.getGood();
 		assertEquals(param, result);

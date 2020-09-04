@@ -29,7 +29,7 @@ class PublishedResponseDtoTest {
 
 	@Test
 	void testGood() {
-		Boolean param = Boolean.valueOf(true);
+		Boolean param = Boolean.TRUE;
 		aPublishedResponseDto.setGood(param);
 		Object result = aPublishedResponseDto.getGood();
 		assertEquals(param, result);

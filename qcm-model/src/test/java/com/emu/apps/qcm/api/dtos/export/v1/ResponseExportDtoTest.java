@@ -21,7 +21,7 @@ class ResponseExportDtoTest {
 
 	@Test
 	void testGood() {
-		Boolean param = Boolean.valueOf(true);
+		Boolean param = Boolean.TRUE;
 		aResponseExportDto.setGood(param);
 		Object result = aResponseExportDto.getGood();
 		assertEquals(param, result);

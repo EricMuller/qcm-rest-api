@@ -56,7 +56,7 @@ class QuestionnaireEntityTest {
 
 	@Test
 	void testPublished() {
-		Boolean param = Boolean.valueOf(true);
+		Boolean param = Boolean.TRUE;
 		aQuestionnaireEntity.setPublished(param);
 		Object result = aQuestionnaireEntity.getPublished();
 		assertEquals(param, result);

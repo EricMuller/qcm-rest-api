@@ -4,36 +4,38 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ExceptionMessage {
+@Getter
+public final class ExceptionMessage {
 
     @JsonProperty("status")
-    private int status;
+    private final int status;
+
     @JsonProperty("error")
-    private String error;
+    private final String error;
+
     @JsonProperty("exception")
-    private String exception;
+    private final String exception;
+
     @JsonProperty("message")
-    private String message;
+    private final String message;
+
     @JsonProperty("errors")
-    private List<FieldErrorMessage> errors = new ArrayList <>(1);
+    private final List <FieldErrorMessage> errors;
+
     @JsonProperty("timestamp")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
-    private ZonedDateTime timestamp;
-
-    public ExceptionMessage() {
-    }
-
+    private final ZonedDateTime timestamp;
 
     public ExceptionMessage(int status, String error, String message, String exception,
-                            List<FieldErrorMessage> fieldErrors, ZonedDateTime timestamp) {
+                            List <FieldErrorMessage> fieldErrors, ZonedDateTime timestamp) {
         this.status = status;
         this.error = error;
         this.message = message;
@@ -42,55 +44,6 @@ public class ExceptionMessage {
         this.timestamp = timestamp;
     }
 
-
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public String getError() {
-        return error;
-    }
-
-    public void setError(String error) {
-        this.error = error;
-    }
-
-    public String getException() {
-        return exception;
-    }
-
-    public void setException(String exception) {
-        this.exception = exception;
-    }
-
-    public List<FieldErrorMessage> getErrors() {
-        return errors;
-    }
-
-    public void setErrors(List<FieldErrorMessage> errors) {
-        this.errors = errors;
-    }
-
-    public ZonedDateTime getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(ZonedDateTime timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
 
     @Override
     public String toString() {

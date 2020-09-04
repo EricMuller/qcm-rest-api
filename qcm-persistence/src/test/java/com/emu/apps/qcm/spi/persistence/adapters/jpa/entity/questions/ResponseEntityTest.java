@@ -40,7 +40,7 @@ class ResponseEntityTest {
 
 	@Test
 	void testGood() {
-		Boolean param = Boolean.valueOf(true);
+		Boolean param = Boolean.TRUE;
 		aResponseEntity.setGood(param);
 		Object result = aResponseEntity.getGood();
 		assertEquals(param, result);

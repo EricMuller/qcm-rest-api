@@ -22,51 +22,52 @@ class ReportServiceTest {
     @Test
     void reportTest() throws IOException, XDocReportException {
 
-        InputStream in = ReportServiceAdapter.class.getResourceAsStream("/template_questionnaire.docx");
+        try (InputStream in = ReportServiceAdapter.class.getResourceAsStream("/template_questionnaire.docx")) {
 
-        IXDocReport report = XDocReportRegistry.getRegistry().loadReport(in,
-                TemplateEngineKind.Velocity);
-
-
-        QuestionnaireExportDto questionnaireExportDto = new QuestionnaireExportDto();
-        questionnaireExportDto.setTitle("Java Thread");
-        questionnaireExportDto.setWebsite("http://qcm.webmarks.net");
-
-        questionnaireExportDto.setStatus(Status.DRAFT.name());
-
-        CategoryExportDto categoryExportDto = new CategoryExportDto();
-        categoryExportDto.setLibelle("Java");
-        questionnaireExportDto.setCategory(categoryExportDto);
+            IXDocReport report = XDocReportRegistry.getRegistry().loadReport(in,
+                    TemplateEngineKind.Velocity);
 
 
-        QuestionExportDto questionExportDto = new QuestionExportDto();
-        questionExportDto.setLibelle("What is a Thread in Java?");
-        questionExportDto.setType(TypeQuestionEnum.FREE_TEXT.name());
-        questionExportDto.setPosition(1L);
+            QuestionnaireExportDto questionnaireExportDto = new QuestionnaireExportDto();
+            questionnaireExportDto.setTitle("Java Thread");
+            questionnaireExportDto.setWebsite("http://qcm.webmarks.net");
 
-        String response = "A thread in Java is a lightweight process that runs within another"+
-        "process or thread."+
-        "        It is an independent path of execution in an application. JVM gives"+
-        "each thread its own method-call stack."+
-        "        When we start JVM, Java starts one thread.  This thread calls the"+
-        "main method of the class passed in argument to java call";
+            questionnaireExportDto.setStatus(Status.DRAFT.name());
 
-        ResponseExportDto responseExportDto = new ResponseExportDto();
-        responseExportDto.setResponse(response);
-        responseExportDto.setGood(true);
+            CategoryExportDto categoryExportDto = new CategoryExportDto();
+            categoryExportDto.setLibelle("Java");
+            questionnaireExportDto.setCategory(categoryExportDto);
 
 
-        questionExportDto.setResponses(Arrays.asList(responseExportDto));
+            QuestionExportDto questionExportDto = new QuestionExportDto();
+            questionExportDto.setLibelle("What is a Thread in Java?");
+            questionExportDto.setType(TypeQuestionEnum.FREE_TEXT.name());
+            questionExportDto.setPosition(1L);
 
-        IContext context = report.createContext();
-        context.put("questionnaire", questionnaireExportDto);
-        context.put("questions", Arrays.asList(questionExportDto,questionExportDto));
+            String response = "A thread in Java is a lightweight process that runs within another" +
+                    "process or thread." +
+                    "        It is an independent path of execution in an application. JVM gives" +
+                    "each thread its own method-call stack." +
+                    "        When we start JVM, Java starts one thread.  This thread calls the" +
+                    "main method of the class passed in argument to java call";
 
-        OutputStream out = new FileOutputStream(new File("./target/questionnaire_out.docx"));
-        report.process(context, out);
+            ResponseExportDto responseExportDto = new ResponseExportDto();
+            responseExportDto.setResponse(response);
+            responseExportDto.setGood(true);
 
-        Assertions.assertNotNull(out);
-        out.close();
+
+            questionExportDto.setResponses(Arrays.asList(responseExportDto));
+
+            IContext context = report.createContext();
+            context.put("questionnaire", questionnaireExportDto);
+            context.put("questions", Arrays.asList(questionExportDto, questionExportDto));
+
+            try (OutputStream out = new FileOutputStream(new File("./target/questionnaire_out.docx"))) {
+                report.process(context, out);
+                Assertions.assertNotNull(out);
+            }
+
+        }
 
     }
 }

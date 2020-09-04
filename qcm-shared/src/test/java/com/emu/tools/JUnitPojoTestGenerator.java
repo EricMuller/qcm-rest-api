@@ -195,7 +195,7 @@ public class JUnitPojoTestGenerator {
         } else if (parameterType.equals(BigDecimal.class)) {
             builder.append("BigDecimal param = new BigDecimal(\"123\");");
         } else if (parameterType.equals(Boolean.class)) {
-            builder.append("Boolean param = Boolean.valueOf(true);");
+            builder.append("Boolean param = Boolean.TRUE;");
         } else if (parameterType.equals(Double.class)) {
             builder.append("Double param = Double.valueOf(123);");
         } else if (parameterType.equals(Integer.class)) {

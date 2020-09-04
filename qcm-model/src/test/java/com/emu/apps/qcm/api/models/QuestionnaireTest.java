@@ -1,10 +1,10 @@
 package com.emu.apps.qcm.api.models;
 
-import com.emu.apps.qcm.api.models.Category;
-import java.time.ZonedDateTime;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.time.ZonedDateTime;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class QuestionnaireTest {
 
@@ -55,7 +55,7 @@ class QuestionnaireTest {
 
 	@Test
 	void testPublished() {
-		Boolean param = Boolean.valueOf(true);
+		Boolean param = Boolean.TRUE;
 		aQuestionnaire.setPublished(param);
 		Object result = aQuestionnaire.getPublished();
 		assertEquals(param, result);

@@ -37,13 +37,13 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
 
     private final QuestionnaireQuestionRepository questionnaireQuestionRepository;
 
-    private QuestionMapper questionMapper;
+    private final QuestionMapper questionMapper;
 
-    private TagRepository tagRepository;
+    private final TagRepository tagRepository;
 
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
 
-    private UuidMapper uuidMapper;
+    private final UuidMapper uuidMapper;
 
     @Autowired
     public QuestionPersistenceAdapter(QuestionRepository questionRepository, QuestionTagRepository questionTagRepository,

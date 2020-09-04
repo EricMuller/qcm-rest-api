@@ -62,7 +62,7 @@ class PublishedQuestionnaireDtoTest {
 
 	@Test
 	void testPublished() {
-		Boolean param = Boolean.valueOf(true);
+		Boolean param = Boolean.TRUE;
 		aPublishedQuestionnaireDto.setPublished(param);
 		Object result = aPublishedQuestionnaireDto.getPublished();
 		assertEquals(param, result);

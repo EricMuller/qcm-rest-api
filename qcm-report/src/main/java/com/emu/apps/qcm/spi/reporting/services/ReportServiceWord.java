@@ -22,17 +22,18 @@ public class ReportServiceWord implements  ReportService {
     public ByteArrayOutputStream getReportStream(ExportDto exportDataDto) {
 
         try {
-            InputStream in = ReportServiceWord.class.getResourceAsStream("/" + TemplateNames.QUESTIONNAIRE.getName());
+            try(InputStream in = ReportServiceWord.class.getResourceAsStream("/" + TemplateNames.QUESTIONNAIRE.getName())) {
 
-            IXDocReport report = XDocReportRegistry
-                    .getRegistry()
-                    .loadReport(in, TemplateEngineKind.Velocity);
-            IContext context = report.createContext();
-            context.put("questions", exportDataDto.getQuestions());
-            context.put("questionnaire", exportDataDto.getQuestionnaire());
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            report.process(context, out);
-            return out;
+                IXDocReport report = XDocReportRegistry
+                        .getRegistry()
+                        .loadReport(in, TemplateEngineKind.Velocity);
+                IContext context = report.createContext();
+                context.put("questions", exportDataDto.getQuestions());
+                context.put("questionnaire", exportDataDto.getQuestionnaire());
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                report.process(context, out);
+                return out;
+            }
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
         }

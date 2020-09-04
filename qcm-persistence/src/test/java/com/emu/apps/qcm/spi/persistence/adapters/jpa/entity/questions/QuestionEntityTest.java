@@ -24,7 +24,7 @@ class QuestionEntityTest {
 
 	@Test
 	void testMandatory() {
-		Boolean param = Boolean.valueOf(true);
+		Boolean param = Boolean.TRUE;
 		aQuestionEntity.setMandatory(param);
 		Object result = aQuestionEntity.getMandatory();
 		assertEquals(param, result);

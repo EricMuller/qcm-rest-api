@@ -20,33 +20,34 @@ import java.io.InputStream;
  */
 @Service
 @Slf4j
-public class ReportServicePdf implements  ReportService {
+public class ReportServicePdf implements ReportService {
 
     @Override
     public ByteArrayOutputStream getReportStream(ExportDto exportDataDto) {
 
         try {
 
-            InputStream in = ReportServiceWord.class.getResourceAsStream("/" + TemplateNames.QUESTIONNAIRE.getName());
+            try (InputStream in = ReportServiceWord.class.getResourceAsStream("/" + TemplateNames.QUESTIONNAIRE.getName())) {
 
-            IXDocReport report = XDocReportRegistry
-                    .getRegistry()
-                    .loadReport(in, TemplateEngineKind.Velocity);
+                IXDocReport report = XDocReportRegistry
+                        .getRegistry()
+                        .loadReport(in, TemplateEngineKind.Velocity);
 
-            IContext context = report.createContext();
-            context.put("questionnaire", exportDataDto.getQuestionnaire());
-            context.put("questions", exportDataDto.getQuestions());
+                IContext context = report.createContext();
+                context.put("questionnaire", exportDataDto.getQuestionnaire());
+                context.put("questions", exportDataDto.getQuestions());
 
-            ByteArrayOutputStream outDocx = new ByteArrayOutputStream();
-            report.process(context, outDocx);
-            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(outDocx.toByteArray());
-            XWPFDocument document = new XWPFDocument(byteArrayInputStream);
-            PdfOptions options = PdfOptions.create();
+                ByteArrayOutputStream outDocx = new ByteArrayOutputStream();
+                report.process(context, outDocx);
+                ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(outDocx.toByteArray());
+                XWPFDocument document = new XWPFDocument(byteArrayInputStream);
+                PdfOptions options = PdfOptions.create();
 
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            PdfConverter.getInstance().convert(document, out, options);
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                PdfConverter.getInstance().convert(document, out, options);
 
-            return out;
+                return out;
+            }
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
         }
