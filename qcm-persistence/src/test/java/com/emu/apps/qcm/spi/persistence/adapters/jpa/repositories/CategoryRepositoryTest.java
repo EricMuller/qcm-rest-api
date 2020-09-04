@@ -1,6 +1,7 @@
 package com.emu.apps.qcm.spi.persistence.adapters.jpa.repositories;
 
 import com.emu.apps.qcm.api.models.Category;
+import com.emu.apps.qcm.spi.infrastructure.DbFixture;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.config.SpringBootTestConfig;
 import com.emu.apps.qcm.spi.persistence.exceptions.FunctionnalException;
 import com.emu.apps.qcm.spi.persistence.CategoryPersistencePort;
@@ -31,10 +32,14 @@ public class CategoryRepositoryTest {
 
     @Autowired
     private CategoryPersistencePort categoryService;
+    @Autowired
+    private DbFixture dbFixture;
 
     @Test
     @Transactional
     public void findOrCreateByLibelle()  {
+
+        dbFixture.emptyDatabase();
 
 
         Category categoryA = categoryService.findOrCreateByLibelle(USER_TEST, QUESTIONNAIRE, "InterviewsA");
@@ -63,7 +68,6 @@ public class CategoryRepositoryTest {
 
         List <Category> categories = StreamSupport.stream(iterable.spliterator(), false).collect(toList());
 
-        categories.stream().forEach(category -> LOGGER.error(category.getLibelle()));
         Assertions.assertEquals(3, categories.size());
 
         iterable = categoryService.findChildrenCategories(UUID.fromString(categoryC.getUuid()));
