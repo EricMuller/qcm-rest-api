@@ -58,11 +58,8 @@ public class ExportRestController {
         }
 
         final ExportDto exportDto = exportServicePort.getbyQuestionnaireUuid(uuid);
-
         ByteArrayOutputStream outputStream = reportServicePort.getReportStream(exportDto, typeReport);
-
         ByteArrayResource resource = new ByteArrayResource(outputStream.toByteArray());
-       
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + exportDto.getName() + "." + typeReport.getExtention() + "\"")

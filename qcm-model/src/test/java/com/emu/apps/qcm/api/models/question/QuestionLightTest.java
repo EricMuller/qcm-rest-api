@@ -13,10 +13,10 @@ class QuestionLightTest {
 		this.aQuestionLight = new QuestionLight();
 	}
 	@Test
-	void testQuestion() {
+	void testLibelle() {
 		String param = "123";
-		aQuestionLight.setQuestion(param);
-		Object result = aQuestionLight.getQuestion();
+		aQuestionLight.setLibelle(param);
+		Object result = aQuestionLight.getLibelle();
 		assertEquals(param, result);
 	}
 

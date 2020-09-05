@@ -14,7 +14,9 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -71,7 +73,14 @@ public class QuestionnaireRestController {
     /* /{id:[\d]+}/questions*/
     @GetMapping(value = "/{uuid}" + QUESTIONS)
     @ResponseBody
-    public Page <QuestionnaireQuestion> getQuestionsByQuestionnaireUuid(@PathVariable("uuid") String uuid, Pageable pageable) {
+    public Page <QuestionnaireQuestion> getQuestionsByQuestionnaireUuid(@PathVariable("uuid") String uuid,
+                                                                        @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                                                        @RequestParam(value = "count", defaultValue = "100", required = false) int size,
+                                                                        @RequestParam(value = "order", defaultValue = "DESC", required = false) Sort.Direction direction,
+                                                                        @RequestParam(value = "sort", defaultValue = "dateModification", required = false) String sortProperty) {
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortProperty));
+
         return questionnaireServicePort.getQuestionsByQuestionnaireUuid(uuid, pageable);
     }
 
@@ -79,7 +88,13 @@ public class QuestionnaireRestController {
     @Timer
     @ResponseBody
     public Page <Questionnaire> getQuestionnaires(@RequestParam(value = "tag_uuid", required = false) String[] tagUuid,
-                                                  Pageable pageable) {
+                                                  @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                                  @RequestParam(value = "count", defaultValue = "100", required = false) int size,
+                                                  @RequestParam(value = "order", defaultValue = "DESC", required = false) Sort.Direction direction,
+                                                  @RequestParam(value = "sort", defaultValue = "dateModification", required = false) String sortProperty) {
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortProperty));
+
         return questionnaireServicePort.getQuestionnaires(tagUuid, pageable, AuthentificationContextHolder.getUser());
     }
 
@@ -94,7 +109,7 @@ public class QuestionnaireRestController {
 
     @DeleteMapping(value = "/{uuid}/questions/{question_uuid}")
     @ResponseBody
-    public ResponseEntity<Void> deleteQuestionByQuestionnaireUuid(@PathVariable("uuid") String uuid, @PathVariable("question_uuid") String questionUuid) {
+    public ResponseEntity <Void> deleteQuestionByQuestionnaireUuid(@PathVariable("uuid") String uuid, @PathVariable("question_uuid") String questionUuid) {
         questionnaireServicePort.deleteQuestion(uuid, questionUuid);
         return new ResponseEntity <>(HttpStatus.NO_CONTENT);
     }

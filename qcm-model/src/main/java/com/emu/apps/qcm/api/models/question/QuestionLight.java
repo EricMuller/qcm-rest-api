@@ -2,6 +2,7 @@ package com.emu.apps.qcm.api.models.question;
 
 
 import com.emu.apps.qcm.api.models.Domain;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,7 +15,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class QuestionLight extends Domain {
 
-    private String question;
+    @JsonProperty("question")
+    private String libelle;
 
     private String type;
 

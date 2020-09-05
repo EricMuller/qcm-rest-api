@@ -13,10 +13,10 @@ class QuestionTagsTest {
 		this.aQuestionTags = new QuestionTags();
 	}
 	@Test
-	void testQuestion() {
+	void testLibelle() {
 		String param = "123";
-		aQuestionTags.setQuestion(param);
-		Object result = aQuestionTags.getQuestion();
+		aQuestionTags.setLibelle(param);
+		Object result = aQuestionTags.getLibelle();
 		assertEquals(param, result);
 	}
 

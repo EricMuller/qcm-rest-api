@@ -14,7 +14,9 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Profile;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,7 +46,13 @@ public class QuestionRestController {
     @Timer
     public Iterable <QuestionTags> getQuestions(@RequestParam(value = "tag_uuid", required = false) String[] tagUuid,
                                                 @RequestParam(value = "questionnaire_uuid", required = false) String[] questionnaireUuid,
-                                                Pageable pageable) {
+                                                @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                                @RequestParam(value = "count", defaultValue = "100", required = false) int size,
+                                                @RequestParam(value = "order", defaultValue = "DESC", required = false) Sort.Direction direction,
+                                                @RequestParam(value = "sort", defaultValue = "dateModification", required = false) String sortProperty) {
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortProperty));
+
 
         return questionServicePort.getQuestions(tagUuid, questionnaireUuid, pageable, AuthentificationContextHolder.getUser());
     }
