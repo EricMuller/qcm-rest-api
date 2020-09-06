@@ -26,7 +26,7 @@ public class Response {
 
     private Long version;
 
-    @JsonProperty(value = "number",required = false)
+    @JsonProperty(value = "number")
     private Long number;
 
 }

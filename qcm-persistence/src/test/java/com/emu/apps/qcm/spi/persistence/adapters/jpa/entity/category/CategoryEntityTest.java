@@ -1,11 +1,10 @@
 package com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.category;
 
+import java.util.UUID;
+import java.time.ZonedDateTime;
 import org.junit.jupiter.api.Test;
 
-import java.time.ZonedDateTime;
-import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class CategoryEntityTest {
 

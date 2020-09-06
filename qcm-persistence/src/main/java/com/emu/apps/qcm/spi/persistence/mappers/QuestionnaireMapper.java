@@ -44,15 +44,13 @@ public interface QuestionnaireMapper {
 
     Questionnaire modelToDto(QuestionnaireEntity questionnaire);
 
-    @Mapping(target = "questionnaireQuestions", ignore = true)
     @Mapping(target = "questionnaireTags", ignore = true)
-    QuestionnaireEntity dtoToModel(Questionnaire questionnaireDto);
+    QuestionnaireEntity dtoToModel(Questionnaire questionnaire);
 
-    @Mapping(target = "questionnaireQuestions", ignore = true)
     @Mapping(target = "questionnaireTags", ignore = true)
     @Mapping(target = "dateModification", ignore = true)
     @Mapping(target = "lastModifiedBy", ignore = true)
-    QuestionnaireEntity dtoToModel(@MappingTarget QuestionnaireEntity questionnaire, Questionnaire questionnaireDto);
+    QuestionnaireEntity dtoToModel(@MappingTarget QuestionnaireEntity questionnaireEntity, Questionnaire questionnaire);
 
     default Page <Questionnaire> pageToDto(Page <QuestionnaireEntity> page) {
         return page.map(this::modelToDto);
