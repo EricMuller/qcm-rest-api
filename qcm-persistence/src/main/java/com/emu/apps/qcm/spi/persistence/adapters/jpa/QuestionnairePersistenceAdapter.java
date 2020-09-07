@@ -22,6 +22,9 @@ import com.emu.apps.qcm.spi.persistence.mappers.PublishedMapper;
 import com.emu.apps.qcm.spi.persistence.mappers.QuestionnaireMapper;
 import com.emu.apps.qcm.spi.persistence.mappers.QuestionnaireQuestionMapper;
 import com.emu.apps.qcm.spi.persistence.mappers.UuidMapper;
+import com.fasterxml.jackson.databind.util.ArrayBuilders;
+import com.querydsl.core.BooleanBuilder;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -127,7 +130,6 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
     public Page <Questionnaire> findAllByPage(String[] tagUuid, String principal, Pageable pageable) {
 
         var specificationBuilder = new QuestionnaireSpecificationBuilder();
-
         specificationBuilder.setPrincipal(principal);
         specificationBuilder.setTagUuids(uuidMapper.toUUIDs(tagUuid));
 
