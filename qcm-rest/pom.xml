@@ -210,6 +210,9 @@
                         <encoding.reporting>UTF-8</encoding.reporting>
                         <release>${maven.compiler.release}</release>
                     </additionalProperties>
+                        <layers>
+                            <enabled>true</enabled>
+                        </layers>
                 </configuration>
             </plugin>
 

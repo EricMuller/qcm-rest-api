@@ -8,15 +8,16 @@ import com.emu.apps.qcm.domain.ports.QuestionnaireServicePort;
 import com.emu.apps.qcm.spi.webmvc.rest.caches.CacheName;
 import com.emu.apps.shared.annotations.Timer;
 import com.emu.apps.shared.security.AuthentificationContextHolder;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 import static com.emu.apps.qcm.spi.webmvc.rest.ApiRestMappings.*;
+import static org.springframework.data.domain.Sort.Direction.ASC;
+import static org.springframework.data.domain.Sort.Direction.DESC;
 
 
 @RestController
@@ -73,13 +76,10 @@ public class QuestionnaireRestController {
     /* /{id:[\d]+}/questions*/
     @GetMapping(value = "/{uuid}" + QUESTIONS)
     @ResponseBody
+    @PageableAsQueryParam
     public Page <QuestionnaireQuestion> getQuestionsByQuestionnaireUuid(@PathVariable("uuid") String uuid,
-                                                                        @RequestParam(value = "page", defaultValue = "0", required = false) int page,
-                                                                        @RequestParam(value = "count", defaultValue = "100", required = false) int size,
-                                                                        @RequestParam(value = "order", defaultValue = "DESC", required = false) Sort.Direction direction,
-                                                                        @RequestParam(value = "sort", defaultValue = "dateModification", required = false) String sortProperty) {
-
-        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortProperty));
+                                                                        @Parameter(hidden = true)
+                                                                        @PageableDefault(direction = ASC, sort = {"position"}) Pageable pageable) {
 
         return questionnaireServicePort.getQuestionsByQuestionnaireUuid(uuid, pageable);
     }
@@ -87,13 +87,10 @@ public class QuestionnaireRestController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @Timer
     @ResponseBody
+    @PageableAsQueryParam
     public Page <Questionnaire> getQuestionnaires(@RequestParam(value = "tag_uuid", required = false) String[] tagUuid,
-                                                  @RequestParam(value = "page", defaultValue = "0", required = false) int page,
-                                                  @RequestParam(value = "count", defaultValue = "100", required = false) int size,
-                                                  @RequestParam(value = "order", defaultValue = "DESC", required = false) Sort.Direction direction,
-                                                  @RequestParam(value = "sort", defaultValue = "dateModification", required = false) String sortProperty) {
-
-        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortProperty));
+                                                  @Parameter(hidden = true)
+                                                  @PageableDefault(direction = DESC, sort = {"dateModification"}) Pageable pageable) {
 
         return questionnaireServicePort.getQuestionnaires(tagUuid, pageable, AuthentificationContextHolder.getUser());
     }

@@ -4,11 +4,12 @@ package com.emu.apps.qcm.spi.webmvc.rest;
 import com.emu.apps.qcm.api.models.Tag;
 import com.emu.apps.qcm.domain.ports.TagServicePort;
 import com.emu.apps.shared.security.AuthentificationContextHolder;
+import io.swagger.v3.oas.annotations.Parameter;
+import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +17,7 @@ import java.io.IOException;
 
 import static com.emu.apps.qcm.spi.webmvc.rest.ApiRestMappings.PUBLIC_API;
 import static com.emu.apps.qcm.spi.webmvc.rest.ApiRestMappings.TAGS;
+import static org.springframework.data.domain.Sort.Direction.DESC;
 
 /**
  * Created by eric on 05/06/2017.
@@ -34,13 +36,10 @@ public class TagRestController {
 
     @GetMapping
     @ResponseBody
+    @PageableAsQueryParam
     public Page <Tag> getTags(@RequestParam(value = "search", required = false) String search,
-                              @RequestParam(value = "page", defaultValue = "0", required = false) int page,
-                              @RequestParam(value = "count", defaultValue = "100", required = false) int size,
-                              @RequestParam(value = "order", defaultValue = "DESC", required = false) Sort.Direction direction,
-                              @RequestParam(value = "sort", defaultValue = "dateModification", required = false) String sortProperty) throws IOException {
-
-        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortProperty));
+                              @Parameter(hidden = true)
+                              @PageableDefault(direction = DESC, sort = {"dateModification"}, size = 100) Pageable pageable) throws IOException {
 
         return tagServicePort.getTags(search, pageable, AuthentificationContextHolder.getUser());
     }

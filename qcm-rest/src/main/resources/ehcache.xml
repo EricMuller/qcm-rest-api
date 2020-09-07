@@ -13,6 +13,20 @@
         <heap>100</heap>
     </cache-template>
 
+    <cache alias="default-query-results-region">
+        <expiry>
+            <tti unit="seconds">300</tti>
+        </expiry>
+        <heap>1024</heap>
+    </cache>
+
+    <cache alias="default-update-timestamps-region">
+        <expiry>
+            <none />
+        </expiry>
+        <heap>4096</heap>
+    </cache>
+
     <cache alias="com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.UserEntity" uses-template="simple">
         <listeners>
             <listener>

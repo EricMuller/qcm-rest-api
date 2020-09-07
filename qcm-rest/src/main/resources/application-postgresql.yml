@@ -2,7 +2,7 @@
 spring:
     profiles: postgresql
     jpa:
-        # open-in-view: false
+        open-in-view: false
         database-platform: org.hibernate.dialect.PostgreSQLDialect
         #database: default
         generate-ddl: false
@@ -55,12 +55,12 @@ spring:
 
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:postgresql://localhost:5432/qcm
+        url: jdbc:postgresql://192.168.0.104:5432/qcm
         driverClassName: org.postgresql.Driver
         username: qcm
         password: qcm
         hikari:
-            url: jdbc:postgresql://localhost:5432/qcm
+            url: jdbc:postgresql://192.168.0.104:5432/qcm
             pool-name: qcm-hikari-pool
             autoCommit: false
             connection-test-query: SELECT 1
@@ -70,12 +70,12 @@ spring:
 
         histo:
             type: com.zaxxer.hikari.HikariDataSource
-            url: jdbc:postgresql://localhost:5432/qcm
+            url: jdbc:postgresql://192.168.0.104:5432/qcm
             driverClassName: org.postgresql.Driver
             username: qcm
             password: qcm
             hikari:
-                url: jdbc:postgresql://localhost:5432/qcm
+                url: jdbc:postgresql://192.168.0.104:5432/qcm
                 pool-name: qcm-hikari-pool
                 autoCommit: false
                 connection-test-query: SELECT 1

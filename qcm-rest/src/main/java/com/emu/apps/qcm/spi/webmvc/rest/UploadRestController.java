@@ -4,9 +4,12 @@ import com.emu.apps.qcm.api.models.Upload;
 import com.emu.apps.qcm.domain.ports.UploadServicePort;
 import com.emu.apps.shared.annotations.Timer;
 import com.emu.apps.shared.security.AuthentificationContextHolder;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +19,7 @@ import java.io.IOException;
 
 import static com.emu.apps.qcm.spi.webmvc.rest.ApiRestMappings.PUBLIC_API;
 import static com.emu.apps.qcm.spi.webmvc.rest.ApiRestMappings.UPLOADS;
+import static org.springframework.data.domain.Sort.Direction.DESC;
 
 @RestController
 @Profile("webmvc")
@@ -38,9 +42,11 @@ public class UploadRestController {
         return uploadServicePort.uploadFile(fileType, multipartFile, async, AuthentificationContextHolder.getUser());
     }
 
-    @GetMapping()
+    @GetMapping
     @Timer
-    public Iterable <Upload> getUploads(Pageable pageable) {
+    @PageableAsQueryParam
+    public Iterable <Upload> getUploads(@Parameter(hidden = true)
+                                        @PageableDefault(direction = DESC, sort = {"dateModification"}) Pageable pageable) {
         return uploadServicePort.getUploads(pageable, AuthentificationContextHolder.getUser());
     }
 

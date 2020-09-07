@@ -24,7 +24,9 @@ import static com.emu.apps.qcm.spi.webmvc.rest.ApiRestMappings.*;
 public class OpenApi3Config {
 
     private BuildProperties buildProperties;
+
     private String authServer;
+
     private String realm;
 
     @Autowired
@@ -76,11 +78,11 @@ public class OpenApi3Config {
                                 .email("eric.pierre.muller@gmail.com")));
     }
 
-
     @Bean
     GroupedOpenApi qcmApis() {
-        return GroupedOpenApi.builder().group("operations-qcm")
-                .pathsToMatch(PUBLIC_API + QUESTIONNAIRES + "/**"
+        return GroupedOpenApi.builder().group("basics")
+                .pathsToMatch(PUBLIC_API + USERS + "/**"
+                        , PUBLIC_API + QUESTIONNAIRES + "/**"
                         , PUBLIC_API + QUESTIONS + "/**"
                         , PUBLIC_API + TAGS + "/**"
                         , PUBLIC_API + CATEGORIES + "/**")
@@ -89,25 +91,18 @@ public class OpenApi3Config {
 
     @Bean
     GroupedOpenApi exportApis() {
-        return GroupedOpenApi.builder().group("operations-export")
+        return GroupedOpenApi.builder().group("exports")
                 .pathsToMatch(PUBLIC_API + EXPORTS + "/**"
                         , PUBLIC_API + IMPORTS + "/**"
-                        , PUBLIC_API + UPLOADS + "/**" )
+                        , PUBLIC_API + UPLOADS + "/**")
                 .build();
     }
 
     @Bean
     GroupedOpenApi settingsApis() {
-        return GroupedOpenApi.builder().group("operations-setting")
-                .pathsToMatch(PUBLIC_API + USERS + "/**"
-                        , PUBLIC_API + WEBHOOKS + "/**")
+        return GroupedOpenApi.builder().group("notifications")
+                .pathsToMatch(PUBLIC_API + WEBHOOKS + "/**")
                 .build();
     }
 
-    @Bean
-    GroupedOpenApi allApis() {
-        return GroupedOpenApi.builder().group("all")
-                .pathsToMatch("/**")
-                .build();
-    }
 }
