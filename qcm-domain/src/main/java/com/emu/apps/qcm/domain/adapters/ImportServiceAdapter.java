@@ -90,7 +90,7 @@ public class ImportServiceAdapter implements ImportServicePort {
 
         var questionDto = new Question();
 
-        questionDto.setLibelle(questionExportDto.getLibelle());
+        questionDto.setQuestionText(questionExportDto.getQuestionText());
         questionDto.setType(questionExportDto.getType());
         questionDto.setStatus(questionExportDto.getStatus());
 
@@ -100,7 +100,7 @@ public class ImportServiceAdapter implements ImportServicePort {
         for (var response : questionExportDto.getResponses()) {
 
             Response responseDto = new Response();
-            responseDto.setLibelle(response.getResponse());
+            responseDto.setResponseText(response.getResponseText());
             responseDto.setGood(response.getGood());
             responseDto.setGood(response.getGood());
 
@@ -126,14 +126,14 @@ public class ImportServiceAdapter implements ImportServicePort {
 
         var questionDto = new Question();
 
-        questionDto.setLibelle(fileQuestionDto.getQuestion());
+        questionDto.setQuestionText(fileQuestionDto.getQuestion());
         questionDto.setType(TypeQuestionEnum.FREE_TEXT.name());
         questionDto.setStatus(Status.DRAFT.name());
 
         questionDto.setCategory(categoryDto);
 
         Response responseDto = new Response();
-        responseDto.setLibelle(fileQuestionDto.getResponse());
+        responseDto.setResponseText(fileQuestionDto.getResponse());
         questionDto.setResponses(Arrays.asList(responseDto));
 
         QuestionTag questionTagDto = new QuestionTag();

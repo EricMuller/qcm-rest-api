@@ -14,8 +14,8 @@ class ResponseExportDtoTest {
 	@Test
 	void testResponse() {
 		String param = "123";
-		aResponseExportDto.setResponse(param);
-		Object result = aResponseExportDto.getResponse();
+		aResponseExportDto.setResponseText(param);
+		Object result = aResponseExportDto.getResponseText();
 		assertEquals(param, result);
 	}
 

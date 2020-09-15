@@ -41,13 +41,13 @@ public interface QuestionTagMapper {
 
     @Mapping(source = "tag.uuid", target = "uuid")
     @Mapping(source = "tag.libelle", target = "libelle")
-    QuestionTag dtoToModel(QuestionTagEntity questionTag);
+    QuestionTag entityToModel(QuestionTagEntity questionTagEntity);
 
 
     @Mapping(source = "uuid", target = "tag.uuid")
     @Mapping(source = "libelle", target = "tag.libelle")
-    QuestionTagEntity dtoToModel(QuestionTag questionTagDto);
+    QuestionTagEntity modelToEntity(QuestionTag questionTag);
 
-    Iterable <QuestionTagEntity> dtosToModels(Iterable <QuestionTag> questionTagDtos);
+    Iterable <QuestionTagEntity> modelsToEntities(Iterable <QuestionTag> questionTags);
 
 }

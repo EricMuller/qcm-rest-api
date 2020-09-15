@@ -18,7 +18,7 @@ import lombok.Setter;
 @JsonRootName(value = "PublishedResponse")
 public class PublishedResponseDto {
 
-    private String response;
+    private String responseText;
 
     private String status;
 

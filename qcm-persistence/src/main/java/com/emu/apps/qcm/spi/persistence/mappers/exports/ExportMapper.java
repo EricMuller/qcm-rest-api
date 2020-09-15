@@ -49,25 +49,25 @@ import java.util.stream.StreamSupport;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ExportMapper {
 
-    ExportDto toDto(Questionnaire questionnaire, Iterable <QuestionnaireQuestionEntity> questions, String name);
+    ExportDto modelToExportDto(Questionnaire questionnaire, Iterable <QuestionnaireQuestionEntity> questions, String name);
 
-    QuestionnaireExportDto modelToDto(Questionnaire questionnaire);
-
-    @Mapping(source = "tag.libelle", target = "libelle")
-    QuestionnaireTagExportDto dtoToModel(QuestionnaireTagEntity questionnaireTag);
-
-    CategoryExportDto modelToDto(CategoryEntity category);
+    QuestionnaireExportDto modelToQuestionnaireExportDto(Questionnaire questionnaire);
 
     @Mapping(source = "tag.libelle", target = "libelle")
-    QuestionTagExportDto dtoToModel(QuestionTagEntity questionTag);
+    QuestionnaireTagExportDto entityToQuestionnaireTagExportDto(QuestionnaireTagEntity questionnaireTagEntity);
 
-    ResponseExportDto modelToDto(ResponseEntity response);
+    CategoryExportDto entityToCategoryExportDto(CategoryEntity categoryEntity);
 
-    QuestionExportDto modelToDto(QuestionEntity question);
+    @Mapping(source = "tag.libelle", target = "libelle")
+    QuestionTagExportDto entityToQuestionnaireTagExportDto(QuestionTagEntity questionTagEntity);
 
-    List <QuestionExportDto> modelToDtos(List <QuestionEntity> questions);
+    ResponseExportDto entityToResponseExportDto(ResponseEntity responseEntity);
 
-    @Mapping(source = "question.libelle", target = "libelle")
+    QuestionExportDto entityToQuestionExportDto(QuestionEntity questionEntity);
+
+    List <QuestionExportDto> entitiesToQuestionExportDtos(List <QuestionEntity> questionEntities);
+
+    @Mapping(source = "question.questionText", target = "questionText")
     @Mapping(source = "question.type", target = "type")
     @Mapping(source = "question.status", target = "status")
     @Mapping(source = "question.category", target = "category")
@@ -75,11 +75,11 @@ public interface ExportMapper {
     @Mapping(source = "question.questionTags", target = "questionTags")
     @Mapping(source = "question.tip", target = "tip")
     @Mapping(source = "points", target = "points")
-    QuestionExportDto modelToDto(QuestionnaireQuestionEntity questionnaireQuestion);
+    QuestionExportDto entityToQuestionExportDto(QuestionnaireQuestionEntity questionnaireQuestionEntity);
 
-    default List <QuestionExportDto> modelToDtos(Iterable <QuestionnaireQuestionEntity> value) {
-        return StreamSupport.stream(value.spliterator(), false)
-                .map(this::modelToDto)
+    default List <QuestionExportDto> entitiesToQuestionExportDtos(Iterable <QuestionnaireQuestionEntity> questionnaireQuestionEntities) {
+        return StreamSupport.stream(questionnaireQuestionEntities.spliterator(), false)
+                .map(this::entityToQuestionExportDto)
                 .collect(Collectors.toList());
     }
 

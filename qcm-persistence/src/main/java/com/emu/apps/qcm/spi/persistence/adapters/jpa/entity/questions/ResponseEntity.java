@@ -23,7 +23,7 @@ public class ResponseEntity extends AuditableEntity <String> {
 
     @SuppressWarnings("squid:S1700")
     @Column(name = "RESPONSE", nullable = false, length = 32672)
-    private String libelle;
+    private String responseText;
 
     @Column(name = "NUMBER")
     private Long number;
@@ -36,12 +36,12 @@ public class ResponseEntity extends AuditableEntity <String> {
     private QuestionEntity question;
 
     public ResponseEntity(String response) {
-        this.libelle = response;
+        this.responseText = response;
     }
 
     @Override
     public String toString() {
-        return String.format("Response[id=%d,  response='%s']", getId(), libelle);
+        return String.format("Response[id=%d,  response='%s']", getId(), responseText);
     }
 
 }

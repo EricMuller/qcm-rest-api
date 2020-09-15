@@ -15,8 +15,8 @@ class QuestionLightTest {
 	@Test
 	void testLibelle() {
 		String param = "123";
-		aQuestionLight.setLibelle(param);
-		Object result = aQuestionLight.getLibelle();
+		aQuestionLight.setQuestionText(param);
+		Object result = aQuestionLight.getQuestionText();
 		assertEquals(param, result);
 	}
 

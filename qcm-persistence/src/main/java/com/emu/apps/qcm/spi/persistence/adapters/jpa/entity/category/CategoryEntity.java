@@ -95,7 +95,7 @@ public class CategoryEntity extends AuditableEntity <String> implements MpttHier
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "category_generator")
-    @SequenceGenerator(name = "category_generator", sequenceName = "category_seq",allocationSize = 1)
+    @SequenceGenerator(name = "category_generator", sequenceName = "category_seq", allocationSize = 1)
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
@@ -104,7 +104,7 @@ public class CategoryEntity extends AuditableEntity <String> implements MpttHier
     @Enumerated(EnumType.STRING)
     private Type type;
 
-    @Column(nullable = false)
+    @Column(name = "userId", nullable = false)
     private String userId;
 
     @Column(nullable = false)

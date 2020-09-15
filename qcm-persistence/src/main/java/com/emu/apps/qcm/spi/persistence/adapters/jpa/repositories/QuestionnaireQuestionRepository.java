@@ -19,13 +19,13 @@ import java.util.UUID;
 @Repository
 public interface QuestionnaireQuestionRepository extends JpaRepository <QuestionnaireQuestionEntity, QuestionnaireQuestionId> {
 
-    @Query("SELECT qq.question.id as id, qq.question.uuid as uuid, qq.question.dateCreation as dateCreation,qq.question.version as version,qq.question.libelle as question ,qq.question.type as type,qq.position as position " +
+    @Query("SELECT qq.question.id as id, qq.question.uuid as uuid, qq.question.dateCreation as dateCreation,qq.question.version as version,qq.question.questionText as question ,qq.question.type as type,qq.position as position " +
             " FROM QuestionnaireQuestionEntity  qq " +
             " WHERE qq.questionnaire.uuid = :questionnaireUuid  ")
     Iterable <QuestionResponseProjection> findQuestionsByQuestionnaireUuiId(@Param("questionnaireUuid") UUID questionnaireUuid);
 
 
-    @Query("SELECT qq.question.id as id, qq.question.uuid as uuid, qq.question.dateCreation as dateCreation,qq.question.version as version,qq.question.libelle as question ,qq.question.type as type,qq.position as position " +
+    @Query("SELECT qq.question.id as id, qq.question.uuid as uuid, qq.question.dateCreation as dateCreation,qq.question.version as version,qq.question.questionText as question ,qq.question.type as type,qq.position as position " +
             " FROM QuestionnaireQuestionEntity  qq " +
             " WHERE qq.questionnaire.uuid = :questionnaireUuid")
     Page <QuestionResponseProjection> findQuestionsByQuestionnaireUuiId(@Param("questionnaireUuid") UUID questionnaireUuid, Pageable pageable);
@@ -39,7 +39,7 @@ public interface QuestionnaireQuestionRepository extends JpaRepository <Question
      * @param pageable
      * @return
      */
-    @Query("SELECT distinct qq.question.id as id, qq.question.uuid as uuid, qq.question.dateCreation as dateCreation,qq.question.version as version,qq.question.libelle as question ,qq.question.type as type,qq.position as position " +
+    @Query("SELECT distinct qq.question.id as id, qq.question.uuid as uuid, qq.question.dateCreation as dateCreation,qq.question.version as version,qq.question.questionText as question ,qq.question.type as type,qq.position as position " +
             " FROM QuestionnaireQuestionEntity qq " +
             " join qq.question q " +
             " left join q.questionTags  qt " +

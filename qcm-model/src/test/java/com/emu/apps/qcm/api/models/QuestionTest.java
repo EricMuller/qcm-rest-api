@@ -1,6 +1,5 @@
 package com.emu.apps.qcm.api.models;
 
-import com.emu.apps.qcm.api.models.Category;
 import java.time.ZonedDateTime;
 import org.junit.jupiter.api.Test;
 
@@ -24,8 +23,8 @@ class QuestionTest {
 	@Test
 	void testLibelle() {
 		String param = "123";
-		aQuestion.setLibelle(param);
-		Object result = aQuestion.getLibelle();
+		aQuestion.setQuestionText(param);
+		Object result = aQuestion.getQuestionText();
 		assertEquals(param, result);
 	}
 

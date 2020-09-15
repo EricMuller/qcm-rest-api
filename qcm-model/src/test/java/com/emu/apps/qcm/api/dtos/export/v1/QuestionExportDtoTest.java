@@ -1,6 +1,5 @@
 package com.emu.apps.qcm.api.dtos.export.v1;
 
-import com.emu.apps.qcm.api.dtos.export.v1.CategoryExportDto;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,8 +14,8 @@ class QuestionExportDtoTest {
 	@Test
 	void testLibelle() {
 		String param = "123";
-		aQuestionExportDto.setLibelle(param);
-		Object result = aQuestionExportDto.getLibelle();
+		aQuestionExportDto.setQuestionText(param);
+		Object result = aQuestionExportDto.getQuestionText();
 		assertEquals(param, result);
 	}
 

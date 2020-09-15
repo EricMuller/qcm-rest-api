@@ -33,7 +33,7 @@ public class PushishedQuestionnaireQuestionDto {
     @JsonProperty("question")
     @NotNull(message = "{question.question.notNull}")
     @Size(min = 1, max = 1024, message = "{question.question.size}")
-    private String libelle;
+    private String questionText;
 
     @JsonProperty("type")
     private String type;

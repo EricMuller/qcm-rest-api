@@ -40,7 +40,7 @@ class ReportServiceTest {
 
 
             QuestionExportDto questionExportDto = new QuestionExportDto();
-            questionExportDto.setLibelle("What is a Thread in Java?");
+            questionExportDto.setQuestionText("What is a Thread in Java?");
             questionExportDto.setType(TypeQuestionEnum.FREE_TEXT.name());
             questionExportDto.setPosition(1L);
 
@@ -52,7 +52,7 @@ class ReportServiceTest {
                     "main method of the class passed in argument to java call";
 
             ResponseExportDto responseExportDto = new ResponseExportDto();
-            responseExportDto.setResponse(response);
+            responseExportDto.setResponseText(response);
             responseExportDto.setGood(true);
 
 

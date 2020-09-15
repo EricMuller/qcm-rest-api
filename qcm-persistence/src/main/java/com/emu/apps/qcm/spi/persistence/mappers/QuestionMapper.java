@@ -40,8 +40,8 @@ import org.springframework.data.domain.Page;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {CategoryMapper.class, QuestionTagMapper.class, ResponseMapper.class, UuidMapper.class}
-        , unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring", uses = {CategoryMapper.class, QuestionTagMapper.class, ResponseMapper.class,
+        UuidMapper.class} , unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface QuestionMapper {
 
     @Mapping(target = "questionTags", ignore = true)
@@ -54,9 +54,9 @@ public interface QuestionMapper {
     @Mapping(target = "dateModification", ignore = true)
     QuestionEntity dtoToModel(@MappingTarget QuestionEntity question, Question questionDto);
 
-    Question modelToDto(QuestionEntity question);
+    Question entityToQuestion(QuestionEntity question);
 
-    QuestionTags modelToPageTagDto(QuestionEntity question);
+    QuestionTags entityToQuestionTags(QuestionEntity question);
 
     Question questionResponseProjectionToDto(QuestionResponseProjection questionProjection);
 
@@ -64,8 +64,8 @@ public interface QuestionMapper {
         return page.map(this::questionResponseProjectionToDto);
     }
 
-    default Page <QuestionTags> pageToPageTagDto(Page <QuestionEntity> page) {
-        return page.map(this::modelToPageTagDto);
+    default Page <QuestionTags> pageEntityToPageTagDto(Page <QuestionEntity> page) {
+        return page.map(this::entityToQuestionTags);
     }
 
     List <Question> modelToDtos(List <QuestionEntity> questions);

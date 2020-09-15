@@ -26,9 +26,9 @@ public class Question extends Domain {
     private String type;
 
     @JsonProperty("question")
-    @NotNull(message = "{question.question.notNull}")
+    @NotNull(message = "{question.notNull}")
     @Size(min = 1, max = 1024, message = "{question.question.size}")
-    private String libelle;
+    private String questionText;
 
     @JsonProperty("category")
     private Category category;

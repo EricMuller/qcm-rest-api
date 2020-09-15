@@ -36,7 +36,7 @@ public class UserServiceAdapter implements UserServicePort {
     public Map <String, String> principal(Principal principal) {
         Map <String, String> map = new LinkedHashMap <>();
         if (Objects.nonNull(principal)) {
-            map.put("name", PrincipalUtils.getEmail(principal));
+            map.put("name", PrincipalUtils.getEmailOrName(principal));
             map.put("profiles", profiles);
         }
         return map;
@@ -47,20 +47,9 @@ public class UserServiceAdapter implements UserServicePort {
      * @return the current user
      */
     @Override
-    public User user(Principal principal) {
-        User userDto;
-        if (Objects.nonNull(principal)) {
-            String email = PrincipalUtils.getEmail(principal);
-            userDto = userPersistencePort.findByEmailEquals(email);
-            if (Objects.isNull(userDto)) {
-                userDto = new User();
-                userDto.setEmail(email);
-            }
-        } else {
-            userDto = new User();
-        }
+    public User userByEmail(String email) {
+         return userPersistencePort.findByEmailEquals(email);
 
-        return userDto;
     }
 
     /**
@@ -72,8 +61,16 @@ public class UserServiceAdapter implements UserServicePort {
      */
 
     @Override
-    public User updateUser(@RequestBody User userDto, Principal principal) {
+    public User updateUser(@RequestBody User userDto, String principal) {
 
+        return userPersistencePort.save(userDto);
+
+    }
+
+    @Override
+    public User createUser(@RequestBody User userDto, String principal) {
+
+        userDto.setEmail(principal);
         return userPersistencePort.save(userDto);
 
     }

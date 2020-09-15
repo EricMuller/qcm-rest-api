@@ -16,7 +16,7 @@ import lombok.Setter;
 public class QuestionLight extends Domain {
 
     @JsonProperty("question")
-    private String libelle;
+    private String questionText;
 
     private String type;
 

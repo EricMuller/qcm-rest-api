@@ -108,13 +108,13 @@
 
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-spi-persistence</artifactId>
+                <artifactId>qcm-persistence</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-spi-persistence</artifactId>
+                <artifactId>qcm-persistence</artifactId>
                 <version>${project.version}</version>
                 <scope>test</scope>
                 <type>test-jar</type>
@@ -129,7 +129,7 @@
 
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-spi-report</artifactId>
+                <artifactId>qcm-report</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -155,7 +155,7 @@
 
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-spi-rest</artifactId>
+                <artifactId>qcm-rest</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -343,7 +343,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <maven.artifact.threads>10</maven.artifact.threads>
+
             </properties>
         </profile>
 

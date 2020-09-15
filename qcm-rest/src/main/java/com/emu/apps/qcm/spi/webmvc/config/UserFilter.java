@@ -3,8 +3,10 @@ package com.emu.apps.qcm.spi.webmvc.config;
 import com.emu.apps.qcm.api.models.User;
 import com.emu.apps.qcm.domain.ports.UserServicePort;
 import com.emu.apps.shared.security.AuthentificationContextHolder;
+import com.emu.apps.shared.security.PrincipalUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
@@ -27,11 +29,16 @@ public class UserFilter implements Filter {
             throws IOException, ServletException {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AuthentificationContextHolder.setUser(null);
         if (Objects.nonNull(authentication)) {
-            User userDto = userServicePort.user(authentication);
-            AuthentificationContextHolder.setUser(userDto.getUuid());
-        } else {
-            AuthentificationContextHolder.setUser(null);
+            String principal = PrincipalUtils.getEmailOrName(authentication.getPrincipal());
+            if (Objects.nonNull(principal)) {
+                final User user = userServicePort.userByEmail(principal);
+                if (Objects.nonNull(user)) {
+                    AuthentificationContextHolder.setUser(user.getUuid());
+                    GrantedAuthority grantedAuthority = () -> user.getUuid();
+                }
+            }
         }
         filterChain.doFilter(servletRequest, servletResponse);
     }

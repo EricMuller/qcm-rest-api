@@ -1,6 +1,7 @@
 package com.emu.apps.qcm.api.dtos.export.v1;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,7 +19,8 @@ import lombok.Setter;
 @JsonRootName(value = "ResponseExport")
 public class ResponseExportDto {
 
-    private String response;
+    @JsonProperty("response")
+    private String responseText;
 
     private Boolean good;
 

@@ -47,7 +47,7 @@ public class QuestionEntity extends AuditableEntity <String> {
 
     @SuppressWarnings("squid:S1700")
     @Column(name = "question", nullable = false, length = 1024)
-    private String libelle;
+    private String questionText;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "question_id")
@@ -75,7 +75,7 @@ public class QuestionEntity extends AuditableEntity <String> {
 
     @Override
     public String toString() {
-        return String.format("Question[id=%d, question='%s']", getId(), libelle);
+        return String.format("Question[id=%d, question='%s']", getId(), questionText);
     }
 
     @Override

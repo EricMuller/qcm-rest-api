@@ -31,20 +31,17 @@ package com.emu.apps.qcm.spi;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.reactive.ReactiveSecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.reactive.WebFluxAutoConfiguration;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class,
-        DataSourceTransactionManagerAutoConfiguration.class
-        , WebFluxAutoConfiguration.class, ReactiveSecurityAutoConfiguration.class},
+
+@SpringBootApplication(exclude = {WebFluxAutoConfiguration.class, ReactiveSecurityAutoConfiguration.class},
         scanBasePackages = "com.emu.apps.qcm")
 @EnableScheduling
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
@@ -52,8 +49,11 @@ public abstract class WebMvcApplication {
 
     public static void main(String[] args) {
 
-        SpringApplication.run(WebMvcApplication.class, args);
-
+        new SpringApplicationBuilder()
+                .sources(WebMvcApplication.class)
+                .profiles("webmvc")
+                .build()
+                .run();
     }
 
     @Bean

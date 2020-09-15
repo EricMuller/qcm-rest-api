@@ -38,7 +38,7 @@
     </parent>
 
 
-    <artifactId>qcm-spi-persistence</artifactId>
+    <artifactId>qcm-persistence</artifactId>
 
     <name>Qcm Persistence</name>
     <description>Qcm Persistence</description>

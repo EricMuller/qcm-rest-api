@@ -14,6 +14,10 @@ public final class MessageSupport {
 
     public static final String UNKNOWN_UUID_USER = "user.uuid.unknown";
 
+    public static final String INVALID_UUID_USER = "user.uuid.invalid";
+
+    public static final String EXISTS_UUID_USER = "user.uuid.exists";
+
     public static final String UNKNOWN_UUID_WEBHOOK = "webhook.uuid.unknown";
 
 }

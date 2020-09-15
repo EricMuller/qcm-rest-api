@@ -38,7 +38,7 @@
     </parent>
 
 
-    <artifactId>qcm-spi-rest</artifactId>
+    <artifactId>qcm-rest</artifactId>
 
     <name>Qcm Rest</name>
     <description>Qcm Rest</description>
@@ -52,12 +52,12 @@
 
         <dependency>
             <groupId>com.emu.apps.qcm</groupId>
-            <artifactId>qcm-spi-report</artifactId>
+            <artifactId>qcm-report</artifactId>
         </dependency>
 
         <dependency>
             <groupId>com.emu.apps.qcm</groupId>
-            <artifactId>qcm-spi-persistence</artifactId>
+            <artifactId>qcm-persistence</artifactId>
             <scope>test</scope>
             <type>test-jar</type>
         </dependency>
@@ -179,7 +179,7 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>1.4.196</version>
-            <scope>test</scope>
+            <scope>runtime</scope>
         </dependency>
 
     </dependencies>

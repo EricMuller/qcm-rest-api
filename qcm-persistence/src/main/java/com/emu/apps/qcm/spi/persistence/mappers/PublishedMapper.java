@@ -64,14 +64,14 @@ public interface PublishedMapper {
 
     @Mapping(source = "questionnaire.uuid", target = "questionnaireUuid")
     @Mapping(source = "question.type", target = "type")
-    @Mapping(source = "question.libelle", target = "libelle")
+    @Mapping(source = "question.questionText", target = "questionText")
     @Mapping(source = "question.status", target = "status")
     @Mapping(source = "question.category", target = "category")
     @Mapping(source = "question.responses", target = "responses")
 
     @Mapping(source = "question.tip", target = "tip")
     @Mapping(source = "position", target = "position")
-    PushishedQuestionnaireQuestionDto toPublishedDto(QuestionnaireQuestionEntity questionnaireQuestion);
+    PushishedQuestionnaireQuestionDto toPublishedQuestionnaireQuestionDto(QuestionnaireQuestionEntity questionnaireQuestion);
 
     Iterable <PushishedQuestionnaireQuestionDto> questionnaireQuestionsToPublishedDtos(Iterable <QuestionnaireQuestionEntity> questionnaireQuestions);
 

@@ -62,7 +62,7 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
     @Override
     @Transactional(readOnly = true)
     public Question findByUuid(String uuid) {
-        return questionMapper.modelToDto(questionRepository.findByUuid(UUID.fromString(uuid)).orElse(null));
+        return questionMapper.entityToQuestion(questionRepository.findByUuid(UUID.fromString(uuid)).orElse(null));
 
     }
 
@@ -97,7 +97,7 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
 
         saveQuestionWithTags(question, questionDto.getQuestionTags(), principal);
 
-        return questionMapper.modelToDto(question);
+        return questionMapper.entityToQuestion(question);
 
     }
 
@@ -111,7 +111,7 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
         questionSpecificationBuilder.setQuestionnaireUuids(uuidMapper.toUUIDs(questionnaireUuids));
         questionSpecificationBuilder.setTagUuids(uuidMapper.toUUIDs(tagUuids));
 
-        return questionMapper.pageToPageTagDto(questionRepository.findAll(questionSpecificationBuilder.build(), pageable));
+        return questionMapper.pageEntityToPageTagDto(questionRepository.findAll(questionSpecificationBuilder.build(), pageable));
     }
 
 

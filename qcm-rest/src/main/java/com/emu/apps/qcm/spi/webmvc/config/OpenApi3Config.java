@@ -43,7 +43,7 @@ public class OpenApi3Config {
         var authUrl = String.format("%s/realms/%s/protocol/openid-connect", this.authServer, this.realm);
         return new OpenAPI()
                 .components(new Components()
-                        .addSecuritySchemes("spring_oauth", new SecurityScheme()
+                        .addSecuritySchemes("keycloack_openid", new SecurityScheme()
                                 .type(SecurityScheme.Type.OAUTH2)
                                 .description("Oauth2 flow")
                                 .flows(new OAuthFlows()
@@ -65,7 +65,7 @@ public class OpenApi3Config {
                                 .schema(new StringSchema())
                                 .required(false)))
                 .security(Arrays.asList(
-                        new SecurityRequirement().addList("spring_oauth"),
+                        new SecurityRequirement().addList("keycloack_openid"),
                         new SecurityRequirement().addList("api_key")))
 
                 .info(new Info()

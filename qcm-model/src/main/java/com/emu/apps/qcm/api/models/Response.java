@@ -20,7 +20,7 @@ public class Response {
     private String uuid;
 
     @JsonProperty("response")
-    private String libelle;
+    private String responseText;
 
     private Boolean good;
 

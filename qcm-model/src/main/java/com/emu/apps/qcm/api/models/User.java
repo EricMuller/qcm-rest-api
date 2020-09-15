@@ -1,12 +1,12 @@
 package com.emu.apps.qcm.api.models;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter@Setter
-@NoArgsConstructor@AllArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
 public class User {
 
     private String uuid;
@@ -21,4 +21,7 @@ public class User {
 
     private String company;
 
+    public User(String email) {
+        this.email = email;
+    }
 }

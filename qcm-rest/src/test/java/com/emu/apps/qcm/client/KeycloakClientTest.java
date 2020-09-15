@@ -4,7 +4,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.validator.internal.IgnoreForbiddenApisErrors;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -55,11 +57,12 @@ class KeycloakClientTest {
 
 
     @Test
+    @Disabled
     void authorisationCodePasswordTest() throws IOException, InterruptedException {
 
         Multimap <String, String> parameters = ArrayListMultimap.create();
         parameters.put("response_type", "code");
-        parameters.put("client_id", "qcm-spi-rest");
+        parameters.put("client_id", "qcm-rest-api");
 //        parameters.put("scope", "email");
         parameters.put("state", "123456");
 

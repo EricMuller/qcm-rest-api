@@ -9,7 +9,9 @@ import java.util.Map;
 public interface UserServicePort {
     Map <String, String> principal(Principal principal);
 
-    User user(Principal principal);
+    User userByEmail(String email);
 
-    User updateUser(@RequestBody User userDto, Principal principal);
+    User updateUser(@RequestBody User userDto, String principal);
+
+    User createUser(@RequestBody User userDto, String principal);
 }

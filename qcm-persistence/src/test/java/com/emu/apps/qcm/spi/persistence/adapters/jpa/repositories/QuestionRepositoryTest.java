@@ -23,6 +23,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -33,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(classes = SpringBootTestConfig.class)
 @ActiveProfiles(value = "test")
-public class QuestionRepositoryTest {
+class QuestionRepositoryTest {
 
     @Autowired
     private DbFixture fixture;
@@ -43,26 +44,26 @@ public class QuestionRepositoryTest {
 
     @Test
     @Transactional
-    public void findOne() {
+     void findOne() {
         QuestionEntity question = fixture.createQuestionsAndGetFirst();
         assertNotNull(question.getId());
         Optional <QuestionEntity> newQuestion = questionRepository.findById(question.getId());
         assertNotNull(newQuestion.orElse(null));
         assertNotNull(newQuestion.orElse(null).getId());
-        assertEquals(DbFixture.QUESTION_QUESTION_1, newQuestion.get().getLibelle());
+        assertEquals(DbFixture.QUESTION_QUESTION_1, newQuestion.get().getQuestionText());
         // Assert.assertEquals(RESPONSE, newQuestion.getResponse());
     }
 
     @Test
     @DisplayName("Test LazyInitializationException with lazy collection Tags")
-    public void findOneLazyInitializationException() {
+     void findOneLazyInitializationException() {
 
 
         QuestionEntity question = fixture.createQuestionsAndGetFirst();
         assertNotNull(question.getId());
         Optional <QuestionEntity> newQuestion = questionRepository.findById(question.getId());
 
-        Assertions.assertThat(newQuestion.orElse(null)).isNotNull();
+        Assertions.assertThat(newQuestion).isPresent();
 
         assertThrows(LazyInitializationException.class, () -> newQuestion.get().getQuestionTags().size());
 
@@ -70,7 +71,7 @@ public class QuestionRepositoryTest {
 
     @Test
     @DisplayName("Test LazyInitializationException with lazy collection responses")
-    public void findByIdAndFetchTagsLazyInitializationException() {
+     void findByIdAndFetchTagsLazyInitializationException() {
         QuestionEntity question = fixture.createQuestionsAndGetFirst();
 
         QuestionEntity newQuestion = questionRepository.findByIdAndFetchTags(question.getId());
@@ -80,7 +81,7 @@ public class QuestionRepositoryTest {
 
 
     @Test
-    public void findByIdAndFetchTags() {
+     void findByIdAndFetchTags() {
         QuestionEntity question = fixture.createQuestionsAndGetFirst();
 
         QuestionEntity newQuestion = questionRepository.findByIdAndFetchTags(question.getId());
@@ -94,12 +95,12 @@ public class QuestionRepositoryTest {
                 .filter(q -> QUESTION_TAG_LIBELLE_1.equals(q.getTag().getLibelle()))
                 .findFirst();
 
-        Assertions.assertThat(optional.isPresent()).isTrue();
+        Assertions.assertThat(optional).isPresent();
 
     }
 
     @Test
-    public void findByIdAndFetchTagsAndResponses() {
+     void findByIdAndFetchTagsAndResponses() {
         QuestionEntity question = fixture.createQuestionsAndGetFirst();
 
         //test create
@@ -116,7 +117,7 @@ public class QuestionRepositoryTest {
                 .filter(q -> QUESTION_TAG_LIBELLE_1.equals(q.getTag().getLibelle()))
                 .findFirst();
 
-        Assertions.assertThat(optional.isPresent()).isTrue();
+        Assertions.assertThat(optional).isPresent();
 
         // responses
         Assertions.assertThat(newQuestion.getResponses()).isNotEmpty();
@@ -129,7 +130,7 @@ public class QuestionRepositoryTest {
     }
 
     @Test
-    public void findAllQuestionsTags() {
+     void findAllQuestionsTags() {
 
         fixture.emptyDatabase();
 
@@ -152,23 +153,23 @@ public class QuestionRepositoryTest {
 
         QuestionTagEntity questionTag = Iterables.getFirst(questionTags, null);
 
+        Assertions.assertThat(questionTag).isNotNull();
         Assertions.assertThat(questionTag.getTag()).isNotNull();
 
     }
 
 
     @Test
-    public void findAllQuestions()  {
-
+     void findAllQuestions()  {
 
         fixture.emptyDatabase();
 
         fixture.createOneQuestionnaireWithTwoQuestionTags();
 
-        Tag tag1 = fixture.findTagbyLibelle(fixture.QUESTION_TAG_LIBELLE_1, () -> SpringBootTestConfig.USER_TEST);
+        Tag tag1 = fixture.findTagbyLibelle(DbFixture.QUESTION_TAG_LIBELLE_1, () -> SpringBootTestConfig.USER_TEST);
         Assertions.assertThat(tag1).isNotNull();
 
-        Specification <QuestionEntity> specification = new QuestionSpecificationBuilder(PrincipalUtils.getEmail(() -> SpringBootTestConfig.USER_TEST))
+        Specification <QuestionEntity> specification = new QuestionSpecificationBuilder(PrincipalUtils.getEmailOrName( (Principal) () -> SpringBootTestConfig.USER_TEST))
                 .setTagUuids(new UUID[]{tag1.getUuid()})
                 .build();
 

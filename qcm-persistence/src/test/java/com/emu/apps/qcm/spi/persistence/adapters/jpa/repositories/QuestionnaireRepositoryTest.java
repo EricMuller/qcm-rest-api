@@ -64,7 +64,7 @@ public class QuestionnaireRepositoryTest {
         assertEquals(2, questionnaireQuestion1.getQuestion().getResponses().size());
 
         ResponseEntity response1 = Iterables.getFirst(questionnaireQuestion1.getQuestion().getResponses(), null);
-        assertEquals(DbFixture.RESPONSE_RESPONSE_1, response1.getLibelle());
+        assertEquals(DbFixture.RESPONSE_RESPONSE_1, response1.getResponseText());
 
         QuestionEntity question = questionnaireQuestion1.getQuestion();
         //tags
@@ -96,12 +96,11 @@ public class QuestionnaireRepositoryTest {
     @Test
     public void findAllWithSpecification() {
 
-
         fixture.emptyDatabase();
 
         fixture.createOneQuestionnaireWithTwoQuestionTags();
 
-        Tag tag = fixture.findTagbyLibelle(fixture.QUESTIONNAIRE_TAG_LIBELLE_1, () -> SpringBootTestConfig.USER_TEST);
+        Tag tag = fixture.findTagbyLibelle(fixture.QUESTIONNAIRE_TAG_LIBELLE_1, () ->  SpringBootTestConfig.USER_TEST);
         Assertions.assertThat(tag).isNotNull();
 
         QuestionnaireSpecificationBuilder questionnaireSpecificationBuilder = new QuestionnaireSpecificationBuilder();

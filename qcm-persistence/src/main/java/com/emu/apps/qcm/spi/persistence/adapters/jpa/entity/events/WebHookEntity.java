@@ -25,7 +25,7 @@ public class WebHookEntity extends AuditableEntity <String> {
 
     private String url;
 
-    @Column(name = "contentType", nullable = false)
+    @Column(nullable = false)
     private String contentType = MediaType.APPLICATION_JSON_VALUE;
 
     @Column(name = "secret", nullable = false)

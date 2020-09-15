@@ -14,8 +14,8 @@ class PublishedResponseDtoTest {
 	@Test
 	void testResponse() {
 		String param = "123";
-		aPublishedResponseDto.setResponse(param);
-		Object result = aPublishedResponseDto.getResponse();
+		aPublishedResponseDto.setResponseText(param);
+		Object result = aPublishedResponseDto.getResponseText();
 		assertEquals(param, result);
 	}
 

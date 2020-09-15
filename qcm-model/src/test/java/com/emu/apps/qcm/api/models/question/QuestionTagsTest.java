@@ -15,8 +15,8 @@ class QuestionTagsTest {
 	@Test
 	void testLibelle() {
 		String param = "123";
-		aQuestionTags.setLibelle(param);
-		Object result = aQuestionTags.getLibelle();
+		aQuestionTags.setQuestionText(param);
+		Object result = aQuestionTags.getQuestionText();
 		assertEquals(param, result);
 	}
 

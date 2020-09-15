@@ -107,7 +107,7 @@ public class DbFixture {
 
     @Transactional(readOnly = true)
     public Tag findTagbyLibelle(String name, Principal principal) {
-        return tagRepository.findByLibelle(name, PrincipalUtils.getEmail(principal));
+        return tagRepository.findByLibelle(name, PrincipalUtils.getEmailOrName(principal));
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -151,17 +151,17 @@ public class DbFixture {
 
             ResponseEntity response1 = new ResponseEntity();
             response1.setNumber(1l);
-            response1.setLibelle(RESPONSE_RESPONSE_1);
+            response1.setResponseText(RESPONSE_RESPONSE_1);
             response1 = responseCrudRepository.save(response1);
 
             ResponseEntity response2 = new ResponseEntity();
             response2.setNumber(2l);
-            response2.setLibelle(RESPONSE_RESPONSE_2);
+            response2.setResponseText(RESPONSE_RESPONSE_2);
             response2 = responseCrudRepository.save(response2);
 
             //question 1
             QuestionEntity question1 = new QuestionEntity();
-            question1.setLibelle(QUESTION_QUESTION_1);
+            question1.setQuestionText(QUESTION_QUESTION_1);
             question1.setType(FREE_TEXT);
             question1.setCategory(questionCategory);
 
@@ -171,7 +171,7 @@ public class DbFixture {
 
             //question 2
             QuestionEntity question2 = new QuestionEntity();
-            question2.setLibelle(QUESTION_QUESTION_2);
+            question2.setQuestionText(QUESTION_QUESTION_2);
             question2.setType(FREE_TEXT);
             question2.setCategory(questionCategory);
 
@@ -243,18 +243,18 @@ public class DbFixture {
 
         ResponseEntity response = new ResponseEntity();
         response.setNumber(1l);
-        response.setLibelle(RESPONSE_RESPONSE_1);
+        response.setResponseText(RESPONSE_RESPONSE_1);
 //        response.setChoices(Sets.newHashSet(choice, choice2));
         responseCrudRepository.save(response);
 
         ResponseEntity response2 = new ResponseEntity();
         response2.setNumber(2l);
-        response2.setLibelle(RESPONSE_RESPONSE_2);
+        response2.setResponseText(RESPONSE_RESPONSE_2);
         responseCrudRepository.save(response2);
 
         //question 1
         QuestionEntity question1 = new QuestionEntity();
-        question1.setLibelle(QUESTION_QUESTION_1);
+        question1.setQuestionText(QUESTION_QUESTION_1);
         question1.setType(FREE_TEXT);
 
         question1.setResponses(Lists.newArrayList(response, response2));
@@ -262,7 +262,7 @@ public class DbFixture {
 
         //question 2
         QuestionEntity question2 = new QuestionEntity();
-        question2.setLibelle(QUESTION_QUESTION_2);
+        question2.setQuestionText(QUESTION_QUESTION_2);
         question2.setType(FREE_TEXT);
 
         questionRepository.save(question2);

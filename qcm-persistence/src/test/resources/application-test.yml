@@ -7,7 +7,7 @@ spring:
   jpa:
 #    database-platform: org.hibernate.dialect.H2Dialect
     generate-ddl: false
-    show-sql: false
+    show-sql: true
     hibernate:
       ddl-auto: create-drop
       dialect: org.hibernate.dialect.PostgreSQLDialect

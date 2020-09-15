@@ -3,6 +3,7 @@ package com.emu.apps.qcm.spi.webmvc.config;
 import com.emu.apps.qcm.spi.persistence.exceptions.EntityNotFoundException;
 import com.emu.apps.qcm.spi.webmvc.exceptions.ExceptionMessage;
 import com.emu.apps.qcm.spi.webmvc.exceptions.FieldErrorMessage;
+import com.emu.apps.qcm.spi.webmvc.exceptions.UserAuthenticationException;
 import com.emu.apps.qcm.spi.webmvc.exceptions.builders.ExceptionMessageBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -159,6 +160,23 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
         return response(response, BAD_REQUEST);
 
+    }
+
+
+    @ExceptionHandler({UserAuthenticationException.class})
+    @ResponseBody
+    public ResponseEntity <Object> handleAuthenticationException(Exception e) {
+
+        LOG.error("AnyException caught: ", e);
+
+        ExceptionMessage exceptionMessage = new ExceptionMessageBuilder()
+                .setStatus(FORBIDDEN.value())
+                .setException(FORBIDDEN.getReasonPhrase())
+                .setError(e.getClass().getName())
+                .setTimestamp(ZonedDateTime.now())
+                .setMessage(e.getMessage()).createExceptionMessage();
+
+        return response(exceptionMessage, FORBIDDEN);
     }
 
 }

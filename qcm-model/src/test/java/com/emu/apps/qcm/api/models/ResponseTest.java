@@ -22,8 +22,8 @@ class ResponseTest {
 	@Test
 	void testLibelle() {
 		String param = "123";
-		aResponse.setLibelle(param);
-		Object result = aResponse.getLibelle();
+		aResponse.setResponseText(param);
+		Object result = aResponse.getResponseText();
 		assertEquals(param, result);
 	}
 

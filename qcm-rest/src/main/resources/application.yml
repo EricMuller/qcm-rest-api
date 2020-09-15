@@ -1,3 +1,5 @@
+maven.version: @project.version@
+
 info:
   application-name: qcm-rest-api
 
@@ -45,7 +47,7 @@ spring:
 #    context-path: /
 
 
-maven.version: @project.version@
+
 
 
 

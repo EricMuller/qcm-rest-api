@@ -42,7 +42,7 @@ public class ExportServiceAdapter implements ExportServicePort {
 
         var name = generateName(questionnaire);
 
-        return exportMapper.toDto(questionnaire, questions, name);
+        return exportMapper.modelToExportDto(questionnaire, questions, name);
     }
 
 }

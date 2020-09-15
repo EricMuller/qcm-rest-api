@@ -1,17 +1,17 @@
 ---
 spring:
-    profiles: postgresql
+    profiles: heroku-postgresql
     jpa:
         open-in-view: false
         database-platform: org.hibernate.dialect.PostgreSQLDialect
-        #database: default
         generate-ddl: false
-        show-sql: true
+        show-sql: false
+
         hibernate:
             use-new-id-generator-mappings: true
             ddl-auto: update
             # dll-auto: none
-            #ddl-auto: create-drop
+            # ddl-auto: create-drop
             dialect: org.hibernate.dialect.PostgreSQL9Dialect
             properties:
                 hibernate:
@@ -55,30 +55,13 @@ spring:
 
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:postgresql://192.168.0.104:5432/qcm
         driverClassName: org.postgresql.Driver
-        username: qcm
-        password: qcm
+        url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://192.168.0.104:5432/qcm?user=qcm&password=qcm}
         hikari:
-            url: jdbc:postgresql://192.168.0.104:5432/qcm
+            url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://192.168.0.104:5432/qcm?user=qcm&password=qcm}
             pool-name: qcm-hikari-pool
             autoCommit: false
             connection-test-query: SELECT 1
             idleTimeout: 20000
             minimum-idle: 1
             maximumPoolSize: 5
-
-        histo:
-            type: com.zaxxer.hikari.HikariDataSource
-            url: jdbc:postgresql://192.168.0.104:5432/qcm
-            driverClassName: org.postgresql.Driver
-            username: qcm
-            password: qcm
-            hikari:
-                url: jdbc:postgresql://192.168.0.104:5432/qcm
-                pool-name: qcm-hikari-pool
-                autoCommit: false
-                connection-test-query: SELECT 1
-                idleTimeout: 20000
-                minimum-idle: 1
-                maximumPoolSize: 5
