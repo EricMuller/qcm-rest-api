@@ -99,6 +99,11 @@ Code is under the [MIT Licence ](https://opensource.org/licenses/mit-license.php
 
 ### Architecture
 
+Three agents:
+- User Side (who pilots)
+- Server Side (who is piloted, driven)
+- Business Logic (hexagone)
+
 ![Architecture](hexagonal.png)
 
 ### Mcd
