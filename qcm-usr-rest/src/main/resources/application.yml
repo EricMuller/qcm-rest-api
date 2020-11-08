@@ -1,3 +1,7 @@
+server:
+  http2:
+    enable: true
+
 maven.version: @project.version@
 
 info:

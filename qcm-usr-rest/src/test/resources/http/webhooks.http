@@ -21,7 +21,7 @@ Authorization: {{auth_token}}
 
 {
   "secret": "QUESTION",
-  "url": "http://{{host}}:{{port}}/qcm/api/v1/webhooks/catch"
+  "url1": "http://{{host}}:{{port}}/qcm/api/v1/webhooks/catch"
 }
 
 ###

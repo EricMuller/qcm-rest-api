@@ -27,11 +27,11 @@ public class EventEntity extends AuditableEntity <String> {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private ActionEvent action;
+    @Column(name = "type")
+    private TypeEvent typeEvent;
 
     @Column(name = "origin", nullable = false)
     @Type(type = "org.hibernate.type.UUIDCharType")
     private UUID origin;
-
 
 }

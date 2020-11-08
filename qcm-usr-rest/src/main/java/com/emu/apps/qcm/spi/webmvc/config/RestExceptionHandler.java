@@ -20,9 +20,11 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.validation.ConstraintViolationException;
 import java.lang.reflect.InvocationTargetException;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -177,6 +179,27 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 .setMessage(e.getMessage()).createExceptionMessage();
 
         return response(exceptionMessage, FORBIDDEN);
+    }
+
+    /**
+     * ref
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException e) {
+
+        LOG.error("ConstraintViolationException caught: ", e);
+
+        ExceptionMessage exceptionMessage = new ExceptionMessageBuilder()
+                .setStatus(BAD_REQUEST.value())
+                .setException(BAD_REQUEST.getReasonPhrase())
+                .setError(e.getClass().getName())
+                .setTimestamp(ZonedDateTime.now())
+                .setMessage(e.getMessage()).createExceptionMessage();
+
+        return response(exceptionMessage, HttpStatus.BAD_REQUEST);
     }
 
 }

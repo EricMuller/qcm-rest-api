@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,6 +25,7 @@ import static org.springframework.data.domain.Sort.Direction.DESC;
 @Profile("webmvc")
 @RequestMapping(value = PUBLIC_API + WEBHOOKS, produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "WebHook")
+@Validated
 public class WebHookRestController {
 
     private final WebHookBusinessPort webHookBusinessPort;

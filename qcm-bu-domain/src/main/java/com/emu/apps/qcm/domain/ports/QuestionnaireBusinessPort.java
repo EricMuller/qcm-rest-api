@@ -30,4 +30,6 @@ public interface QuestionnaireBusinessPort {
 
     void deleteQuestion(String questionnaireUuid, String questionUuid);
 
+    void activateQuestionnaire(String questionnaireUuid);
+
 }

@@ -29,6 +29,9 @@ import java.util.stream.Collectors;
 @Transactional
 public class QuestionnaireBusinessAdapter implements QuestionnaireBusinessPort {
 
+
+
+
     private final QuestionnairePersistencePort questionnairePersistencePort;
 
     public QuestionnaireBusinessAdapter(QuestionnairePersistencePort questionnairePersistencePort) {
@@ -125,6 +128,13 @@ public class QuestionnaireBusinessAdapter implements QuestionnaireBusinessPort {
     @Override
     public void deleteQuestion(String questionnaireUuid, String questionUuid) {
         questionnairePersistencePort.deleteQuestion(questionnaireUuid, questionUuid);
+    }
+
+    @Override
+    public void activateQuestionnaire(String questionnaireUuid){
+
+
+
     }
 
 
