@@ -1,8 +1,8 @@
 package com.emu.apps.qcm.spi.webmvc.rest;
 
 
-import com.emu.apps.qcm.api.dtos.export.v1.ExportDto;
-import com.emu.apps.qcm.domain.ports.ExportBusinessPort;
+import com.emu.apps.qcm.domain.dtos.export.v1.ExportDto;
+import com.emu.apps.qcm.repositories.ExportRepository;
 import com.emu.apps.qcm.spi.reporting.ReportServicePort;
 import com.emu.apps.qcm.spi.reporting.services.TypeReport;
 import com.emu.apps.shared.annotations.Timer;
@@ -29,12 +29,12 @@ import static com.emu.apps.qcm.spi.webmvc.rest.ApiRestMappings.PUBLIC_API;
 @Tag(name = "Export")
 public class ExportRestController {
 
-    private final ExportBusinessPort exportBusinessPort;
+    private final ExportRepository exportRepository;
 
     private final ReportServicePort reportServicePort;
 
-    public ExportRestController(ExportBusinessPort exportService, ReportServicePort reportServicePort) {
-        this.exportBusinessPort = exportService;
+    public ExportRestController(ExportRepository exportService, ReportServicePort reportServicePort) {
+        this.exportRepository = exportService;
         this.reportServicePort = reportServicePort;
     }
 
@@ -42,7 +42,7 @@ public class ExportRestController {
     @GetMapping(value = "/{uuid}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ExportDto getExportByQuestionnaireUuid(@PathVariable("uuid") String id) {
-        return exportBusinessPort.getbyQuestionnaireUuid(id);
+        return exportRepository.getbyQuestionnaireUuid(id);
     }
 
 
@@ -57,7 +57,7 @@ public class ExportRestController {
             throw new IllegalArgumentException(type);
         }
 
-        final ExportDto exportDto = exportBusinessPort.getbyQuestionnaireUuid(uuid);
+        final ExportDto exportDto = exportRepository.getbyQuestionnaireUuid(uuid);
         ByteArrayOutputStream outputStream = reportServicePort.getReportStream(exportDto, typeReport);
         ByteArrayResource resource = new ByteArrayResource(outputStream.toByteArray());
 

@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.spi.reporting.services;
 
-import com.emu.apps.qcm.api.dtos.export.v1.ExportDto;
+import com.emu.apps.qcm.domain.dtos.export.v1.ExportDto;
 import fr.opensagres.xdocreport.document.IXDocReport;
 import fr.opensagres.xdocreport.document.registry.XDocReportRegistry;
 import fr.opensagres.xdocreport.template.IContext;

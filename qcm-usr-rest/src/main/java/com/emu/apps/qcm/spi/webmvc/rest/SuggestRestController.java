@@ -1,8 +1,8 @@
 package com.emu.apps.qcm.spi.webmvc.rest;
 
 
-import com.emu.apps.qcm.domain.ports.SuggestBusinessPort;
-import com.emu.apps.qcm.api.dtos.SuggestDto;
+import com.emu.apps.qcm.repositories.SuggestBusinessPort;
+import com.emu.apps.qcm.domain.dtos.SuggestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.MediaType;

@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.spi.persistence.adapters.jpa;
 
 
-import com.emu.apps.qcm.api.models.WebHook;
+import com.emu.apps.qcm.aggregates.WebHook;
 import com.emu.apps.qcm.spi.persistence.WebHookPersistencePort;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.UserEntity;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.events.WebHookEntity;

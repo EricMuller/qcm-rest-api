@@ -29,8 +29,8 @@
 package com.emu.apps.qcm.spi.persistence.mappers.exports;
 
 
-import com.emu.apps.qcm.api.dtos.export.v1.*;
-import com.emu.apps.qcm.api.models.Questionnaire;
+import com.emu.apps.qcm.domain.dtos.export.v1.*;
+import com.emu.apps.qcm.aggregates.Questionnaire;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.category.CategoryEntity;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.questionnaires.QuestionnaireQuestionEntity;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.questions.QuestionEntity;

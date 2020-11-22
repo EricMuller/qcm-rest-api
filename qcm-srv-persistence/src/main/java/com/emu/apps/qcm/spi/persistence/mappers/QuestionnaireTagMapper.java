@@ -28,7 +28,7 @@
 
 package com.emu.apps.qcm.spi.persistence.mappers;
 
-import com.emu.apps.qcm.api.models.QuestionnaireTag;
+import com.emu.apps.qcm.aggregates.QuestionnaireTag;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.tags.QuestionnaireTagEntity;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.tags.TagEntity;
 import org.mapstruct.Mapper;

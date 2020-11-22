@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.spi.webmvc.rest;
 
-import com.emu.apps.qcm.api.models.Upload;
-import com.emu.apps.qcm.domain.ports.ImportBusinessPort;
+import com.emu.apps.qcm.aggregates.Upload;
+import com.emu.apps.qcm.services.ImportServices;
 import com.emu.apps.shared.security.AuthentificationContextHolder;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.context.annotation.Profile;
@@ -19,17 +19,16 @@ import static com.emu.apps.qcm.spi.webmvc.rest.ApiRestMappings.PUBLIC_API;
 @Tag(name = "Import")
 public class ImportRestController {
 
-    private final ImportBusinessPort importBusinessPort;
+    private final ImportServices importServices;
 
-    public ImportRestController(ImportBusinessPort importServicePort) {
-        this.importBusinessPort = importServicePort;
+    public ImportRestController(ImportServices importServices) {
+        this.importServices = importServices;
     }
 
     @ResponseBody
     @GetMapping(value = "/{uuid}")
     public Upload importFileByUploadUuid(@PathVariable("uuid") String uploadUuid) throws IOException {
-        return importBusinessPort.importFile(uploadUuid, AuthentificationContextHolder.getUser());
+        return importServices.importFile(uploadUuid, AuthentificationContextHolder.getUser());
     }
-
 
 }

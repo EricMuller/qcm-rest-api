@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.spi.webmvc.rest;
 
-import com.emu.apps.qcm.api.models.Upload;
-import com.emu.apps.qcm.domain.ports.UploadBusinessPort;
+import com.emu.apps.qcm.aggregates.Upload;
+import com.emu.apps.qcm.repositories.UploadRepository;
 import com.emu.apps.shared.annotations.Timer;
 import com.emu.apps.shared.security.AuthentificationContextHolder;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -27,10 +27,10 @@ import static org.springframework.data.domain.Sort.Direction.DESC;
 @Tag(name = "Upload")
 public class UploadRestController {
 
-    private final UploadBusinessPort uploadBusinessPort;
+    private final UploadRepository uploadRepository;
 
-    public UploadRestController(UploadBusinessPort uploadServicePort) {
-        this.uploadBusinessPort = uploadServicePort;
+    public UploadRestController(UploadRepository uploadServicePort) {
+        this.uploadRepository = uploadServicePort;
     }
 
     @ResponseBody
@@ -39,7 +39,7 @@ public class UploadRestController {
                                    @RequestParam("file") MultipartFile multipartFile,
                                    @RequestParam(value = "async", required = false) Boolean async) throws IOException {
 
-        return uploadBusinessPort.uploadFile(fileType, multipartFile, async, AuthentificationContextHolder.getUser());
+        return uploadRepository.uploadFile(fileType, multipartFile, async, AuthentificationContextHolder.getUser());
     }
 
     @GetMapping
@@ -47,7 +47,7 @@ public class UploadRestController {
     @PageableAsQueryParam
     public Iterable <Upload> getUploads(@Parameter(hidden = true)
                                         @PageableDefault(direction = DESC, sort = {"dateModification"}) Pageable pageable) {
-        return uploadBusinessPort.getUploads(pageable, AuthentificationContextHolder.getUser());
+        return uploadRepository.getUploads(pageable, AuthentificationContextHolder.getUser());
     }
 
 
@@ -55,13 +55,13 @@ public class UploadRestController {
     @ResponseBody
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteUploadByUuid(@PathVariable("uuid") String uuid) {
-        uploadBusinessPort.deleteUploadByUuid(uuid);
+        uploadRepository.deleteUploadByUuid(uuid);
     }
 
     @GetMapping(value = "/{uuid}")
     @ResponseBody
     public Upload getUploadByUuid(@PathVariable("uuid") String uuid) {
-        return uploadBusinessPort.getUploadByUuid(uuid);
+        return uploadRepository.getUploadByUuid(uuid);
     }
 
 

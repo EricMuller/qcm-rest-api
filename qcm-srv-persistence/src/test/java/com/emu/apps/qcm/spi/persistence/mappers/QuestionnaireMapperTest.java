@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.spi.persistence.mappers;
 
-import com.emu.apps.qcm.api.models.Questionnaire;
-import com.emu.apps.qcm.api.models.QuestionnaireTag;
+import com.emu.apps.qcm.aggregates.Questionnaire;
+import com.emu.apps.qcm.aggregates.QuestionnaireTag;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.questionnaires.QuestionnaireEntity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;

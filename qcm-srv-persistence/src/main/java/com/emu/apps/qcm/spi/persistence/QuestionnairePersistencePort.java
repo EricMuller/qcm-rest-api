@@ -1,9 +1,9 @@
 package com.emu.apps.qcm.spi.persistence;
 
-import com.emu.apps.qcm.api.dtos.published.PublishedQuestionnaireDto;
-import com.emu.apps.qcm.api.models.Question;
-import com.emu.apps.qcm.api.models.Questionnaire;
-import com.emu.apps.qcm.api.models.QuestionnaireQuestion;
+import com.emu.apps.qcm.domain.dtos.published.PublishedQuestionnaireDto;
+import com.emu.apps.qcm.aggregates.Question;
+import com.emu.apps.qcm.aggregates.Questionnaire;
+import com.emu.apps.qcm.aggregates.QuestionnaireQuestion;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.projections.QuestionnaireProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

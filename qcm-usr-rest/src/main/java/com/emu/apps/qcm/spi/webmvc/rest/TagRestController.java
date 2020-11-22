@@ -1,8 +1,8 @@
 package com.emu.apps.qcm.spi.webmvc.rest;
 
 
-import com.emu.apps.qcm.api.models.Tag;
-import com.emu.apps.qcm.domain.ports.TagBusinessPort;
+import com.emu.apps.qcm.aggregates.Tag;
+import com.emu.apps.qcm.repositories.TagRepository;
 import com.emu.apps.shared.security.AuthentificationContextHolder;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
@@ -28,10 +28,10 @@ import static org.springframework.data.domain.Sort.Direction.DESC;
 @io.swagger.v3.oas.annotations.tags.Tag(name = "Tag")
 public class TagRestController {
 
-    private final TagBusinessPort tagBusinessPort;
+    private final TagRepository tagRepository;
 
-    public TagRestController(TagBusinessPort tagServicePort) {
-        this.tagBusinessPort = tagServicePort;
+    public TagRestController(TagRepository tagServicePort) {
+        this.tagRepository = tagServicePort;
     }
 
     @GetMapping
@@ -41,26 +41,26 @@ public class TagRestController {
                               @Parameter(hidden = true)
                               @PageableDefault(direction = DESC, sort = {"dateModification"}, size = 100) Pageable pageable) throws IOException {
 
-        return tagBusinessPort.getTags(search, pageable, AuthentificationContextHolder.getUser());
+        return tagRepository.getTags(search, pageable, AuthentificationContextHolder.getUser());
     }
 
     @GetMapping(value = "{uuid}")
     @ResponseBody
     public Tag getTagByUuid(@PathVariable("uuid") String uuid) {
-        return tagBusinessPort.getTagByUuid(uuid);
+        return tagRepository.getTagByUuid(uuid);
     }
 
     @PostMapping
     @ResponseBody
     public Tag createTag(@RequestBody Tag tagDto) {
-        return tagBusinessPort.saveTag(tagDto);
+        return tagRepository.saveTag(tagDto);
     }
 
 
     @PutMapping
     @ResponseBody
     public Tag updateTag(@RequestBody Tag tagDto) {
-        return tagBusinessPort.saveTag(tagDto);
+        return tagRepository.saveTag(tagDto);
     }
 
 }

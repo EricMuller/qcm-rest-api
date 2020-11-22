@@ -1,9 +1,9 @@
 package com.emu.apps.qcm.spi.reporting;
 
-import com.emu.apps.qcm.api.dtos.export.v1.CategoryExportDto;
-import com.emu.apps.qcm.api.dtos.export.v1.QuestionExportDto;
-import com.emu.apps.qcm.api.dtos.export.v1.QuestionnaireExportDto;
-import com.emu.apps.qcm.api.dtos.export.v1.ResponseExportDto;
+import com.emu.apps.qcm.domain.dtos.export.v1.CategoryExportDto;
+import com.emu.apps.qcm.domain.dtos.export.v1.QuestionExportDto;
+import com.emu.apps.qcm.domain.dtos.export.v1.QuestionnaireExportDto;
+import com.emu.apps.qcm.domain.dtos.export.v1.ResponseExportDto;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.Status;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.questions.TypeQuestionEnum;
 import fr.opensagres.xdocreport.core.XDocReportException;

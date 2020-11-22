@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.spi.webmvc.config;
 
-import com.emu.apps.qcm.api.models.User;
-import com.emu.apps.qcm.domain.ports.UserBusinessPort;
+import com.emu.apps.qcm.aggregates.User;
+import com.emu.apps.qcm.repositories.UserRepository;
 import com.emu.apps.shared.security.AuthentificationContextHolder;
 import com.emu.apps.shared.security.PrincipalUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -20,9 +20,9 @@ import java.util.Objects;
 @Slf4j
 public class UserFilter implements Filter {
 
-    private final UserBusinessPort userServicePort;
+    private final UserRepository userServicePort;
 
-    public UserFilter(UserBusinessPort userServicePort) {
+    public UserFilter(UserRepository userServicePort) {
         this.userServicePort = userServicePort;
     }
 

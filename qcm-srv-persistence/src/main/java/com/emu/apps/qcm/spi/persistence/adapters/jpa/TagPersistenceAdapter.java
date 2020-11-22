@@ -33,7 +33,7 @@ import com.emu.apps.qcm.spi.persistence.adapters.jpa.repositories.TagRepository;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.specifications.TagSpecificationBuilder;
 import com.emu.apps.qcm.spi.persistence.TagPersistencePort;
 import com.emu.apps.qcm.spi.persistence.mappers.TagMapper;
-import com.emu.apps.qcm.api.models.Tag;
+import com.emu.apps.qcm.aggregates.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

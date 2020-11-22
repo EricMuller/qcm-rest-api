@@ -2,7 +2,7 @@ package com.emu.apps.qcm.spi.persistence.mappers;
 
 
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.UserEntity;
-import com.emu.apps.qcm.api.models.User;
+import com.emu.apps.qcm.aggregates.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;

@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.spi.reporting;
 
-import com.emu.apps.qcm.api.dtos.export.v1.ExportDto;
+import com.emu.apps.qcm.domain.dtos.export.v1.ExportDto;
 import com.emu.apps.qcm.spi.reporting.services.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

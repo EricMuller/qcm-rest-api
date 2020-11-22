@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.spi.persistence.adapters.jpa;
 
-import com.emu.apps.qcm.api.models.Questionnaire;
+import com.emu.apps.qcm.aggregates.Questionnaire;
 import com.emu.apps.qcm.spi.infrastructure.DbFixture;
 import com.emu.apps.qcm.spi.infrastructure.Fixture;
 import com.emu.apps.qcm.spi.infrastructure.ModelFixture;

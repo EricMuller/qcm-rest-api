@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.spi.webmvc.rest;
 
-import com.emu.apps.qcm.api.models.User;
-import com.emu.apps.qcm.domain.ports.UserBusinessPort;
+import com.emu.apps.qcm.aggregates.User;
+import com.emu.apps.qcm.repositories.UserRepository;
 import com.emu.apps.qcm.spi.persistence.exceptions.MessageSupport;
 import com.emu.apps.qcm.spi.webmvc.exceptions.UserAuthenticationException;
 import com.emu.apps.shared.security.PrincipalUtils;
@@ -24,14 +24,14 @@ import static com.emu.apps.qcm.spi.webmvc.rest.ApiRestMappings.USERS;
 @Tag(name = "User")
 public class UserRestController {
 
-    private final UserBusinessPort userBusinessPort;
+    private final UserRepository userRepository;
 
-    public UserRestController(UserBusinessPort userServicePort) {
-        this.userBusinessPort = userServicePort;
+    public UserRestController(UserRepository userServicePort) {
+        this.userRepository = userServicePort;
     }
 
     public Map <String, String> principal(Principal principal) {
-        return userBusinessPort.principal(principal);
+        return userRepository.principal(principal);
     }
 
     /**
@@ -42,7 +42,7 @@ public class UserRestController {
     @ResponseBody
     public User getAuthentifiedUser(Principal principal) {
         String email = PrincipalUtils.getEmailOrName(principal);
-        User user = userBusinessPort.userByEmail(email);
+        User user = userRepository.userByEmail(email);
         if (Objects.isNull(user)) {
             user = new User();
             user.setEmail(PrincipalUtils.getEmailOrName(principal));
@@ -55,9 +55,9 @@ public class UserRestController {
     @ResponseBody
     public User updateAuthentifiedUser(@RequestBody User user, Principal principal) {
         String email = PrincipalUtils.getEmailOrName(principal);
-        User authentUser = userBusinessPort.userByEmail(email);
+        User authentUser = userRepository.userByEmail(email);
         if (Objects.nonNull(authentUser) && authentUser.getEmail().equals(user.getEmail())) {
-            return userBusinessPort.updateUser(user, email);
+            return userRepository.updateUser(user, email);
         } else {
             throw new UserAuthenticationException(MessageSupport.INVALID_UUID_USER);
         }
@@ -67,9 +67,9 @@ public class UserRestController {
     @ResponseBody
     public User createAuthentifiedUser(@RequestBody User user, Principal principal) {
         String email = PrincipalUtils.getEmailOrName(principal);
-        User authentUser = userBusinessPort.userByEmail(email);
+        User authentUser = userRepository.userByEmail(email);
         if (Objects.isNull(authentUser)) {
-            return userBusinessPort.createUser(user, email);
+            return userRepository.createUser(user, email);
         } else {
             throw new UserAuthenticationException(MessageSupport.EXISTS_UUID_USER);
         }
@@ -79,7 +79,7 @@ public class UserRestController {
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseBody
     public User updateUser(@RequestBody User user, Principal principal) {
-        return userBusinessPort.updateUser(user, PrincipalUtils.getEmailOrName(principal));
+        return userRepository.updateUser(user, PrincipalUtils.getEmailOrName(principal));
     }
 
 }

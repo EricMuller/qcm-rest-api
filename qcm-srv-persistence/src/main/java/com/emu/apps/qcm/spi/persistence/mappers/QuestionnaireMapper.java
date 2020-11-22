@@ -29,7 +29,7 @@
 package com.emu.apps.qcm.spi.persistence.mappers;
 
 
-import com.emu.apps.qcm.api.models.Questionnaire;
+import com.emu.apps.qcm.aggregates.Questionnaire;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.questionnaires.QuestionnaireEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

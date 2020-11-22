@@ -1,11 +1,9 @@
 package com.emu.apps.qcm.spi.infrastructure;
 
-import com.emu.apps.qcm.api.models.Questionnaire;
+import com.emu.apps.qcm.aggregates.Questionnaire;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-
-import java.util.UUID;
 
 @Component
 @Slf4j

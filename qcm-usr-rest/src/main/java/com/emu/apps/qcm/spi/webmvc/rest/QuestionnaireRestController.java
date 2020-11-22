@@ -1,10 +1,10 @@
 package com.emu.apps.qcm.spi.webmvc.rest;
 
 
-import com.emu.apps.qcm.api.models.Question;
-import com.emu.apps.qcm.api.models.Questionnaire;
-import com.emu.apps.qcm.api.models.QuestionnaireQuestion;
-import com.emu.apps.qcm.domain.ports.QuestionnaireBusinessPort;
+import com.emu.apps.qcm.aggregates.Question;
+import com.emu.apps.qcm.aggregates.Questionnaire;
+import com.emu.apps.qcm.aggregates.QuestionnaireQuestion;
+import com.emu.apps.qcm.repositories.QuestionnaireRepository;
 import com.emu.apps.qcm.spi.webmvc.rest.caches.CacheName;
 import com.emu.apps.shared.annotations.Timer;
 import com.emu.apps.shared.security.AuthentificationContextHolder;
@@ -36,10 +36,10 @@ import static org.springframework.data.domain.Sort.Direction.DESC;
 @Tag(name = "Questionnaire")
 public class QuestionnaireRestController {
 
-    private final QuestionnaireBusinessPort questionnaireServicePort;
+    private final QuestionnaireRepository questionnaireRepository;
 
-    public QuestionnaireRestController(QuestionnaireBusinessPort questionnaireServicePort) {
-        this.questionnaireServicePort = questionnaireServicePort;
+    public QuestionnaireRestController(QuestionnaireRepository questionnaireServicePort) {
+        this.questionnaireRepository = questionnaireServicePort;
     }
 
     @GetMapping(value = "/{uuid}")
@@ -47,15 +47,14 @@ public class QuestionnaireRestController {
     @Cacheable(cacheNames = CacheName.Names.QUESTIONNAIRE, key = "#uuid")
     @ResponseBody
     public Questionnaire getQuestionnaireByUuid(@PathVariable("uuid") String uuid) {
-        return questionnaireServicePort.getQuestionnaireByUuid(uuid);
+        return questionnaireRepository.getQuestionnaireByUuid(uuid);
     }
-
 
     @DeleteMapping(value = "/{uuid}")
     @CacheEvict(cacheNames = CacheName.Names.QUESTIONNAIRE, key = "#uuid")
     @ResponseBody
     public ResponseEntity <Questionnaire> deleteQuestionnaireByUuid(@PathVariable("uuid") String uuid) {
-        questionnaireServicePort.deleteQuestionnaireByUuid(uuid);
+        questionnaireRepository.deleteQuestionnaireByUuid(uuid);
         return new ResponseEntity <>(HttpStatus.NO_CONTENT);
     }
 
@@ -64,13 +63,13 @@ public class QuestionnaireRestController {
     @Timer
     @ResponseBody
     public Questionnaire updateQuestionnaire(@RequestBody Questionnaire questionnaireDto) {
-        return questionnaireServicePort.updateQuestionnaire(questionnaireDto, AuthentificationContextHolder.getUser());
+        return questionnaireRepository.updateQuestionnaire(questionnaireDto, AuthentificationContextHolder.getUser());
     }
 
     @PostMapping
     @ResponseBody
     public Questionnaire saveQuestionnaire(@RequestBody Questionnaire questionnaireDto) {
-        return questionnaireServicePort.saveQuestionnaire(questionnaireDto, AuthentificationContextHolder.getUser());
+        return questionnaireRepository.saveQuestionnaire(questionnaireDto, AuthentificationContextHolder.getUser());
     }
 
     /* /{id:[\d]+}/questions*/
@@ -81,7 +80,7 @@ public class QuestionnaireRestController {
                                                                         @Parameter(hidden = true)
                                                                         @PageableDefault(direction = ASC, sort = {"position"}) Pageable pageable) {
 
-        return questionnaireServicePort.getQuestionsByQuestionnaireUuid(uuid, pageable);
+        return questionnaireRepository.getQuestionsByQuestionnaireUuid(uuid, pageable);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -92,22 +91,22 @@ public class QuestionnaireRestController {
                                                   @Parameter(hidden = true)
                                                   @PageableDefault(direction = DESC, sort = {"dateModification"}) Pageable pageable) {
 
-        return questionnaireServicePort.getQuestionnaires(tagUuid, pageable, AuthentificationContextHolder.getUser());
+        return questionnaireRepository.getQuestionnaires(tagUuid, pageable, AuthentificationContextHolder.getUser());
     }
 
     @PutMapping(value = "/{uuid}/questions")
     @ResponseBody
-    public Question addQuestionByQuestionnaireUuid(@PathVariable("uuid") String uuid, @RequestBody Question questionDto) {
+    public Question addQuestionByQuestionnaireUuid(@PathVariable("uuid") String uuid, @RequestBody Question question) {
 
         // send QuestionnaireQuestionDto
-        return questionnaireServicePort.addQuestion(uuid, questionDto, Optional.empty(), AuthentificationContextHolder.getUser());
+        return questionnaireRepository.addQuestion(uuid, question, Optional.empty(), AuthentificationContextHolder.getUser());
     }
 
 
     @DeleteMapping(value = "/{uuid}/questions/{question_uuid}")
     @ResponseBody
     public ResponseEntity <Void> deleteQuestionByQuestionnaireUuid(@PathVariable("uuid") String uuid, @PathVariable("question_uuid") String questionUuid) {
-        questionnaireServicePort.deleteQuestion(uuid, questionUuid);
+        questionnaireRepository.deleteQuestion(uuid, questionUuid);
         return new ResponseEntity <>(HttpStatus.NO_CONTENT);
     }
 

@@ -28,7 +28,7 @@
 
 package com.emu.apps.qcm.spi.persistence.adapters.jpa;
 
-import com.emu.apps.qcm.api.models.User;
+import com.emu.apps.qcm.aggregates.User;
 import com.emu.apps.qcm.spi.persistence.UserPersistencePort;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.UserEntity;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.repositories.UserRepository;

@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.spi.persistence;
 
-import com.emu.apps.qcm.api.models.Category;
+import com.emu.apps.qcm.aggregates.Category;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.category.Type;
 
 import java.util.Optional;

@@ -1,7 +1,6 @@
 package com.emu.apps.qcm.spi.persistence.mappers;
 
-import com.emu.apps.qcm.api.dtos.published.PushishedQuestionnaireQuestionDto;
-import com.emu.apps.qcm.api.models.Question;
+import com.emu.apps.qcm.domain.dtos.published.PushishedQuestionnaireQuestionDto;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.questionnaires.QuestionnaireEntity;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.questionnaires.QuestionnaireQuestionEntity;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.questions.QuestionEntity;

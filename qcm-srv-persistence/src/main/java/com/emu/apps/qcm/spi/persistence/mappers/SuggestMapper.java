@@ -30,7 +30,7 @@ package com.emu.apps.qcm.spi.persistence.mappers;
 
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.tags.TagEntity;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.projections.QuestionnaireProjection;
-import com.emu.apps.qcm.api.dtos.SuggestDto;
+import com.emu.apps.qcm.domain.dtos.SuggestDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;

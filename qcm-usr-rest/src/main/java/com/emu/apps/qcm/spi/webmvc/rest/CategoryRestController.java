@@ -1,8 +1,8 @@
 package com.emu.apps.qcm.spi.webmvc.rest;
 
-import com.emu.apps.qcm.api.models.Category;
-import com.emu.apps.qcm.domain.ports.CategoryBusinessPort;
-import com.emu.apps.qcm.api.dtos.MessageDto;
+import com.emu.apps.qcm.aggregates.Category;
+import com.emu.apps.qcm.repositories.CategoryRepository;
+import com.emu.apps.qcm.domain.dtos.MessageDto;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.category.Type;
 import com.emu.apps.qcm.spi.persistence.exceptions.FunctionnalException;
 import com.emu.apps.shared.security.AuthentificationContextHolder;
@@ -29,28 +29,28 @@ import static com.emu.apps.qcm.spi.webmvc.rest.ApiRestMappings.PUBLIC_API;
 @Tag(name = "Category")
 public class CategoryRestController {
 
-    private final CategoryBusinessPort categoryBusinessPort;
+    private final CategoryRepository categoryRepository;
 
-    public CategoryRestController(CategoryBusinessPort categoryServicePort) {
-        this.categoryBusinessPort = categoryServicePort;
+    public CategoryRestController(CategoryRepository categoryServicePort) {
+        this.categoryRepository = categoryServicePort;
     }
 
     @GetMapping(value = "/{uuid}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public Category getCategoryByUuid(@PathVariable("uuid") String uuid) {
-        return categoryBusinessPort.getCategoryByUuid(uuid);
+        return categoryRepository.getCategoryByUuid(uuid);
     }
 
     @GetMapping
     @ResponseBody
     public Iterable <Category> getCategoriesByType(@RequestParam("type") Type type) throws FunctionnalException {
-        return categoryBusinessPort.getCategories(AuthentificationContextHolder.getUser(), type);
+        return categoryRepository.getCategories(AuthentificationContextHolder.getUser(), type);
     }
 
     @PostMapping
     @ResponseBody
     public Category saveCategory(@RequestBody Category categoryDto) throws FunctionnalException {
-        return categoryBusinessPort.saveCategory(categoryDto, AuthentificationContextHolder.getUser());
+        return categoryRepository.saveCategory(categoryDto, AuthentificationContextHolder.getUser());
     }
 
     @ExceptionHandler({JsonProcessingException.class, IOException.class})

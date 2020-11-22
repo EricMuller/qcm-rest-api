@@ -28,7 +28,7 @@
 
 package com.emu.apps.qcm.spi.persistence.adapters.jpa;
 
-import com.emu.apps.qcm.api.models.Upload;
+import com.emu.apps.qcm.aggregates.Upload;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.upload.UploadEntity;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.repositories.UploadRepository;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.specifications.UploadSpecificationBuilder;

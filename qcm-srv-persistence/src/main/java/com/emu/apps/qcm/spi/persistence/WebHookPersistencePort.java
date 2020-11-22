@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.spi.persistence;
 
-import com.emu.apps.qcm.api.models.WebHook;
+import com.emu.apps.qcm.aggregates.WebHook;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;

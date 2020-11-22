@@ -29,7 +29,7 @@
 package com.emu.apps.qcm.spi.persistence.mappers;
 
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.questions.ResponseEntity;
-import com.emu.apps.qcm.api.models.Response;
+import com.emu.apps.qcm.aggregates.Response;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring", uses = UuidMapper.class)

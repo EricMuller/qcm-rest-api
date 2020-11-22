@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.spi.persistence.mappers;
 
-import com.emu.apps.qcm.api.models.Domain;
+import com.emu.apps.qcm.aggregates.Domain;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 

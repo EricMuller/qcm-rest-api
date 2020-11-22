@@ -1,8 +1,8 @@
 package com.emu.apps.qcm.spi.persistence.adapters.jpa;
 
-import com.emu.apps.qcm.api.models.Question;
-import com.emu.apps.qcm.api.models.QuestionTag;
-import com.emu.apps.qcm.api.models.question.QuestionTags;
+import com.emu.apps.qcm.aggregates.Question;
+import com.emu.apps.qcm.aggregates.QuestionTag;
+import com.emu.apps.qcm.aggregates.question.QuestionTags;
 import com.emu.apps.qcm.spi.persistence.QuestionPersistencePort;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.builders.QuestionTagBuilder;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.category.CategoryEntity;

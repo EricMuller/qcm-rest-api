@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.spi.webmvc.rest.controllers;
 
 
-import com.emu.apps.qcm.api.models.Upload;
+import com.emu.apps.qcm.aggregates.Upload;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.config.SpringBootJpaTestConfig;
 import com.emu.apps.qcm.spi.webmvc.rest.ApiRestMappings;
 import org.junit.jupiter.api.Test;

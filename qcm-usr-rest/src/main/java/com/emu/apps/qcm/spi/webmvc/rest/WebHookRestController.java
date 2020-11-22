@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.spi.webmvc.rest;
 
-import com.emu.apps.qcm.api.models.WebHook;
-import com.emu.apps.qcm.domain.ports.WebHookBusinessPort;
+import com.emu.apps.qcm.aggregates.WebHook;
+import com.emu.apps.qcm.repositories.WebHookRepository;
 import com.emu.apps.shared.annotations.Timer;
 import com.emu.apps.shared.security.AuthentificationContextHolder;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -28,10 +28,10 @@ import static org.springframework.data.domain.Sort.Direction.DESC;
 @Validated
 public class WebHookRestController {
 
-    private final WebHookBusinessPort webHookBusinessPort;
+    private final WebHookRepository webHookRepository;
 
-    public WebHookRestController(WebHookBusinessPort webHookServicePort) {
-        this.webHookBusinessPort = webHookServicePort;
+    public WebHookRestController(WebHookRepository webHookServicePort) {
+        this.webHookRepository = webHookServicePort;
     }
 
     @GetMapping
@@ -41,32 +41,32 @@ public class WebHookRestController {
             @Parameter(hidden = true)
             @PageableDefault(direction = DESC, sort = {"dateModification"}) Pageable pageable) {
 
-        return webHookBusinessPort.getWebHooks(pageable, AuthentificationContextHolder.getUser());
+        return webHookRepository.getWebHooks(pageable, AuthentificationContextHolder.getUser());
     }
 
     @PostMapping
     @ResponseBody
     public WebHook saveWebHook(@RequestBody @Valid WebHook webHookDto) {
-        return webHookBusinessPort.saveWebHook(webHookDto, AuthentificationContextHolder.getUser());
+        return webHookRepository.saveWebHook(webHookDto, AuthentificationContextHolder.getUser());
     }
 
     @PutMapping
     @ResponseBody
     public WebHook updateWebHook(@RequestBody @Valid WebHook webHookDto) {
-        return webHookBusinessPort.saveWebHook(webHookDto, AuthentificationContextHolder.getUser());
+        return webHookRepository.saveWebHook(webHookDto, AuthentificationContextHolder.getUser());
     }
 
     @GetMapping(value = "/{uuid}")
     @ResponseBody
     public WebHook getWebHookByUuid(@PathVariable("uuid") String uuid) {
-        return webHookBusinessPort.getWebHookByUuid(uuid);
+        return webHookRepository.getWebHookByUuid(uuid);
     }
 
     @DeleteMapping(value = "/{uuid}")
     @ResponseBody
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteWebhookByUuid(@PathVariable("uuid") String uuid) {
-        webHookBusinessPort.deleteWebHookByUuid(uuid);
+        webHookRepository.deleteWebHookByUuid(uuid);
     }
 
 

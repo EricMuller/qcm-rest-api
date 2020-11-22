@@ -28,8 +28,8 @@
 
 package com.emu.apps.qcm.spi.persistence.mappers;
 
-import com.emu.apps.qcm.api.dtos.published.PublishedQuestionnaireDto;
-import com.emu.apps.qcm.api.dtos.published.PushishedQuestionnaireQuestionDto;
+import com.emu.apps.qcm.domain.dtos.published.PublishedQuestionnaireDto;
+import com.emu.apps.qcm.domain.dtos.published.PushishedQuestionnaireQuestionDto;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.category.CategoryEntity;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.questionnaires.QuestionnaireEntity;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.questionnaires.QuestionnaireQuestionEntity;

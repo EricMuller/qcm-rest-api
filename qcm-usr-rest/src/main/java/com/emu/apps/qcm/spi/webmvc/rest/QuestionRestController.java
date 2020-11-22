@@ -1,10 +1,10 @@
 package com.emu.apps.qcm.spi.webmvc.rest;
 
-import com.emu.apps.qcm.api.dtos.MessageDto;
-import com.emu.apps.qcm.api.dtos.question.QuestionPatchDto;
-import com.emu.apps.qcm.api.models.Question;
-import com.emu.apps.qcm.api.models.question.QuestionTags;
-import com.emu.apps.qcm.domain.ports.QuestionBusinessPort;
+import com.emu.apps.qcm.domain.dtos.MessageDto;
+import com.emu.apps.qcm.domain.dtos.question.QuestionPatchDto;
+import com.emu.apps.qcm.aggregates.Question;
+import com.emu.apps.qcm.aggregates.question.QuestionTags;
+import com.emu.apps.qcm.repositories.QuestionRepository;
 import com.emu.apps.qcm.spi.webmvc.rest.caches.CacheName;
 import com.emu.apps.shared.annotations.Timer;
 import com.emu.apps.shared.security.AuthentificationContextHolder;
@@ -38,10 +38,10 @@ import static org.springframework.data.domain.Sort.Direction.DESC;
 @Tag(name = "Question")
 public class QuestionRestController {
 
-    private final QuestionBusinessPort questionBusinessPort;
+    private final QuestionRepository questionRepository;
 
-    public QuestionRestController(QuestionBusinessPort questionServicePort) {
-        this.questionBusinessPort = questionServicePort;
+    public QuestionRestController(QuestionRepository questionServicePort) {
+        this.questionRepository = questionServicePort;
     }
 
     @GetMapping
@@ -52,7 +52,7 @@ public class QuestionRestController {
                                                 @Parameter(hidden = true)
                                                 @PageableDefault(direction = DESC, sort = {"dateModification"}) Pageable pageable) {
 
-        return questionBusinessPort.getQuestions(tagUuid, questionnaireUuid, pageable, AuthentificationContextHolder.getUser());
+        return questionRepository.getQuestions(tagUuid, questionnaireUuid, pageable, AuthentificationContextHolder.getUser());
     }
 
 
@@ -61,27 +61,27 @@ public class QuestionRestController {
     @Cacheable(cacheNames = CacheName.Names.QUESTION, key = "#uuid")
     @ResponseBody
     public Question getQuestionByUuid(@PathVariable("uuid") String uuid) {
-        return questionBusinessPort.getQuestionByUuId(uuid);
+        return questionRepository.getQuestionByUuId(uuid);
     }
 
     @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @CachePut(cacheNames = CacheName.Names.QUESTION, condition = "#questionDto != null", key = "#questionDto.uuid")
     @ResponseBody
     public Question updateQuestion(@RequestBody @Valid Question questionDto) {
-        return questionBusinessPort.updateQuestion(questionDto, AuthentificationContextHolder.getUser());
+        return questionRepository.updateQuestion(questionDto, AuthentificationContextHolder.getUser());
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public Question saveQuestion(@RequestBody @Valid Question questionDto) {
-        return questionBusinessPort.saveQuestion(questionDto, AuthentificationContextHolder.getUser());
+        return questionRepository.saveQuestion(questionDto, AuthentificationContextHolder.getUser());
     }
 
     @DeleteMapping(value = "/{uuid}")
     @ResponseBody
     @CacheEvict(cacheNames = CacheName.Names.QUESTION, condition = "#uuid != null", key = "#uuid")
     public ResponseEntity <Void> deleteQuestionByUuid(@PathVariable("uuid") String uuid) {
-        questionBusinessPort.deleteQuestionByUuid(uuid);
+        questionRepository.deleteQuestionByUuid(uuid);
         return ResponseEntity.noContent().build();
     }
 
@@ -90,9 +90,9 @@ public class QuestionRestController {
     @ResponseBody
     @CacheEvict(cacheNames = CacheName.Names.QUESTION, condition = "#uuid != null", key = "#uuid")
     public Question patchQuestionByUuid(@PathVariable("uuid") String uuid, @RequestBody QuestionPatchDto patchDto) {
-        Question dto = questionBusinessPort.getQuestionByUuId(uuid);
+        Question dto = questionRepository.getQuestionByUuId(uuid);
         dto.setStatus(patchDto.getStatus());
-        return questionBusinessPort.saveQuestion(dto, AuthentificationContextHolder.getUser());
+        return questionRepository.saveQuestion(dto, AuthentificationContextHolder.getUser());
     }
 
     @ExceptionHandler({JsonProcessingException.class, IOException.class})

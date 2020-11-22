@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.spi.webmvc.rest.controllers;
 
 
-import com.emu.apps.qcm.api.models.Category;
+import com.emu.apps.qcm.aggregates.Category;
 import com.emu.apps.qcm.spi.infrastructure.DbFixture;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.config.SpringBootJpaTestConfig;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.category.Type;

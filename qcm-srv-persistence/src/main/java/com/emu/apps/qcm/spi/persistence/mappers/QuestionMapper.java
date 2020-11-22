@@ -28,8 +28,8 @@
 
 package com.emu.apps.qcm.spi.persistence.mappers;
 
-import com.emu.apps.qcm.api.models.Question;
-import com.emu.apps.qcm.api.models.question.QuestionTags;
+import com.emu.apps.qcm.aggregates.Question;
+import com.emu.apps.qcm.aggregates.question.QuestionTags;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.questions.QuestionEntity;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.projections.QuestionResponseProjection;
 import org.mapstruct.Mapper;

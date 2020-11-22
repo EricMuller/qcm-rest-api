@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.spi.persistence;
 
-import com.emu.apps.qcm.api.models.User;
+import com.emu.apps.qcm.aggregates.User;
 
 public interface UserPersistencePort {
 

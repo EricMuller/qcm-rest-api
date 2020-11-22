@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.spi.reporting.services;
 
-import com.emu.apps.qcm.api.dtos.export.v1.ExportDto;
+import com.emu.apps.qcm.domain.dtos.export.v1.ExportDto;
 import fr.opensagres.poi.xwpf.converter.pdf.PdfConverter;
 import fr.opensagres.poi.xwpf.converter.pdf.PdfOptions;
 import fr.opensagres.xdocreport.document.IXDocReport;

@@ -28,7 +28,7 @@
 
 package com.emu.apps.qcm.spi.persistence.mappers;
 
-import com.emu.apps.qcm.api.models.Upload;
+import com.emu.apps.qcm.aggregates.Upload;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.upload.UploadEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;

@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.spi.persistence;
 
-import com.emu.apps.qcm.api.models.Upload;
+import com.emu.apps.qcm.aggregates.Upload;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

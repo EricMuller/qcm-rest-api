@@ -1,8 +1,8 @@
 package com.emu.apps.qcm.spi.webmvc.rest.controllers;
 
 
-import com.emu.apps.qcm.api.models.Question;
-import com.emu.apps.qcm.api.models.Response;
+import com.emu.apps.qcm.aggregates.Question;
+import com.emu.apps.qcm.aggregates.Response;
 import com.emu.apps.qcm.spi.persistence.adapters.jpa.config.SpringBootJpaTestConfig;
 import com.emu.apps.qcm.spi.webmvc.rest.ApiRestMappings;
 import com.google.common.collect.Iterables;
