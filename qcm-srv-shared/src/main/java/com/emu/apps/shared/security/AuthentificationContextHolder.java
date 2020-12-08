@@ -7,11 +7,11 @@ public final class AuthentificationContextHolder {
     private AuthentificationContextHolder() {
     }
 
-    public static String getUser() {
+    public static  String getPrincipal() {
         return context.get();
     }
 
-    public static void setUser(String user) {
+    public static void setPrincipal(String user) {
         context.set(user);
     }
 }

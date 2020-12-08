@@ -215,7 +215,7 @@
                 <configuration>
                     <addResources>true</addResources>
                     <executable>false</executable>
-                    <mainClass>com.emu.apps.qcm.spi.RestApplication</mainClass>
+                    <mainClass>com.emu.apps.qcm.infra.RestApplication</mainClass>
                     <additionalProperties>
                         <encoding.source>UTF-8</encoding.source>
                         <encoding.reporting>UTF-8</encoding.reporting>

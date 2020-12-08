@@ -85,7 +85,7 @@
         <appender-ref ref="Console"/>
     </logger>
 
-    <logger name="com.emu.apps.qcm.spi.webmvc.config" level="info" additivity="false">
+    <logger name="com.emu.apps.qcm.infra.webmvc.config" level="info" additivity="false">
         <appender-ref ref="RollingFile"/>
         <appender-ref ref="Console"/>
     </logger>
@@ -100,7 +100,7 @@
         <appender-ref ref="Console"/>
     </logger>
 
-    <logger name="com.emu.apps.qcm.spi.persistence.cache" level="info" additivity="false">
+    <logger name="com.emu.apps.qcm.infra.persistence.cache" level="info" additivity="false">
         <appender-ref ref="RollingFile"/>
         <appender-ref ref="Console"/>
     </logger>

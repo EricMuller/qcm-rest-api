@@ -27,10 +27,10 @@
         <heap>4096</heap>
     </cache>
 
-    <cache alias="com.emu.apps.qcm.spi.persistence.adapters.jpa.entity.UserEntity" uses-template="simple">
+    <cache alias="com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.UserEntity" uses-template="simple">
         <listeners>
             <listener>
-                <class>com.emu.apps.qcm.spi.persistence.cache.CacheLogger</class>
+                <class>com.emu.apps.qcm.infra.persistence.cache.CacheLogger</class>
                 <event-firing-mode>ASYNCHRONOUS</event-firing-mode>
                 <event-ordering-mode>UNORDERED</event-ordering-mode>
                 <events-to-fire-on>CREATED</events-to-fire-on>
@@ -45,7 +45,7 @@
     <cache alias="QUESTIONNAIRE" uses-template="simple">
         <listeners>
             <listener>
-                <class>com.emu.apps.qcm.spi.persistence.cache.CacheLogger</class>
+                <class>com.emu.apps.qcm.infra.persistence.cache.CacheLogger</class>
                 <event-firing-mode>ASYNCHRONOUS</event-firing-mode>
                 <event-ordering-mode>UNORDERED</event-ordering-mode>
                 <events-to-fire-on>CREATED</events-to-fire-on>
@@ -60,7 +60,7 @@
     <cache alias="QUESTION" uses-template="simple">
         <listeners>
             <listener>
-                <class>com.emu.apps.qcm.spi.persistence.cache.CacheLogger</class>
+                <class>com.emu.apps.qcm.infra.persistence.cache.CacheLogger</class>
                 <event-firing-mode>ASYNCHRONOUS</event-firing-mode>
                 <event-ordering-mode>UNORDERED</event-ordering-mode>
                 <events-to-fire-on>CREATED</events-to-fire-on>
