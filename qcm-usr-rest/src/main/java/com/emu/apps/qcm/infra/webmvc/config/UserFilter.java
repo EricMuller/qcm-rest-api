@@ -2,7 +2,7 @@ package com.emu.apps.qcm.infra.webmvc.config;
 
 import com.emu.apps.qcm.domain.models.User;
 import com.emu.apps.qcm.domain.repositories.UserRepository;
-import com.emu.apps.qcm.infra.webmvc.exceptions.UserAuthenticationException;
+import com.emu.apps.qcm.infra.webmvc.rest.ApiRestMappings;
 import com.emu.apps.shared.security.AuthentificationContextHolder;
 import com.emu.apps.shared.security.PrincipalUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -44,7 +45,13 @@ public class UserFilter implements Filter {
                         GrantedAuthority grantedAuthority = () -> user.getUuid();
                     } else {
                         LOGGER.warn("user with email {} non enregistré!", principal);
-                        throw new UserAuthenticationException(principal);
+                        if (!request.getRequestURI().startsWith(ApiRestMappings.PUBLIC_API + ApiRestMappings.USERS)) {
+                            LOGGER.warn("user with email {} non enregistré! send http 303 ", principal);
+                            HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
+                            httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "Required valid email in database");
+                        } else {
+                            LOGGER.warn("user with email {} non enregistré!", principal);
+                        }
                     }
                 }
             }
