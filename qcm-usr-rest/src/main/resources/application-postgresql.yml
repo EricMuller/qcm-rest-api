@@ -53,6 +53,7 @@ spring:
         jcache:
             config: classpath:ehcache.xml
 
+    # Heroku’s support for Java will now set the SPRING_DATASOURCE_URL environment variable for all Java apps using a SQL Database add-on.
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
         driverClassName: org.postgresql.Driver
@@ -65,3 +66,4 @@ spring:
             idleTimeout: 20000
             minimum-idle: 1
             maximumPoolSize: 5
+

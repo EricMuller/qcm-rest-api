@@ -56,10 +56,6 @@ public class QuestionEntity extends AuditableEntity <String> {
     @Column(name = "question", nullable = false, length = 1024)
     private String questionText;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "question_id")
-    private List <ResponseEntity> responses;
-
     @Enumerated(EnumType.STRING)
     private TypeQuestionEnum type;
 
@@ -71,6 +67,11 @@ public class QuestionEntity extends AuditableEntity <String> {
 
     @Column(name = "tip", length = 1024)
     private String tip;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "question_id")
+    @BatchSize(size = 100)
+    private List <ResponseEntity> responses;
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @BatchSize(size = 100)

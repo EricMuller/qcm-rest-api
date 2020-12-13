@@ -12,6 +12,7 @@ import com.emu.apps.shared.annotations.Timer;
 import com.emu.apps.shared.security.AuthentificationContextHolder;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -36,6 +37,7 @@ import static org.springframework.data.domain.Sort.Direction.DESC;
 @Profile("webmvc")
 @RequestMapping(value = PUBLIC_API + QUESTIONNAIRES, produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Questionnaire")
+@Slf4j
 public class QuestionnaireRestController {
 
     private final QuestionnaireRepository questionnaireRepository;
@@ -83,6 +85,7 @@ public class QuestionnaireRestController {
                                                                         @Parameter(hidden = true)
                                                                         @PageableDefault(direction = ASC, sort = {"position"}) Pageable pageable) {
 
+        LOGGER.warn("getQuestionsByQuestionnaireUuid");
         return questionnaireRepository.getQuestionsByQuestionnaireUuid(uuid, pageable);
     }
 

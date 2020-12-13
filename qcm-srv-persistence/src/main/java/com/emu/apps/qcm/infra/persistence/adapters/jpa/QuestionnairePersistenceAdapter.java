@@ -201,13 +201,6 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
 
         return publishedMapper.questionnaireToPublishedQuestionnaireDto(questionnaire);
 
-//        return RaiseExceptionUtil.ifPresentOrElse(questionnaire,
-//                q -> publishedMapper.questionnaireToPublishedQuestionnaireDto(q)
-//                ,publishedQuestionnaireDto -> {
-//
-//                })
-//
-
     }
 
 
@@ -236,12 +229,18 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
     @Override
     public void deleteQuestion(String questionnaireUuid, String questionUuid) {
 
-        QuestionnaireQuestionEntity questionnaireQuestion = questionnaireQuestionRepository.findByQuestionUuid(UUID.fromString(questionnaireUuid), UUID.fromString(questionUuid));
+        QuestionnaireQuestionEntity questionnaireQuestion =
+                questionnaireQuestionRepository.findByQuestionUuid(UUID.fromString(questionnaireUuid), UUID.fromString(questionUuid))
+                .orElseThrow(() -> new EntityNotFoundException(questionUuid, MessageSupport.UNKNOWN_UUID_QUESTION));
         questionnaireQuestionRepository.delete(questionnaireQuestion);
     }
 
     @Transactional(readOnly = true)
-    public Page <QuestionnaireQuestion> getQuestionsProjectionByQuestionnaireUuid(String questionnaireUuid, Pageable pageable) {
-        return questionnaireQuestionMapper.pageQuestionResponseProjectionToDto(questionnaireQuestionRepository.findQuestionsByQuestionnaireUuiId(UUID.fromString(questionnaireUuid), pageable));
+    public Page <QuestionnaireQuestion> getQuestionsByQuestionnaireUuid(String questionnaireUuid, Pageable pageable) {
+
+        return questionnaireQuestionMapper.pageQuestionnaireQuestionEntityToDto(
+                questionnaireQuestionRepository.findWithTagsAndResponseByQuestionnaireUuid(UUID.fromString(questionnaireUuid), pageable));
+
+
     }
 }

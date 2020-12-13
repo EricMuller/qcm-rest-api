@@ -34,5 +34,5 @@ public interface QuestionnairePersistencePort {
 
     void deleteQuestion(String questionnaireUuid, String questionUuid);
 
-    Page <QuestionnaireQuestion> getQuestionsProjectionByQuestionnaireUuid(String questionnaireUuid, Pageable pageable);
+    Page <QuestionnaireQuestion> getQuestionsByQuestionnaireUuid(String questionnaireUuid, Pageable pageable);
 }

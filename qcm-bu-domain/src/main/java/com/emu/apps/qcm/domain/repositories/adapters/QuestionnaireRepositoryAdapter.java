@@ -82,7 +82,7 @@ public class QuestionnaireRepositoryAdapter implements QuestionnaireRepository {
     }
 
     public Page <QuestionnaireQuestion> getQuestionsByQuestionnaireUuid(String questionnaireUuid, Pageable pageable) {
-        return questionnairePersistencePort.getQuestionsProjectionByQuestionnaireUuid(questionnaireUuid, pageable);
+        return questionnairePersistencePort.getQuestionsByQuestionnaireUuid(questionnaireUuid, pageable);
     }
 
     @Override

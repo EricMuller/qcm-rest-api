@@ -29,10 +29,15 @@
 package com.emu.apps.qcm.infra.persistence.mappers;
 
 import com.emu.apps.qcm.domain.models.QuestionnaireQuestion;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireQuestionEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.projections.QuestionResponseProjection;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 import org.springframework.data.domain.Page;
+
+import java.time.ZonedDateTime;
 
 @Mapper(componentModel = "spring", uses = {CategoryMapper.class, QuestionTagMapper.class, ResponseMapper.class, UuidMapper.class}
         , unmappedTargetPolicy = ReportingPolicy.IGNORE)
@@ -42,6 +47,26 @@ public interface QuestionnaireQuestionMapper {
 
     default Page <QuestionnaireQuestion> pageQuestionResponseProjectionToDto(Page <QuestionResponseProjection> page) {
         return page.map(this::questionResponseProjectionToDto);
+    }
+
+
+    @Mapping(source = "question.uuid", target = "uuid")
+    @Mapping(source = "question.version", target = "version")
+    @Mapping(source = "question.dateCreation", target = "dateCreation")
+    @Mapping(source = "question.dateModification", target = "dateModification")
+    @Mapping(source = "question.type", target = "type")
+    @Mapping(source = "question.questionText", target = "question")
+    @Mapping(source = "question.category", target = "category")
+    @Mapping(source = "question.responses", target = "responses")
+    @Mapping(source = "question.questionTags", target = "questionTags")
+    @Mapping(source = "question.tip", target = "tip")
+    @Mapping(source = "question.status", target = "status")
+    @Mapping(source = "position", target = "position")
+    @Mapping(source = "points", target = "points")
+    QuestionnaireQuestion questionnaireQuestionEntityToDto(QuestionnaireQuestionEntity questionnaireQuestionEntity);
+
+    default Page <QuestionnaireQuestion> pageQuestionnaireQuestionEntityToDto(Page <QuestionnaireQuestionEntity> page) {
+        return page.map(this::questionnaireQuestionEntityToDto);
     }
 
 }

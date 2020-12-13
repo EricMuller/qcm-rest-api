@@ -13,12 +13,19 @@ import java.util.Objects;
 @Entity
 @NamedEntityGraph(name = "QuestionnaireQuestion.question",
         attributeNodes = {
-                @NamedAttributeNode(value = "question")
-//                @NamedAttributeNode(value = "question", subgraph = "tags")
+              //  @NamedAttributeNode(value = "question")
+                @NamedAttributeNode(value = "question", subgraph = "QuestionnaireQuestion.question")
         },
         subgraphs = {
 //                @NamedSubgraph(name = "question", attributeNodes =@NamedAttributeNode(value = "questionTags", subgraph = "tags")),
-                @NamedSubgraph(name = "tags", attributeNodes = @NamedAttributeNode("tag"))
+               // @NamedSubgraph(name = "responses", attributeNodes =@NamedAttributeNode(value = "questionTags", subgraph = "tags")),
+                @NamedSubgraph(name = "QuestionnaireQuestion.question",
+                        attributeNodes = {
+                       @NamedAttributeNode("category"),
+
+                        }
+                )
+
         }
 )
 
