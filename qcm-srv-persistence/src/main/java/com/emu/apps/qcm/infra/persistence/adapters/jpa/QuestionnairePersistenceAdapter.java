@@ -1,11 +1,11 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa;
 
 
+import com.emu.apps.qcm.domain.dtos.published.PublishedQuestionnaireDto;
 import com.emu.apps.qcm.domain.models.Question;
 import com.emu.apps.qcm.domain.models.Questionnaire;
 import com.emu.apps.qcm.domain.models.QuestionnaireQuestion;
 import com.emu.apps.qcm.domain.models.QuestionnaireTag;
-import com.emu.apps.qcm.domain.dtos.published.PublishedQuestionnaireDto;
 import com.emu.apps.qcm.infra.persistence.QuestionnairePersistencePort;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.builders.QuestionnaireTagBuilder;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category.CategoryEntity;
@@ -31,6 +31,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+
+import static java.util.Optional.ofNullable;
 
 @Service
 @Transactional
@@ -87,7 +89,7 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
     @Transactional(readOnly = true)
     public Optional <Questionnaire> findByUuid(String uuid) {
 
-        return Optional.ofNullable(questionnaireMapper
+        return ofNullable(questionnaireMapper
                 .modelToDto(questionnaireRepository.findByUuid(UUID.fromString(uuid)).orElse(null)));
     }
 
@@ -119,7 +121,8 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
 
         saveQuestionnaireTags(questionnaireEntity, questionnaire.getQuestionnaireTags(), principal);
 
-        javers.commit(principal, questionnaireEntity);
+        //fixme: performance issue avec javers
+        // javers.commit(principal, questionnaireEntity);
 
         return questionnaireMapper.modelToDto(questionnaireEntity);
     }
@@ -231,8 +234,17 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
 
         QuestionnaireQuestionEntity questionnaireQuestion =
                 questionnaireQuestionRepository.findByQuestionUuid(UUID.fromString(questionnaireUuid), UUID.fromString(questionUuid))
-                .orElseThrow(() -> new EntityNotFoundException(questionUuid, MessageSupport.UNKNOWN_UUID_QUESTION));
+                        .orElseThrow(() -> new EntityNotFoundException(questionUuid, MessageSupport.UNKNOWN_UUID_QUESTION));
         questionnaireQuestionRepository.delete(questionnaireQuestion);
+    }
+
+
+    @Override
+    public QuestionnaireQuestion getQuestion(String questionnaireUuid, String questionUuid) {
+        return questionnaireQuestionMapper.questionnaireQuestionEntityToDto(
+                questionnaireQuestionRepository.findByQuestionUuid(UUID.fromString(questionnaireUuid), UUID.fromString(questionUuid))
+                        .orElseThrow(() -> new EntityNotFoundException(questionUuid, MessageSupport.UNKNOWN_UUID_QUESTION)));
+
     }
 
     @Transactional(readOnly = true)

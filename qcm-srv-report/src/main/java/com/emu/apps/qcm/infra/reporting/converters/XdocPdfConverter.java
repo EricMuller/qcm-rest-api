@@ -1,6 +1,5 @@
-package com.emu.apps.qcm.infra.reporting.services;
+package com.emu.apps.qcm.infra.reporting.converters;
 
-import com.emu.apps.qcm.domain.dtos.export.v1.ExportDto;
 import fr.opensagres.poi.xwpf.converter.pdf.PdfConverter;
 import fr.opensagres.poi.xwpf.converter.pdf.PdfOptions;
 import fr.opensagres.xdocreport.document.IXDocReport;
@@ -13,30 +12,29 @@ import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.InputStream;
+import java.util.Map;
 
 /**
  *
  */
-@Service
+@Service(value = "XdocPdfConverter")
 @Slf4j
-public class ReportServicePdf implements ReportService {
+public class XdocPdfConverter implements Converter {
 
     @Override
-    public ByteArrayOutputStream getReportStream(ExportDto exportDataDto) {
+    public byte[] convert(Map <String, Object> map, String template) {
 
         try {
 
-            try (InputStream in = ReportServiceWord.class.getResourceAsStream("/" + TemplateNames.QUESTIONNAIRE.getName())) {
+            try (InputStream in = XdocWordConverter.class.getResourceAsStream("/" + template)) {
 
                 IXDocReport report = XDocReportRegistry
                         .getRegistry()
                         .loadReport(in, TemplateEngineKind.Velocity);
 
-                IContext context = report.createContext();
-                context.put("questionnaire", exportDataDto.getQuestionnaire());
-                context.put("questions", exportDataDto.getQuestions());
-
+                IContext context = report.createContext(map);
                 ByteArrayOutputStream outDocx = new ByteArrayOutputStream();
                 report.process(context, outDocx);
                 ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(outDocx.toByteArray());
@@ -46,7 +44,7 @@ public class ReportServicePdf implements ReportService {
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
                 PdfConverter.getInstance().convert(document, out, options);
 
-                return out;
+                return out.toByteArray();
             }
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);

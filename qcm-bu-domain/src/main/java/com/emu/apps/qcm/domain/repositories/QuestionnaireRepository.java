@@ -30,6 +30,8 @@ public interface QuestionnaireRepository {
 
     void deleteQuestion(String questionnaireUuid, String questionUuid);
 
+    QuestionnaireQuestion getQuestion(String questionnaireUuid, String questionUuid);
+
     void activateQuestionnaire(String questionnaireUuid);
 
 }

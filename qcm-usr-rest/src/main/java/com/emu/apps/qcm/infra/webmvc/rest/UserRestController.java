@@ -1,14 +1,10 @@
 package com.emu.apps.qcm.infra.webmvc.rest;
 
 import com.emu.apps.qcm.domain.models.User;
-
 import com.emu.apps.qcm.domain.repositories.UserRepository;
-import com.emu.apps.qcm.infra.persistence.exceptions.MessageSupport;
 import com.emu.apps.qcm.infra.webmvc.exceptions.UserAuthenticationException;
-import com.emu.apps.shared.security.PrincipalUtils;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.context.annotation.Profile;
-import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,8 +12,12 @@ import java.security.Principal;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.emu.apps.qcm.infra.persistence.exceptions.MessageSupport.EXISTS_UUID_USER;
+import static com.emu.apps.qcm.infra.persistence.exceptions.MessageSupport.INVALID_UUID_USER;
 import static com.emu.apps.qcm.infra.webmvc.rest.ApiRestMappings.PUBLIC_API;
 import static com.emu.apps.qcm.infra.webmvc.rest.ApiRestMappings.USERS;
+import static com.emu.apps.shared.security.PrincipalUtils.getEmailOrName;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @Profile("webmvc")
@@ -39,48 +39,48 @@ public class UserRestController {
      * @param principal : authentified user
      * @return User
      */
-    @GetMapping(value = "/me", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/me", produces = APPLICATION_JSON_VALUE)
     @ResponseBody
     public User getAuthentifiedUser(Principal principal) {
-        String email = PrincipalUtils.getEmailOrName(principal);
+        String email = getEmailOrName(principal);
         User user = userRepository.userByEmail(email);
         if (Objects.isNull(user)) {
             user = new User();
-            user.setEmail(PrincipalUtils.getEmailOrName(principal));
+            user.setEmail(getEmailOrName(principal));
         }
         return user;
     }
 
 //    @PostAuthorize("hasAuthority('PROFIL_CREATED')")
-    @PutMapping(value = "/me", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/me", produces = APPLICATION_JSON_VALUE)
     @ResponseBody
     public User updateAuthentifiedUser(@RequestBody User user, Principal principal) {
-        String email = PrincipalUtils.getEmailOrName(principal);
+        String email = getEmailOrName(principal);
         User authentUser = userRepository.userByEmail(email);
         if (Objects.nonNull(authentUser) && authentUser.getEmail().equals(user.getEmail())) {
             return userRepository.updateUser(user, email);
         } else {
-            throw new UserAuthenticationException(MessageSupport.INVALID_UUID_USER);
+            throw new UserAuthenticationException(INVALID_UUID_USER);
         }
     }
 
-    @PostMapping(value = "/me", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/me", produces = APPLICATION_JSON_VALUE)
     @ResponseBody
     public User createAuthentifiedUser(@RequestBody User user, Principal principal) {
-        String email = PrincipalUtils.getEmailOrName(principal);
+        String email = getEmailOrName(principal);
         User authentUser = userRepository.userByEmail(email);
         if (Objects.isNull(authentUser)) {
             return userRepository.createUser(user, email);
         } else {
-            throw new UserAuthenticationException(MessageSupport.EXISTS_UUID_USER);
+            throw new UserAuthenticationException(EXISTS_UUID_USER);
         }
     }
 
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(produces = APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseBody
     public User updateUser(@RequestBody User user, Principal principal) {
-        return userRepository.updateUser(user, PrincipalUtils.getEmailOrName(principal));
+        return userRepository.updateUser(user, getEmailOrName(principal));
     }
 
 }

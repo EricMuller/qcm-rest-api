@@ -1,11 +1,12 @@
 package com.emu.apps.qcm.infra.reporting;
 
 import com.emu.apps.qcm.domain.dtos.export.v1.ExportDto;
-import com.emu.apps.qcm.infra.reporting.services.*;
+import com.emu.apps.qcm.infra.reporting.converters.Converter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.io.ByteArrayOutputStream;
+import static com.emu.apps.qcm.infra.reporting.ContextBuilder.createContext;
 
 /**
  *
@@ -14,38 +15,33 @@ import java.io.ByteArrayOutputStream;
 @Slf4j
 public class ReportServiceAdapter implements ReportServicePort {
 
-    private final ReportServicePdf reportServicePdf;
+    private final Converter pdfConverter;
 
-    private final ReportServiceWord reportServiceWord;
+    private final Converter wordConverter;
 
-    private final ReportServiceJson reportServiceJson;
+    private final Converter jsonConverter;
 
-    public ReportServiceAdapter(ReportServicePdf reportServicePdf, ReportServiceWord reportServiceWord, ReportServiceJson reportServiceJson) {
-        this.reportServicePdf = reportServicePdf;
-        this.reportServiceWord = reportServiceWord;
-        this.reportServiceJson = reportServiceJson;
+    public ReportServiceAdapter(@Qualifier("XdocPdfConverter") Converter pdfConverter, @Qualifier("XdocWordConverter") Converter wordConverter
+            , @Qualifier("JacksonConverter") Converter jsonConverter) {
+        this.pdfConverter = pdfConverter;
+        this.wordConverter = wordConverter;
+        this.jsonConverter = jsonConverter;
     }
 
     @Override
-    public ByteArrayOutputStream getReportStream(ExportDto exportDataDto, TypeReport typeReport) {
+    public byte[] convertAsStream(ExportDto exportDataDto,ReportTemplate reportTemplate, FileFormat fileFormat) {
 
-        ReportService reportService = getReportServiceByType(typeReport);
-        return reportService.getReportStream(exportDataDto);
-    }
-
-    private ReportService getReportServiceByType(TypeReport typeReport) {
-
-        switch (typeReport) {
+        switch (fileFormat) {
             case PDF:
-                return reportServicePdf;
+                return pdfConverter.convert(createContext(exportDataDto), reportTemplate.getFileName());
             case DOCX:
-                return reportServiceWord;
+                return wordConverter.convert(createContext(exportDataDto), reportTemplate.getFileName());
             case JSON:
-                return reportServiceJson;
+                return jsonConverter.convert(exportDataDto);
             default:
-                break;
+                throw new IllegalArgumentException(fileFormat.name());
         }
-        throw new IllegalArgumentException(typeReport.name());
+
     }
 
 }

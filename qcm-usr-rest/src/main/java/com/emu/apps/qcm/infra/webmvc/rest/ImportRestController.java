@@ -12,10 +12,11 @@ import java.io.IOException;
 
 import static com.emu.apps.qcm.infra.webmvc.rest.ApiRestMappings.IMPORTS;
 import static com.emu.apps.qcm.infra.webmvc.rest.ApiRestMappings.PUBLIC_API;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @Profile("webmvc")
-@RequestMapping(value = PUBLIC_API + IMPORTS, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = PUBLIC_API + IMPORTS, produces = APPLICATION_JSON_VALUE)
 @Tag(name = "Import")
 public class ImportRestController {
 

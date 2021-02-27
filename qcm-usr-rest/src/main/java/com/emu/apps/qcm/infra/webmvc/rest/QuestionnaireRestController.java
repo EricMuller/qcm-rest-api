@@ -28,14 +28,19 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
+import static com.emu.apps.qcm.infra.persistence.exceptions.MessageSupport.UNKNOWN_UUID_QUESTIONNAIRE;
 import static com.emu.apps.qcm.infra.webmvc.rest.ApiRestMappings.*;
+import static com.emu.apps.qcm.infra.webmvc.rest.caches.CacheName.Names.QUESTIONNAIRE;
+import static java.util.Optional.empty;
 import static org.springframework.data.domain.Sort.Direction.ASC;
 import static org.springframework.data.domain.Sort.Direction.DESC;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 
 @RestController
 @Profile("webmvc")
-@RequestMapping(value = PUBLIC_API + QUESTIONNAIRES, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = PUBLIC_API + QUESTIONNAIRES, produces = APPLICATION_JSON_VALUE)
 @Tag(name = "Questionnaire")
 @Slf4j
 public class QuestionnaireRestController {
@@ -48,23 +53,23 @@ public class QuestionnaireRestController {
 
     @GetMapping(value = "/{uuid}")
     @Timer
-    @Cacheable(cacheNames = CacheName.Names.QUESTIONNAIRE, key = "#uuid")
+    @Cacheable(cacheNames = QUESTIONNAIRE, key = "#uuid")
     @ResponseBody
     public Questionnaire getQuestionnaireByUuid(@PathVariable("uuid") String uuid) {
         return questionnaireRepository.getQuestionnaireByUuid(uuid)
-                .orElseThrow(()-> new EntityNotFoundException(uuid, MessageSupport.UNKNOWN_UUID_QUESTIONNAIRE));
+                .orElseThrow(()-> new EntityNotFoundException(uuid, UNKNOWN_UUID_QUESTIONNAIRE));
     }
 
     @DeleteMapping(value = "/{uuid}")
-    @CacheEvict(cacheNames = CacheName.Names.QUESTIONNAIRE, key = "#uuid")
+    @CacheEvict(cacheNames = QUESTIONNAIRE, key = "#uuid")
     @ResponseBody
     public ResponseEntity <Questionnaire> deleteQuestionnaireByUuid(@PathVariable("uuid") String uuid) {
         questionnaireRepository.deleteQuestionnaireByUuid(uuid);
-        return new ResponseEntity <>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity <>(NO_CONTENT);
     }
 
     @PutMapping
-    @CachePut(cacheNames = CacheName.Names.QUESTIONNAIRE, condition = "#questionnaireDto != null", key = "#questionnaireDto.uuid")
+    @CachePut(cacheNames = QUESTIONNAIRE, condition = "#questionnaireDto != null", key = "#questionnaireDto.uuid")
     @Timer
     @ResponseBody
     public Questionnaire updateQuestionnaire(@RequestBody Questionnaire questionnaireDto) {
@@ -89,7 +94,17 @@ public class QuestionnaireRestController {
         return questionnaireRepository.getQuestionsByQuestionnaireUuid(uuid, pageable);
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+
+
+    @GetMapping(value = "/{uuid}"+ QUESTIONS +"/{q_uuid}")
+    @Timer
+    @ResponseBody
+    public QuestionnaireQuestion getQuestionnaireQuestionByUuid(@PathVariable("uuid") String uuid,@PathVariable("question_uuid") String questionUuid ) {
+        return questionnaireRepository.getQuestion(uuid,questionUuid) ;
+    }
+
+
+    @GetMapping(produces = APPLICATION_JSON_VALUE)
     @Timer
     @ResponseBody
     @PageableAsQueryParam
@@ -105,7 +120,7 @@ public class QuestionnaireRestController {
     public Question addQuestionByQuestionnaireUuid(@PathVariable("uuid") String uuid, @RequestBody Question question) {
 
         // send QuestionnaireQuestionDto
-        return questionnaireRepository.addQuestion(uuid, question, Optional.empty(), AuthentificationContextHolder.getPrincipal());
+        return questionnaireRepository.addQuestion(uuid, question, empty(), AuthentificationContextHolder.getPrincipal());
     }
 
 
@@ -113,7 +128,7 @@ public class QuestionnaireRestController {
     @ResponseBody
     public ResponseEntity <Void> deleteQuestionByQuestionnaireUuid(@PathVariable("uuid") String uuid, @PathVariable("question_uuid") String questionUuid) {
         questionnaireRepository.deleteQuestion(uuid, questionUuid);
-        return new ResponseEntity <>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity <>(NO_CONTENT);
     }
 
 }

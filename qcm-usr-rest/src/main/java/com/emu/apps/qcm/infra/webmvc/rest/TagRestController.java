@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -18,13 +17,14 @@ import java.io.IOException;
 import static com.emu.apps.qcm.infra.webmvc.rest.ApiRestMappings.PUBLIC_API;
 import static com.emu.apps.qcm.infra.webmvc.rest.ApiRestMappings.TAGS;
 import static org.springframework.data.domain.Sort.Direction.DESC;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
  * Created by eric on 05/06/2017.
  */
 @RestController
 @Profile("webmvc")
-@RequestMapping(value = PUBLIC_API + TAGS, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = PUBLIC_API + TAGS, produces = APPLICATION_JSON_VALUE)
 @io.swagger.v3.oas.annotations.tags.Tag(name = "Tag")
 public class TagRestController {
 

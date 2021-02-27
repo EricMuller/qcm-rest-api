@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import static com.emu.apps.qcm.infra.webmvc.rest.ApiRestMappings.PUBLIC_API;
 import static com.emu.apps.qcm.infra.webmvc.rest.ApiRestMappings.SUGGEST;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 
 /**
@@ -17,7 +18,7 @@ import static com.emu.apps.qcm.infra.webmvc.rest.ApiRestMappings.SUGGEST;
  */
 @RestController
 @Profile("webmvc")
-@RequestMapping(value = PUBLIC_API + SUGGEST, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = PUBLIC_API + SUGGEST, produces = APPLICATION_JSON_VALUE)
 
 public class SuggestRestController {
 

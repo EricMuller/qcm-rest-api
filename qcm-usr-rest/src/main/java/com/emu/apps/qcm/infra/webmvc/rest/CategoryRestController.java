@@ -18,6 +18,9 @@ import java.io.IOException;
 
 import static com.emu.apps.qcm.infra.webmvc.rest.ApiRestMappings.CATEGORIES;
 import static com.emu.apps.qcm.infra.webmvc.rest.ApiRestMappings.PUBLIC_API;
+import static com.emu.apps.qcm.infra.webmvc.rest.dtos.MessageDto.ERROR;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
  * Created by eric on 05/06/2017.
@@ -25,7 +28,7 @@ import static com.emu.apps.qcm.infra.webmvc.rest.ApiRestMappings.PUBLIC_API;
 
 @RestController
 @Profile("webmvc")
-@RequestMapping(value = PUBLIC_API + CATEGORIES, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = PUBLIC_API + CATEGORIES, produces = APPLICATION_JSON_VALUE)
 @Tag(name = "Category")
 public class CategoryRestController {
 
@@ -35,7 +38,7 @@ public class CategoryRestController {
         this.categoryRepository = categoryServicePort;
     }
 
-    @GetMapping(value = "/{uuid}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{uuid}", produces = APPLICATION_JSON_VALUE)
     @ResponseBody
     public Category getCategoryByUuid(@PathVariable("uuid") String uuid) {
         return categoryRepository.getCategoryByUuid(uuid);
@@ -49,13 +52,13 @@ public class CategoryRestController {
 
     @PostMapping
     @ResponseBody
-    public Category saveCategory(@RequestBody Category categoryDto) throws FunctionnalException {
+    public Category saveCategory(@RequestBody Category categoryDto)  {
         return categoryRepository.saveCategory(categoryDto, AuthentificationContextHolder.getPrincipal());
     }
 
     @ExceptionHandler({JsonProcessingException.class, IOException.class})
     public ResponseEntity <MessageDto> handleAllException(Exception e) {
-        return new ResponseEntity <>(new MessageDto(MessageDto.ERROR, e.getMessage()), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity <>(new MessageDto(ERROR, e.getMessage()), BAD_REQUEST);
     }
 
 }

@@ -10,8 +10,11 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import java.time.ZonedDateTime;
 import java.util.List;
 
+import static com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING;
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(NON_NULL)
 @Getter
 public final class ExceptionMessage {
 
@@ -31,7 +34,7 @@ public final class ExceptionMessage {
     private final List <FieldErrorMessage> errors;
 
     @JsonProperty("timestamp")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
+    @JsonFormat(shape = STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private final ZonedDateTime timestamp;
 
     public ExceptionMessage(int status, String error, String message, String exception,

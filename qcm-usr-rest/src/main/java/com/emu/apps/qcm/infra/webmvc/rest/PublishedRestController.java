@@ -17,12 +17,13 @@ import org.springframework.web.bind.annotation.*;
 
 import static com.emu.apps.qcm.infra.webmvc.rest.ApiRestMappings.*;
 import static org.springframework.data.domain.Sort.Direction.DESC;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 
 @RestController
 @Profile("webmvc")
 @Tag(name = "Published")
-@RequestMapping(value = PUBLISHED_API, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = PUBLISHED_API, produces = APPLICATION_JSON_VALUE)
 public class PublishedRestController {
 
     private final PublishedRepository publishedRepository;

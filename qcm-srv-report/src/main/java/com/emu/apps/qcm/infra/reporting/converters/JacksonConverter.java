@@ -1,6 +1,5 @@
-package com.emu.apps.qcm.infra.reporting.services;
+package com.emu.apps.qcm.infra.reporting.converters;
 
-import com.emu.apps.qcm.domain.dtos.export.v1.ExportDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.extern.slf4j.Slf4j;
@@ -11,19 +10,18 @@ import java.io.ByteArrayOutputStream;
 /**
  *
  */
-@Service
+@Service(value = "JacksonConverter")
 @Slf4j
-public class ReportServiceJson implements ReportService {
+public class JacksonConverter implements Converter {
 
     /**
-     *
      * objectMapper.configure(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS,true);
      *
-     * @param exportDataDto
+     * @param object
      * @return OupuStream
      */
     @Override
-    public ByteArrayOutputStream getReportStream(ExportDto exportDataDto) {
+    public byte[] convert(Object object) {
         try {
             ObjectMapper mapper = new ObjectMapper()
                     .findAndRegisterModules()
@@ -31,8 +29,8 @@ public class ReportServiceJson implements ReportService {
                     .configure(SerializationFeature.INDENT_OUTPUT, true);
 
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            mapper.writeValue(byteArrayOutputStream, exportDataDto);
-            return byteArrayOutputStream;
+            mapper.writeValue(byteArrayOutputStream, object);
+            return byteArrayOutputStream.toByteArray();
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
         }

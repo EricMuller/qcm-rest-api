@@ -56,6 +56,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     /**
      * Catch all for any other exceptions...
+     *
      * @param e Exception.class
      * @return Send a 500 Internal Server Error
      */
@@ -86,7 +87,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
             ClassCastException.class,
             ConversionFailedException.class})
     @ResponseBody
-    public ResponseEntity<ExceptionMessage> handleMiscFailures(Throwable t) {
+    public ResponseEntity <ExceptionMessage> handleMiscFailures(Throwable t) {
 
         LOG.error("Misc Exception caught: ", t);
 
@@ -105,15 +106,15 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
      * Catch conflict Exception
      *
      * @param ex ObjectOptimisticLockingFailureException.class,
-     *             OptimisticLockingFailureException.class,
-     *             DataIntegrityViolationException.class
+     *           OptimisticLockingFailureException.class,
+     *           DataIntegrityViolationException.class
      * @return Send a 409 Conflict in case of concurrent modification
      */
     @ExceptionHandler({ObjectOptimisticLockingFailureException.class,
             OptimisticLockingFailureException.class,
             DataIntegrityViolationException.class})
     @ResponseBody
-    public ResponseEntity<ExceptionMessage> handleConflict(Exception ex) {
+    public ResponseEntity <ExceptionMessage> handleConflict(Exception ex) {
 
         LOG.error("Conflict Exception caught: ", ex);
 
@@ -133,7 +134,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     /**
-     *
      * @param ex
      * @param headers
      * @param status
@@ -145,12 +145,15 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                                                                             @NotNull HttpHeaders headers, @NotNull HttpStatus status,
                                                                             @NotNull WebRequest request) {
 
-        List <FieldErrorMessage> fieldErrors = ex.getBindingResult().getFieldErrors().stream().map(fieldError ->
-                new FieldErrorMessage(
-                        fieldError.getObjectName(),
-                        fieldError.getField(),
-                        fieldError.getCode(),
-                        fieldError.getDefaultMessage())).collect(Collectors.toList());
+        List <FieldErrorMessage> fieldErrors = ex.getBindingResult().getFieldErrors()
+                .stream()
+                .map(fieldError ->
+                        new FieldErrorMessage(
+                                fieldError.getObjectName(),
+                                fieldError.getField(),
+                                fieldError.getCode(),
+                                fieldError.getDefaultMessage()))
+                .collect(Collectors.toList());
 
         ExceptionMessage response = new ExceptionMessageBuilder()
                 .setStatus(BAD_REQUEST.value())
@@ -183,12 +186,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     /**
      * ref
+     *
      * @param e
      * @return
      */
-    @ExceptionHandler(ConstraintViolationException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException e) {
+    @ExceptionHandler(ConstraintViolationException.class)// MethodArgumentNotValidException
+    @ResponseStatus(BAD_REQUEST)
+    ResponseEntity <Object> handleConstraintViolationException(ConstraintViolationException e) {
 
         LOG.error("ConstraintViolationException caught: ", e);
 
@@ -199,7 +203,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 .setTimestamp(ZonedDateTime.now())
                 .setMessage(e.getMessage()).createExceptionMessage();
 
-        return response(exceptionMessage, HttpStatus.BAD_REQUEST);
+        return response(exceptionMessage, BAD_REQUEST);
     }
+
 
 }

@@ -20,10 +20,11 @@ import javax.validation.Valid;
 import static com.emu.apps.qcm.infra.webmvc.rest.ApiRestMappings.PUBLIC_API;
 import static com.emu.apps.qcm.infra.webmvc.rest.ApiRestMappings.WEBHOOKS;
 import static org.springframework.data.domain.Sort.Direction.DESC;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @Profile("webmvc")
-@RequestMapping(value = PUBLIC_API + WEBHOOKS, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = PUBLIC_API + WEBHOOKS, produces = APPLICATION_JSON_VALUE)
 @Tag(name = "WebHook")
 @Validated
 public class WebHookRestController {

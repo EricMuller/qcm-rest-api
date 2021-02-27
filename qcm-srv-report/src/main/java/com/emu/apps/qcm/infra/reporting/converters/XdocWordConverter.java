@@ -1,6 +1,5 @@
-package com.emu.apps.qcm.infra.reporting.services;
+package com.emu.apps.qcm.infra.reporting.converters;
 
-import com.emu.apps.qcm.domain.dtos.export.v1.ExportDto;
 import fr.opensagres.xdocreport.document.IXDocReport;
 import fr.opensagres.xdocreport.document.registry.XDocReportRegistry;
 import fr.opensagres.xdocreport.template.IContext;
@@ -10,29 +9,28 @@ import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.util.Map;
 
 /**
  *
  */
-@Service
+@Service(value = "XdocWordConverter")
 @Slf4j
-public class ReportServiceWord implements  ReportService {
+public class XdocWordConverter implements Converter {
 
     @Override
-    public ByteArrayOutputStream getReportStream(ExportDto exportDataDto) {
+    public byte[] convert(Map <String, Object> map, String template) {
 
         try {
-            try(InputStream in = ReportServiceWord.class.getResourceAsStream("/" + TemplateNames.QUESTIONNAIRE.getName())) {
+            try (InputStream in = XdocWordConverter.class.getResourceAsStream("/" + template)) {
 
                 IXDocReport report = XDocReportRegistry
                         .getRegistry()
                         .loadReport(in, TemplateEngineKind.Velocity);
-                IContext context = report.createContext();
-                context.put("questions", exportDataDto.getQuestions());
-                context.put("questionnaire", exportDataDto.getQuestionnaire());
+                IContext context = report.createContext(map);
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
                 report.process(context, out);
-                return out;
+                return out.toByteArray();
             }
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);

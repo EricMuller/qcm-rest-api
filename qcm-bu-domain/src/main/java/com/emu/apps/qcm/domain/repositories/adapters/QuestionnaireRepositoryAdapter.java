@@ -42,7 +42,7 @@ public class QuestionnaireRepositoryAdapter implements QuestionnaireRepository {
      */
     @Override
     @Transactional(readOnly = true)
-    public Optional<Questionnaire> getQuestionnaireByUuid(String questionnaireUuid) {
+    public Optional <Questionnaire> getQuestionnaireByUuid(String questionnaireUuid) {
         return questionnairePersistencePort.findByUuid(questionnaireUuid);
 
     }
@@ -126,7 +126,12 @@ public class QuestionnaireRepositoryAdapter implements QuestionnaireRepository {
     }
 
     @Override
-    public void activateQuestionnaire(String questionnaireUuid){
+    public QuestionnaireQuestion getQuestion(String questionnaireUuid, String questionUuid) {
+        return questionnairePersistencePort.getQuestion(questionnaireUuid, questionUuid);
+    }
+
+    @Override
+    public void activateQuestionnaire(String questionnaireUuid) {
 
     }
 
