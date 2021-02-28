@@ -88,6 +88,7 @@
         <sonar.coverage.jacoco.xmlReportPaths>
             ${project.basedir}/../coverage-report/target/site/jacoco-aggregate/jacoco.xml
         </sonar.coverage.jacoco.xmlReportPaths>
+        <maven-surefire-plugin.reuseForks>true</maven-surefire-plugin.reuseForks>
 
     </properties>
 
@@ -249,7 +250,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <!--  only true in local ( heroku issue ) -->
-                    <reuseForks>false</reuseForks>
+                    <reuseForks>${maven-surefire-plugin.reuseForks}</reuseForks>
                 </configuration>
             </plugin>
 
