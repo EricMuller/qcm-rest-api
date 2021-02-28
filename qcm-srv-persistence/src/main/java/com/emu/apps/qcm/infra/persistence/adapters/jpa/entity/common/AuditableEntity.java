@@ -76,8 +76,8 @@ public abstract class AuditableEntity<U extends Serializable> implements Seriali
         return dateCreation;
     }
 
-    public void setDateCreation(ZonedDateTime dateCreation) {
-        this.dateCreation = dateCreation;
+    public void setDateCreation(ZonedDateTime aDateCreation) {
+        this.dateCreation = aDateCreation;
     }
 
     public ZonedDateTime getDateModification() {

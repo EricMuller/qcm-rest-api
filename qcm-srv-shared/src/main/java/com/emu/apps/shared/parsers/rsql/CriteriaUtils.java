@@ -20,7 +20,9 @@ public final class CriteriaUtils {
     }
 
     private static boolean isEmpty(final byte[] data) {
-        return IntStream.range(0, data.length).parallel().allMatch(i -> data[i] == 0);
+        return IntStream.range(0, data.length)
+                .parallel()
+                .allMatch(i -> data[i] == 0);
     }
 
     public static Criteria[] toCriteria(String search) throws IOException {

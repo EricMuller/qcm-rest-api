@@ -277,9 +277,46 @@
                     </execution>
                 </executions>
             </plugin>
+
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-checkstyle-plugin</artifactId>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>checkstyle</id>-->
+<!--                        <phase>validate</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>check</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--                <configuration>-->
+<!--                    &lt;!&ndash; Location is relative to the classpath &ndash;&gt;-->
+<!--                    &lt;!&ndash;                    <configLocation>checkstyle.xml</configLocation>&ndash;&gt;-->
+<!--                    <consoleOutput>true</consoleOutput>-->
+<!--                    <failOnViolation>false</failOnViolation>-->
+<!--                    <failsOnError>false</failsOnError>-->
+<!--                    <violationSeverity>error</violationSeverity>-->
+<!--                    <includeTestResources>true</includeTestResources>-->
+<!--                    <includeTestSourceDirectory>true</includeTestSourceDirectory>-->
+<!--                    <resourceIncludes>**/*.xml</resourceIncludes>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+
+
         </plugins>
 
     </build>
+
+    <reporting>
+<!--        <plugins>-->
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-checkstyle-plugin</artifactId>-->
+<!--                <version>3.1.2</version>-->
+<!--            </plugin>-->
+<!--        </plugins>-->
+    </reporting>
 
     <profiles>
         <profile>
