@@ -51,7 +51,7 @@ public class QuestionnaireEntity extends AuditableEntity <String> {
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
-    @Column(name = "DESCRIPTION")
+    @Column(name = "DESCRIPTION",length = 2000)
     private String description;
 
     @Column(name = "TITLE")

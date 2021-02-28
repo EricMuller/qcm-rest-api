@@ -2,6 +2,7 @@ package com.emu.apps.qcm.domain.repositories.adapters;
 
 import com.emu.apps.qcm.domain.models.Question;
 import com.emu.apps.qcm.domain.models.Response;
+import com.emu.apps.qcm.domain.models.Tag;
 import com.emu.apps.qcm.domain.models.question.QuestionTags;
 import com.emu.apps.qcm.domain.repositories.QuestionRepository;
 import com.emu.apps.qcm.infra.persistence.QuestionPersistencePort;
@@ -85,6 +86,10 @@ public class QuestionRepositoryAdapter implements QuestionRepository {
 
         RaiseExceptionUtil.raiseIfNull(uuid, questionOptional, MessageSupport.UNKNOWN_UUID_QUESTION);
         questionPersistencePort.deleteByUuid(uuid);
+    }
+
+    public Iterable <Tag> findAllQuestionTagByPage(Pageable pageable, String principal) {
+        return questionPersistencePort.findAllTagByPage(pageable, principal);
     }
 
 }

@@ -3,6 +3,7 @@ package com.emu.apps.qcm.domain.repositories.adapters;
 
 import com.emu.apps.qcm.domain.models.Tag;
 import com.emu.apps.qcm.domain.repositories.TagRepository;
+import com.emu.apps.qcm.infra.persistence.QuestionPersistencePort;
 import com.emu.apps.qcm.infra.persistence.TagPersistencePort;
 import com.emu.apps.shared.parsers.rsql.CriteriaUtils;
 import org.springframework.data.domain.Page;
@@ -24,8 +25,11 @@ public class TagRepositoryAdapter implements TagRepository {
 
     private final TagPersistencePort tagInfraService;
 
-    public TagRepositoryAdapter(TagPersistencePort tagInfraService) {
+    private final QuestionPersistencePort questionPersistencePort;
+
+    public TagRepositoryAdapter(TagPersistencePort tagInfraService, QuestionPersistencePort questionPersistencePort) {
         this.tagInfraService = tagInfraService;
+        this.questionPersistencePort = questionPersistencePort;
     }
 
     @Override
@@ -33,6 +37,7 @@ public class TagRepositoryAdapter implements TagRepository {
 
         var criterias = CriteriaUtils.toCriteria(search);
         Optional <String> firstLetter = CriteriaUtils.getAttribute("firstLetter", criterias);
+        Optional <String> used = CriteriaUtils.getAttribute("used", criterias);
 
         return tagInfraService.findAllByPage(firstLetter, pageable, principal);
     }

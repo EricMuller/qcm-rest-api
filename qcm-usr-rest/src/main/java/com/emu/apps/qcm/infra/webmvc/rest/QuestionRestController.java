@@ -2,6 +2,7 @@ package com.emu.apps.qcm.infra.webmvc.rest;
 
 import com.emu.apps.qcm.domain.dtos.question.QuestionPatchDto;
 import com.emu.apps.qcm.domain.models.Question;
+import com.emu.apps.qcm.domain.models.Tag;
 import com.emu.apps.qcm.domain.models.question.QuestionTags;
 import com.emu.apps.qcm.domain.repositories.QuestionRepository;
 import com.emu.apps.qcm.infra.persistence.exceptions.EntityNotFoundException;
@@ -10,7 +11,6 @@ import com.emu.apps.qcm.infra.webmvc.rest.validators.ValidUuid;
 import com.emu.apps.shared.annotations.Timer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -26,8 +26,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 
 import static com.emu.apps.qcm.infra.persistence.exceptions.MessageSupport.UNKNOWN_UUID_QUESTION;
-import static com.emu.apps.qcm.infra.webmvc.rest.ApiRestMappings.PUBLIC_API;
-import static com.emu.apps.qcm.infra.webmvc.rest.ApiRestMappings.QUESTIONS;
+import static com.emu.apps.qcm.infra.webmvc.rest.ApiRestMappings.*;
 import static com.emu.apps.qcm.infra.webmvc.rest.caches.CacheName.Names.QUESTION;
 import static com.emu.apps.qcm.infra.webmvc.rest.dtos.MessageDto.ERROR;
 import static com.emu.apps.shared.security.AuthentificationContextHolder.getPrincipal;
@@ -42,7 +41,7 @@ import static org.springframework.http.ResponseEntity.noContent;
 @RestController
 @Profile("webmvc")
 @RequestMapping(value = PUBLIC_API + QUESTIONS, produces = APPLICATION_JSON_VALUE)
-@Tag(name = "Question")
+@io.swagger.v3.oas.annotations.tags.Tag(name = "Question")
 @Validated
 public class QuestionRestController {
 
@@ -63,12 +62,20 @@ public class QuestionRestController {
         return questionRepository.getQuestions(tagUuid, questionnaireUuid, pageable, getPrincipal());
     }
 
+    @GetMapping(value = TAGS)
+    @Timer
+    @PageableAsQueryParam
+    public Iterable <Tag> getTags(@Parameter(hidden = true) Pageable pageable) {
+
+        return questionRepository.findAllQuestionTagByPage(pageable, getPrincipal());
+    }
+
 
     @GetMapping(value = "/{uuid}")
     @Timer
     @Cacheable(cacheNames = QUESTION, key = "#uuid")
     @ResponseBody
-    public Question getQuestionByUuid(@ValidUuid  @PathVariable("uuid") String uuid) {
+    public Question getQuestionByUuid(@ValidUuid @PathVariable("uuid") String uuid) {
         return questionRepository.getQuestionByUuId(uuid)
                 .orElseThrow(() -> new EntityNotFoundException(uuid, UNKNOWN_UUID_QUESTION));
     }
@@ -110,5 +117,6 @@ public class QuestionRestController {
     public ResponseEntity <MessageDto> handleAllException(Exception e) {
         return badRequest().body(new MessageDto(ERROR, e.getMessage()));
     }
+
 
 }

@@ -52,4 +52,7 @@ public interface QuestionRepository extends JpaRepository <QuestionEntity, Long>
             countQuery = "SELECT COUNT(distinct q) FROM QuestionEntity q left JOIN  q.questionTags qt  join  qt.tag t")
     @Deprecated(forRemoval = true)
     Iterable <QuestionEntity> findAllQuestionWithTags(Specification <QuestionEntity> specification);
+
+
+
 }

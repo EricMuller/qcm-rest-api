@@ -139,7 +139,7 @@ public abstract class AuditableEntity<U extends Serializable> implements Seriali
             };
         }
 
-        protected Specification <TagEntity> fieldStartWith(String attribute, String value) {
+        protected Specification <T> fieldStartWith(String attribute, String value) {
             return (root, query, cb) -> {
                 if (StringUtils.isEmpty(value)) {
                     return null;

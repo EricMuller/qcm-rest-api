@@ -1,10 +1,11 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags;
 
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.common.AuditableEntity.BaseSpecification;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -14,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Objects;
+
+import static org.springframework.data.jpa.domain.Specification.where;
 
 @Entity
 @Table(name = "question_tag")
@@ -27,7 +30,7 @@ public class QuestionTagEntity implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id", insertable = false, updatable = false)
-    private  QuestionEntity question;
+    private QuestionEntity question;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tag_id", insertable = false, updatable = false)
@@ -51,4 +54,34 @@ public class QuestionTagEntity implements Serializable {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+    public static final class SpecificationBuilder extends BaseSpecification <QuestionTagEntity> {
+
+        private String letter;
+
+        private String principal;
+
+        public SpecificationBuilder() {
+            //nope
+        }
+
+        public QuestionTagEntity.SpecificationBuilder setPrincipal(String principal) {
+            this.principal = principal;
+            return this;
+        }
+
+        public QuestionTagEntity.SpecificationBuilder setLetter(String letter) {
+            this.letter = letter;
+            return this;
+        }
+
+        @Override
+        public Specification <QuestionTagEntity> build() {
+            return (root, query, cb) -> where(fieldStartWith(LIBELLE, letter))
+                    .and(fieldEquals(CREATED_BY, principal)
+                    ).toPredicate(root, query, cb);
+        }
+
+    }
+
 }
