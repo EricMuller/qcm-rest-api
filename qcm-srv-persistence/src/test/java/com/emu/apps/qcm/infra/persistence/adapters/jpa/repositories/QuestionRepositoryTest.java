@@ -1,13 +1,14 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories;
 
 import com.emu.apps.qcm.infra.infrastructure.DbFixture;
+import com.emu.apps.qcm.infra.infrastructure.Fixture;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.Status;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.ResponseEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.QuestionTagEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.TagEntity;
 import com.emu.apps.shared.security.PrincipalUtils;
-import com.google.common.collect.Iterables;
 import org.assertj.core.api.Assertions;
 import org.hibernate.LazyInitializationException;
 import org.junit.jupiter.api.DisplayName;
@@ -15,9 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +28,11 @@ import java.util.Set;
 import java.util.UUID;
 
 import static com.emu.apps.qcm.infra.infrastructure.DbFixture.QUESTION_TAG_LIBELLE_1;
+import static com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig.USER_TEST;
+import static com.google.common.collect.Iterables.getFirst;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.data.domain.PageRequest.of;
+import static org.springframework.data.domain.Sort.by;
 
 @SpringBootTest(classes = SpringBootJpaTestConfig.class)
 @ActiveProfiles(value = "test")
@@ -122,7 +125,7 @@ class QuestionRepositoryTest {
         Assertions.assertThat(newQuestion.getResponses()).isNotEmpty();
         Assertions.assertThat(newQuestion.getQuestionTags().size()).isEqualTo(2);
 
-        ResponseEntity response = Iterables.getFirst(newQuestion.getResponses(), null);
+        ResponseEntity response = getFirst(newQuestion.getResponses(), null);
 
         Assertions.assertThat(response).isNotNull();
 
@@ -142,7 +145,7 @@ class QuestionRepositoryTest {
         List <QuestionEntity> content = page.getContent();
         Assertions.assertThat(content).isNotEmpty();
 
-        QuestionEntity first = Iterables.getFirst(content, null);
+        QuestionEntity first = getFirst(content, null);
 
         Assertions.assertThat(first).isNotNull();
 
@@ -150,10 +153,24 @@ class QuestionRepositoryTest {
         Assertions.assertThat(questionTags).isNotEmpty();
         Assertions.assertThat(questionTags.size()).isEqualTo(2);
 
-        QuestionTagEntity questionTag = Iterables.getFirst(questionTags, null);
+        QuestionTagEntity questionTag = getFirst(questionTags, null);
 
         Assertions.assertThat(questionTag).isNotNull();
         Assertions.assertThat(questionTag.getTag()).isNotNull();
+
+    }
+
+    @Test
+    void findAllStatus() {
+
+        dbFixture.emptyDatabase();
+
+        dbFixture.createOneQuestionnaireWithTwoQuestionTags();
+
+        Page <Status> page = questionRepository.findAllStatusByCreatedBy(Fixture.USER,null);
+
+        Assertions.assertThat(page).isNotNull();
+        Assertions.assertThat(page.getNumberOfElements()).isNotNull().isEqualTo(1);
 
     }
 
@@ -165,20 +182,22 @@ class QuestionRepositoryTest {
 
         dbFixture.createOneQuestionnaireWithTwoQuestionTags();
 
-        TagEntity tag1 = dbFixture.findTagbyLibelle(DbFixture.QUESTION_TAG_LIBELLE_1, () -> SpringBootJpaTestConfig.USER_TEST);
+        TagEntity tag1 = dbFixture.findTagbyLibelle(QUESTION_TAG_LIBELLE_1, () -> USER_TEST);
         Assertions.assertThat(tag1).isNotNull();
 
-        Specification <QuestionEntity> specification = new QuestionEntity.SpecificationBuilder(PrincipalUtils.getEmailOrName( (Principal) () -> SpringBootJpaTestConfig.USER_TEST))
+        Specification <QuestionEntity> specification = new QuestionEntity.SpecificationBuilder(PrincipalUtils.getEmailOrName( (Principal) () -> USER_TEST))
                 .setTagUuids(new UUID[]{tag1.getUuid()})
                 .build();
 
-        Pageable pageable = PageRequest.of(0, 3, Sort.by("id"));
+        Pageable pageable = of(0, 3, by("id"));
 
         Page <QuestionEntity> page = questionRepository.findAll(specification, pageable);
         Assertions.assertThat(page).isNotNull();
 
         Assertions.assertThat(page.getNumberOfElements()).isEqualTo(2);
     }
+
+
 
 
 }

@@ -25,4 +25,6 @@ public interface QuestionPersistencePort {
 
     Iterable <Tag> findAllTagByPage(Pageable pageable, String principal);
 
+    Iterable <String> findAllStatusByPage(String principal,Pageable pageable );
+
 }

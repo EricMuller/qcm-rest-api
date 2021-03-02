@@ -29,6 +29,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 /**
@@ -127,10 +128,17 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
     @Transactional(readOnly = true)
     public Iterable <Tag> findAllTagByPage(Pageable pageable, String principal) {
 
-
-
         return tagMapper.pageToDto(questionTagRepository.findAllTagByPrincipal(principal, pageable));
 
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Iterable <String> findAllStatusByPage( String principal, Pageable pageable){
+       return  StreamSupport.stream(questionRepository.findAllStatusByCreatedBy(principal,pageable)
+                         .spliterator(), false)
+                .map(status -> status.name())
+                .collect(Collectors.toList());
     }
 
     @Override

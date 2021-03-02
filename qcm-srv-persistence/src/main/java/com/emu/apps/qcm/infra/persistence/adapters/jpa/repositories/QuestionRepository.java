@@ -1,5 +1,6 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories;
 
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.Status;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionEntity;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
@@ -53,6 +54,10 @@ public interface QuestionRepository extends JpaRepository <QuestionEntity, Long>
     @Deprecated(forRemoval = true)
     Iterable <QuestionEntity> findAllQuestionWithTags(Specification <QuestionEntity> specification);
 
+
+    @Query(value = " SELECT distinct ( q.status ) from  QuestionEntity  q ",
+            countQuery = "SELECT COUNT(distinct q.status ) from  QuestionEntity  q  ")
+    Page <Status> findAllStatusByCreatedBy( String principal,Pageable pageable);
 
 
 }

@@ -18,6 +18,8 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
+import static com.emu.apps.qcm.infra.persistence.exceptions.RaiseExceptionUtil.raiseIfNull;
+
 /**
  * Question Business Delegate
  * <p>
@@ -84,12 +86,18 @@ public class QuestionRepositoryAdapter implements QuestionRepository {
     public void deleteQuestionByUuid(String uuid) {
         var questionOptional = questionPersistencePort.findByUuid(uuid);
 
-        RaiseExceptionUtil.raiseIfNull(uuid, questionOptional, MessageSupport.UNKNOWN_UUID_QUESTION);
+        raiseIfNull(uuid, questionOptional, MessageSupport.UNKNOWN_UUID_QUESTION);
         questionPersistencePort.deleteByUuid(uuid);
     }
 
     public Iterable <Tag> findAllQuestionTagByPage(Pageable pageable, String principal) {
         return questionPersistencePort.findAllTagByPage(pageable, principal);
+    }
+
+    public Iterable <String> findAllStatusByPage(Pageable pageable, String principal){
+
+        return questionPersistencePort.findAllStatusByPage(principal,pageable );
+
     }
 
 }

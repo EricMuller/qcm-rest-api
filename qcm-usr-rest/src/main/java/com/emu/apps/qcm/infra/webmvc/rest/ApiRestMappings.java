@@ -44,6 +44,8 @@ public final class ApiRestMappings {
 
     public static final String TAGS =  "/tags";
 
+    public static final String STATUS =  "/status";
+
     public static final String UPLOADS =  "/uploads";
 
     public static final String WEBHOOKS =  "/webhooks";

@@ -70,6 +70,14 @@ public class QuestionRestController {
         return questionRepository.findAllQuestionTagByPage(pageable, getPrincipal());
     }
 
+    @GetMapping(value = STATUS)
+    @Timer
+    @PageableAsQueryParam
+    public Iterable <String> getStatus(@Parameter(hidden = true) Pageable pageable) {
+
+        return questionRepository.findAllStatusByPage(pageable, getPrincipal());
+    }
+
 
     @GetMapping(value = "/{uuid}")
     @Timer
