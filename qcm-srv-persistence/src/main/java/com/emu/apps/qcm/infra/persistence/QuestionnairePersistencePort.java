@@ -1,10 +1,9 @@
 package com.emu.apps.qcm.infra.persistence;
 
 import com.emu.apps.qcm.domain.dtos.published.PublishedQuestionnaireDto;
-import com.emu.apps.qcm.domain.models.Question;
-import com.emu.apps.qcm.domain.models.Questionnaire;
-import com.emu.apps.qcm.domain.models.QuestionnaireQuestion;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.projections.QuestionnaireProjection;
+import com.emu.apps.qcm.domain.models.question.Question;
+import com.emu.apps.qcm.domain.models.questionnaire.Questionnaire;
+import com.emu.apps.qcm.domain.models.questionnaire.QuestionnaireQuestion;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -22,7 +21,7 @@ public interface QuestionnairePersistencePort {
 
     Question addQuestion(String uuid, Question questionDto, Optional <Integer> position, String principal);
 
-    Iterable <QuestionnaireProjection> findByTitleContaining(String title);
+//    Iterable <QuestionnaireProjection> findByTitleContaining(String title);
 
     Page <PublishedQuestionnaireDto> findAllPublishedByPage(Pageable pageable);
 
@@ -37,4 +36,6 @@ public interface QuestionnairePersistencePort {
     QuestionnaireQuestion getQuestion(String questionnaireUuid, String questionUuid);
 
     Page <QuestionnaireQuestion> getQuestionsByQuestionnaireUuid(String questionnaireUuid, Pageable pageable);
+
+
 }

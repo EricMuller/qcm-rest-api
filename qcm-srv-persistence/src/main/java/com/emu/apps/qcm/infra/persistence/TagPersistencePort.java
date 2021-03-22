@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.infra.persistence;
 
-import com.emu.apps.qcm.domain.models.Tag;
+import com.emu.apps.qcm.domain.models.tag.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

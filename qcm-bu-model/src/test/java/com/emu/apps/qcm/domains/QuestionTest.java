@@ -3,7 +3,7 @@ package com.emu.apps.qcm.domains;
 import java.time.ZonedDateTime;
 
 import com.emu.apps.qcm.domain.models.Category;
-import com.emu.apps.qcm.domain.models.Question;
+import com.emu.apps.qcm.domain.models.question.Question;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -55,13 +55,7 @@ class QuestionTest {
 		assertEquals(param, result);
 	}
 
-	@Test
-	void testUuid() {
-		String param = "123";
-		aQuestion.setUuid(param);
-		Object result = aQuestion.getUuid();
-		assertEquals(param, result);
-	}
+
 
 	@Test
 	void testVersion() {

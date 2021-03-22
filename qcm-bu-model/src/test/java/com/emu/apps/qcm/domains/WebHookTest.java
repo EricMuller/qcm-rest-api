@@ -2,7 +2,7 @@ package com.emu.apps.qcm.domains;
 
 import java.time.ZonedDateTime;
 
-import com.emu.apps.qcm.domain.models.WebHook;
+import com.emu.apps.qcm.domain.models.webhook.WebHook;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -38,13 +38,6 @@ class WebHookTest {
 		assertEquals(param, result);
 	}
 
-	@Test
-	void testUuid() {
-		String param = "123";
-		aWebHook.setUuid(param);
-		Object result = aWebHook.getUuid();
-		assertEquals(param, result);
-	}
 
 	@Test
 	void testVersion() {

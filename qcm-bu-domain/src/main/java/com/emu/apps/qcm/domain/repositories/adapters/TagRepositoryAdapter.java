@@ -1,7 +1,9 @@
 package com.emu.apps.qcm.domain.repositories.adapters;
 
 
-import com.emu.apps.qcm.domain.models.Tag;
+import com.emu.apps.qcm.domain.models.tag.Tag;
+import com.emu.apps.qcm.domain.models.base.PrincipalId;
+import com.emu.apps.qcm.domain.models.tag.TagId;
 import com.emu.apps.qcm.domain.repositories.TagRepository;
 import com.emu.apps.qcm.infra.persistence.QuestionPersistencePort;
 import com.emu.apps.qcm.infra.persistence.TagPersistencePort;
@@ -23,37 +25,37 @@ import java.util.Optional;
 @Service
 public class TagRepositoryAdapter implements TagRepository {
 
-    private final TagPersistencePort tagInfraService;
+    private final TagPersistencePort tagPersistencePort;
 
     private final QuestionPersistencePort questionPersistencePort;
 
     public TagRepositoryAdapter(TagPersistencePort tagInfraService, QuestionPersistencePort questionPersistencePort) {
-        this.tagInfraService = tagInfraService;
+        this.tagPersistencePort = tagInfraService;
         this.questionPersistencePort = questionPersistencePort;
     }
 
     @Override
-    public Page <Tag> getTags(String search, Pageable pageable, String principal) throws IOException {
+    public Page <Tag> getTags(String search, Pageable pageable, PrincipalId principal) throws IOException {
 
         var criterias = CriteriaUtils.toCriteria(search);
         Optional <String> firstLetter = CriteriaUtils.getAttribute("firstLetter", criterias);
         Optional <String> used = CriteriaUtils.getAttribute("used", criterias);
 
-        return tagInfraService.findAllByPage(firstLetter, pageable, principal);
+        return tagPersistencePort.findAllByPage(firstLetter, pageable, principal.toUUID());
     }
 
     @Override
-    public Tag getTagByUuid(String uuid) {
-        return tagInfraService.findByUuid(uuid);
+    public Tag getTagById(TagId tagId) {
+        return tagPersistencePort.findByUuid(tagId.toUUID());
     }
 
     @Override
     public Tag saveTag(Tag tag) {
-        return tagInfraService.save(tag);
+        return tagPersistencePort.save(tag);
     }
 
-    public Tag findOrCreateByLibelle(String libelle, String principal) {
-        return tagInfraService.findOrCreateByLibelle(libelle, principal);
+    public Tag findOrCreateByLibelle(String libelle, PrincipalId principal) {
+        return tagPersistencePort.findOrCreateByLibelle(libelle, principal.toUUID());
     }
 
 

@@ -7,7 +7,7 @@ public final class AuthentificationContextHolder {
     private AuthentificationContextHolder() {
     }
 
-    public static  String getPrincipal() {
+    public static String getPrincipal() {
         return context.get();
     }
 

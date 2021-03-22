@@ -36,13 +36,7 @@ class QuestionTagsTest {
 		assertEquals(param, result);
 	}
 
-	@Test
-	void testUuid() {
-		String param = "123";
-		aQuestionTags.setUuid(param);
-		Object result = aQuestionTags.getUuid();
-		assertEquals(param, result);
-	}
+
 
 	@Test
 	void testVersion() {

@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.infra.webmvc.rest;
 
 
-import com.emu.apps.qcm.domain.models.Upload;
+import com.emu.apps.qcm.domain.models.upload.Upload;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -40,7 +40,7 @@ public class UploadRestControllerTest {
         map.add("fileType", MediaType.APPLICATION_JSON_VALUE);
 
         final ResponseEntity <Upload> postResponse = restTemplate
-                .withBasicAuth(SpringBootJpaTestConfig.USER_TEST, SpringBootJpaTestConfig.USER_PASSWORD)
+                .withBasicAuth(SpringBootJpaTestConfig.USER_TEST.toUUID(), SpringBootJpaTestConfig.USER_PASSWORD)
                 .exchange(getURL(ApiRestMappings.PUBLIC_API + ApiRestMappings.UPLOADS + "/json"), HttpMethod.POST, new HttpEntity <>(map), Upload.class);
         assertThat(postResponse.getBody()).isNotNull();
 

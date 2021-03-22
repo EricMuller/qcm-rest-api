@@ -1,6 +1,8 @@
 package com.emu.apps.qcm.domain.repositories;
 
-import com.emu.apps.qcm.domain.models.Upload;
+import com.emu.apps.qcm.domain.models.base.PrincipalId;
+import com.emu.apps.qcm.domain.models.upload.Upload;
+import com.emu.apps.qcm.domain.models.upload.UploadId;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,13 +12,13 @@ public interface UploadRepository {
     Upload uploadFile(String fileType,
                       MultipartFile multipartFile,
                       Boolean async,
-                      String principal) throws IOException;
+                      PrincipalId principal) throws IOException;
 
-    Iterable <Upload> getUploads(Pageable pageable, String principal);
+    Iterable <Upload> getUploads(Pageable pageable, PrincipalId principal);
 
-    void deleteUploadByUuid(String uuid);
+    void deleteUploadByUuid(UploadId uploadId);
 
-    Upload getUploadByUuid(String uuid);
+    Upload getUploadByUuid(UploadId uploadId);
 
     Upload saveUpload(Upload upload) ;
 

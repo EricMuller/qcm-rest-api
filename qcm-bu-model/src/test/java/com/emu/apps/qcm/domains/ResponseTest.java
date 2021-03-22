@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.domains;
 
-import com.emu.apps.qcm.domain.models.Response;
+import com.emu.apps.qcm.domain.models.question.Response;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.domain.models.question;
 
 
-import com.emu.apps.qcm.domain.models.Domain;
+import com.emu.apps.qcm.domain.models.base.DomainId;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +13,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class QuestionLight extends Domain {
+public class QuestionLight extends DomainId {
 
     @JsonProperty("question")
     private String questionText;

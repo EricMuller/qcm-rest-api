@@ -1,6 +1,8 @@
 package com.emu.apps.qcm.infra.webmvc.rest;
 
-import com.emu.apps.qcm.domain.models.Upload;
+import com.emu.apps.qcm.domain.models.base.PrincipalId;
+import com.emu.apps.qcm.domain.models.upload.Upload;
+import com.emu.apps.qcm.domain.models.upload.UploadId;
 import com.emu.apps.qcm.domain.repositories.UploadRepository;
 import com.emu.apps.shared.annotations.Timer;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -10,7 +12,15 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -39,7 +49,7 @@ public class UploadRestController {
                                    @RequestParam("file") MultipartFile multipartFile,
                                    @RequestParam(value = "async", required = false) Boolean async) throws IOException {
 
-        return uploadRepository.uploadFile(fileType, multipartFile, async, getPrincipal());
+        return uploadRepository.uploadFile(fileType, multipartFile, async, new PrincipalId(getPrincipal()));
     }
 
     @GetMapping
@@ -47,7 +57,7 @@ public class UploadRestController {
     @PageableAsQueryParam
     public Iterable <Upload> getUploads(@Parameter(hidden = true)
                                         @PageableDefault(direction = DESC, sort = {"dateModification"}) Pageable pageable) {
-        return uploadRepository.getUploads(pageable, getPrincipal());
+        return uploadRepository.getUploads(pageable, new PrincipalId(getPrincipal()));
     }
 
 
@@ -55,13 +65,13 @@ public class UploadRestController {
     @ResponseBody
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteUploadByUuid(@PathVariable("uuid") String uuid) {
-        uploadRepository.deleteUploadByUuid(uuid);
+        uploadRepository.deleteUploadByUuid(new UploadId(uuid));
     }
 
     @GetMapping(value = "/{uuid}")
     @ResponseBody
     public Upload getUploadByUuid(@PathVariable("uuid") String uuid) {
-        return uploadRepository.getUploadByUuid(uuid);
+        return uploadRepository.getUploadByUuid(new UploadId(uuid));
     }
 
 

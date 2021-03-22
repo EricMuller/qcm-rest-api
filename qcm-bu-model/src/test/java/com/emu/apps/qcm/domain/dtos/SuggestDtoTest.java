@@ -1,15 +1,16 @@
 package com.emu.apps.qcm.domain.dtos;
 
+import com.emu.apps.qcm.domain.models.questionnaire.Suggest;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class SuggestDtoTest {
 
-	private final SuggestDto aSuggestDto;
+	private final Suggest aSuggestDto;
 
 	public SuggestDtoTest() {
-		this.aSuggestDto = new SuggestDto();
+		this.aSuggestDto = new Suggest();
 	}
 	@Test
 	void testFieldName() {

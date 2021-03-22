@@ -1,8 +1,8 @@
 package com.emu.apps.qcm.domain.repositories.adapters;
 
 import com.emu.apps.qcm.domain.models.Category;
+import com.emu.apps.qcm.domain.models.base.PrincipalId;
 import com.emu.apps.qcm.domain.repositories.CategoryRepository;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category.Type;
 import com.emu.apps.qcm.infra.persistence.CategoryPersistencePort;
 import org.springframework.stereotype.Service;
 
@@ -31,14 +31,14 @@ public class CategoryRepositoryAdapter implements CategoryRepository {
 
 
     @Override
-    public Iterable <Category> getCategories(String principal, Type type) {
-        return categoryPersistencePort.findCategories(principal, type);
+    public Iterable <Category> getCategories(PrincipalId principal, String type) {
+        return categoryPersistencePort.findCategories(principal.toUUID(), type);
     }
 
 
     @Override
-    public Category saveCategory(Category category, String principal) {
-        category.setUserId(principal);
+    public Category saveCategory(Category category, PrincipalId principal) {
+        category.setUserId(principal.toUUID());
         return categoryPersistencePort.saveCategory(category);
     }
 

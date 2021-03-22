@@ -1,13 +1,15 @@
 package com.emu.apps.qcm.domain.repositories.adapters;
 
-import com.emu.apps.qcm.domain.models.Question;
-import com.emu.apps.qcm.domain.models.Response;
-import com.emu.apps.qcm.domain.models.Tag;
+import com.emu.apps.qcm.domain.models.base.PrincipalId;
+import com.emu.apps.qcm.domain.models.question.Question;
+import com.emu.apps.qcm.domain.models.question.QuestionId;
+import com.emu.apps.qcm.domain.models.question.Response;
+import com.emu.apps.qcm.domain.models.tag.Tag;
 import com.emu.apps.qcm.domain.models.question.QuestionTags;
 import com.emu.apps.qcm.domain.repositories.QuestionRepository;
 import com.emu.apps.qcm.infra.persistence.QuestionPersistencePort;
-import com.emu.apps.qcm.infra.persistence.exceptions.MessageSupport;
-import com.emu.apps.qcm.infra.persistence.exceptions.RaiseExceptionUtil;
+import com.emu.apps.shared.exceptions.EntityNotFoundException;
+import com.emu.apps.shared.exceptions.MessageSupport;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +20,6 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
-import static com.emu.apps.qcm.infra.persistence.exceptions.RaiseExceptionUtil.raiseIfNull;
 
 /**
  * Question Business Delegate
@@ -41,28 +42,25 @@ public class QuestionRepositoryAdapter implements QuestionRepository {
     @Override
     public Iterable <QuestionTags> getQuestions(String[] tagUuid,
                                                 String[] questionnaireUuid,
-                                                Pageable pageable, String principal) {
+                                                Pageable pageable, PrincipalId principal) {
 
-        return questionPersistencePort.findAllByPage(questionnaireUuid, tagUuid, pageable, principal);
-    }
-
-
-    @Override
-    public Optional <Question> getQuestionByUuId(String uuid) {
-        return questionPersistencePort.findByUuid(uuid);
+        return questionPersistencePort.findAllByPage(questionnaireUuid, tagUuid, pageable, principal.toUUID());
     }
 
     @Override
-    public Question updateQuestion(Question questionDto, String principal) {
+    public Optional <Question> getQuestionById(QuestionId questionId) {
+        return questionPersistencePort.findByUuid(questionId.toUUID());
+    }
 
-
-        return questionPersistencePort.saveQuestion(questionDto, principal);
+    @Override
+    public Question updateQuestion(Question question, PrincipalId principal) {
+        return questionPersistencePort.saveQuestion(question, principal.toUUID());
     }
 
     @Override
     @Transactional
-    public Collection <Question> saveQuestions(Collection <Question> questionDtos, final String principal) {
-        return questionDtos
+    public Collection <Question> saveQuestions(Collection <Question> questions, final PrincipalId principal) {
+        return questions
                 .stream()
                 .map(questionDto -> saveQuestion(questionDto, principal))
                 .collect(Collectors.toList());
@@ -70,33 +68,35 @@ public class QuestionRepositoryAdapter implements QuestionRepository {
 
     @Override
     @Transactional
-    public Question saveQuestion(Question questionDto, String principal) {
+    public Question saveQuestion(Question question, PrincipalId principal) {
 
-
-        if (Objects.nonNull(questionDto.getResponses())) {
+        if (Objects.nonNull(question.getResponses())) {
             AtomicLong numberLong = new AtomicLong(0);
-            for (Response responseDto : questionDto.getResponses()) {
+            for (Response responseDto : question.getResponses()) {
                 responseDto.setNumber(numberLong.incrementAndGet());
             }
         }
-        return questionPersistencePort.saveQuestion(questionDto, principal);
+
+        return questionPersistencePort.saveQuestion(question, principal.toUUID());
+
     }
 
     @Override
-    public void deleteQuestionByUuid(String uuid) {
-        var questionOptional = questionPersistencePort.findByUuid(uuid);
+    public void deleteQuestionById(QuestionId questionId) {
 
-        raiseIfNull(uuid, questionOptional, MessageSupport.UNKNOWN_UUID_QUESTION);
-        questionPersistencePort.deleteByUuid(uuid);
+        var questionOptional = questionPersistencePort.findByUuid(questionId.toUUID())
+                .orElseThrow(() -> new EntityNotFoundException(questionId.toUUID(), MessageSupport.UNKNOWN_UUID_QUESTION));
+
+        questionPersistencePort.deleteByUuid(questionOptional.toUUID());
     }
 
-    public Iterable <Tag> findAllQuestionTagByPage(Pageable pageable, String principal) {
-        return questionPersistencePort.findAllTagByPage(pageable, principal);
+    public Iterable <Tag> findAllQuestionTagByPage(Pageable pageable, PrincipalId principal) {
+        return questionPersistencePort.findAllTagByPage(pageable, principal.toUUID());
     }
 
-    public Iterable <String> findAllStatusByPage(Pageable pageable, String principal){
+    public Iterable <String> findAllStatusByPage(Pageable pageable, PrincipalId principal){
 
-        return questionPersistencePort.findAllStatusByPage(principal,pageable );
+        return questionPersistencePort.findAllStatusByPage(principal.toUUID(),pageable );
 
     }
 

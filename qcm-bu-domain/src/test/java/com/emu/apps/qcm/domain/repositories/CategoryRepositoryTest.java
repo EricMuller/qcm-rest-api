@@ -3,9 +3,7 @@ package com.emu.apps.qcm.domain.repositories;
 import com.emu.apps.qcm.domain.models.Category;
 import com.emu.apps.qcm.infra.infrastructure.DbFixture;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category.Type;
-import com.emu.apps.qcm.infra.persistence.exceptions.FunctionnalException;
-import com.emu.apps.shared.security.AuthentificationContextHolder;
+import com.emu.apps.shared.exceptions.FunctionnalException;
 import org.apache.commons.collections4.IterableUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,6 +11,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
+
+
+import static com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig.USER_TEST;
+import static com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category.Type.QUESTION;
+import static com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category.Type.QUESTIONNAIRE;
+import static com.emu.apps.shared.security.AuthentificationContextHolder.setPrincipal;
 
 @SpringBootTest(classes = {SpringBootJpaTestConfig.class})
 @TestPropertySource("classpath:application-test.properties")
@@ -26,7 +30,7 @@ class CategoryRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        AuthentificationContextHolder.setPrincipal(SpringBootJpaTestConfig.USER_TEST);
+        setPrincipal(USER_TEST.toUUID());
     }
 
     @Test
@@ -34,7 +38,7 @@ class CategoryRepositoryTest {
 
         dbFixture.emptyDatabase();
 
-        Iterable <Category> categories = categoryBusinessPort.getCategories(SpringBootJpaTestConfig.USER_TEST, Type.QUESTION);
+        Iterable <Category> categories = categoryBusinessPort.getCategories(USER_TEST, QUESTION.name());
 
         Assertions.assertTrue(IterableUtils.isEmpty(categories));
 
@@ -47,13 +51,13 @@ class CategoryRepositoryTest {
 
         Category category = new Category();
         category.setLibelle("CategoryBusinessPortTest.testSaveCategory");
-        category.setType(Type.QUESTIONNAIRE.name());
+        category.setType(QUESTIONNAIRE.name());
 
-        Category saveCategory = categoryBusinessPort.saveCategory(category, SpringBootJpaTestConfig.USER_TEST);
+        Category saveCategory = categoryBusinessPort.saveCategory(category, USER_TEST);
 
         Assertions.assertNotNull(saveCategory);
         Assertions.assertNotNull(saveCategory.getUuid());
-        Assertions.assertEquals(SpringBootJpaTestConfig.USER_TEST, saveCategory.getUserId());
+        Assertions.assertEquals(USER_TEST.toUUID(), saveCategory.getUserId());
 
     }
 
@@ -64,9 +68,9 @@ class CategoryRepositoryTest {
 
         Category category = new Category();
         category.setLibelle("CategoryBusinessPortTest.testGetCategoryByUuid");
-        category.setType(Type.QUESTIONNAIRE.name());
+        category.setType(QUESTIONNAIRE.name());
 
-        category = categoryBusinessPort.saveCategory(category, SpringBootJpaTestConfig.USER_TEST);
+        category = categoryBusinessPort.saveCategory(category, USER_TEST);
         Assertions.assertNotNull(category);
         Assertions.assertNotNull(category.getUuid());
 
@@ -74,7 +78,7 @@ class CategoryRepositoryTest {
 
         Assertions.assertNotNull(categoryByUuid);
         Assertions.assertNotNull(categoryByUuid.getUuid());
-        Assertions.assertEquals(SpringBootJpaTestConfig.USER_TEST, categoryByUuid.getUserId());
+        Assertions.assertEquals(USER_TEST.toUUID(), categoryByUuid.getUserId());
 
     }
 

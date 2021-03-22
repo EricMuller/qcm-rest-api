@@ -1,8 +1,11 @@
 package com.emu.apps.qcm.domain.repositories.adapters;
 
-import com.emu.apps.qcm.domain.models.Question;
-import com.emu.apps.qcm.domain.models.Questionnaire;
-import com.emu.apps.qcm.domain.models.QuestionnaireQuestion;
+import com.emu.apps.qcm.domain.models.questionnaire.QuestionnaireQuestion;
+import com.emu.apps.qcm.domain.models.base.PrincipalId;
+import com.emu.apps.qcm.domain.models.question.Question;
+import com.emu.apps.qcm.domain.models.question.QuestionId;
+import com.emu.apps.qcm.domain.models.questionnaire.Questionnaire;
+import com.emu.apps.qcm.domain.models.questionnaire.QuestionnaireId;
 import com.emu.apps.qcm.domain.repositories.QuestionnaireRepository;
 import com.emu.apps.qcm.infra.persistence.QuestionnairePersistencePort;
 import org.springframework.data.domain.Page;
@@ -42,96 +45,96 @@ public class QuestionnaireRepositoryAdapter implements QuestionnaireRepository {
      */
     @Override
     @Transactional(readOnly = true)
-    public Optional <Questionnaire> getQuestionnaireByUuid(String questionnaireUuid) {
-        return questionnairePersistencePort.findByUuid(questionnaireUuid);
+    public Optional <Questionnaire> getQuestionnaireById(QuestionnaireId questionnaireUuid) {
+        return questionnairePersistencePort.findByUuid(questionnaireUuid.toUUID());
 
     }
 
     /**
      * Delete a Questionnaire with technical identifier
      *
-     * @param questionnaireUuid questionnaire Uuid
+     * @param questionnaireId questionnaire Uuid
      * @return Nocontent
      */
     @Override
-    public ResponseEntity <Questionnaire> deleteQuestionnaireByUuid(String questionnaireUuid) {
-        questionnairePersistencePort.deleteByUuid(questionnaireUuid);
+    public ResponseEntity <Questionnaire> deleteQuestionnaireById(QuestionnaireId questionnaireId) {
+        questionnairePersistencePort.deleteByUuid(questionnaireId.toUUID());
         return new ResponseEntity <>(HttpStatus.NO_CONTENT);
     }
 
     /**
      * Update a existing questionnaire
      *
-     * @param aQuestionnaireDto the questionnaire DTO
+     * @param questionnaire the questionnaire DTO
      * @return the updated questionnaire
      */
     @Override
-    public Questionnaire updateQuestionnaire(Questionnaire aQuestionnaireDto, String principal) {
-        return questionnairePersistencePort.saveQuestionnaire(aQuestionnaireDto, principal);
+    public Questionnaire updateQuestionnaire(Questionnaire questionnaire, PrincipalId principal) {
+        return questionnairePersistencePort.saveQuestionnaire(questionnaire, principal.toUUID());
     }
 
     /**
      * Create a  new Questionnaire
      *
-     * @param questionnaireDto the questionnaire DTO
+     * @param questionnaire the questionnaire DTO
      * @return the created questionnaire
      */
     @Override
-    public Questionnaire saveQuestionnaire(Questionnaire questionnaireDto, String principal) {
-        return questionnairePersistencePort.saveQuestionnaire(questionnaireDto, principal);
+    public Questionnaire saveQuestionnaire(Questionnaire questionnaire, PrincipalId principal) {
+        return questionnairePersistencePort.saveQuestionnaire(questionnaire, principal.toUUID());
     }
 
-    public Page <QuestionnaireQuestion> getQuestionsByQuestionnaireUuid(String questionnaireUuid, Pageable pageable) {
-        return questionnairePersistencePort.getQuestionsByQuestionnaireUuid(questionnaireUuid, pageable);
+    public Page <QuestionnaireQuestion> getQuestionsByQuestionnaireId(QuestionnaireId questionnaireId, Pageable pageable) {
+        return questionnairePersistencePort.getQuestionsByQuestionnaireUuid(questionnaireId.toUUID(), pageable);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Page <Questionnaire> getQuestionnaires(String[] tagUuid, Pageable pageable, String principal) {
-        return questionnairePersistencePort.findAllByPage(tagUuid, principal, pageable);
+    public Page <Questionnaire> getQuestionnaires(String[] tagUuid, Pageable pageable, PrincipalId principal) {
+        return questionnairePersistencePort.findAllByPage(tagUuid, principal.toUUID(), pageable);
     }
 
     /**
      * Add  question to a questionnaire
      *
-     * @param uuid        questionnaire UUID
-     * @param questionDto the question DTO
+     * @param uuid     questionnaire UUID
+     * @param question the question DTO
      * @return QuestionDto
      */
     @Override
-    public Question addQuestion(String uuid, Question questionDto, Optional <Integer> position, String principal) {
+    public Question addQuestion(QuestionnaireId questionnaireId, Question question, Optional <Integer> position, PrincipalId principal) {
 
-        return questionnairePersistencePort.addQuestion(uuid, questionDto, position, principal);
+        return questionnairePersistencePort.addQuestion(questionnaireId.toUUID(), question, position, principal.toUUID());
     }
 
     /**
      * Add  questions to a questionnaire
      *
-     * @param questionnaireUuid UUI Questionnaire
-     * @param questionDtos      List of questions to add
+     * @param questionnaireId UUI Questionnaire
+     * @param questionDtos    List of questions to add
      */
     @Override
-    public List <Question> addQuestions(String questionnaireUuid, Collection <Question> questionDtos, String principal) {
+    public List <Question> addQuestions(QuestionnaireId questionnaireId, Collection <Question> questionDtos, PrincipalId principal) {
 
         AtomicInteger position = new AtomicInteger(0);
         return questionDtos
                 .stream()
-                .map(questionDto -> addQuestion(questionnaireUuid, questionDto, Optional.of(position.incrementAndGet()), principal))
+                .map(questionDto -> addQuestion(questionnaireId, questionDto, Optional.of(position.incrementAndGet()), principal))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public void deleteQuestion(String questionnaireUuid, String questionUuid) {
-        questionnairePersistencePort.deleteQuestion(questionnaireUuid, questionUuid);
+    public void deleteQuestion(QuestionnaireId questionnaireId, QuestionId questionId) {
+        questionnairePersistencePort.deleteQuestion(questionnaireId.toUUID(), questionId.toUUID());
     }
 
     @Override
-    public QuestionnaireQuestion getQuestion(String questionnaireUuid, String questionUuid) {
-        return questionnairePersistencePort.getQuestion(questionnaireUuid, questionUuid);
+    public QuestionnaireQuestion getQuestion(QuestionnaireId questionnaireId, QuestionId questionId) {
+        return questionnairePersistencePort.getQuestion(questionnaireId.toUUID(), questionId.toUUID());
     }
 
     @Override
-    public void activateQuestionnaire(String questionnaireUuid) {
+    public void activateQuestionnaire(QuestionnaireId questionnaireId) {
 
     }
 

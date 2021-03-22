@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.infra.persistence;
 
-import com.emu.apps.qcm.domain.models.User;
+import com.emu.apps.qcm.domain.models.user.User;
 
 public interface UserPersistencePort {
 

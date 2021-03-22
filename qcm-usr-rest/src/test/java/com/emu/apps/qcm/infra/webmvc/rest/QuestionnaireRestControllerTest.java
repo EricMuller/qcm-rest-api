@@ -1,8 +1,8 @@
 package com.emu.apps.qcm.infra.webmvc.rest;
 
 
-import com.emu.apps.qcm.domain.models.Question;
-import com.emu.apps.qcm.domain.models.Questionnaire;
+import com.emu.apps.qcm.domain.models.question.Question;
+import com.emu.apps.qcm.domain.models.questionnaire.Questionnaire;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

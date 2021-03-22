@@ -1,6 +1,7 @@
 package com.emu.apps.qcm.domain.repositories.adapters;
 
-import com.emu.apps.qcm.domain.models.User;
+import com.emu.apps.qcm.domain.models.user.User;
+import com.emu.apps.qcm.domain.models.base.PrincipalId;
 import com.emu.apps.qcm.domain.repositories.UserRepository;
 import com.emu.apps.qcm.infra.persistence.UserPersistencePort;
 import com.emu.apps.shared.security.PrincipalUtils;
@@ -55,23 +56,23 @@ public class UserRepositoryAdapter implements UserRepository {
     /**
      * Update a user
      *
-     * @param userDto   user
+     * @param user   user
      * @param principal principal
      * @return the updated user DTO
      */
 
     @Override
-    public User updateUser(@RequestBody User userDto, String principal) {
+    public User updateUser(@RequestBody User user, PrincipalId principal) {
 
-        return userPersistencePort.save(userDto);
+        return userPersistencePort.save(user);
 
     }
 
     @Override
-    public User createUser(@RequestBody User userDto, String principal) {
+    public User createUser(@RequestBody User user, PrincipalId principal) {
 
-        userDto.setEmail(principal);
-        return userPersistencePort.save(userDto);
+        user.setEmail(principal.toUUID());
+        return userPersistencePort.save(user);
 
     }
 

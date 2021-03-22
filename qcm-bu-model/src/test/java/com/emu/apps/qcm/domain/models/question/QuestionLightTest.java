@@ -36,13 +36,7 @@ class QuestionLightTest {
 		assertEquals(param, result);
 	}
 
-	@Test
-	void testUuid() {
-		String param = "123";
-		aQuestionLight.setUuid(param);
-		Object result = aQuestionLight.getUuid();
-		assertEquals(param, result);
-	}
+
 
 	@Test
 	void testVersion() {

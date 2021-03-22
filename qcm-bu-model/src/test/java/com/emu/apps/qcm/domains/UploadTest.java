@@ -2,7 +2,7 @@ package com.emu.apps.qcm.domains;
 
 import java.time.ZonedDateTime;
 
-import com.emu.apps.qcm.domain.models.Upload;
+import com.emu.apps.qcm.domain.models.upload.Upload;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

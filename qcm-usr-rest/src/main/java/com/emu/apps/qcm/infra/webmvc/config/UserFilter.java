@@ -1,9 +1,7 @@
 package com.emu.apps.qcm.infra.webmvc.config;
 
-import com.emu.apps.qcm.domain.models.User;
+import com.emu.apps.qcm.domain.models.user.User;
 import com.emu.apps.qcm.domain.repositories.UserRepository;
-import com.emu.apps.qcm.infra.webmvc.rest.ApiRestMappings;
-import com.emu.apps.shared.security.AuthentificationContextHolder;
 import com.emu.apps.shared.security.PrincipalUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
@@ -17,6 +15,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Objects;
+
+import static com.emu.apps.qcm.infra.webmvc.rest.ApiRestMappings.PUBLIC_API;
+import static com.emu.apps.qcm.infra.webmvc.rest.ApiRestMappings.USERS;
+import static com.emu.apps.shared.security.AuthentificationContextHolder.setPrincipal;
+import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
 
 @Component("UserFilter")
 @Slf4j
@@ -35,20 +38,20 @@ public class UserFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         if (!HttpMethod.OPTIONS.name().equals(request.getMethod())) {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            AuthentificationContextHolder.setPrincipal(null);
+            setPrincipal(null);
             if (Objects.nonNull(authentication)) {
                 String principal = PrincipalUtils.getEmailOrName(authentication.getPrincipal());
                 if (Objects.nonNull(principal)) {
                     final User user = userServicePort.userByEmail(principal);
                     if (Objects.nonNull(user)) {
-                        AuthentificationContextHolder.setPrincipal(user.getUuid());
+                        setPrincipal(user.getUuid());
                         GrantedAuthority grantedAuthority = () -> user.getUuid();
                     } else {
                         LOGGER.warn("user with email {} non enregistré!", principal);
-                        if (!request.getRequestURI().startsWith(ApiRestMappings.PUBLIC_API + ApiRestMappings.USERS)) {
+                        if (!request.getRequestURI().startsWith(PUBLIC_API + USERS)) {
                             LOGGER.warn("user with email {} non enregistré! send http 303 ", principal);
                             HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
-                            httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "Required valid email in database");
+                            httpResponse.sendError(SC_FORBIDDEN, "Required valid email in database");
                         } else {
                             LOGGER.warn("user with email {} non enregistré!", principal);
                         }

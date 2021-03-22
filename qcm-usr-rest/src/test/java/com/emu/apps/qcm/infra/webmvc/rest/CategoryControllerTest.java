@@ -120,11 +120,11 @@ public class CategoryControllerTest {
 
         assertThat(getResponse.getBody()).isNotEmpty();
 
-        Category categoryDto = getResponse.getBody()[0];
+        Category category = getResponse.getBody()[0];
 
-        assertThat(categoryDto.getUuid()).isNotNull().isEqualTo(uuid);
-        assertThat(categoryDto.getType()).isNotNull().isEqualTo(Type.QUESTION.name());
-        assertThat(categoryDto.getLibelle()).isNotNull().isEqualTo(LIBELLE);
+        assertThat(category.getUuid()).isNotNull().isEqualTo(uuid);
+        assertThat(category.getType()).isNotNull().isEqualTo(Type.QUESTION.name());
+        assertThat(category.getLibelle()).isNotNull().isEqualTo(LIBELLE);
 
         URI uriQuestionnaire = UriComponentsBuilder.fromHttpUrl(getURL(CATEGORY_URI))
                 .queryParam("type", Type.QUESTIONNAIRE.name()).build().toUri();

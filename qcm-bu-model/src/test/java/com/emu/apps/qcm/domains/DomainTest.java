@@ -2,24 +2,17 @@ package com.emu.apps.qcm.domains;
 
 import java.time.ZonedDateTime;
 
-import com.emu.apps.qcm.domain.models.Domain;
+import com.emu.apps.qcm.domain.models.base.DomainId;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class DomainTest {
 
-	private final Domain aDomain;
+	private final DomainId aDomain;
 
 	public DomainTest() {
-		this.aDomain = new Domain();
-	}
-	@Test
-	void testUuid() {
-		String param = "123";
-		aDomain.setUuid(param);
-		Object result = aDomain.getUuid();
-		assertEquals(param, result);
+		this.aDomain = new DomainId();
 	}
 
 	@Test

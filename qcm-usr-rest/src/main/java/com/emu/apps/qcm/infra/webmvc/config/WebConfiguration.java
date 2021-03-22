@@ -40,7 +40,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
 @Configuration
-@EnableCaching
 @Profile("webmvc")
 public class WebConfiguration implements WebMvcConfigurer {
 
@@ -58,6 +57,11 @@ public class WebConfiguration implements WebMvcConfigurer {
                 "forward:/static/index.html");
     }
 
+    /**
+     * load messages.properties
+     * @param messageSource
+     * @return
+     */
     @Bean
     public LocalValidatorFactoryBean validator(MessageSource messageSource) {
         LocalValidatorFactoryBean validatorFactoryBean = new LocalValidatorFactoryBean();
@@ -65,7 +69,17 @@ public class WebConfiguration implements WebMvcConfigurer {
         return validatorFactoryBean;
     }
 
+/*
+    @Bean
+    public MessageSource messageSource() {
+        ReloadableResourceBundleMessageSource messageSource
+                = new ReloadableResourceBundleMessageSource();
 
+        messageSource.setBasename("classpath:messages");
+        messageSource.setDefaultEncoding("UTF-8");
+        return messageSource;
+    }
+*/
 
 
 }

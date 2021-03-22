@@ -38,13 +38,7 @@ class CategoryTest {
 		assertEquals(param, result);
 	}
 
-	@Test
-	void testUuid() {
-		String param = "123";
-		aCategory.setUuid(param);
-		Object result = aCategory.getUuid();
-		assertEquals(param, result);
-	}
+
 
 	@Test
 	void testVersion() {

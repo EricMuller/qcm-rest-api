@@ -56,7 +56,7 @@
 
         <dependency>
             <groupId>com.emu.apps.qcm</groupId>
-            <artifactId>qcm-srv-persistence</artifactId>
+            <artifactId>qcm-srv-persistence-jpa-adapters</artifactId>
             <scope>test</scope>
             <type>test-jar</type>
         </dependency>

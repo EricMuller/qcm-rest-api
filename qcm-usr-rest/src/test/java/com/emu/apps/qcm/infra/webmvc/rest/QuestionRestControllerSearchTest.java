@@ -1,8 +1,8 @@
 package com.emu.apps.qcm.infra.webmvc.rest;
 
 
-import com.emu.apps.qcm.domain.models.Question;
-import com.emu.apps.qcm.domain.models.Response;
+import com.emu.apps.qcm.domain.models.question.Question;
+import com.emu.apps.qcm.domain.models.question.Response;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig;
 import com.google.common.collect.Iterables;
 import org.junit.jupiter.api.Test;
@@ -22,6 +22,8 @@ import java.net.URI;
 import java.util.Arrays;
 
 import static com.emu.apps.qcm.infra.web.security.RestHeaders.headers;
+import static com.emu.apps.qcm.infra.webmvc.rest.ApiRestMappings.PUBLIC_API;
+import static com.emu.apps.qcm.infra.webmvc.rest.ApiRestMappings.QUESTIONS;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
 @SpringBootTest(classes = {SpringBootJpaTestConfig.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -29,7 +31,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 @ActiveProfiles(value = "webmvc")
 
 public class QuestionRestControllerSearchTest {
-    private static final String QUESTIONS_URI = ApiRestMappings.PUBLIC_API + ApiRestMappings.QUESTIONS;
+    private static final String QUESTIONS_URI = PUBLIC_API + QUESTIONS;
 
     private static final String QUESTION1 = "Question 1";
 

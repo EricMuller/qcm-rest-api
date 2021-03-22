@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.infra.webmvc.config;
 
-import com.emu.apps.qcm.infra.persistence.exceptions.EntityNotFoundException;
+import com.emu.apps.shared.exceptions.EntityNotFoundException;
 import com.emu.apps.qcm.infra.webmvc.exceptions.ExceptionMessage;
 import com.emu.apps.qcm.infra.webmvc.exceptions.FieldErrorMessage;
 import com.emu.apps.qcm.infra.webmvc.exceptions.UserAuthenticationException;

@@ -1,15 +1,17 @@
 package com.emu.apps.qcm.domain.repositories;
 
-import com.emu.apps.qcm.domain.models.WebHook;
+import com.emu.apps.qcm.domain.models.base.PrincipalId;
+import com.emu.apps.qcm.domain.models.webhook.WebHook;
+import com.emu.apps.qcm.domain.models.webhook.WebhookId;
 import org.springframework.data.domain.Pageable;
 
 public interface WebHookRepository {
 
-    Iterable <WebHook> getWebHooks(Pageable pageable, String principal);
+    Iterable <WebHook> getWebHooks(Pageable pageable, PrincipalId principal);
 
-    void deleteWebHookByUuid(String uuid);
+    void deleteWebHookByUuid(WebhookId webhookId);
 
-    WebHook getWebHookByUuid(String uuid);
+    WebHook getWebHookByUuid(WebhookId webhookId);
 
-    WebHook saveWebHook(WebHook webHookDto, String user);
+    WebHook saveWebHook(WebHook webHook, String user);
 }

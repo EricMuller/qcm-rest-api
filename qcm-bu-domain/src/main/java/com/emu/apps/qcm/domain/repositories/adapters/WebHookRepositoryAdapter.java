@@ -1,6 +1,8 @@
 package com.emu.apps.qcm.domain.repositories.adapters;
 
-import com.emu.apps.qcm.domain.models.WebHook;
+import com.emu.apps.qcm.domain.models.base.PrincipalId;
+import com.emu.apps.qcm.domain.models.webhook.WebHook;
+import com.emu.apps.qcm.domain.models.webhook.WebhookId;
 import com.emu.apps.qcm.domain.repositories.WebHookRepository;
 import com.emu.apps.qcm.infra.persistence.WebHookPersistencePort;
 import org.springframework.data.domain.Pageable;
@@ -24,22 +26,22 @@ public class WebHookRepositoryAdapter implements WebHookRepository {
     }
 
     @Override
-    public Iterable <WebHook> getWebHooks(Pageable pageable, String principal) {
-       return  this.webHookPersistencePort.findOneByUuid(pageable, principal);
+    public Iterable <WebHook> getWebHooks(Pageable pageable, PrincipalId principal) {
+        return this.webHookPersistencePort.findOneByUuid(pageable, principal.toUUID());
     }
 
     @Override
-    public void deleteWebHookByUuid(String uuid) {
-        webHookPersistencePort.deleteByUuid(uuid);
+    public void deleteWebHookByUuid(WebhookId webhookId) {
+        webHookPersistencePort.deleteByUuid(webhookId.toUUID());
     }
 
     @Override
-    public WebHook getWebHookByUuid(String uuid) {
-        return webHookPersistencePort.findOneByUuid(uuid);
+    public WebHook getWebHookByUuid(WebhookId webhookId) {
+        return webHookPersistencePort.findOneByUuid(webhookId.toUUID());
     }
 
     @Override
-    public WebHook saveWebHook(WebHook webHookDto, String user) {
-        return webHookPersistencePort.saveWebHook( webHookDto, user);
+    public WebHook saveWebHook(WebHook webHook, String user) {
+        return webHookPersistencePort.saveWebHook(webHook, user);
     }
 }

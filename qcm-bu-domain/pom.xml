@@ -46,19 +46,24 @@
 
         <dependency>
             <groupId>com.emu.apps.qcm</groupId>
-            <artifactId>qcm-srv-persistence</artifactId>
+            <artifactId>qcm-srv-persistence-jpa-adapters</artifactId>
         </dependency>
 
         <dependency>
             <groupId>com.emu.apps.qcm</groupId>
-            <artifactId>qcm-srv-persistence</artifactId>
-            <scope>test</scope>
-            <type>test-jar</type>
+            <artifactId>qcm-srv-shared</artifactId>
         </dependency>
 
         <dependency>
             <groupId>com.emu.apps.qcm</groupId>
             <artifactId>qcm-bu-model</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.emu.apps.qcm</groupId>
+            <artifactId>qcm-srv-persistence-jpa-adapters</artifactId>
+            <scope>test</scope>
+            <type>test-jar</type>
         </dependency>
 
         <!--  tools  -->

@@ -2,7 +2,7 @@ package com.emu.apps.qcm.domains;
 
 import java.time.ZonedDateTime;
 
-import com.emu.apps.qcm.domain.models.Tag;
+import com.emu.apps.qcm.domain.models.tag.Tag;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,13 +22,7 @@ class TagTest {
 		assertEquals(param, result);
 	}
 
-	@Test
-	void testUuid() {
-		String param = "123";
-		aTag.setUuid(param);
-		Object result = aTag.getUuid();
-		assertEquals(param, result);
-	}
+
 
 	@Test
 	void testVersion() {

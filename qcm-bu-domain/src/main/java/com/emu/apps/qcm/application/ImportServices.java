@@ -3,15 +3,26 @@ package com.emu.apps.qcm.application;
 import com.emu.apps.qcm.domain.dtos.FileQuestionDto;
 import com.emu.apps.qcm.domain.dtos.export.v1.ExportDto;
 import com.emu.apps.qcm.domain.dtos.export.v1.QuestionExportDto;
-import com.emu.apps.qcm.domain.models.*;
-import com.emu.apps.qcm.domain.repositories.*;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.Status;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.TypeQuestionEnum;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.upload.ImportStatus;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.upload.TypeUpload;
-
-
-import com.emu.apps.qcm.infra.persistence.exceptions.TechnicalException;
+import com.emu.apps.qcm.domain.models.Category;
+import com.emu.apps.qcm.domain.models.Status;
+import com.emu.apps.qcm.domain.models.imports.ImportStatus;
+import com.emu.apps.qcm.domain.models.question.TypeQuestion;
+import com.emu.apps.qcm.domain.models.questionnaire.QuestionnaireTag;
+import com.emu.apps.qcm.domain.models.question.Response;
+import com.emu.apps.qcm.domain.models.upload.TypeUpload;
+import com.emu.apps.qcm.domain.models.upload.Upload;
+import com.emu.apps.qcm.domain.models.base.PrincipalId;
+import com.emu.apps.qcm.domain.models.question.Question;
+import com.emu.apps.qcm.domain.models.question.QuestionTag;
+import com.emu.apps.qcm.domain.models.questionnaire.Questionnaire;
+import com.emu.apps.qcm.domain.models.questionnaire.QuestionnaireId;
+import com.emu.apps.qcm.domain.models.upload.UploadId;
+import com.emu.apps.qcm.domain.repositories.CategoryRepository;
+import com.emu.apps.qcm.domain.repositories.QuestionRepository;
+import com.emu.apps.qcm.domain.repositories.QuestionnaireRepository;
+import com.emu.apps.qcm.domain.repositories.TagRepository;
+import com.emu.apps.qcm.domain.repositories.UploadRepository;
+import com.emu.apps.shared.exceptions.TechnicalException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.commons.lang3.ArrayUtils;
@@ -21,7 +32,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -57,9 +74,9 @@ public class ImportServices {
     }
 
 
-    public Upload importFile(String uploadUuid, String principal) throws IOException {
+    public Upload importFile(UploadId uploadId, PrincipalId principal) throws IOException {
 
-        var upload = uploadRepository.getUploadByUuid(uploadUuid);
+        var upload = uploadRepository.getUploadByUuid(uploadId);
 
         //  use strategy
         if (TypeUpload.EXPORT_JSON.name().equals(upload.getType())) {
@@ -122,7 +139,7 @@ public class ImportServices {
         var questionDto = new Question();
 
         questionDto.setQuestionText(fileQuestionDto.getQuestion());
-        questionDto.setType(TypeQuestionEnum.FREE_TEXT.name());
+        questionDto.setType(TypeQuestion.FREE_TEXT.name());
         questionDto.setStatus(Status.DRAFT.name());
 
         questionDto.setCategory(categoryDto);
@@ -142,7 +159,7 @@ public class ImportServices {
 
 
     @Transactional
-    public ImportStatus importQuestionnaire(String name, ExportDto exportDataDto, String principal) {
+    public ImportStatus importQuestionnaire(String name, ExportDto exportDataDto, PrincipalId principal) {
 
         Questionnaire questionnaireDto = new Questionnaire();
 
@@ -172,7 +189,7 @@ public class ImportServices {
             Category category = new Category();
             category.setLibelle(exportDataDto.getQuestionnaire().getCategory().getLibelle());
             category.setType(TYPE_QUESTIONNAIRE);
-            category.setUserId(principal);
+            category.setUserId(principal.toUUID());
             category = categoryRepository.saveCategory(category, principal);
             questionnaireDto.setCategory(category);
         }
@@ -189,7 +206,7 @@ public class ImportServices {
                         categoryDto = new Category();
                         categoryDto.setLibelle(questionExportDto.getCategory().getLibelle());
                         categoryDto.setType(TYPE_QUESTION);
-                        categoryDto.setUserId(principal);
+                        categoryDto.setUserId(principal.toUUID());
                         categoryDto = categoryRepository.saveCategory(categoryDto, principal);
                     }
 
@@ -199,14 +216,14 @@ public class ImportServices {
 
         Collection <Question> questionDtos = questionRepository.saveQuestions(questions, principal);
 
-        questionnaireRepository.addQuestions(questionnaire.getUuid(), questionDtos, principal);
+        questionnaireRepository.addQuestions(new QuestionnaireId(questionnaire.getUuid()), questionDtos, principal);
 
         return ImportStatus.DONE;
     }
 
 
     @Transactional
-    public ImportStatus importQuestionnaire(String name, FileQuestionDto[] fileQuestionDtos, String principal) {
+    public ImportStatus importQuestionnaire(String name, FileQuestionDto[] fileQuestionDtos, PrincipalId principal) {
 
         if (ArrayUtils.isNotEmpty(fileQuestionDtos)) {
             try {
@@ -225,7 +242,7 @@ public class ImportServices {
                 Category category = new Category();
                 category.setLibelle(IMPORT);
                 category.setType(TYPE_QUESTION);
-                category.setUserId(principal);
+                category.setUserId(principal.toUUID());
 
                 final Category categoryDto = categoryRepository.saveCategory(category, principal);
 
@@ -237,7 +254,7 @@ public class ImportServices {
 
                 Collection <Question> questionDtos = questionRepository.saveQuestions(questions, principal);
 
-                questionnaireRepository.addQuestions(questionnaire.getUuid(), questionDtos, principal);
+                questionnaireRepository.addQuestions(new QuestionnaireId(questionnaire.getUuid()), questionDtos, principal);
 
             } catch (TechnicalException e) {
 

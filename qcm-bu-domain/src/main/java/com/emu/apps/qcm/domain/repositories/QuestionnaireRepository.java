@@ -1,8 +1,11 @@
 package com.emu.apps.qcm.domain.repositories;
 
-import com.emu.apps.qcm.domain.models.Question;
-import com.emu.apps.qcm.domain.models.Questionnaire;
-import com.emu.apps.qcm.domain.models.QuestionnaireQuestion;
+import com.emu.apps.qcm.domain.models.questionnaire.QuestionnaireQuestion;
+import com.emu.apps.qcm.domain.models.base.PrincipalId;
+import com.emu.apps.qcm.domain.models.question.Question;
+import com.emu.apps.qcm.domain.models.question.QuestionId;
+import com.emu.apps.qcm.domain.models.questionnaire.Questionnaire;
+import com.emu.apps.qcm.domain.models.questionnaire.QuestionnaireId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -12,26 +15,26 @@ import java.util.List;
 import java.util.Optional;
 
 public interface QuestionnaireRepository {
-    Optional<Questionnaire> getQuestionnaireByUuid(String uuid);
+    Optional <Questionnaire> getQuestionnaireById(QuestionnaireId questionnaireUuid);
 
-    ResponseEntity <Questionnaire> deleteQuestionnaireByUuid(String uuid);
+    ResponseEntity <Questionnaire> deleteQuestionnaireById(QuestionnaireId questionnaireId);
 
-    Page <QuestionnaireQuestion> getQuestionsByQuestionnaireUuid(String uuid, Pageable pageable);
+    Page <QuestionnaireQuestion> getQuestionsByQuestionnaireId(QuestionnaireId questionnaireId, Pageable pageable);
 
-    Question addQuestion(String questionnaireUuid, Question questionDto, Optional <Integer> position, String principal);
+    Question addQuestion(QuestionnaireId questionnaireId, Question question, Optional <Integer> position, PrincipalId principal);
 
-    List <Question> addQuestions(String uuid, Collection <Question> questionDtos,String principal);
+    List <Question> addQuestions(QuestionnaireId questionnaireId, Collection <Question> questionDtos, PrincipalId principal);
 
-    Questionnaire updateQuestionnaire(Questionnaire questionnaireDto, String principal);
+    Questionnaire updateQuestionnaire(Questionnaire questionnaire, PrincipalId principal);
 
-    Questionnaire saveQuestionnaire(Questionnaire questionnaireDto, String principal);
+    Questionnaire saveQuestionnaire(Questionnaire questionnaire, PrincipalId principal);
 
-    Page <Questionnaire> getQuestionnaires(String[] tagUuid, Pageable pageable, String principal);
+    Page <Questionnaire> getQuestionnaires(String[] tagUuid, Pageable pageable, PrincipalId principal);
 
-    void deleteQuestion(String questionnaireUuid, String questionUuid);
+    void deleteQuestion(QuestionnaireId questionnaireId, QuestionId questionId);
 
-    QuestionnaireQuestion getQuestion(String questionnaireUuid, String questionUuid);
+    QuestionnaireQuestion getQuestion(QuestionnaireId questionnaireId, QuestionId questionId);
 
-    void activateQuestionnaire(String questionnaireUuid);
+    void activateQuestionnaire(QuestionnaireId questionnaireId);
 
 }

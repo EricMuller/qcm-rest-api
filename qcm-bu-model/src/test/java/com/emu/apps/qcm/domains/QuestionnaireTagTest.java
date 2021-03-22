@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.domains;
 
-import com.emu.apps.qcm.domain.models.QuestionnaireTag;
+import com.emu.apps.qcm.domain.models.questionnaire.QuestionnaireTag;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

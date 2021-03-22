@@ -1,45 +1,32 @@
 package com.emu.apps.qcm.domain.repositories.adapters;
 
 
+import com.emu.apps.qcm.domain.models.questionnaire.Suggest;
 import com.emu.apps.qcm.domain.repositories.SuggestBusinessPort;
-import com.emu.apps.qcm.infra.persistence.QuestionnairePersistencePort;
-import com.emu.apps.qcm.domain.dtos.SuggestDto;
-import com.emu.apps.qcm.infra.persistence.mappers.SuggestMapper;
-import org.apache.commons.lang3.StringUtils;
+import com.emu.apps.qcm.infra.persistence.QuestionnaireReaderPort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- *
  * Suggest Business Delegate
- *<p>
+ * <p>
  *
- * @since 2.2.0
  * @author eric
+ * @since 2.2.0
  */
 
 @Service
 public class SuggestRepositoryAdapter implements SuggestBusinessPort {
-    private final QuestionnairePersistencePort questionnairePersistencePort;
+    private final QuestionnaireReaderPort questionnaireReaderPort;
 
-    private final SuggestMapper suggestMapper;
+    public SuggestRepositoryAdapter(QuestionnaireReaderPort questionnaireReaderPort) {
+        this.questionnaireReaderPort = questionnaireReaderPort;
 
-    public SuggestRepositoryAdapter(QuestionnairePersistencePort questionnairePersistencePort, SuggestMapper suggestMapper) {
-        this.questionnairePersistencePort = questionnairePersistencePort;
-        this.suggestMapper = suggestMapper;
     }
 
     @Override
     @SuppressWarnings("squid:CommentedOutCodeLine")
-    public Iterable <SuggestDto> getSuggestions(String queryText) {
-        final List <SuggestDto> suggestions = new ArrayList <>();
-        if (StringUtils.isNoneEmpty(queryText)) {
-            suggestMapper.modelsToSuggestDtos(questionnairePersistencePort.findByTitleContaining(queryText)).forEach(suggestions::add);
-            // tagMapper.modelsToSugestDtos(tagService.findByLibelleContaining(queryText)).forEach(suggestions::add);
-        }
-        return suggestions;
+    public Iterable <Suggest> getSuggestions(String queryText) {
+        return questionnaireReaderPort.findByTitleContaining(queryText);
     }
 
 }

@@ -1,8 +1,9 @@
 package com.emu.apps.qcm.domains;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
-import com.emu.apps.qcm.domain.models.Import;
+import com.emu.apps.qcm.domain.models.imports.Import;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,7 +25,7 @@ class ImportTest {
 
 	@Test
 	void testDateCreation() {
-		LocalDateTime param = LocalDateTime.now();
+		ZonedDateTime param = ZonedDateTime.now();
 		aImport.setDateCreation(param);
 		Object result = aImport.getDateCreation();
 		assertEquals(param, result);

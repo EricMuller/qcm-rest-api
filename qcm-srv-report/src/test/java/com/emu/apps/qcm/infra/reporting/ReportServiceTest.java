@@ -4,8 +4,8 @@ import com.emu.apps.qcm.domain.dtos.export.v1.CategoryExportDto;
 import com.emu.apps.qcm.domain.dtos.export.v1.QuestionExportDto;
 import com.emu.apps.qcm.domain.dtos.export.v1.QuestionnaireExportDto;
 import com.emu.apps.qcm.domain.dtos.export.v1.ResponseExportDto;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.Status;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.TypeQuestionEnum;
+import com.emu.apps.qcm.domain.models.Status;
+import com.emu.apps.qcm.domain.models.question.TypeQuestion;
 import fr.opensagres.xdocreport.core.XDocReportException;
 import fr.opensagres.xdocreport.document.IXDocReport;
 import fr.opensagres.xdocreport.document.registry.XDocReportRegistry;
@@ -41,7 +41,7 @@ class ReportServiceTest {
 
             QuestionExportDto questionExportDto = new QuestionExportDto();
             questionExportDto.setQuestionText("What is a Thread in Java?");
-            questionExportDto.setType(TypeQuestionEnum.FREE_TEXT.name());
+            questionExportDto.setType(TypeQuestion.FREE_TEXT.name());
             questionExportDto.setPosition(1L);
 
             String response = "A thread in Java is a lightweight process that runs within another" +

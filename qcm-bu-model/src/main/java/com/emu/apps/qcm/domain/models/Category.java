@@ -1,6 +1,7 @@
 package com.emu.apps.qcm.domain.models;
 
 
+import com.emu.apps.qcm.domain.models.base.DomainId;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,7 +16,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Category extends Domain {
+public class Category extends DomainId {
 
     @JsonProperty("libelle")
     private String libelle;

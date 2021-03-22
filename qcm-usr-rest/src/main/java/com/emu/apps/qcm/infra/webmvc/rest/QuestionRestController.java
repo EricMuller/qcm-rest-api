@@ -1,11 +1,13 @@
 package com.emu.apps.qcm.infra.webmvc.rest;
 
 import com.emu.apps.qcm.domain.dtos.question.QuestionPatchDto;
-import com.emu.apps.qcm.domain.models.Question;
-import com.emu.apps.qcm.domain.models.Tag;
+import com.emu.apps.qcm.domain.models.tag.Tag;
+import com.emu.apps.qcm.domain.models.base.PrincipalId;
+import com.emu.apps.qcm.domain.models.question.Question;
+import com.emu.apps.qcm.domain.models.question.QuestionId;
 import com.emu.apps.qcm.domain.models.question.QuestionTags;
 import com.emu.apps.qcm.domain.repositories.QuestionRepository;
-import com.emu.apps.qcm.infra.persistence.exceptions.EntityNotFoundException;
+import com.emu.apps.shared.exceptions.EntityNotFoundException;
 import com.emu.apps.qcm.infra.webmvc.rest.dtos.MessageDto;
 import com.emu.apps.qcm.infra.webmvc.rest.validators.ValidUuid;
 import com.emu.apps.shared.annotations.Timer;
@@ -25,9 +27,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.io.IOException;
 
-import static com.emu.apps.qcm.infra.persistence.exceptions.MessageSupport.UNKNOWN_UUID_QUESTION;
+import static com.emu.apps.shared.exceptions.MessageSupport.UNKNOWN_UUID_QUESTION;
 import static com.emu.apps.qcm.infra.webmvc.rest.ApiRestMappings.*;
-import static com.emu.apps.qcm.infra.webmvc.rest.caches.CacheName.Names.QUESTION;
+import static com.emu.apps.qcm.infra.webmvc.config.cache.CacheName.Names.QUESTION;
 import static com.emu.apps.qcm.infra.webmvc.rest.dtos.MessageDto.ERROR;
 import static com.emu.apps.shared.security.AuthentificationContextHolder.getPrincipal;
 import static org.springframework.data.domain.Sort.Direction.DESC;
@@ -47,8 +49,8 @@ public class QuestionRestController {
 
     private final QuestionRepository questionRepository;
 
-    public QuestionRestController(QuestionRepository questionServicePort) {
-        this.questionRepository = questionServicePort;
+    public QuestionRestController(QuestionRepository questionRepository) {
+        this.questionRepository = questionRepository;
     }
 
     @GetMapping
@@ -59,7 +61,7 @@ public class QuestionRestController {
                                                 @Parameter(hidden = true)
                                                 @PageableDefault(direction = DESC, sort = {"dateModification"}) Pageable pageable) {
 
-        return questionRepository.getQuestions(tagUuid, questionnaireUuid, pageable, getPrincipal());
+        return questionRepository.getQuestions(tagUuid, questionnaireUuid, pageable, new PrincipalId(getPrincipal()));
     }
 
     @GetMapping(value = TAGS)
@@ -67,7 +69,7 @@ public class QuestionRestController {
     @PageableAsQueryParam
     public Iterable <Tag> getTags(@Parameter(hidden = true) Pageable pageable) {
 
-        return questionRepository.findAllQuestionTagByPage(pageable, getPrincipal());
+        return questionRepository.findAllQuestionTagByPage(pageable, new PrincipalId(getPrincipal()));
     }
 
     @GetMapping(value = STATUS)
@@ -75,7 +77,7 @@ public class QuestionRestController {
     @PageableAsQueryParam
     public Iterable <String> getStatus(@Parameter(hidden = true) Pageable pageable) {
 
-        return questionRepository.findAllStatusByPage(pageable, getPrincipal());
+        return questionRepository.findAllStatusByPage(pageable, new PrincipalId(getPrincipal()));
     }
 
 
@@ -84,28 +86,28 @@ public class QuestionRestController {
     @Cacheable(cacheNames = QUESTION, key = "#uuid")
     @ResponseBody
     public Question getQuestionByUuid(@ValidUuid @PathVariable("uuid") String uuid) {
-        return questionRepository.getQuestionByUuId(uuid)
+        return questionRepository.getQuestionById(new QuestionId(uuid))
                 .orElseThrow(() -> new EntityNotFoundException(uuid, UNKNOWN_UUID_QUESTION));
     }
 
     @PutMapping(produces = APPLICATION_JSON_VALUE)
-    @CachePut(cacheNames = QUESTION, condition = "#questionDto != null", key = "#questionDto.uuid")
+    @CachePut(cacheNames = QUESTION, condition = "#question != null", key = "#question.uuid")
     @ResponseBody
-    public Question updateQuestion(@RequestBody @Valid Question questionDto) {
-        return questionRepository.updateQuestion(questionDto, getPrincipal());
+    public Question updateQuestion(@RequestBody @Valid Question question) {
+        return questionRepository.updateQuestion(question, new PrincipalId(getPrincipal()));
     }
 
     @PostMapping(produces = APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Question saveQuestion(@RequestBody @Valid Question questionDto) {
-        return questionRepository.saveQuestion(questionDto, getPrincipal());
+    public Question saveQuestion(@RequestBody @Valid Question question) {
+        return questionRepository.saveQuestion(question, new PrincipalId(getPrincipal()));
     }
 
     @DeleteMapping(value = "/{uuid}")
     @ResponseBody
     @CacheEvict(cacheNames = QUESTION, condition = "#uuid != null", key = "#uuid")
     public ResponseEntity <Void> deleteQuestionByUuid(@PathVariable("uuid") String uuid) {
-        questionRepository.deleteQuestionByUuid(uuid);
+        questionRepository.deleteQuestionById(new QuestionId(uuid));
         return noContent().build();
     }
 
@@ -114,11 +116,13 @@ public class QuestionRestController {
     @ResponseBody
     @CacheEvict(cacheNames = QUESTION, condition = "#uuid != null", key = "#uuid")
     public Question patchQuestionByUuid(@PathVariable("uuid") String uuid, @RequestBody QuestionPatchDto questionPatchDto) {
-        var dto = questionRepository.getQuestionByUuId(uuid)
+
+
+        var question = questionRepository.getQuestionById(new QuestionId(uuid))
                 .orElseThrow(() -> new EntityNotFoundException(uuid, UNKNOWN_UUID_QUESTION));
 
-        dto.setStatus(questionPatchDto.getStatus());
-        return questionRepository.saveQuestion(dto, getPrincipal());
+        question.setStatus(questionPatchDto.getStatus());
+        return questionRepository.saveQuestion(question, new PrincipalId(getPrincipal()));
     }
 
     @ExceptionHandler({JsonProcessingException.class, IOException.class})

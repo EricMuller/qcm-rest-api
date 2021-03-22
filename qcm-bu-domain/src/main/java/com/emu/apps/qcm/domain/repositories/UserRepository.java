@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.domain.repositories;
 
-import com.emu.apps.qcm.domain.models.User;
-import org.springframework.web.bind.annotation.RequestBody;
+import com.emu.apps.qcm.domain.models.base.PrincipalId;
+import com.emu.apps.qcm.domain.models.user.User;
 
 import java.security.Principal;
 import java.util.Map;
@@ -11,7 +11,7 @@ public interface UserRepository {
 
     User userByEmail(String email);
 
-    User updateUser(@RequestBody User userDto, String principal);
+    User updateUser(User user, PrincipalId principal);
 
-    User createUser(@RequestBody User userDto, String principal);
+    User createUser(User user, PrincipalId principal);
 }

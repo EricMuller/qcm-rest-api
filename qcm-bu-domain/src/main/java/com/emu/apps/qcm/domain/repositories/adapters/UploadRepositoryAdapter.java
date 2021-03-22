@@ -1,10 +1,12 @@
 package com.emu.apps.qcm.domain.repositories.adapters;
 
-import com.emu.apps.qcm.domain.models.Upload;
+import com.emu.apps.qcm.domain.models.base.PrincipalId;
+import com.emu.apps.qcm.domain.models.upload.Upload;
+import com.emu.apps.qcm.domain.models.upload.UploadId;
 import com.emu.apps.qcm.domain.repositories.UploadRepository;
 import com.emu.apps.qcm.infra.persistence.UploadPersistencePort;
-import com.emu.apps.qcm.infra.persistence.exceptions.MessageSupport;
-import com.emu.apps.qcm.infra.persistence.exceptions.RaiseExceptionUtil;
+import com.emu.apps.shared.exceptions.EntityNotFoundException;
+import com.emu.apps.shared.exceptions.MessageSupport;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -33,7 +35,7 @@ public class UploadRepositoryAdapter implements UploadRepository {
     public Upload uploadFile(String fileType,
                              MultipartFile multipartFile,
                              Boolean async,
-                             String principal) throws IOException {
+                             PrincipalId principal) throws IOException {
 
         final byte[] bytes;
         try (InputStream inputStream = multipartFile.getInputStream()) {
@@ -49,29 +51,26 @@ public class UploadRepositoryAdapter implements UploadRepository {
     }
 
     @Override
-    public Iterable <Upload> getUploads(Pageable pageable, String principal) {
+    public Iterable <Upload> getUploads(Pageable pageable, PrincipalId principal) {
 
-        return uploadPersistencePort.findAllByPage(pageable, principal);
+        return uploadPersistencePort.findAllByPage(pageable, principal.toUUID());
     }
 
     @Override
-    public void deleteUploadByUuid(String uuid) {
-        var uploadDto = uploadPersistencePort.findByUuid(uuid);
+    public void deleteUploadByUuid(UploadId uploadId) {
+        var upload = uploadPersistencePort.findByUuid(uploadId.toUUID())
+                .orElseThrow(() -> new EntityNotFoundException(uploadId.toUUID(), MessageSupport.UNKNOWN_UUID_UPLOAD));
 
-        RaiseExceptionUtil.raiseIfNull(uuid, uploadDto, MessageSupport.UNKNOWN_UUID_UPLOAD);
-
-        uploadPersistencePort.deleteByUuid(uuid);
+        uploadPersistencePort.deleteByUuid(upload.getUuid());
 
     }
 
     @Override
-    public Upload getUploadByUuid(String uuid) {
+    public Upload getUploadByUuid(UploadId uploadId) {
 
-        var uploadDto = uploadPersistencePort.findByUuid(uuid);
+        return  uploadPersistencePort.findByUuid(uploadId.toUUID())
+                .orElseThrow(() -> new EntityNotFoundException(uploadId.toUUID(), MessageSupport.UNKNOWN_UUID_UPLOAD));
 
-        RaiseExceptionUtil.raiseIfNull(uuid, uploadDto, MessageSupport.UNKNOWN_UUID_UPLOAD);
-
-        return uploadDto;
 
     }
 

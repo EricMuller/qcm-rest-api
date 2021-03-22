@@ -49,6 +49,7 @@
         <module>qcm-srv-shared</module>
         <module>qcm-bu-model</module>
         <module>qcm-srv-persistence</module>
+        <module>qcm-srv-persistence-jpa-adapters</module>
         <module>qcm-bu-domain</module>
         <module>qcm-srv-report</module>
         <module>qcm-usr-rest</module>
@@ -107,9 +108,17 @@
                 <version>${project.version}</version>
             </dependency>
 
+
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-srv-persistence</artifactId>
+                <artifactId>qcm-srv-persistence-jpa-adapters</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>com.emu.apps.qcm</groupId>
+                <artifactId>qcm-srv-persistence-jpa-adapters</artifactId>
                 <version>${project.version}</version>
                 <scope>test</scope>
                 <type>test-jar</type>
