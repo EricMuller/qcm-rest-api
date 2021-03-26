@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.infra.reporting;
 
 public enum ReportTemplate {
-    QUESTIONNAIRE("template_questionnaire.docx");
+    TEMPLATE_QUESTIONNAIRE("template_questionnaire.docx");
 
     private String fileName;
 

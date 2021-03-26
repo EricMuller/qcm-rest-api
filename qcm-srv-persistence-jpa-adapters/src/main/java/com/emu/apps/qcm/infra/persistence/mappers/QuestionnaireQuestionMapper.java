@@ -66,4 +66,6 @@ public interface QuestionnaireQuestionMapper {
         return page.map(this::questionnaireQuestionEntityToDto);
     }
 
+    Iterable <QuestionnaireQuestion> questionnaireQuestionEntityToDto(Iterable <QuestionnaireQuestionEntity> page);
+
 }

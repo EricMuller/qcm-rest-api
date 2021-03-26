@@ -53,6 +53,7 @@ class QuestionRepositoryTest {
         assertNotNull(newQuestion.orElse(null));
         assertNotNull(newQuestion.orElse(null).getId());
         assertEquals(DbFixture.QUESTION_QUESTION_1, newQuestion.get().getQuestionText());
+        assertEquals(DbFixture.QUESTION_TIP_1, newQuestion.get().getTip());
         // Assert.assertEquals(RESPONSE, newQuestion.getResponse());
     }
 

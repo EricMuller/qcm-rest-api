@@ -2,12 +2,12 @@ package com.emu.apps.qcm.infra.persistence.adapters.jpa;
 
 import com.emu.apps.qcm.domain.models.question.Question;
 import com.emu.apps.qcm.domain.models.question.QuestionTag;
-import com.emu.apps.qcm.domain.models.tag.Tag;
 import com.emu.apps.qcm.domain.models.question.QuestionTags;
+import com.emu.apps.qcm.domain.models.questionnaire.QuestionnaireQuestion;
+import com.emu.apps.qcm.domain.models.tag.Tag;
 import com.emu.apps.qcm.infra.persistence.QuestionPersistencePort;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.builders.QuestionTagBuilder;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category.CategoryEntity;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireQuestionEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.TagEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.CategoryRepository;
@@ -16,6 +16,7 @@ import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.QuestionTagR
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.QuestionnaireQuestionRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.TagRepository;
 import com.emu.apps.qcm.infra.persistence.mappers.QuestionMapper;
+import com.emu.apps.qcm.infra.persistence.mappers.QuestionnaireQuestionMapper;
 import com.emu.apps.qcm.infra.persistence.mappers.TagMapper;
 import com.emu.apps.qcm.infra.persistence.mappers.UuidMapper;
 import org.apache.commons.lang3.StringUtils;
@@ -55,11 +56,13 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
 
     private final TagMapper tagMapper;
 
+    private final QuestionnaireQuestionMapper questionnaireQuestionMapper;
+
     @Autowired
     public QuestionPersistenceAdapter(QuestionRepository questionRepository, QuestionTagRepository questionTagRepository,
                                       QuestionnaireQuestionRepository questionnaireQuestionRepository,
                                       QuestionMapper questionMapper, TagRepository tagRepository,
-                                      CategoryRepository categoryRepository, UuidMapper uuidMapper, TagMapper tagMapper) {
+                                      CategoryRepository categoryRepository, UuidMapper uuidMapper, TagMapper tagMapper, QuestionnaireQuestionMapper questionnaireQuestionMapper) {
         this.questionRepository = questionRepository;
         this.questionTagRepository = questionTagRepository;
         this.questionnaireQuestionRepository = questionnaireQuestionRepository;
@@ -68,6 +71,7 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
         this.categoryRepository = categoryRepository;
         this.uuidMapper = uuidMapper;
         this.tagMapper = tagMapper;
+        this.questionnaireQuestionMapper = questionnaireQuestionMapper;
     }
 
     @Override
@@ -134,20 +138,12 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
 
     @Override
     @Transactional(readOnly = true)
-    public Iterable <String> findAllStatusByPage( String principal, Pageable pageable){
-       return  StreamSupport.stream(questionRepository.findAllStatusByCreatedBy(principal,pageable)
-                         .spliterator(), false)
+    public Iterable <String> findAllStatusByPage(String principal, Pageable pageable) {
+        return StreamSupport.stream(questionRepository.findAllStatusByCreatedBy(principal, pageable)
+                .spliterator(), false)
                 .map(status -> status.name())
                 .collect(Collectors.toList());
     }
-
-//    @Override
-//    @Transactional(readOnly = true)
-//    public Iterable <QuestionnaireQuestionEntity> findAllWithTagsAndResponseByQuestionnaireUuid(String questionnaireUuid) {
-//
-//        return questionnaireQuestionRepository.findAllWithTagsAndResponseByQuestionnaireUuid(UUID.fromString(questionnaireUuid));
-//
-//    }
 
 
     private QuestionEntity saveQuestionWithTags(QuestionEntity questionEntity, Iterable <QuestionTag> questionTags, String principal) {
@@ -184,5 +180,13 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
         return tagEntity;
     }
 
+
+    @Override
+    @Transactional(readOnly = true)
+    public Iterable <QuestionnaireQuestion> findAllWithTagsAndResponseByQuestionnaireUuid(String questionnaireUuid) {
+
+        return questionnaireQuestionMapper.questionnaireQuestionEntityToDto(
+                questionnaireQuestionRepository.findAllWithTagsAndResponseByQuestionnaireUuid(UUID.fromString(questionnaireUuid)));
+    }
 
 }

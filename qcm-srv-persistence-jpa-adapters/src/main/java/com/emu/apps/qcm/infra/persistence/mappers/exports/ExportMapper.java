@@ -29,12 +29,18 @@
 package com.emu.apps.qcm.infra.persistence.mappers.exports;
 
 
-import com.emu.apps.qcm.domain.dtos.export.v1.*;
+import com.emu.apps.qcm.domain.dtos.export.v1.CategoryExportDto;
+import com.emu.apps.qcm.domain.dtos.export.v1.ExportDto;
+import com.emu.apps.qcm.domain.dtos.export.v1.QuestionExportDto;
+import com.emu.apps.qcm.domain.dtos.export.v1.QuestionTagExportDto;
+import com.emu.apps.qcm.domain.dtos.export.v1.QuestionnaireExportDto;
+import com.emu.apps.qcm.domain.dtos.export.v1.QuestionnaireTagExportDto;
+import com.emu.apps.qcm.domain.dtos.export.v1.ResponseExportDto;
+import com.emu.apps.qcm.domain.models.question.Question;
+import com.emu.apps.qcm.domain.models.question.Response;
 import com.emu.apps.qcm.domain.models.questionnaire.Questionnaire;
+import com.emu.apps.qcm.domain.models.questionnaire.QuestionnaireQuestion;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category.CategoryEntity;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireQuestionEntity;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionEntity;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.ResponseEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.QuestionTagEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.QuestionnaireTagEntity;
 import org.mapstruct.Mapper;
@@ -49,7 +55,7 @@ import java.util.stream.StreamSupport;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ExportMapper {
 
-    ExportDto modelToExportDto(Questionnaire questionnaire, Iterable <QuestionnaireQuestionEntity> questions, String name);
+    ExportDto modelToExportDto(Questionnaire questionnaire, Iterable <QuestionnaireQuestion> questions, String name);
 
     QuestionnaireExportDto modelToQuestionnaireExportDto(Questionnaire questionnaire);
 
@@ -61,23 +67,14 @@ public interface ExportMapper {
     @Mapping(source = "tag.libelle", target = "libelle")
     QuestionTagExportDto entityToQuestionnaireTagExportDto(QuestionTagEntity questionTagEntity);
 
-    ResponseExportDto entityToResponseExportDto(ResponseEntity responseEntity);
+    ResponseExportDto entityToResponseExportDto(Response response);
 
-    QuestionExportDto entityToQuestionExportDto(QuestionEntity questionEntity);
+    QuestionExportDto entityToQuestionExportDto(Question question);
 
-    List <QuestionExportDto> entitiesToQuestionExportDtos(List <QuestionEntity> questionEntities);
+    @Mapping(source = "question", target = "questionText")
+    QuestionExportDto entityToQuestionExportDto(QuestionnaireQuestion questionnaireQuestion);
 
-    @Mapping(source = "question.questionText", target = "questionText")
-    @Mapping(source = "question.type", target = "type")
-    @Mapping(source = "question.status", target = "status")
-    @Mapping(source = "question.category", target = "category")
-    @Mapping(source = "question.responses", target = "responses")
-    @Mapping(source = "question.questionTags", target = "questionTags")
-    @Mapping(source = "question.tip", target = "tip")
-    @Mapping(source = "points", target = "points")
-    QuestionExportDto entityToQuestionExportDto(QuestionnaireQuestionEntity questionnaireQuestionEntity);
-
-    default List <QuestionExportDto> entitiesToQuestionExportDtos(Iterable <QuestionnaireQuestionEntity> questionnaireQuestionEntities) {
+    default List <QuestionExportDto> entitiesToQuestionExportDtos(Iterable <QuestionnaireQuestion> questionnaireQuestionEntities) {
         return StreamSupport.stream(questionnaireQuestionEntities.spliterator(), false)
                 .map(this::entityToQuestionExportDto)
                 .collect(Collectors.toList());

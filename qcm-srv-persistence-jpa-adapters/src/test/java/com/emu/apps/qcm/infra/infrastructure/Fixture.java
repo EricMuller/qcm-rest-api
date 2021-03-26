@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public  class Fixture {
     public static final String QUESTION_QUESTION_1 = "a cool question";
+    public static final String QUESTION_TIP_1 = " it is a cool tip1";
 
     public static final String QUESTION_QUESTION_2 = "a cool question 2";
 

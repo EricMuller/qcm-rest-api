@@ -5,22 +5,19 @@ import com.emu.apps.qcm.domain.dtos.export.v1.ExportDto;
 import com.emu.apps.qcm.domain.repositories.ExportRepository;
 import com.emu.apps.qcm.infra.reporting.FileFormat;
 import com.emu.apps.qcm.infra.reporting.ReportServicePort;
-import com.emu.apps.qcm.infra.reporting.ReportTemplate;
 import com.emu.apps.shared.annotations.Timer;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Locale;
 import java.util.Objects;
 
-import static com.emu.apps.qcm.infra.reporting.ReportTemplate.QUESTIONNAIRE;
+import static com.emu.apps.qcm.infra.reporting.ReportTemplate.TEMPLATE_QUESTIONNAIRE;
 import static com.emu.apps.qcm.infra.webmvc.rest.ApiRestMappings.EXPORTS;
 import static com.emu.apps.qcm.infra.webmvc.rest.ApiRestMappings.PUBLIC_API;
 import static org.springframework.http.HttpHeaders.CONTENT_DISPOSITION;
@@ -66,7 +63,7 @@ public class ExportRestController {
         final ExportDto exportDto = exportRepository.getbyQuestionnaireUuid(uuid);
 
         ByteArrayResource resource = new ByteArrayResource(reportServicePort
-                .convertAsStream(exportDto, QUESTIONNAIRE, reportFormat));
+                .convertAsStream(exportDto, TEMPLATE_QUESTIONNAIRE, reportFormat));
 
         return ResponseEntity.ok()
                 .header(CONTENT_DISPOSITION, "attachment; filename=\"" + exportDto.getName() + "." + reportFormat.getExtention() + "\"")

@@ -1,9 +1,10 @@
 package com.emu.apps.qcm.infra.persistence.mappers.exports;
 
 import com.emu.apps.qcm.domain.dtos.export.v1.QuestionExportDto;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireQuestionEntity;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionEntity;
-import com.emu.apps.qcm.infra.persistence.mappers.*;
+import com.emu.apps.qcm.domain.models.questionnaire.QuestionnaireQuestion;
+import com.emu.apps.qcm.infra.persistence.mappers.CategoryMapperImpl;
+import com.emu.apps.qcm.infra.persistence.mappers.QuestionnaireTagMapperImpl;
+import com.emu.apps.qcm.infra.persistence.mappers.UuidMapperImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -26,20 +27,18 @@ class ExportMapperTest {
     @Test
     void entityToQuestionExportDto() {
 
-        QuestionEntity questionEntity = new QuestionEntity();
-        questionEntity.setUuid(UUID.randomUUID());
-        questionEntity.setQuestionText("Text");
+        String uuid = UUID.randomUUID().toString();
+        QuestionnaireQuestion questionnaireQuestion = new QuestionnaireQuestion();
+        questionnaireQuestion.setQuestion("Text");
+        questionnaireQuestion.setUuid(uuid);
 
-
-        QuestionnaireQuestionEntity entityToQuestionExportDto = new QuestionnaireQuestionEntity();
-        entityToQuestionExportDto.setQuestion(questionEntity);
-
-        QuestionExportDto questionExportDto = exportMapper.entityToQuestionExportDto(entityToQuestionExportDto);
+        QuestionExportDto questionExportDto = exportMapper.entityToQuestionExportDto(questionnaireQuestion);
 
 
         Assertions.assertNotNull(questionExportDto);
 
-        Assertions.assertEquals("Text",questionExportDto.getQuestionText());
+        Assertions.assertEquals("Text", questionExportDto.getQuestionText());
+
     }
 
 

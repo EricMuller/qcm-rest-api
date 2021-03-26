@@ -2,6 +2,7 @@ package com.emu.apps.qcm.domain.repositories.adapters;
 
 import com.emu.apps.qcm.domain.dtos.export.v1.ExportDto;
 import com.emu.apps.qcm.domain.repositories.ExportRepository;
+import com.emu.apps.qcm.infra.persistence.ExportPersistencePort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,28 +16,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class ExportRepositoryAdapter implements ExportRepository {
 
-//    private final QuestionnairePersistencePort questionnairePersistencePort;
-////
-////    private final ExportMapper exportMapper;
-//
-//    private final QuestionPersistencePort questionPersistencePort;
+    private final ExportPersistencePort exportPersistencePort;
 
-//    public ExportRepositoryAdapter(QuestionnairePersistencePort questionnairePersistencePort, ExportMapper exportMapper, QuestionPersistencePort questionPersistencePort) {
-//        this.questionnairePersistencePort = questionnairePersistencePort;
-//        this.exportMapper = exportMapper;
-//        this.questionPersistencePort = questionPersistencePort;
-//    }
+    public ExportRepositoryAdapter(ExportPersistencePort exportRepository) {
+        this.exportPersistencePort = exportRepository;
+    }
 
     @Override
     public ExportDto getbyQuestionnaireUuid(String uuid) {
-//        var questionnaire = questionnairePersistencePort.findByUuid(uuid)
-//                .orElseThrow(() -> new EntityNotFoundException(uuid, MessageSupport.UNKNOWN_UUID_QUESTIONNAIRE));
-//
-//        var questions = questionPersistencePort.findAllWithTagsAndResponseByQuestionnaireUuid(uuid);
-//
-//        return exportMapper.modelToExportDto(questionnaire, questions, generateName(questionnaire));
 
-        return new ExportDto();
+        return exportPersistencePort.getExportbyQuestionnaireUuid(uuid);
     }
 
 }

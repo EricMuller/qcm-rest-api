@@ -229,6 +229,7 @@ public class DbFixture extends Fixture {
         QuestionEntity question1 = new QuestionEntity();
         question1.setQuestionText(QUESTION_QUESTION_1);
         question1.setType(FREE_TEXT);
+        question1.setTip(QUESTION_TIP_1);
 
         question1.setResponses(Lists.newArrayList(response, response2));
         questionRepository.save(question1);
