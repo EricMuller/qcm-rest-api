@@ -1,8 +1,8 @@
 package com.emu.apps.qcm.application;
 
 import com.emu.apps.qcm.domain.dtos.FileQuestionDto;
-import com.emu.apps.qcm.domain.dtos.export.v1.ExportDto;
-import com.emu.apps.qcm.domain.dtos.export.v1.QuestionExportDto;
+import com.emu.apps.qcm.domain.models.export.v1.Export;
+import com.emu.apps.qcm.domain.models.export.v1.QuestionExport;
 import com.emu.apps.qcm.domain.models.Category;
 import com.emu.apps.qcm.domain.models.Status;
 import com.emu.apps.qcm.domain.models.imports.ImportStatus;
@@ -85,7 +85,7 @@ public class ImportServices {
                     .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
                     .configure(SerializationFeature.INDENT_OUTPUT, true);
 
-            ExportDto exportDataDto = mapper.readValue(new ByteArrayInputStream(upload.getData()), ExportDto.class);
+            Export exportDataDto = mapper.readValue(new ByteArrayInputStream(upload.getData()), Export.class);
             ImportStatus importStatus = importQuestionnaire(upload.getFileName(), exportDataDto, principal);
             upload.setStatus(importStatus.name());
         } else {
@@ -98,7 +98,7 @@ public class ImportServices {
 
     }
 
-    private Question mapToQuestionDto(QuestionExportDto questionExportDto, Category categoryDto) {
+    private Question mapToQuestionDto(QuestionExport questionExportDto, Category categoryDto) {
 
         var questionDto = new Question();
 
@@ -159,7 +159,7 @@ public class ImportServices {
 
 
     @Transactional
-    public ImportStatus importQuestionnaire(String name, ExportDto exportDataDto, PrincipalId principal) {
+    public ImportStatus importQuestionnaire(String name, Export exportDataDto, PrincipalId principal) {
 
         Questionnaire questionnaireDto = new Questionnaire();
 

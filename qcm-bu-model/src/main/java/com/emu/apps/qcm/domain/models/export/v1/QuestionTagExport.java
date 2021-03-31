@@ -1,4 +1,4 @@
-package com.emu.apps.qcm.domain.dtos.export.v1;
+package com.emu.apps.qcm.domain.models.export.v1;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
 import lombok.AllArgsConstructor;
@@ -11,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonRootName(value = "QuestionTagExport")
-public class QuestionTagExportDto {
+public class QuestionTagExport {
 
     private String libelle;
 

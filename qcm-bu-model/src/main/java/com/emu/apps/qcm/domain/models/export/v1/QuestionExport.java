@@ -1,4 +1,4 @@
-package com.emu.apps.qcm.domain.dtos.export.v1;
+package com.emu.apps.qcm.domain.models.export.v1;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -21,7 +21,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonRootName(value = "QuestionExport")
-public class QuestionExportDto {
+public class QuestionExport {
 
     @JsonProperty("question")
     @NotNull(message = "{question.question.notNull}")
@@ -35,13 +35,13 @@ public class QuestionExportDto {
     private String status;
 
     @JsonProperty("category")
-    private CategoryExportDto category;
+    private CategoryExport category;
 
     @JsonProperty("responses")
-    private List <ResponseExportDto> responses;
+    private List <ResponseExport> responses;
 
     @JsonProperty("tags")
-    private Set <QuestionTagExportDto> questionTags;
+    private Set <QuestionTagExport> questionTags;
 
     @JsonProperty("tip")
     private String tip;

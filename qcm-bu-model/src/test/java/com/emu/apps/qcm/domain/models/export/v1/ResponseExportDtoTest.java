@@ -1,4 +1,4 @@
-package com.emu.apps.qcm.domain.dtos.export.v1;
+package com.emu.apps.qcm.domain.models.export.v1;
 
 import org.junit.jupiter.api.Test;
 
@@ -6,10 +6,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ResponseExportDtoTest {
 
-	private final ResponseExportDto aResponseExportDto;
+	private final ResponseExport aResponseExportDto;
 
 	public ResponseExportDtoTest() {
-		this.aResponseExportDto = new ResponseExportDto();
+		this.aResponseExportDto = new ResponseExport();
 	}
 	@Test
 	void testResponse() {

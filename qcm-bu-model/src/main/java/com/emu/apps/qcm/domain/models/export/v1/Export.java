@@ -1,4 +1,4 @@
-package com.emu.apps.qcm.domain.dtos.export.v1;
+package com.emu.apps.qcm.domain.models.export.v1;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonRootName(value = "Export")
-public class ExportDto {
+public class Export {
 
     private  static final String VERSION = "1.0";
 
@@ -27,10 +27,10 @@ public class ExportDto {
     private String versionExport = VERSION;
 
     @JsonProperty("questionnaire")
-    private QuestionnaireExportDto questionnaire;
+    private QuestionnaireExport questionnaire;
 
     @JsonProperty("questions")
-    private List <QuestionExportDto> questions;
+    private List <QuestionExport> questions;
 
 }
 

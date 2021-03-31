@@ -1,13 +1,13 @@
 package com.emu.apps.qcm.infra.persistence;
 
-import com.emu.apps.qcm.domain.dtos.export.v1.ExportDto;
+import com.emu.apps.qcm.domain.models.export.v1.Export;
 import com.emu.apps.qcm.domain.models.questionnaire.Questionnaire;
 
 import java.util.Objects;
 
 public interface ExportPersistencePort {
 
-    ExportDto getExportbyQuestionnaireUuid(String uuid);
+    Export getExportbyQuestionnaireUuid(String uuid);
 
 
     default String generateName(Questionnaire questionnaire) {

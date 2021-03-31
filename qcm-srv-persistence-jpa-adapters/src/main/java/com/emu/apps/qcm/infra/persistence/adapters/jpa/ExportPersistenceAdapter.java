@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa;
 
-import com.emu.apps.qcm.domain.dtos.export.v1.ExportDto;
+import com.emu.apps.qcm.domain.models.export.v1.Export;
 import com.emu.apps.qcm.infra.persistence.ExportPersistencePort;
 import com.emu.apps.qcm.infra.persistence.QuestionPersistencePort;
 import com.emu.apps.qcm.infra.persistence.QuestionnairePersistencePort;
@@ -25,7 +25,7 @@ public class ExportPersistenceAdapter implements ExportPersistencePort {
     }
 
     @Override
-    public ExportDto getExportbyQuestionnaireUuid(String uuid) {
+    public Export getExportbyQuestionnaireUuid(String uuid) {
 
         var questionnaire = questionnairePersistencePort.findByUuid(uuid)
                 .orElseThrow(() -> new EntityNotFoundException(uuid, MessageSupport.UNKNOWN_UUID_QUESTIONNAIRE));

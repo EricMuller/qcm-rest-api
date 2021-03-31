@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.domain.repositories;
 
-import com.emu.apps.qcm.domain.dtos.export.v1.ExportDto;
+import com.emu.apps.qcm.domain.models.export.v1.Export;
 
 public interface ExportRepository {
-    ExportDto getbyQuestionnaireUuid(String id);
+    Export getbyQuestionnaireUuid(String id);
 }

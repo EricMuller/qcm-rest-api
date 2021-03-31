@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.infra.reporting;
 
-import com.emu.apps.qcm.domain.dtos.export.v1.ExportDto;
+import com.emu.apps.qcm.domain.models.export.v1.Export;
 import com.emu.apps.qcm.infra.reporting.converters.Converter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -29,7 +29,7 @@ public class ReportServiceAdapter implements ReportServicePort {
     }
 
     @Override
-    public byte[] convertAsStream(ExportDto exportDataDto,ReportTemplate reportTemplate, FileFormat fileFormat) {
+    public byte[] convertAsStream(Export exportDataDto, ReportTemplate reportTemplate, FileFormat fileFormat) {
 
         switch (fileFormat) {
             case PDF:

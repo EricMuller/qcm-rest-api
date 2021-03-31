@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.infra.reporting;
 
-import com.emu.apps.qcm.domain.dtos.export.v1.ExportDto;
+import com.emu.apps.qcm.domain.models.export.v1.Export;
 
 public interface ReportServicePort {
-    byte[] convertAsStream(ExportDto exportDto, ReportTemplate reportTemplate, FileFormat reportFormat);
+    byte[] convertAsStream(Export exportDto, ReportTemplate reportTemplate, FileFormat reportFormat);
 }

@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.infra.persistence.mappers.exports;
 
-import com.emu.apps.qcm.domain.dtos.export.v1.QuestionExportDto;
+import com.emu.apps.qcm.domain.models.export.v1.QuestionExport;
 import com.emu.apps.qcm.domain.models.questionnaire.QuestionnaireQuestion;
 import com.emu.apps.qcm.infra.persistence.mappers.CategoryMapperImpl;
 import com.emu.apps.qcm.infra.persistence.mappers.QuestionnaireTagMapperImpl;
@@ -32,7 +32,7 @@ class ExportMapperTest {
         questionnaireQuestion.setQuestion("Text");
         questionnaireQuestion.setUuid(uuid);
 
-        QuestionExportDto questionExportDto = exportMapper.entityToQuestionExportDto(questionnaireQuestion);
+        QuestionExport questionExportDto = exportMapper.entityToQuestionExportDto(questionnaireQuestion);
 
 
         Assertions.assertNotNull(questionExportDto);

@@ -1,4 +1,4 @@
-package com.emu.apps.qcm.domain.dtos.export.v1;
+package com.emu.apps.qcm.domain.models.export.v1;
 
 import org.junit.jupiter.api.Test;
 
@@ -6,10 +6,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class QuestionnaireTagExportDtoTest {
 
-	private final QuestionnaireTagExportDto aQuestionnaireTagExportDto;
+	private final QuestionnaireTagExport aQuestionnaireTagExportDto;
 
 	public QuestionnaireTagExportDtoTest() {
-		this.aQuestionnaireTagExportDto = new QuestionnaireTagExportDto();
+		this.aQuestionnaireTagExportDto = new QuestionnaireTagExport();
 	}
 	@Test
 	void testLibelle() {

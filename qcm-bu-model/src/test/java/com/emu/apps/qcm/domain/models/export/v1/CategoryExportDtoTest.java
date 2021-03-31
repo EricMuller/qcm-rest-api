@@ -1,4 +1,4 @@
-package com.emu.apps.qcm.domain.dtos.export.v1;
+package com.emu.apps.qcm.domain.models.export.v1;
 
 import org.junit.jupiter.api.Test;
 
@@ -6,10 +6,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CategoryExportDtoTest {
 
-	private final CategoryExportDto aCategoryExportDto;
+	private final CategoryExport aCategoryExportDto;
 
 	public CategoryExportDtoTest() {
-		this.aCategoryExportDto = new CategoryExportDto();
+		this.aCategoryExportDto = new CategoryExport();
 	}
 	@Test
 	void testLibelle() {

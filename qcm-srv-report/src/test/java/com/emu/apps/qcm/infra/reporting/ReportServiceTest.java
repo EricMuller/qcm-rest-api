@@ -1,9 +1,9 @@
 package com.emu.apps.qcm.infra.reporting;
 
-import com.emu.apps.qcm.domain.dtos.export.v1.CategoryExportDto;
-import com.emu.apps.qcm.domain.dtos.export.v1.QuestionExportDto;
-import com.emu.apps.qcm.domain.dtos.export.v1.QuestionnaireExportDto;
-import com.emu.apps.qcm.domain.dtos.export.v1.ResponseExportDto;
+import com.emu.apps.qcm.domain.models.export.v1.CategoryExport;
+import com.emu.apps.qcm.domain.models.export.v1.QuestionExport;
+import com.emu.apps.qcm.domain.models.export.v1.QuestionnaireExport;
+import com.emu.apps.qcm.domain.models.export.v1.ResponseExport;
 import com.emu.apps.qcm.domain.models.Status;
 import com.emu.apps.qcm.domain.models.question.TypeQuestion;
 import fr.opensagres.xdocreport.core.XDocReportException;
@@ -28,18 +28,18 @@ class ReportServiceTest {
                     TemplateEngineKind.Velocity);
 
 
-            QuestionnaireExportDto questionnaireExportDto = new QuestionnaireExportDto();
+            QuestionnaireExport questionnaireExportDto = new QuestionnaireExport();
             questionnaireExportDto.setTitle("Java Thread");
             questionnaireExportDto.setWebsite("http://qcm.webmarks.net");
 
             questionnaireExportDto.setStatus(Status.DRAFT.name());
 
-            CategoryExportDto categoryExportDto = new CategoryExportDto();
+            CategoryExport categoryExportDto = new CategoryExport();
             categoryExportDto.setLibelle("Java");
             questionnaireExportDto.setCategory(categoryExportDto);
 
 
-            QuestionExportDto questionExportDto = new QuestionExportDto();
+            QuestionExport questionExportDto = new QuestionExport();
             questionExportDto.setQuestionText("What is a Thread in Java?");
             questionExportDto.setType(TypeQuestion.FREE_TEXT.name());
             questionExportDto.setPosition(1L);
@@ -51,7 +51,7 @@ class ReportServiceTest {
                     "        When we start JVM, Java starts one thread.  This thread calls the" +
                     "main method of the class passed in argument to java call";
 
-            ResponseExportDto responseExportDto = new ResponseExportDto();
+            ResponseExport responseExportDto = new ResponseExport();
             responseExportDto.setResponseText(response);
             responseExportDto.setGood(true);
 

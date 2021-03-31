@@ -1,4 +1,4 @@
-package com.emu.apps.qcm.domain.dtos.export.v1;
+package com.emu.apps.qcm.domain.models.export.v1;
 
 import org.junit.jupiter.api.Test;
 
@@ -6,10 +6,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ExportDtoTest {
 
-	private final ExportDto aExportDto;
+	private final Export aExportDto;
 
 	public ExportDtoTest() {
-		this.aExportDto = new ExportDto();
+		this.aExportDto = new Export();
 	}
 	@Test
 	void testName() {
@@ -29,7 +29,7 @@ class ExportDtoTest {
 
 	@Test
 	void testQuestionnaire() {
-		QuestionnaireExportDto param = new QuestionnaireExportDto();
+		QuestionnaireExport param = new QuestionnaireExport();
 		aExportDto.setQuestionnaire(param);
 		Object result = aExportDto.getQuestionnaire();
 		assertEquals(param, result);

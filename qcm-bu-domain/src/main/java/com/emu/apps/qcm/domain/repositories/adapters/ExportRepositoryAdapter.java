@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.domain.repositories.adapters;
 
-import com.emu.apps.qcm.domain.dtos.export.v1.ExportDto;
+import com.emu.apps.qcm.domain.models.export.v1.Export;
 import com.emu.apps.qcm.domain.repositories.ExportRepository;
 import com.emu.apps.qcm.infra.persistence.ExportPersistencePort;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ public class ExportRepositoryAdapter implements ExportRepository {
     }
 
     @Override
-    public ExportDto getbyQuestionnaireUuid(String uuid) {
+    public Export getbyQuestionnaireUuid(String uuid) {
 
         return exportPersistencePort.getExportbyQuestionnaireUuid(uuid);
     }

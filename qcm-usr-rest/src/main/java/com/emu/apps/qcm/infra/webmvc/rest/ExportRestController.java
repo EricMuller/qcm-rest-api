@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.infra.webmvc.rest;
 
 
-import com.emu.apps.qcm.domain.dtos.export.v1.ExportDto;
+import com.emu.apps.qcm.domain.models.export.v1.Export;
 import com.emu.apps.qcm.domain.repositories.ExportRepository;
 import com.emu.apps.qcm.infra.reporting.FileFormat;
 import com.emu.apps.qcm.infra.reporting.ReportServicePort;
@@ -44,7 +44,7 @@ public class ExportRestController {
     @Timer
     @GetMapping(value = "/{uuid}", produces = APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ExportDto getExportByQuestionnaireUuid(@PathVariable("uuid") String id) {
+    public Export getExportByQuestionnaireUuid(@PathVariable("uuid") String id) {
         return exportRepository.getbyQuestionnaireUuid(id);
     }
 
@@ -60,7 +60,7 @@ public class ExportRestController {
 
         FileFormat reportFormat = FileFormat.getByName(type.toUpperCase(Locale.getDefault()));
 
-        final ExportDto exportDto = exportRepository.getbyQuestionnaireUuid(uuid);
+        final Export exportDto = exportRepository.getbyQuestionnaireUuid(uuid);
 
         ByteArrayResource resource = new ByteArrayResource(reportServicePort
                 .convertAsStream(exportDto, TEMPLATE_QUESTIONNAIRE, reportFormat));

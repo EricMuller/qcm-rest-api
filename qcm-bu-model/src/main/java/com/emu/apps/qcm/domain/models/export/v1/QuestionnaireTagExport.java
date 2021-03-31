@@ -1,4 +1,4 @@
-package com.emu.apps.qcm.domain.dtos.export.v1;
+package com.emu.apps.qcm.domain.models.export.v1;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @JsonRootName(value = "QuestionnaireTagExport")
-public class QuestionnaireTagExportDto {
+public class QuestionnaireTagExport {
 
     private String libelle;
 

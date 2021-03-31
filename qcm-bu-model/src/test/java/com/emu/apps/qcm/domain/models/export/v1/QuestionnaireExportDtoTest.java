@@ -1,4 +1,4 @@
-package com.emu.apps.qcm.domain.dtos.export.v1;
+package com.emu.apps.qcm.domain.models.export.v1;
 
 import java.time.ZonedDateTime;
 import org.junit.jupiter.api.Test;
@@ -7,10 +7,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class QuestionnaireExportDtoTest {
 
-	private final QuestionnaireExportDto aQuestionnaireExportDto;
+	private final QuestionnaireExport aQuestionnaireExportDto;
 
 	public QuestionnaireExportDtoTest() {
-		this.aQuestionnaireExportDto = new QuestionnaireExportDto();
+		this.aQuestionnaireExportDto = new QuestionnaireExport();
 	}
 	@Test
 	void testTitle() {
@@ -30,7 +30,7 @@ class QuestionnaireExportDtoTest {
 
 	@Test
 	void testCategory() {
-		CategoryExportDto param = new CategoryExportDto();
+		CategoryExport param = new CategoryExport();
 		aQuestionnaireExportDto.setCategory(param);
 		Object result = aQuestionnaireExportDto.getCategory();
 		assertEquals(param, result);
