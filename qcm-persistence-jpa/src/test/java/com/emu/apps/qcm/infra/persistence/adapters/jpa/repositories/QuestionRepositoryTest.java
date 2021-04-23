@@ -1,8 +1,7 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories;
 
-import com.emu.apps.qcm.domain.model.Status;
-import com.emu.apps.qcm.infra.infrastructure.DbFixture;
-import com.emu.apps.qcm.infra.infrastructure.Fixture;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.fixtures.DbFixture;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.fixtures.Fixture;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.ResponseEntity;
@@ -27,7 +26,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
-import static com.emu.apps.qcm.infra.infrastructure.DbFixture.QUESTION_TAG_LIBELLE_1;
+import static com.emu.apps.qcm.infra.persistence.adapters.jpa.fixtures.DbFixture.QUESTION_TAG_LIBELLE_1;
 import static com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig.USER_TEST;
 import static com.google.common.collect.Iterables.getFirst;
 import static org.junit.jupiter.api.Assertions.*;

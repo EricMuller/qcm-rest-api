@@ -52,7 +52,7 @@
         <module>qcm-persistence-api</module>
         <module>qcm-persistence-jpa</module>
         <module>qcm-report</module>
-        <module>qcm-rest</module>
+<!--        <module>qcm-rest</module>-->
         <module>jacoco-report</module>
     </modules>
 

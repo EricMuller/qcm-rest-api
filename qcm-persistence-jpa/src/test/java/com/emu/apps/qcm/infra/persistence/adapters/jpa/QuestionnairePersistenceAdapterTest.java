@@ -1,9 +1,9 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa;
 
 import com.emu.apps.qcm.domain.model.questionnaire.Questionnaire;
-import com.emu.apps.qcm.infra.infrastructure.DbFixture;
-import com.emu.apps.qcm.infra.infrastructure.Fixture;
-import com.emu.apps.qcm.infra.infrastructure.ModelFixture;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.fixtures.DbFixture;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.fixtures.Fixture;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.fixtures.ModelFixture;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireEntity;
 import lombok.extern.slf4j.Slf4j;

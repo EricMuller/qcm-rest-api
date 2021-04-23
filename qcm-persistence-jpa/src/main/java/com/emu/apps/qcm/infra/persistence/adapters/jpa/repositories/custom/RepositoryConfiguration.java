@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @Configuration
 @ConfigurationProperties(prefix = "spring.jpa.properties.hibernate.jdbc")
 @EnableJpaRepositories(
-        basePackages = "com.emu.apps.qcm.infra.infrastructure.jpa.repositories",
+        basePackages = "com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories",
         repositoryBaseClass = SimpleJpaBulkRepositoryImpl.class
 
 )
