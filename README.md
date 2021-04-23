@@ -132,3 +132,6 @@ Three agents:
      - Property names must be camelCased, ASCII strings.
 
      - The first character must be a letter, an underscore (_) or a dollar sign ($).
+
+## jpa
+@UniqueConstraint allows you to name the constraint, while @Column(unique = true) generates a random name (e.g. UK_3u5h7y36qqa13y3mauc5xxayq).

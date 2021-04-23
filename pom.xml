@@ -46,14 +46,14 @@
     </distributionManagement>
 
     <modules>
-        <module>qcm-srv-shared</module>
-        <module>qcm-bu-model</module>
-        <module>qcm-srv-persistence</module>
-        <module>qcm-srv-persistence-jpa-adapters</module>
-        <module>qcm-bu-domain</module>
-        <module>qcm-srv-report</module>
-        <module>qcm-usr-rest</module>
-        <module>coverage-report</module>
+        <module>qcm</module>
+        <module>qcm-shared</module>
+        <module>qcm-model</module>
+        <module>qcm-persistence-api</module>
+        <module>qcm-persistence-jpa</module>
+        <module>qcm-report</module>
+        <module>qcm-rest</module>
+        <module>jacoco-report</module>
     </modules>
 
     <repositories>
@@ -87,7 +87,7 @@
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
 
         <sonar.coverage.jacoco.xmlReportPaths>
-            ${project.basedir}/../coverage-report/target/site/jacoco-aggregate/jacoco.xml
+            ${project.basedir}/../jacoco-report/target/site/jacoco-aggregate/jacoco.xml
         </sonar.coverage.jacoco.xmlReportPaths>
         <maven-surefire-plugin.reuseForks>true</maven-surefire-plugin.reuseForks>
 
@@ -98,62 +98,62 @@
 
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-bu-model</artifactId>
+                <artifactId>qcm</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-srv-persistence</artifactId>
+                <artifactId>qcm-model</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.emu.apps.qcm</groupId>
+                <artifactId>qcm-persistence-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
 
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-srv-persistence-jpa-adapters</artifactId>
+                <artifactId>qcm-persistence-jpa</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
 
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-srv-persistence-jpa-adapters</artifactId>
-                <version>${project.version}</version>
-                <scope>test</scope>
-                <type>test-jar</type>
-            </dependency>
-
-
-            <dependency>
-                <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-bu-domain</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-srv-report</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-srv-shared</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-srv-shared</artifactId>
+                <artifactId>qcm-persistence-jpa</artifactId>
                 <version>${project.version}</version>
                 <scope>test</scope>
                 <type>test-jar</type>
             </dependency>
 
+
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-usr-rest</artifactId>
+                <artifactId>qcm-report</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.emu.apps.qcm</groupId>
+                <artifactId>qcm-shared</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.emu.apps.qcm</groupId>
+                <artifactId>qcm-shared</artifactId>
+                <version>${project.version}</version>
+                <scope>test</scope>
+                <type>test-jar</type>
+            </dependency>
+
+            <dependency>
+                <groupId>com.emu.apps.qcm</groupId>
+                <artifactId>qcm-rest</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
