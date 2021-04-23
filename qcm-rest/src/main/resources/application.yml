@@ -1,0 +1,60 @@
+server:
+    port : 8081
+    http2:
+        enable: true
+
+maven.version: @project.version@
+
+info:
+    application-name: qcm-rest-api
+
+spring:
+
+    main:
+        lazy-initialization: false
+
+    resources:
+        cache:
+            period: 31536000
+            cachecontrol:
+                max-age: 31536000
+    #    chain:
+    #      html-application-cache: true
+    #      enabled: true
+    #      strategy:
+    #        content:
+    #          enabled: true
+    #          paths: /webjars/swagger-ui/**.*
+
+    security:
+        oauth2:
+            client:
+                provider:
+                    keycloak:
+                        issuer-uri: https://keycloak.webmarks.net/auth/realms/qcm
+                registration:
+                    keycloak:
+                        client-id: qcm-rest-api
+                        client-secret: 4eab5725-f8c1-4758-80c4-7ec8ac484bcd
+
+            resourceserver:
+                jwt:
+                    issuer-uri: https://keycloak.webmarks.net/auth/realms/qcm
+
+
+#server:
+#  compression:
+#    enabled: true
+#    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+#    min-response-size: 1024
+#  http2:
+#    enabled: false
+#  servlet:
+#    context-path: /
+
+
+
+
+
+
+

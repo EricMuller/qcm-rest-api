@@ -1,0 +1,48 @@
+
+####
+POST https://keycloak.webmarks.net/auth/realms/qcm/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+username=demo&password=demodemo&grant_type=password&client_id=qcm-mobile-rest-api
+
+> {%
+client.global.set("access_token", response.body.access_token);
+client.global.set("refresh_token", response.body.refresh_token);
+client.global.set("auth_token", "Bearer " + response.body.access_token);
+%}
+
+###
+
+###
+GET http://{{host}}:{{port}}/qcm/api/v1/uploads
+Accept: application/json
+Content-Type: application/json
+Authorization: {{auth_token}}
+
+
+###
+GET http://{{host}}:{{port}}/qcm/api/v1/uploads/152/import
+Accept: application/json
+Content-Type: application/json
+Authorization: {{auth_token}}
+
+###
+OPTIONS https://{{host}}/qcm/api/v1/uploads/json
+Accept: application/json, text/plain, */*
+Accept-Encoding: gzip, deflate, br
+Content-Type: multipart/form-data;
+Content-Length: 0
+Accept-Language: fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7
+#Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICItVm9IbngzNWVOdmloMENta25SOWVBbVdHdUxiNzhXdU1YQlVYTTZNb3hnIn0.eyJqdGkiOiI3ODZmM2EwOC1iYjdhLTQ5ZTQtYThlMS04OWZhMzYyYzA2MzkiLCJleHAiOjE1ODA2NjcyNDAsIm5iZiI6MCwiaWF0IjoxNTgwNjY2OTQwLCJpc3MiOiJodHRwczovL2tleWNsb2FrLndlYm1hcmtzLm5ldC9hdXRoL3JlYWxtcy9xY20iLCJhdWQiOiJxY20td2ViIiwic3ViIjoiNzRiOTI0MzItYWM0Yi00MzdlLTg0YWYtYWI5MTU3MWU1MGNlIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoicWNtLXdlYiIsIm5vbmNlIjoiYjY3ZTBmZTEtOGZlYy00ZjM1LTlhYzUtYWZlYzc2NWFiMGQwIiwiYXV0aF90aW1lIjoxNTgwNjYzNzE5LCJzZXNzaW9uX3N0YXRlIjoiNzQwZDE3MzAtY2UyMC00ODgwLWI3ZTctZGJiMTBkZGVkZTljIiwiYWNyIjoiMCIsImFsbG93ZWQtb3JpZ2lucyI6WyJodHRwczovL3FjbS53ZWJtYXJrcy5uZXQiLCJodHRwOi8vbG9jYWxob3N0OjQyMDAiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbInVtYV9hdXRob3JpemF0aW9uIiwiVVNFUiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImJyb2tlciI6eyJyb2xlcyI6WyJyZWFkLXRva2VuIl19LCJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJuYW1lIjoiRXJpYyBNdWxsZXIiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJlcmljLnBpZXJyZS5tdWxsZXJAZ21haWwuY29tIiwiZ2l2ZW5fbmFtZSI6IkVyaWMiLCJmYW1pbHlfbmFtZSI6Ik11bGxlciIsImVtYWlsIjoiZXJpYy5waWVycmUubXVsbGVyQGdtYWlsLmNvbSJ9.lh6TgvUTPxtE_W4lwg3bLQuTW8KkfVe1ZYhS6Tdmyp4QqhlfocMmPuneD7OJZzHKQxGe1r8hg_qRfHhPiHVoMtgftVvkLE54RFjc7IiyIbr9ehQCiSPjLR0ZN0s-c3CfhnGHK4-ag6yP12SYL3BfNKS_PebjZC_GqhjRK0GUlWVnkP4FTwYKLtJAMFx4ccZGW4OJwSU6u5jt-lno1L8vWfvSloOIXZoKennqMCnNfWSsRH9tWCXwtloJsvex7NhfECv4SXLNPz5HndnczEBarCZkN7k8BXKTkqy3oOmPVDC2aC1DUj4Ock_7QypIe-mqa9utIhyY_u-i85_fzLSI-Q
+Origin: https://qcm.webmarks.net
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: X-Requested-With
+Host: qcm-api.webmarks.net
+Referer: https://qcm.webmarks.net/
+Sec-Fetch-Mode: cors
+Sec-Fetch-Site: same-site
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36
+###
+
+
+

@@ -1,0 +1,60 @@
+
+####
+POST https://keycloak.webmarks.net/auth/realms/qcm/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+username=demo&password=demodemo&grant_type=password&client_id=qcm-mobile-rest-api
+
+> {%
+client.global.set("access_token", response.body.access_token);
+client.global.set("refresh_token", response.body.refresh_token);
+client.global.set("auth_token", "Bearer " + response.body.access_token);
+%}
+
+###
+
+###
+POST http://{{host}}:{{port}}/qcm/api/v1/webhooks/
+Accept: application/json
+Content-Type: application/json
+Authorization: {{auth_token}}
+
+{
+  "secret": "QUESTION",
+  "url1": "http://{{host}}:{{port}}/qcm/api/v1/webhooks/catch"
+}
+
+###
+PUT http://{{host}}:{{port}}/qcm/api/v1/webhooks/
+Accept: application/json
+Content-Type: application/json
+Authorization: {{auth_token}}
+
+{
+  "uuid" :"08f84e05-51cf-477b-88d4-84196068f6bb",
+  "secret": "QUESTION2",
+  "url": "http://{{host}}:{{port}}/qcm/api/v1/webhooks/catch",
+  "defaultTimeOut": "120"
+}
+
+###
+GET http://{{host}}:{{port}}/qcm/api/v1/webhooks
+Accept: application/json
+Content-Type: application/json
+Authorization: {{auth_token}}
+
+> {%
+client.global.set("webhooks_uuid", response.body.content[0].uuid);
+%}
+
+###
+GET http://{{host}}:{{port}}/qcm/api/v1/webhooks/{{webhooks_uuid}}
+Accept: application/json
+Content-Type: application/json
+Authorization: {{auth_token}}
+
+###
+DELETE http://{{host}}:{{port}}/qcm/api/v1/webhooks/896cf198-4cf0-42d5-8da5-367d0c01b62c
+Accept: application/json
+Content-Type: application/json
+Authorization: {{auth_token}}
