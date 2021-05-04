@@ -37,9 +37,9 @@ import org.springframework.data.domain.Page;
 import java.util.Optional;
 
 
-@Mapper(componentModel = "spring", uses = {CategoryMapper.class, QuestionnaireTagMapper.class, UuidMapper.class}
+@Mapper(componentModel = "spring", uses = {CategoryEntityMapper.class, QuestionnaireTagEntityMapper.class, UuidMapper.class}
         , unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface QuestionnaireMapper {
+public interface QuestionnaireEntityMapper {
 
 
     Questionnaire modelToDto(QuestionnaireEntity questionnaire);

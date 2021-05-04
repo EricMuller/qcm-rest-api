@@ -28,24 +28,18 @@
 
 package com.emu.apps.qcm.infra.persistence.mappers;
 
-import com.emu.apps.qcm.domain.model.upload.Upload;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.upload.UploadEntity;
+import com.emu.apps.qcm.domain.model.Category;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category.CategoryEntity;
 import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
-import org.springframework.data.domain.Page;
 
-@Mapper(componentModel = "spring", uses = UuidMapper.class
-        , unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface UploadMapper {
+@Mapper(componentModel = "spring", uses = {UuidMapper.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
+public interface CategoryEntityMapper {
 
-    Upload modelToDto(UploadEntity upload);
+    Category modelToDto(CategoryEntity category);
 
-    UploadEntity dtoToModel(Upload uploadDto);
+    CategoryEntity dtoToModel(Category categoryDto);
 
-    UploadEntity dtoToModel(@MappingTarget UploadEntity upload, Upload uploadDto);
+    Iterable <Category> modelsToDtos(Iterable <CategoryEntity> categories);
 
-    default Page <Upload> pageToPageDto(Page <UploadEntity> page) {
-        return page.map(this::modelToDto);
-    }
 }

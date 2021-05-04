@@ -32,7 +32,7 @@ import com.emu.apps.qcm.domain.model.upload.Upload;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.upload.UploadEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.UploadRepository;
 import com.emu.apps.qcm.infra.persistence.UploadPersistencePort;
-import com.emu.apps.qcm.infra.persistence.mappers.UploadMapper;
+import com.emu.apps.qcm.infra.persistence.mappers.UploadEntityMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -54,10 +54,10 @@ public class UploadPersistenceAdapter implements UploadPersistencePort {
 
     private final UploadRepository uploadRepository;
 
-    private final UploadMapper uploadMapper;
+    private final UploadEntityMapper uploadMapper;
 
     @Autowired
-    public UploadPersistenceAdapter(UploadRepository uploadRepository, UploadMapper uploadMapper) {
+    public UploadPersistenceAdapter(UploadRepository uploadRepository, UploadEntityMapper uploadMapper) {
         this.uploadRepository = uploadRepository;
         this.uploadMapper = uploadMapper;
     }

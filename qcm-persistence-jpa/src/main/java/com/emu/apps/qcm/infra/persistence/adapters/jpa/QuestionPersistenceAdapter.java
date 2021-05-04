@@ -15,9 +15,9 @@ import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.QuestionRepo
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.QuestionTagRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.QuestionnaireQuestionRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.TagRepository;
-import com.emu.apps.qcm.infra.persistence.mappers.QuestionMapper;
-import com.emu.apps.qcm.infra.persistence.mappers.QuestionnaireQuestionMapper;
-import com.emu.apps.qcm.infra.persistence.mappers.TagMapper;
+import com.emu.apps.qcm.infra.persistence.mappers.QuestionEntityMapper;
+import com.emu.apps.qcm.infra.persistence.mappers.QuestionnaireQuestionEntityMapper;
+import com.emu.apps.qcm.infra.persistence.mappers.TagEntityMapper;
 import com.emu.apps.qcm.infra.persistence.mappers.UuidMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +46,7 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
 
     private final QuestionnaireQuestionRepository questionnaireQuestionRepository;
 
-    private final QuestionMapper questionMapper;
+    private final QuestionEntityMapper questionMapper;
 
     private final TagRepository tagRepository;
 
@@ -54,15 +54,15 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
 
     private final UuidMapper uuidMapper;
 
-    private final TagMapper tagMapper;
+    private final TagEntityMapper tagMapper;
 
-    private final QuestionnaireQuestionMapper questionnaireQuestionMapper;
+    private final QuestionnaireQuestionEntityMapper questionnaireQuestionMapper;
 
     @Autowired
     public QuestionPersistenceAdapter(QuestionRepository questionRepository, QuestionTagRepository questionTagRepository,
                                       QuestionnaireQuestionRepository questionnaireQuestionRepository,
-                                      QuestionMapper questionMapper, TagRepository tagRepository,
-                                      CategoryRepository categoryRepository, UuidMapper uuidMapper, TagMapper tagMapper, QuestionnaireQuestionMapper questionnaireQuestionMapper) {
+                                      QuestionEntityMapper questionMapper, TagRepository tagRepository,
+                                      CategoryRepository categoryRepository, UuidMapper uuidMapper, TagEntityMapper tagMapper, QuestionnaireQuestionEntityMapper questionnaireQuestionMapper) {
         this.questionRepository = questionRepository;
         this.questionTagRepository = questionTagRepository;
         this.questionnaireQuestionRepository = questionnaireQuestionRepository;

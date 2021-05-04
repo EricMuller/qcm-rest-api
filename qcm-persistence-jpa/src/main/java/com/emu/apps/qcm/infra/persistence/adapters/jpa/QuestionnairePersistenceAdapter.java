@@ -18,8 +18,8 @@ import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.Questionnair
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.QuestionnaireRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.QuestionnaireTagRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.TagRepository;
-import com.emu.apps.qcm.infra.persistence.mappers.QuestionnaireMapper;
-import com.emu.apps.qcm.infra.persistence.mappers.QuestionnaireQuestionMapper;
+import com.emu.apps.qcm.infra.persistence.mappers.QuestionnaireEntityMapper;
+import com.emu.apps.qcm.infra.persistence.mappers.QuestionnaireQuestionEntityMapper;
 import com.emu.apps.qcm.infra.persistence.mappers.UuidMapper;
 import com.emu.apps.shared.exceptions.EntityNotFoundException;
 import com.emu.apps.shared.exceptions.MessageSupport;
@@ -48,7 +48,7 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
 
     private final CategoryRepository categoryRepository;
 
-    private final QuestionnaireMapper questionnaireMapper;
+    private final QuestionnaireEntityMapper questionnaireMapper;
 
     private final UuidMapper uuidMapper;
 
@@ -56,15 +56,15 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
 
     private final QuestionnaireTagRepository questionnaireTagRepository;
 
-    private final QuestionnaireQuestionMapper questionnaireQuestionMapper;
+    private final QuestionnaireQuestionEntityMapper questionnaireQuestionMapper;
 
     private final Javers javers;
 
     public QuestionnairePersistenceAdapter(QuestionnaireRepository questionnaireRepository, QuestionRepository questionRepository,
                                            QuestionnaireQuestionRepository questionnaireQuestionRepository,
-                                           CategoryRepository categoryRepository, QuestionnaireMapper questionnaireMapper,
+                                           CategoryRepository categoryRepository, QuestionnaireEntityMapper questionnaireMapper,
                                            UuidMapper uuidMapper, TagRepository tagRepository,
-                                           QuestionnaireTagRepository questionnaireTagRepository, QuestionnaireQuestionMapper questionnaireQuestionMapper, Javers javers) {
+                                           QuestionnaireTagRepository questionnaireTagRepository, QuestionnaireQuestionEntityMapper questionnaireQuestionMapper, Javers javers) {
         this.questionnaireRepository = questionnaireRepository;
         this.questionRepository = questionRepository;
         this.questionnaireQuestionRepository = questionnaireQuestionRepository;

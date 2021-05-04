@@ -4,7 +4,7 @@ package com.emu.apps.qcm.infra.persistence.adapters.jpa;
 import com.emu.apps.qcm.domain.model.questionnaire.Suggest;
 import com.emu.apps.qcm.infra.persistence.QuestionnaireReaderPort;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.QuestionnaireRepository;
-import com.emu.apps.qcm.infra.persistence.mappers.SuggestMapper;
+import com.emu.apps.qcm.infra.persistence.mappers.SuggestEntityMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,10 +18,10 @@ public class QuestionnaireReaderAdapter implements QuestionnaireReaderPort {
 
     private final QuestionnaireRepository questionnaireRepository;
 
-    private final SuggestMapper suggestMapper;
+    private final SuggestEntityMapper suggestMapper;
 
 
-    public QuestionnaireReaderAdapter(QuestionnaireRepository questionnaireRepository, SuggestMapper suggestMapper) {
+    public QuestionnaireReaderAdapter(QuestionnaireRepository questionnaireRepository, SuggestEntityMapper suggestMapper) {
         this.questionnaireRepository = questionnaireRepository;
 
         this.suggestMapper = suggestMapper;

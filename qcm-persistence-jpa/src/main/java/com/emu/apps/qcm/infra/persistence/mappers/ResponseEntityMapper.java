@@ -28,26 +28,13 @@
 
 package com.emu.apps.qcm.infra.persistence.mappers;
 
-import com.emu.apps.qcm.domain.model.questionnaire.Suggest;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.TagEntity;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.projections.QuestionnaireProjection;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.ResponseEntity;
+import com.emu.apps.qcm.domain.model.question.Response;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring"
-        , unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface SuggestMapper {
+@Mapper(componentModel = "spring", uses = UuidMapper.class)
+public interface ResponseEntityMapper {
 
+    Response modelToDto(ResponseEntity response);
 
-    @Mapping(target = "fieldName", constant = "TagId")
-    Suggest modelToSuggestDto(TagEntity tag);
-
-    Iterable<Suggest> modelsToSugestDtos(Iterable<TagEntity> tags);
-
-    @Mapping(source = "question.title", target = "libelle")
-    @Mapping(target = "fieldName", constant = "questionnaireId")
-    Suggest modelToSuggestDto(QuestionnaireProjection question);
-
-    Iterable<Suggest> modelsToSuggestDtos(Iterable<QuestionnaireProjection> questionnaireProjections);
 }

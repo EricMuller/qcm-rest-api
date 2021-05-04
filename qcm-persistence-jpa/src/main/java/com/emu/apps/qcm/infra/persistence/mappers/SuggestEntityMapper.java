@@ -28,26 +28,26 @@
 
 package com.emu.apps.qcm.infra.persistence.mappers;
 
-import com.emu.apps.qcm.domain.model.question.QuestionTag;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.QuestionTagEntity;
+import com.emu.apps.qcm.domain.model.questionnaire.Suggest;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.TagEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.projections.QuestionnaireProjection;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring", uses = {CategoryMapper.class,UuidMapper.class}
+@Mapper(componentModel = "spring"
         , unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface QuestionTagMapper {
+public interface SuggestEntityMapper {
 
 
-    @Mapping(source = "tag.uuid", target = "uuid")
-    @Mapping(source = "tag.libelle", target = "libelle")
-    QuestionTag entityToModel(QuestionTagEntity questionTagEntity);
+    @Mapping(target = "fieldName", constant = "TagId")
+    Suggest modelToSuggestDto(TagEntity tag);
 
+    Iterable<Suggest> modelsToSugestDtos(Iterable<TagEntity> tags);
 
-    @Mapping(source = "uuid", target = "tag.uuid")
-    @Mapping(source = "libelle", target = "tag.libelle")
-    QuestionTagEntity modelToEntity(QuestionTag questionTag);
+    @Mapping(source = "question.title", target = "libelle")
+    @Mapping(target = "fieldName", constant = "questionnaireId")
+    Suggest modelToSuggestDto(QuestionnaireProjection question);
 
-    Iterable <QuestionTagEntity> modelsToEntities(Iterable <QuestionTag> questionTags);
-
+    Iterable<Suggest> modelsToSuggestDtos(Iterable<QuestionnaireProjection> questionnaireProjections);
 }

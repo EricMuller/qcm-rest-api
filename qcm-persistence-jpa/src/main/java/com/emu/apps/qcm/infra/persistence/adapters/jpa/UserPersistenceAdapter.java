@@ -32,7 +32,7 @@ import com.emu.apps.qcm.domain.model.user.User;
 import com.emu.apps.qcm.infra.persistence.UserPersistencePort;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.UserEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.UserRepository;
-import com.emu.apps.qcm.infra.persistence.mappers.UserMapper;
+import com.emu.apps.qcm.infra.persistence.mappers.UserEntityMapper;
 import com.emu.apps.shared.exceptions.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,10 +53,10 @@ public class UserPersistenceAdapter implements UserPersistencePort {
 
     private final UserRepository userRepository;
 
-    private final UserMapper userMapper;
+    private final UserEntityMapper userMapper;
 
     @Autowired
-    public UserPersistenceAdapter(UserRepository tagRepository, UserMapper userMapper) {
+    public UserPersistenceAdapter(UserRepository tagRepository, UserEntityMapper userMapper) {
         this.userRepository = tagRepository;
         this.userMapper = userMapper;
     }

@@ -40,9 +40,9 @@ import org.springframework.data.domain.Page;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {CategoryMapper.class, QuestionTagMapper.class, ResponseMapper.class,
+@Mapper(componentModel = "spring", uses = {CategoryEntityMapper.class, QuestionTagEntityMapper.class, ResponseEntityMapper.class,
         UuidMapper.class} , unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface QuestionMapper {
+public interface QuestionEntityMapper {
 
     @Mapping(target = "questionTags", ignore = true)
     QuestionEntity dtoToModel(Question questionDto);

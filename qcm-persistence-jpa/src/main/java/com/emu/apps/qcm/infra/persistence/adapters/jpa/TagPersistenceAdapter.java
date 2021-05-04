@@ -32,7 +32,7 @@ import com.emu.apps.qcm.domain.model.tag.Tag;
 import com.emu.apps.qcm.infra.persistence.TagPersistencePort;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.TagEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.TagRepository;
-import com.emu.apps.qcm.infra.persistence.mappers.TagMapper;
+import com.emu.apps.qcm.infra.persistence.mappers.TagEntityMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -53,10 +53,10 @@ public class TagPersistenceAdapter implements TagPersistencePort {
 
     private final TagRepository tagRepository;
 
-    private final TagMapper tagMapper;
+    private final TagEntityMapper tagMapper;
 
     @Autowired
-    public TagPersistenceAdapter(TagRepository tagRepository, TagMapper tagMapper) {
+    public TagPersistenceAdapter(TagRepository tagRepository, TagEntityMapper tagMapper) {
         this.tagRepository = tagRepository;
         this.tagMapper = tagMapper;
     }

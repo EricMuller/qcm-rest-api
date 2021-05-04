@@ -7,7 +7,7 @@ import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.UserEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.events.WebHookEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.UserRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.WebHookRepository;
-import com.emu.apps.qcm.infra.persistence.mappers.WebHookMapper;
+import com.emu.apps.qcm.infra.persistence.mappers.WebHookEntityMapper;
 import com.emu.apps.shared.exceptions.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,11 +26,11 @@ public class WebhookPersistenceAdapter implements WebHookPersistencePort {
 
     private final WebHookRepository webHookRepository;
 
-    private final WebHookMapper webHookMapper;
+    private final WebHookEntityMapper webHookMapper;
 
     private final UserRepository userRepository;
 
-    public WebhookPersistenceAdapter(WebHookRepository webHookRepository, WebHookMapper webHookMapper, UserRepository userRepository) {
+    public WebhookPersistenceAdapter(WebHookRepository webHookRepository, WebHookEntityMapper webHookMapper, UserRepository userRepository) {
         this.webHookRepository = webHookRepository;
         this.webHookMapper = webHookMapper;
         this.userRepository = userRepository;

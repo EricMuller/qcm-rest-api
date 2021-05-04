@@ -36,9 +36,9 @@ import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 import org.springframework.data.domain.Page;
 
-@Mapper(componentModel = "spring", uses = {CategoryMapper.class, QuestionTagMapper.class, ResponseMapper.class, UuidMapper.class}
+@Mapper(componentModel = "spring", uses = {CategoryEntityMapper.class, QuestionTagEntityMapper.class, ResponseEntityMapper.class, UuidMapper.class}
         , unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface QuestionnaireQuestionMapper {
+public interface QuestionnaireQuestionEntityMapper {
 
     QuestionnaireQuestion questionResponseProjectionToDto(QuestionResponseProjection questionProjection);
 

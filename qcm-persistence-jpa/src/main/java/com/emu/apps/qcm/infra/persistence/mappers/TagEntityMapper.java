@@ -28,26 +28,25 @@
 
 package com.emu.apps.qcm.infra.persistence.mappers;
 
-import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireTag;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.QuestionnaireTagEntity;
+
+import com.emu.apps.qcm.domain.model.tag.Tag;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.TagEntity;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
+import org.springframework.data.domain.Page;
 
-@Mapper(componentModel = "spring", uses = {CategoryMapper.class, UuidMapper.class}
-        , unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface QuestionnaireTagMapper {
+@Mapper(componentModel = "spring", uses = {UuidMapper.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
+public interface TagEntityMapper {
 
-    @Mapping(source = "tag.uuid", target = "uuid")
-    @Mapping(source = "tag.libelle", target = "libelle")
-    QuestionnaireTag modelToDto(QuestionnaireTagEntity questionnaireTag);
+    Tag modelToDto(TagEntity tag);
 
-    @Mapping(source = "uuid", target = "tag.uuid")
-    @Mapping(source = "libelle", target = "tag.libelle")
-    QuestionnaireTagEntity dtoToModel(QuestionnaireTag questionnaireTagDto);
+    TagEntity dtoToModel(Tag tagDto);
 
-    Iterable <QuestionnaireTag> questionnaireTagToDtos(Iterable <TagEntity> tags);
+    Iterable <Tag> modelsToDtos(Iterable <TagEntity> tags);
+
+    default Page <Tag> pageToDto(Page <TagEntity> page) {
+        return page.map(this::modelToDto);
+    }
 
 
 }

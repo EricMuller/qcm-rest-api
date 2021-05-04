@@ -2,8 +2,8 @@ package com.emu.apps.qcm.infra.persistence.mappers.exports;
 
 
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireQuestion;
-import com.emu.apps.qcm.infra.persistence.mappers.CategoryMapperImpl;
-import com.emu.apps.qcm.infra.persistence.mappers.QuestionnaireTagMapperImpl;
+import com.emu.apps.qcm.infra.persistence.mappers.CategoryEntityMapperImpl;
+import com.emu.apps.qcm.infra.persistence.mappers.QuestionnaireTagEntityMapperImpl;
 import com.emu.apps.qcm.infra.persistence.mappers.UuidMapperImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;

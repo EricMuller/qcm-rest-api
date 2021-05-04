@@ -33,7 +33,7 @@ import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.Question
 import org.mapstruct.Mapper;
 import org.springframework.data.domain.Page;
 
-@Mapper(componentModel = "spring", uses = {CategoryMapper.class, QuestionTagMapper.class, UuidMapper.class})
+@Mapper(componentModel = "spring", uses = {CategoryEntityMapper.class, QuestionTagEntityMapper.class, UuidMapper.class})
 public interface QuestionTagsMapper {
 
     QuestionTags modelToDTo(QuestionEntity question);

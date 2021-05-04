@@ -15,15 +15,15 @@ import java.util.UUID;
 
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {QuestionMapperImpl.class, CategoryMapperImpl.class, UuidMapperImpl.class
-        , QuestionTagMapperImpl.class, ResponseMapperImpl.class})
+@ContextConfiguration(classes = {QuestionEntityMapperImpl.class, CategoryEntityMapperImpl.class, UuidMapperImpl.class
+        , QuestionTagEntityMapperImpl.class, ResponseEntityMapperImpl.class})
 @Tag("MapstructTest")
 class QuestionMapperTest {
 
     static final String QUESTION_TEXT = "Text";
 
     @Autowired
-    private QuestionMapper questionMapper;
+    private QuestionEntityMapper questionMapper;
 
     @Test
     void entityToModel() {

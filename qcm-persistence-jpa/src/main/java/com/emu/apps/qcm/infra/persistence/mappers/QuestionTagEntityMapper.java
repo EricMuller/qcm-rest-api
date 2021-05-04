@@ -28,26 +28,26 @@
 
 package com.emu.apps.qcm.infra.persistence.mappers;
 
-import com.emu.apps.qcm.domain.model.webhook.WebHook;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.events.WebHookEntity;
+import com.emu.apps.qcm.domain.model.question.QuestionTag;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.QuestionTagEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
-import org.springframework.data.domain.Page;
 
-@Mapper(componentModel = "spring", uses = UuidMapper.class  , unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface WebHookMapper {
+@Mapper(componentModel = "spring", uses = {CategoryEntityMapper.class,UuidMapper.class}
+        , unmappedTargetPolicy = ReportingPolicy.IGNORE)
+public interface QuestionTagEntityMapper {
 
-    WebHook modelToDto(WebHookEntity webhook);
 
-    WebHookEntity dtoToModel(WebHook webhookDto);
+    @Mapping(source = "tag.uuid", target = "uuid")
+    @Mapping(source = "tag.libelle", target = "libelle")
+    QuestionTag entityToModel(QuestionTagEntity questionTagEntity);
 
-    @Mapping(target = "user", ignore = true)
-    WebHookEntity dtoToModel(@MappingTarget WebHookEntity webhook, WebHook webhookDto);
 
-    default Page <WebHook> pageToPageDto(Page <WebHookEntity> page) {
-        return page.map(this::modelToDto);
-    }
+    @Mapping(source = "uuid", target = "tag.uuid")
+    @Mapping(source = "libelle", target = "tag.libelle")
+    QuestionTagEntity modelToEntity(QuestionTag questionTag);
+
+    Iterable <QuestionTagEntity> modelsToEntities(Iterable <QuestionTag> questionTags);
 
 }

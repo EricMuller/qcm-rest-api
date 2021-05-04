@@ -7,7 +7,7 @@ import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category.CategoryE
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category.Type;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.CategoryRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.mptt.MpttExceptions;
-import com.emu.apps.qcm.infra.persistence.mappers.CategoryMapper;
+import com.emu.apps.qcm.infra.persistence.mappers.CategoryEntityMapper;
 import com.emu.apps.shared.exceptions.TechnicalException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -28,9 +28,9 @@ public class CategoryPersistenceAdpater implements CategoryPersistencePort {
 
     private final CategoryRepository categoryRepository;
 
-    private final CategoryMapper categoryMapper;
+    private final CategoryEntityMapper categoryMapper;
 
-    public CategoryPersistenceAdpater(CategoryRepository categoryRepository, CategoryMapper categoryMapper) {
+    public CategoryPersistenceAdpater(CategoryRepository categoryRepository, CategoryEntityMapper categoryMapper) {
         this.categoryRepository = categoryRepository;
         this.categoryMapper = categoryMapper;
     }

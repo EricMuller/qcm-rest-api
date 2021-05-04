@@ -20,12 +20,12 @@ import java.util.UUID;
 
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {QuestionnaireMapperImpl.class, CategoryMapperImpl.class, QuestionnaireTagMapperImpl.class, UuidMapperImpl.class})
+@ContextConfiguration(classes = {QuestionnaireEntityMapperImpl.class, CategoryEntityMapperImpl.class, QuestionnaireTagEntityMapperImpl.class, UuidMapperImpl.class})
 @Tag("MapstructTest")
 class QuestionnaireMapperTest {
 
     @Autowired
-    private QuestionnaireMapper questionnaireMapper;
+    private QuestionnaireEntityMapper questionnaireMapper;
 
     @Test
     void modelToDto() {

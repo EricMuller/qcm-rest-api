@@ -28,25 +28,26 @@
 
 package com.emu.apps.qcm.infra.persistence.mappers;
 
-
-import com.emu.apps.qcm.domain.model.tag.Tag;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.TagEntity;
+import com.emu.apps.qcm.domain.model.webhook.WebHook;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.events.WebHookEntity;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 import org.springframework.data.domain.Page;
 
-@Mapper(componentModel = "spring", uses = {UuidMapper.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface TagMapper {
+@Mapper(componentModel = "spring", uses = UuidMapper.class  , unmappedTargetPolicy = ReportingPolicy.IGNORE)
+public interface WebHookEntityMapper {
 
-    Tag modelToDto(TagEntity tag);
+    WebHook modelToDto(WebHookEntity webhook);
 
-    TagEntity dtoToModel(Tag tagDto);
+    WebHookEntity dtoToModel(WebHook webhookDto);
 
-    Iterable <Tag> modelsToDtos(Iterable <TagEntity> tags);
+    @Mapping(target = "user", ignore = true)
+    WebHookEntity dtoToModel(@MappingTarget WebHookEntity webhook, WebHook webhookDto);
 
-    default Page <Tag> pageToDto(Page <TagEntity> page) {
+    default Page <WebHook> pageToPageDto(Page <WebHookEntity> page) {
         return page.map(this::modelToDto);
     }
-
 
 }
