@@ -16,6 +16,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -23,6 +26,7 @@ import java.util.List;
 @SpringBootTest(classes = SpringBootJpaTestConfig.class)
 @ActiveProfiles(value = "test")
 @Slf4j
+@Testcontainers
 class QuestionnairePersistenceAdapterTest {
 
     private final DbFixture dbFixture;
@@ -32,6 +36,12 @@ class QuestionnairePersistenceAdapterTest {
     private final QuestionnairePersistenceAdapter questionnairePersistenceAdapter;
 
     private final Javers javers;
+
+    @Container
+    private static final PostgreSQLContainer postgresqlContainer = new PostgreSQLContainer()
+            .withDatabaseName("qcm")
+            .withUsername("test")
+            .withPassword("test");
 
     @Autowired
     QuestionnairePersistenceAdapterTest(DbFixture dbFixture, ModelFixture modelFixture, QuestionnairePersistenceAdapter questionnairePersistenceAdapter, Javers javers) {
