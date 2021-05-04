@@ -259,6 +259,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <!--  only true in local ( heroku issue ) -->
+<!--                    <forkCount>1</forkCount>-->
                     <reuseForks>${maven-surefire-plugin.reuseForks}</reuseForks>
                 </configuration>
             </plugin>

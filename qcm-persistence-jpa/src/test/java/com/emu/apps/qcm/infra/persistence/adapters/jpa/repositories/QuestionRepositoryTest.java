@@ -1,5 +1,6 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories;
 
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.BaeldungPostgresqlExtension;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.ResponseEntity;
@@ -11,6 +12,7 @@ import com.emu.apps.shared.security.PrincipalUtils;
 import org.hibernate.LazyInitializationException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.util.TestPropertyValues;
@@ -22,9 +24,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.Transactional;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.security.Principal;
 import java.util.List;
@@ -43,14 +42,10 @@ import static org.springframework.data.domain.Sort.by;
 @SpringBootTest(classes = SpringBootJpaTestConfig.class)
 @ActiveProfiles(value = "test")
 @ContextConfiguration(initializers = {QuestionRepositoryTest.Initializer.class})
-@Testcontainers
 class QuestionRepositoryTest {
 
-    @Container
-    static private final PostgreSQLContainer postgresqlContainer =  new PostgreSQLContainer()
-            .withDatabaseName("postgres")
-            .withUsername("test")
-            .withPassword("test");
+    @RegisterExtension
+    static BaeldungPostgresqlExtension postgresqlContainer = BaeldungPostgresqlExtension.getInstance();
 
     static class Initializer
             implements ApplicationContextInitializer <ConfigurableApplicationContext> {

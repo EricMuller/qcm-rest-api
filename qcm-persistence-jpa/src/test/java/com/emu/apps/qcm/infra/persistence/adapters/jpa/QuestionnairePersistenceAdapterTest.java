@@ -11,8 +11,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.javers.core.Javers;
 import org.javers.core.metamodel.object.CdoSnapshot;
 import org.javers.repository.jql.QueryBuilder;
+import org.junit.ClassRule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.util.TestPropertyValues;
@@ -21,26 +23,22 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest(classes = SpringBootJpaTestConfig.class)
 @ActiveProfiles(value = "test")
 @Slf4j
 @ContextConfiguration(initializers = {QuestionnairePersistenceAdapterTest.Initializer.class})
-@Testcontainers
-class QuestionnairePersistenceAdapterTest  {
+class QuestionnairePersistenceAdapterTest {
 
-    @Container
-    static private final PostgreSQLContainer postgresqlContainer = new PostgreSQLContainer()
-            .withDatabaseName("postgres")
-            .withUsername("test")
-            .withPassword("test") ;
+
+    @RegisterExtension
+    static BaeldungPostgresqlExtension postgresqlContainer =  BaeldungPostgresqlExtension.getInstance();
 
     static class Initializer
             implements ApplicationContextInitializer <ConfigurableApplicationContext> {

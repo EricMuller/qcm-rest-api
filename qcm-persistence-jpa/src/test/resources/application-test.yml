@@ -8,11 +8,11 @@ spring:
         show-sql: true
         hibernate:
             ddl-auto: create-drop
-#            dialect: org.hibernate.dialect.PostgreSQL9Dialect
+        #            dialect: org.hibernate.dialect.PostgreSQL9Dialect
         properties:
-           hibernate:
-              dialect: org.hibernate.dialect.PostgreSQL9Dialect
-              #ddl-auto: create-drop
+            hibernate:
+                dialect: org.hibernate.dialect.PostgreSQL9Dialect
+                #ddl-auto: create-drop
 
     application:
         name: qcm-service
@@ -33,6 +33,19 @@ spring:
     #      idleTimeout: 20000
     #      minimum-idle: 1
     #      maximumPoolSize: 5
+
+#    datasource:
+#        type: com.zaxxer.hikari.HikariDataSource
+#        driverClassName: org.postgresql.Driver
+#        url: ${DB_URL}?user=${DB_USERNAME}&password=${DB_PASSWORD}
+#        hikari:
+#            jdbc-url: ${DB_URL}?user=${DB_USERNAME}&password=${DB_PASSWORD}
+#            pool-name: qcm-hikari-pool-qcm
+#            autoCommit: false
+#            connection-test-query: SELECT 1
+#            idleTimeout: 20000
+#            minimum-idle: 1
+#            maximumPoolSize: 5
 
 #    datasource:
 #        type: com.zaxxer.hikari.HikariDataSource

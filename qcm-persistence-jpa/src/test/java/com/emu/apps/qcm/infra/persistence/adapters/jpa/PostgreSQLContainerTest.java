@@ -1,6 +1,5 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
@@ -20,7 +19,7 @@ public class PostgreSQLContainerTest {
     static private final PostgreSQLContainer postgresqlContainer = (PostgreSQLContainer) new PostgreSQLContainer()
             .withDatabaseName("postgres")
             .withUsername("test")
-            .withPassword("test") ;
+            .withPassword("test");
 
     @BeforeEach
     void beforeAll() {

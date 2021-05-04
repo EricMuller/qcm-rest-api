@@ -1,11 +1,12 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories;
 
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.PostgreSQLContainerTest;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.BaeldungPostgresqlExtension;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.upload.UploadEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.fixtures.DbFixture;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.util.TestPropertyValues;
@@ -18,9 +19,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.Transactional;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.Optional;
 
@@ -30,14 +28,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @SpringBootTest(classes = SpringBootJpaTestConfig.class)
 @ActiveProfiles(value = "test")
 @ContextConfiguration(initializers = {UploadRepositoryTest.Initializer.class})
-@Testcontainers
-public class UploadRepositoryTest  {
+public class UploadRepositoryTest {
 
-    @Container
-    static private final PostgreSQLContainer postgresqlContainer = new PostgreSQLContainer()
-            .withDatabaseName("postgres")
-            .withUsername("test")
-            .withPassword("test");
+    @RegisterExtension
+    static BaeldungPostgresqlExtension postgresqlContainer = BaeldungPostgresqlExtension.getInstance();
 
     static class Initializer
             implements ApplicationContextInitializer <ConfigurableApplicationContext> {
