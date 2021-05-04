@@ -97,12 +97,16 @@ public class DbFixture extends Fixture {
         entityManager.flush();
         categoryRepository.deleteAll();
         userRepository.deleteAll();
+        addUserTest();
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void addUserTest() {
         UserEntity user = new UserEntity();
         user.setEmail(USER);
         userRepository.save(user);
         entityManager.flush();
     }
-
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public QuestionnaireEntity createOneQuestionnaireWithTwoQuestionTags() {

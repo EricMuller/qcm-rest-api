@@ -3,15 +3,22 @@ package com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories;
 
 import com.emu.apps.qcm.domain.model.Category;
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.fixtures.DbFixture;
 import com.emu.apps.qcm.infra.persistence.CategoryPersistencePort;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.fixtures.DbFixture;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.util.TestPropertyValues;
+import org.springframework.context.ApplicationContextInitializer;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.Transactional;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.List;
 import java.util.UUID;
@@ -23,7 +30,26 @@ import static java.util.stream.Collectors.toList;
 
 @SpringBootTest(classes = SpringBootJpaTestConfig.class)
 @ActiveProfiles(value = "test")
+@ContextConfiguration(initializers = {CategoryRepositoryTest.Initializer.class})
+@Testcontainers
 public class CategoryRepositoryTest {
+
+    @Container
+    static private final PostgreSQLContainer postgresqlContainer =  new PostgreSQLContainer()
+            .withDatabaseName("postgres")
+            .withUsername("test")
+            .withPassword("test");
+
+    static class Initializer
+            implements ApplicationContextInitializer <ConfigurableApplicationContext> {
+        public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
+            TestPropertyValues.of(
+                    "spring.datasource.url=" + postgresqlContainer.getJdbcUrl(),
+                    "spring.datasource.username=" + postgresqlContainer.getUsername(),
+                    "spring.datasource.password=" + postgresqlContainer.getPassword()
+            ).applyTo(configurableApplicationContext.getEnvironment());
+        }
+    }
 
     private static final PrincipalId USER_TEST = SpringBootJpaTestConfig.USER_TEST;
 
@@ -32,6 +58,7 @@ public class CategoryRepositoryTest {
 
     @Autowired
     private DbFixture dbFixture;
+
 
     @Test
     @Transactional

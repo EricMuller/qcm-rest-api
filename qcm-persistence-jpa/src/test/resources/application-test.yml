@@ -1,36 +1,51 @@
-
-
 keycloak:
-  enabled: false
+    enabled: false
 
 spring:
-  jpa:
-#    database-platform: org.hibernate.dialect.H2Dialect
-    generate-ddl: false
-    show-sql: true
-    hibernate:
-      ddl-auto: create-drop
-      dialect: org.hibernate.dialect.PostgreSQLDialect
-  application:
-    name: qcm-service
+    jpa:
+        #    database-platform: org.hibernate.dialect.H2Dialect
+        generate-ddl: false
+        show-sql: true
+        hibernate:
+            ddl-auto: create-drop
+#            dialect: org.hibernate.dialect.PostgreSQL9Dialect
+        properties:
+           hibernate:
+              dialect: org.hibernate.dialect.PostgreSQL9Dialect
+              #ddl-auto: create-drop
 
-  liquibase:
-    change-log: classpath:/db/changelog/db.changelog-master.xml
+    application:
+        name: qcm-service
 
-  datasource:
-    type: com.zaxxer.hikari.HikariDataSource
-    driverClassName: org.h2.Driver
-    username: sa
-    password:
-    hikari:
-      jdbc-url: jdbc:h2:mem:foo;mode=postgres;DB_CLOSE_ON_EXIT=FALSE
-      pool-name: qcm-hikari-pool
-      autoCommit: false
-      connection-test-query: SELECT 1
-      idleTimeout: 20000
-      minimum-idle: 1
-      maximumPoolSize: 5
+    liquibase:
+        change-log: classpath:/db/changelog/db.changelog-master.xml
 
+    #  datasource:
+    #    type: com.zaxxer.hikari.HikariDataSource
+    #    driverClassName: org.h2.Driver
+    #    username: sa
+    #    password:
+    #    hikari:
+    #      jdbc-url: jdbc:h2:mem:foo;mode=postgres;DB_CLOSE_ON_EXIT=FALSE
+    #      pool-name: qcm-hikari-pool
+    #      autoCommit: false
+    #      connection-test-query: SELECT 1
+    #      idleTimeout: 20000
+    #      minimum-idle: 1
+    #      maximumPoolSize: 5
+
+#    datasource:
+#        type: com.zaxxer.hikari.HikariDataSource
+#        driverClassName: org.postgresql.Driver
+#        url: jdbc:postgresql://localhost:5499/postgres?user=postgres&password=postgres
+#        hikari:
+#            url: jdbc:postgresql://localhost:5499/postgres?user=postgres&password=postgres
+#            pool-name: qcm-hikari-pool-qcm
+#            autoCommit: false
+#            connection-test-query: SELECT 1
+#            idleTimeout: 20000
+#            minimum-idle: 1
+#            maximumPoolSize: 5
 #    qcm:
 #      type: com.zaxxer.hikari.HikariDataSource
 #      driverClassName: org.h2.Driver
@@ -60,15 +75,15 @@ spring:
 #        maximumPoolSize: 5
 
 logging:
-  # file: logs/application-debug.LOGGER
-  level:
-    root: ERROR
-    org.springframework.web: ERROR
-    org.springframework.security: WARN
-    org.hibernate: WARN
-    org.hibernate.SQL: WARN
-    org.hibernate.type.descriptor.sql: WARN
-    com.emu.apps: WARN
-    org.keycloak.services: WARN
-    org.springframework.aop.interceptor.PerformanceMonitorInterceptor: WARN
-    com.emu.apps.qcm.spi.persistence.adapters.jpa: INFO
+    # file: logs/application-debug.LOGGER
+    level:
+        root: ERROR
+        org.springframework.web: ERROR
+        org.springframework.security: WARN
+        org.hibernate: WARN
+        org.hibernate.SQL: WARN
+        org.hibernate.type.descriptor.sql: WARN
+        com.emu.apps: WARN
+        org.keycloak.services: WARN
+        org.springframework.aop.interceptor.PerformanceMonitorInterceptor: WARN
+        com.emu.apps.qcm.spi.persistence.adapters.jpa: INFO

@@ -89,9 +89,9 @@ public class SpringBootJpaTestConfig {
         propsConfig.setIgnoreUnresolvablePlaceholders(true);
         return propsConfig;
     }
-
+/*
     @Bean
-    @Profile("test")
+    @Profile("test-old")
     @ConfigurationProperties(prefix = "spring.datasource")
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -100,9 +100,9 @@ public class SpringBootJpaTestConfig {
         dataSource.setUsername("sa");
         dataSource.setPassword("sa");
 
-        return dataSource;
+        return dataSource;dataSource = {HikariDataSource@7155} "HikariDataSource (null)"
     }
-
+*/
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(EntityManagerFactoryBuilder builder,
                                                                        DataSource dataSource) {
@@ -110,7 +110,7 @@ public class SpringBootJpaTestConfig {
                 .dataSource(dataSource)
                 .packages("com.emu.apps.qcm.infra.persistence.adapters.jpa.entity")
                 .persistenceUnit("qcm")
-                .properties(singletonMap("hibernate.hbm2ddl.auto", "create-drop"))
+                .properties(singletonMap("hibernate.hbm2ddl.auto", "update"))
                 .build();
     }
 

@@ -1,17 +1,24 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories;
 
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.fixtures.DbFixture;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.UserEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.events.WebHookEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.fixtures.DbFixture;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.util.TestPropertyValues;
+import org.springframework.context.ApplicationContextInitializer;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.Transactional;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.stream.StreamSupport;
 
@@ -20,7 +27,26 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest(classes = SpringBootJpaTestConfig.class)
 @ActiveProfiles(value = "test")
+@ContextConfiguration(initializers = {WebhookRepositoryTest.Initializer.class})
+@Testcontainers
 public class WebhookRepositoryTest {
+
+    @Container
+    static private final PostgreSQLContainer postgresqlContainer = new PostgreSQLContainer()
+            .withDatabaseName("postgres")
+            .withUsername("test")
+            .withPassword("test");
+
+    static class Initializer
+            implements ApplicationContextInitializer <ConfigurableApplicationContext> {
+        public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
+            TestPropertyValues.of(
+                    "spring.datasource.url=" + postgresqlContainer.getJdbcUrl(),
+                    "spring.datasource.username=" + postgresqlContainer.getUsername(),
+                    "spring.datasource.password=" + postgresqlContainer.getPassword()
+            ).applyTo(configurableApplicationContext.getEnvironment());
+        }
+    }
 
     @Autowired
     private DbFixture dbFixture;
@@ -58,7 +84,7 @@ public class WebhookRepositoryTest {
 
         assertNotNull(webhook.getId());
 
-        Page <WebHookEntity> question = webHookRepository.findPageByUserUuidEquals(user.getUuid(),PageRequest.of(0,10));
+        Page <WebHookEntity> question = webHookRepository.findPageByUserUuidEquals(user.getUuid(), PageRequest.of(0, 10));
 
         WebHookEntity webhook1 = StreamSupport.stream(question.spliterator(), false).findFirst().orElse(null);
 

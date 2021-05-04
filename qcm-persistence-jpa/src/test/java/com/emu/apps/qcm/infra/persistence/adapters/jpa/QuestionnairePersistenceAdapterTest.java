@@ -1,21 +1,25 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa;
 
 import com.emu.apps.qcm.domain.model.questionnaire.Questionnaire;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.fixtures.DbFixture;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.fixtures.Fixture;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.fixtures.ModelFixture;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.CategoryRepositoryTest;
 import lombok.extern.slf4j.Slf4j;
 import org.javers.core.Javers;
 import org.javers.core.metamodel.object.CdoSnapshot;
 import org.javers.repository.jql.QueryBuilder;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.util.TestPropertyValues;
+import org.springframework.context.ApplicationContextInitializer;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -23,11 +27,31 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import javax.transaction.Transactional;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 @SpringBootTest(classes = SpringBootJpaTestConfig.class)
 @ActiveProfiles(value = "test")
 @Slf4j
+@ContextConfiguration(initializers = {QuestionnairePersistenceAdapterTest.Initializer.class})
 @Testcontainers
-class QuestionnairePersistenceAdapterTest {
+class QuestionnairePersistenceAdapterTest  {
+
+    @Container
+    static private final PostgreSQLContainer postgresqlContainer = new PostgreSQLContainer()
+            .withDatabaseName("postgres")
+            .withUsername("test")
+            .withPassword("test") ;
+
+    static class Initializer
+            implements ApplicationContextInitializer <ConfigurableApplicationContext> {
+        public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
+            TestPropertyValues.of(
+                    "spring.datasource.url=" + postgresqlContainer.getJdbcUrl(),
+                    "spring.datasource.username=" + postgresqlContainer.getUsername(),
+                    "spring.datasource.password=" + postgresqlContainer.getPassword()
+            ).applyTo(configurableApplicationContext.getEnvironment());
+        }
+    }
 
     private final DbFixture dbFixture;
 
@@ -36,12 +60,6 @@ class QuestionnairePersistenceAdapterTest {
     private final QuestionnairePersistenceAdapter questionnairePersistenceAdapter;
 
     private final Javers javers;
-
-    @Container
-    private static final PostgreSQLContainer postgresqlContainer = new PostgreSQLContainer()
-            .withDatabaseName("qcm")
-            .withUsername("test")
-            .withPassword("test");
 
     @Autowired
     QuestionnairePersistenceAdapterTest(DbFixture dbFixture, ModelFixture modelFixture, QuestionnairePersistenceAdapter questionnairePersistenceAdapter, Javers javers) {
@@ -64,9 +82,9 @@ class QuestionnairePersistenceAdapterTest {
 
         Questionnaire questionnaire1 = questionnairePersistenceAdapter.saveQuestionnaire(questionnaire, Fixture.USER);
 
-        Assertions.assertNotNull(questionnaire1);
-        Assertions.assertEquals(questionnaire.getTitle(),questionnaire1.getTitle());
-        Assertions.assertEquals(questionnaire.getDescription(),questionnaire1.getDescription());
+        assertNotNull(questionnaire1);
+        assertEquals(questionnaire.getTitle(), questionnaire1.getTitle());
+        assertEquals(questionnaire.getDescription(), questionnaire1.getDescription());
 
 
         questionnaire1.setTitle("title 2");
@@ -78,10 +96,9 @@ class QuestionnairePersistenceAdapterTest {
 
         questionnairePersistenceAdapter.saveQuestionnaire(questionnaire1, Fixture.USER);
 
-        questionnairePersistenceAdapter.saveQuestionnaire(questionnaire1, Fixture.USER);
-
         QueryBuilder jqlQuery = QueryBuilder.byClass(QuestionnaireEntity.class);
         List <CdoSnapshot> changes = javers.findSnapshots(jqlQuery.build());
         LOGGER.info(javers.getJsonConverter().toJson(changes));
     }
+
 }
