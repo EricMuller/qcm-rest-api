@@ -5,6 +5,7 @@ import com.emu.apps.qcm.domain.model.question.Question;
 import com.emu.apps.qcm.domain.model.question.QuestionId;
 import com.emu.apps.qcm.domain.model.tag.Tag;
 import com.emu.apps.qcm.domain.model.question.QuestionTags;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import javax.validation.constraints.NotNull;
@@ -12,9 +13,9 @@ import java.util.Collection;
 import java.util.Optional;
 
 public interface QuestionRepository {
-    Iterable <QuestionTags> getQuestions(String[] tagUuid,
-                                         String[] questionnaireUuid,
-                                         Pageable pageable, PrincipalId principal);
+    Page <QuestionTags> getQuestions(String[] tagUuid,
+                                     String[] questionnaireUuid,
+                                     Pageable pageable, PrincipalId principal);
 
     Optional <Question> getQuestionById(QuestionId questionId);
 

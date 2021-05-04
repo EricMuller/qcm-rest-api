@@ -1,12 +1,12 @@
 package com.emu.apps.qcm.infra.reporting;
 
 import com.emu.apps.qcm.domain.model.Status;
-import com.emu.apps.qcm.domain.model.export.v1.CategoryExport;
-import com.emu.apps.qcm.domain.model.export.v1.QuestionExport;
-import com.emu.apps.qcm.domain.model.export.v1.QuestionnaireExport;
-import com.emu.apps.qcm.domain.model.export.v1.ResponseExport;
 
 import com.emu.apps.qcm.domain.model.question.TypeQuestion;
+import com.emu.apps.qcm.infra.reporting.model.CategoryExport;
+import com.emu.apps.qcm.infra.reporting.model.QuestionExport;
+import com.emu.apps.qcm.infra.reporting.model.QuestionnaireExport;
+import com.emu.apps.qcm.infra.reporting.model.ResponseExport;
 import fr.opensagres.xdocreport.core.XDocReportException;
 import fr.opensagres.xdocreport.document.IXDocReport;
 import fr.opensagres.xdocreport.document.registry.XDocReportRegistry;
@@ -23,7 +23,7 @@ class ReportServiceTest {
     @Test
     void reportTest() throws IOException, XDocReportException {
 
-        try (InputStream in = ReportServiceAdapter.class.getResourceAsStream("/template_questionnaire.docx")) {
+        try (InputStream in = TemplateReportServiceAdapter.class.getResourceAsStream("/template_questionnaire.docx")) {
 
             IXDocReport report = XDocReportRegistry.getRegistry().loadReport(in,
                     TemplateEngineKind.Velocity);

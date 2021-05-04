@@ -1,7 +1,5 @@
 package com.emu.apps.qcm.domain.model.base;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,7 +16,6 @@ import java.util.UUID;
  */
 public abstract class DomainObjectId implements ValueObject {
 
-    @JsonProperty("uuid")
     private String uuid;
 
     protected DomainObjectId(String uuid) {

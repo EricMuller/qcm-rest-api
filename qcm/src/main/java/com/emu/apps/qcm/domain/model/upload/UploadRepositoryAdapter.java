@@ -8,6 +8,7 @@ import com.emu.apps.qcm.infra.persistence.UploadPersistencePort;
 import com.emu.apps.shared.exceptions.EntityNotFoundException;
 import com.emu.apps.shared.exceptions.MessageSupport;
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -51,7 +52,7 @@ public class UploadRepositoryAdapter implements UploadRepository {
     }
 
     @Override
-    public Iterable <Upload> getUploads(Pageable pageable, PrincipalId principal) {
+    public Page <Upload> getUploads(Pageable pageable, PrincipalId principal) {
 
         return uploadPersistencePort.findAllByPage(pageable, principal.toUUID());
     }

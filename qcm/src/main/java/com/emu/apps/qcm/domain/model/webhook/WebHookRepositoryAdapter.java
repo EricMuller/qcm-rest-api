@@ -5,6 +5,7 @@ import com.emu.apps.qcm.domain.model.webhook.WebHook;
 import com.emu.apps.qcm.domain.model.webhook.WebhookId;
 import com.emu.apps.qcm.domain.model.webhook.WebHookRepository;
 import com.emu.apps.qcm.infra.persistence.WebHookPersistencePort;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,7 @@ public class WebHookRepositoryAdapter implements WebHookRepository {
     }
 
     @Override
-    public Iterable <WebHook> getWebHooks(Pageable pageable, PrincipalId principal) {
+    public Page <WebHook> getWebHooks(Pageable pageable, PrincipalId principal) {
         return this.webHookPersistencePort.findOneByUuid(pageable, principal.toUUID());
     }
 

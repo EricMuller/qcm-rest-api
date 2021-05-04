@@ -1,9 +1,9 @@
 package com.emu.apps.qcm.rest.controllers;
 
 
-import com.emu.apps.qcm.domain.model.question.Question;
-import com.emu.apps.qcm.domain.model.question.Response;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig;
+import com.emu.apps.qcm.rest.controllers.resources.QuestionResources;
+import com.emu.apps.qcm.rest.controllers.resources.ResponseResources;
 import com.google.common.collect.Iterables;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -46,17 +46,17 @@ public class QuestionRestControllerSearchTest {
         return "http://localhost:" + port + uri;
     }
 
-    private Question createQuestionDto() {
-        Question questionDto = new Question();
-        questionDto.setQuestionText(QUESTION1);
+    private QuestionResources createQuestion() {
+        QuestionResources questionResources = new QuestionResources();
+        questionResources.setQuestionText(QUESTION1);
 
-        Response responseDto = new Response();
-        responseDto.setResponseText(RESPONSE1);
-        responseDto.setGood(true);
+        ResponseResources responseResources = new ResponseResources();
+        responseResources.setResponseText(RESPONSE1);
+        responseResources.setGood(true);
 
-        questionDto.setResponses(Arrays.asList(responseDto));
+        questionResources.setResponses(Arrays.asList(responseResources));
 
-        return questionDto;
+        return questionResources;
     }
 
 
@@ -65,8 +65,8 @@ public class QuestionRestControllerSearchTest {
     public void getQuestionByIdShouldReturnQuestion() {
 
         // create a new question
-        final ResponseEntity <Question> postResponse = restTemplate
-                .exchange(getURL(QUESTIONS_URI), HttpMethod.POST, new HttpEntity <>(createQuestionDto(), headers()), Question.class);
+        final ResponseEntity <QuestionResources> postResponse = restTemplate
+                .exchange(getURL(QUESTIONS_URI), HttpMethod.POST, new HttpEntity <>(createQuestion(), headers()), QuestionResources.class);
 
         assertThat(postResponse.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
         assertThat(postResponse.getBody()).isNotNull();
@@ -76,14 +76,14 @@ public class QuestionRestControllerSearchTest {
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getURL(QUESTIONS_URI + "/{uuid}"));
         URI uri = builder.build().expand(uuid).encode().toUri();
 
-        final ResponseEntity <Question> getResponse = restTemplate
-                .exchange(uri, HttpMethod.GET, new HttpEntity <>(headers()), Question.class);
+        final ResponseEntity <QuestionResources> getResponse = restTemplate
+                .exchange(uri, HttpMethod.GET, new HttpEntity <>(headers()), QuestionResources.class);
 
         assertThat(getResponse.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
 
         assertThat(getResponse.getBody()).isNotNull();
 
-        Response firstResponse = Iterables.getFirst(getResponse.getBody().getResponses(), null);
+        ResponseResources firstResponse = Iterables.getFirst(getResponse.getBody().getResponses(), null);
         assertThat(firstResponse).isNotNull();
         assertThat(firstResponse.getResponseText()).isNotNull().isEqualTo(RESPONSE1);
 

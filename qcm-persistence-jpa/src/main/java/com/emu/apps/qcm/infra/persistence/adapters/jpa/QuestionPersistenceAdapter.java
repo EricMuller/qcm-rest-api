@@ -185,7 +185,7 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
     public Iterable <QuestionnaireQuestion> findAllWithTagsAndResponseByQuestionnaireUuid(String questionnaireUuid) {
 
         return questionnaireQuestionMapper.questionnaireQuestionEntityToDto(
-                questionnaireQuestionRepository.findAllWithTagsAndResponseByQuestionnaireUuid(UUID.fromString(questionnaireUuid)));
+                questionnaireQuestionRepository.findWithTagsAndResponseByQuestionnaireUuid(UUID.fromString(questionnaireUuid)));
     }
 
 }

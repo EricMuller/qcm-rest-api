@@ -40,13 +40,13 @@ public class QuestionnaireRepositoryAdapter implements QuestionnaireRepository {
     /**
      * Find a Questionnaire with technical identifier
      *
-     * @param questionnaireUuid questionnaire uuid
+     * @param questionnaireId questionnaire uuid
      * @return the questionnaire
      */
     @Override
     @Transactional(readOnly = true)
-    public Optional <Questionnaire> getQuestionnaireById(QuestionnaireId questionnaireUuid) {
-        return questionnairePersistencePort.findByUuid(questionnaireUuid.toUUID());
+    public Optional <Questionnaire> getQuestionnaireById(QuestionnaireId questionnaireId) {
+        return questionnairePersistencePort.findByUuid(questionnaireId.toUUID());
 
     }
 
@@ -87,6 +87,11 @@ public class QuestionnaireRepositoryAdapter implements QuestionnaireRepository {
     public Page <QuestionnaireQuestion> getQuestionsByQuestionnaireId(QuestionnaireId questionnaireId, Pageable pageable) {
         return questionnairePersistencePort.getQuestionsByQuestionnaireUuid(questionnaireId.toUUID(), pageable);
     }
+
+    public Iterable <QuestionnaireQuestion> getQuestionsByQuestionnaireId(QuestionnaireId questionnaireId) {
+        return questionnairePersistencePort.getQuestionsByQuestionnaireUuid(questionnaireId.toUUID());
+    }
+
 
     @Override
     @Transactional(readOnly = true)

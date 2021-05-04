@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.infra.persistence;
 
-import com.emu.apps.qcm.domain.model.published.PublishedQuestionnaireDto;
+
 import com.emu.apps.qcm.domain.model.question.Question;
 import com.emu.apps.qcm.domain.model.questionnaire.Questionnaire;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireQuestion;
@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface QuestionnairePersistencePort {
 
-    Optional<Questionnaire> findByUuid(String uuid);
+    Optional <Questionnaire> findByUuid(String uuid);
 
     void deleteByUuid(String uuid);
 
@@ -23,9 +23,9 @@ public interface QuestionnairePersistencePort {
 
 //    Iterable <QuestionnaireProjection> findByTitleContaining(String title);
 
-    Page <PublishedQuestionnaireDto> findAllPublishedByPage(Pageable pageable);
+    Page <Questionnaire> findAllPublishedByPage(Pageable pageable);
 
-    PublishedQuestionnaireDto findOnePublishedByUuid(String uuid);
+    Questionnaire findOnePublishedByUuid(String uuid);
 
     Iterable <String> findPublishedCategories();
 
@@ -37,5 +37,6 @@ public interface QuestionnairePersistencePort {
 
     Page <QuestionnaireQuestion> getQuestionsByQuestionnaireUuid(String questionnaireUuid, Pageable pageable);
 
+    Iterable <QuestionnaireQuestion> getQuestionsByQuestionnaireUuid(String questionnaireUuid) ;
 
 }

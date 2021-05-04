@@ -3,6 +3,7 @@ package com.emu.apps.qcm.domain.model.upload;
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
 import com.emu.apps.qcm.domain.model.upload.Upload;
 import com.emu.apps.qcm.domain.model.upload.UploadId;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,7 +15,7 @@ public interface UploadRepository {
                       Boolean async,
                       PrincipalId principal) throws IOException;
 
-    Iterable <Upload> getUploads(Pageable pageable, PrincipalId principal);
+    Page <Upload> getUploads(Pageable pageable, PrincipalId principal);
 
     void deleteUploadByUuid(UploadId uploadId);
 

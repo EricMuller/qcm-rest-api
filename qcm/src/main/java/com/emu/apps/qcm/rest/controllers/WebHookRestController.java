@@ -1,14 +1,16 @@
 package com.emu.apps.qcm.rest.controllers;
 
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
-import com.emu.apps.qcm.domain.model.webhook.WebHook;
 import com.emu.apps.qcm.domain.model.webhook.WebHookRepository;
 import com.emu.apps.qcm.domain.model.webhook.WebhookId;
+import com.emu.apps.qcm.rest.controllers.mappers.QuestionnaireResourcesMapper;
+import com.emu.apps.qcm.rest.controllers.resources.WebHookResources;
 import com.emu.apps.shared.annotations.Timer;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.context.annotation.Profile;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -32,36 +34,41 @@ public class WebHookRestController {
 
     private final WebHookRepository webHookRepository;
 
-    public WebHookRestController(WebHookRepository webHookServicePort) {
+    private final QuestionnaireResourcesMapper questionnaireResourcesMapper;
+
+    public WebHookRestController(WebHookRepository webHookServicePort, QuestionnaireResourcesMapper questionnaireResourcesMapper) {
         this.webHookRepository = webHookServicePort;
+        this.questionnaireResourcesMapper = questionnaireResourcesMapper;
     }
 
     @GetMapping
     @Timer
     @PageableAsQueryParam
-    public Iterable <WebHook> getWebhooks(
+    public Page <WebHookResources> getWebhooks(
             @Parameter(hidden = true)
             @PageableDefault(direction = DESC, sort = {"dateModification"}) Pageable pageable) {
 
-        return webHookRepository.getWebHooks(pageable, new PrincipalId(getPrincipal()));
+        return questionnaireResourcesMapper.webhookToResources(webHookRepository.getWebHooks(pageable, new PrincipalId(getPrincipal())));
     }
 
     @PostMapping
     @ResponseBody
-    public WebHook saveWebHook(@RequestBody @Valid WebHook webHookDto) {
-        return webHookRepository.saveWebHook(webHookDto, getPrincipal());
+    public WebHookResources saveWebHook(@RequestBody @Valid WebHookResources webHookResources) {
+        var webhook = questionnaireResourcesMapper.webhookToModel(webHookResources);
+        return questionnaireResourcesMapper.webhookToResources(webHookRepository.saveWebHook(webhook, getPrincipal()));
     }
 
     @PutMapping
     @ResponseBody
-    public WebHook updateWebHook(@RequestBody @Valid WebHook webHookDto) {
-        return webHookRepository.saveWebHook(webHookDto, getPrincipal());
+    public WebHookResources updateWebHook(@RequestBody @Valid WebHookResources webHookResources) {
+        var webhook = questionnaireResourcesMapper.webhookToModel(webHookResources);
+        return questionnaireResourcesMapper.webhookToResources(webHookRepository.saveWebHook(webhook, getPrincipal()));
     }
 
     @GetMapping(value = "/{uuid}")
     @ResponseBody
-    public WebHook getWebHookByUuid(@PathVariable("uuid") String uuid) {
-        return webHookRepository.getWebHookByUuid(new WebhookId(uuid));
+    public WebHookResources getWebHookByUuid(@PathVariable("uuid") String uuid) {
+        return questionnaireResourcesMapper.webhookToResources(webHookRepository.getWebHookByUuid(new WebhookId(uuid)));
     }
 
     @DeleteMapping(value = "/{uuid}")

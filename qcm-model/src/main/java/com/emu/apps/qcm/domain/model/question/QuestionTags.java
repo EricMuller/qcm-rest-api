@@ -29,7 +29,6 @@
 package com.emu.apps.qcm.domain.model.question;
 
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -44,7 +43,6 @@ import java.util.Set;
 @NoArgsConstructor
 public class QuestionTags extends QuestionLight {
 
-    @JsonProperty("tags")
-    private Set<QuestionTag> questionTags;
+    private Set <QuestionTag> questionTags;
 
 }

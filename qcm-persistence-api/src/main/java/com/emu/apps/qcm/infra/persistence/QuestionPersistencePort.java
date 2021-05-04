@@ -8,7 +8,6 @@ import com.emu.apps.qcm.domain.model.tag.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import javax.validation.constraints.NotNull;
 import java.util.Optional;
 
 public interface QuestionPersistencePort {
@@ -17,7 +16,7 @@ public interface QuestionPersistencePort {
 
     void deleteByUuid(String uuid);
 
-    Question saveQuestion(Question questionDto, @NotNull String principal);
+    Question saveQuestion(Question questionDto, String principal);
 
     Page <QuestionTags> findAllByPage(String[] questionnaireUuids, String[] tagUuids, Pageable pageable, String principal);
 

@@ -1,11 +1,10 @@
 package com.emu.apps.qcm.rest.controllers;
 
-import com.emu.apps.qcm.domain.model.Category;
 import com.emu.apps.qcm.domain.model.CategoryRepository;
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
-
-
-import com.emu.apps.qcm.rest.controllers.dtos.MessageDto;
+import com.emu.apps.qcm.rest.controllers.mappers.QuestionnaireResourcesMapper;
+import com.emu.apps.qcm.rest.controllers.resources.CategoryResources;
+import com.emu.apps.qcm.rest.controllers.resources.MessageResources;
 import com.emu.apps.shared.exceptions.FunctionnalException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,7 +24,6 @@ import java.io.IOException;
 
 import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.CATEGORIES;
 import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.PUBLIC_API;
-
 import static com.emu.apps.shared.security.AuthentificationContextHolder.getPrincipal;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -40,34 +38,40 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Tag(name = "Category")
 public class CategoryRestController {
 
-
     private final CategoryRepository categoryRepository;
 
-    public CategoryRestController(CategoryRepository categoryServicePort) {
-        this.categoryRepository = categoryServicePort;
+    private final QuestionnaireResourcesMapper questionnaireResourcesMapper;
+
+    public CategoryRestController(CategoryRepository categoryRepository, QuestionnaireResourcesMapper questionnaireResourcesMapper) {
+        this.categoryRepository = categoryRepository;
+        this.questionnaireResourcesMapper = questionnaireResourcesMapper;
     }
 
     @GetMapping(value = "/{uuid}", produces = APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Category getCategoryByUuid(@PathVariable("uuid") String uuid) {
-        return categoryRepository.getCategoryByUuid(uuid);
+    public CategoryResources getCategoryByUuid(@PathVariable("uuid") String uuid) {
+        return questionnaireResourcesMapper.categoryToResources(categoryRepository.getCategoryByUuid(uuid));
     }
 
     @GetMapping
     @ResponseBody
-    public Iterable <Category> getCategoriesByType(@RequestParam("type") String typeCategory) throws FunctionnalException {
-        return categoryRepository.getCategories( new PrincipalId(getPrincipal()), typeCategory);
+    public Iterable <CategoryResources> getCategoriesByType(@RequestParam("type") String typeCategory) throws FunctionnalException {
+
+        return questionnaireResourcesMapper.categoriesToResources(
+                categoryRepository.getCategories(new PrincipalId(getPrincipal()), typeCategory));
     }
 
     @PostMapping
     @ResponseBody
-    public Category saveCategory(@RequestBody Category categoryDto)  {
-        return categoryRepository.saveCategory(categoryDto, new PrincipalId(getPrincipal()));
+    public CategoryResources saveCategory(@RequestBody CategoryResources categoryResources) {
+        var category = questionnaireResourcesMapper.categoryToModel(categoryResources);
+        return questionnaireResourcesMapper.categoryToResources(
+                categoryRepository.saveCategory(category, new PrincipalId(getPrincipal())));
     }
 
     @ExceptionHandler({JsonProcessingException.class, IOException.class})
-    public ResponseEntity <MessageDto> handleAllException(Exception e) {
-        return new ResponseEntity <>(new MessageDto(MessageDto.ERROR, e.getMessage()), BAD_REQUEST);
+    public ResponseEntity <MessageResources> handleAllException(Exception e) {
+        return new ResponseEntity <>(new MessageResources(MessageResources.ERROR, e.getMessage()), BAD_REQUEST);
     }
 
 }

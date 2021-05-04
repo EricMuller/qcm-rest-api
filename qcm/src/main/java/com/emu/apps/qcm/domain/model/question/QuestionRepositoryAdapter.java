@@ -10,6 +10,7 @@ import com.emu.apps.qcm.domain.model.question.QuestionRepository;
 import com.emu.apps.qcm.infra.persistence.QuestionPersistencePort;
 import com.emu.apps.shared.exceptions.EntityNotFoundException;
 import com.emu.apps.shared.exceptions.MessageSupport;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,9 +41,9 @@ public class QuestionRepositoryAdapter implements QuestionRepository {
     }
 
     @Override
-    public Iterable <QuestionTags> getQuestions(String[] tagUuid,
-                                                String[] questionnaireUuid,
-                                                Pageable pageable, PrincipalId principal) {
+    public Page <QuestionTags> getQuestions(String[] tagUuid,
+                                            String[] questionnaireUuid,
+                                            Pageable pageable, PrincipalId principal) {
 
         return questionPersistencePort.findAllByPage(questionnaireUuid, tagUuid, pageable, principal.toUUID());
     }

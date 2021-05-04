@@ -1,0 +1,42 @@
+package com.emu.apps.qcm.rest.controllers.resources;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import javax.validation.constraints.NotNull;
+import java.time.ZonedDateTime;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class WebHookResources {
+
+    @JsonProperty("uuid")
+    private String uuid;
+
+    @JsonProperty("version")
+    private Long version;
+
+    @JsonProperty("dateCreation")
+    private ZonedDateTime dateCreation;
+
+    @JsonProperty("dateModification")
+    private ZonedDateTime dateModification;
+
+    @NotNull
+    @JsonProperty("url")
+    private String url;
+
+    @JsonProperty("secret")
+    private String secret;
+
+    @JsonProperty("defaultTimeOut")
+    private Long defaultTimeOut;
+
+}

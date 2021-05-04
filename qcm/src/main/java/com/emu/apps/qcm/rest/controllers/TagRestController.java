@@ -1,10 +1,11 @@
 package com.emu.apps.qcm.rest.controllers;
 
 
-import com.emu.apps.qcm.domain.model.tag.Tag;
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
 import com.emu.apps.qcm.domain.model.tag.TagId;
 import com.emu.apps.qcm.domain.model.tag.TagRepository;
+import com.emu.apps.qcm.rest.controllers.mappers.QuestionnaireResourcesMapper;
+import com.emu.apps.qcm.rest.controllers.resources.TagResources;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.context.annotation.Profile;
@@ -40,37 +41,42 @@ public class TagRestController {
 
     private final TagRepository tagRepository;
 
-    public TagRestController(TagRepository tagServicePort) {
+    private final QuestionnaireResourcesMapper questionnaireResourcesMapper;
+
+    public TagRestController(TagRepository tagServicePort, QuestionnaireResourcesMapper questionnaireResourcesMapper) {
         this.tagRepository = tagServicePort;
+        this.questionnaireResourcesMapper = questionnaireResourcesMapper;
     }
 
     @GetMapping
     @ResponseBody
     @PageableAsQueryParam
-    public Page <Tag> getTags(@RequestParam(value = "search", required = false) String search,
-                              @Parameter(hidden = true)
-                              @PageableDefault(direction = DESC, sort = {"dateModification"}, size = 100) Pageable pageable) throws IOException {
+    public Page <TagResources> getTags(@RequestParam(value = "search", required = false) String search,
+                                       @Parameter(hidden = true)
+                                       @PageableDefault(direction = DESC, sort = {"dateModification"}, size = 100) Pageable pageable) throws IOException {
 
-        return tagRepository.getTags(search, pageable, new PrincipalId(getPrincipal()));
+        return questionnaireResourcesMapper.tagToResources(tagRepository.getTags(search, pageable, new PrincipalId(getPrincipal())));
     }
 
     @GetMapping(value = "{uuid}")
     @ResponseBody
-    public Tag getTagByUuid(@PathVariable("uuid") String uuid) {
-        return tagRepository.getTagById(new TagId(uuid));
+    public TagResources getTagByUuid(@PathVariable("uuid") String uuid) {
+        return questionnaireResourcesMapper.tagToResources(tagRepository.getTagById(new TagId(uuid)));
     }
 
     @PostMapping
     @ResponseBody
-    public Tag createTag(@RequestBody Tag tag) {
-        return tagRepository.saveTag(tag);
+    public TagResources createTag(@RequestBody TagResources tagResources) {
+        var tag = questionnaireResourcesMapper.tagToModel(tagResources);
+        return questionnaireResourcesMapper.tagToResources(tagRepository.saveTag(tag));
     }
 
 
     @PutMapping
     @ResponseBody
-    public Tag updateTag(@RequestBody Tag tag) {
-        return tagRepository.saveTag(tag);
+    public TagResources updateTag(@RequestBody TagResources tagResources) {
+        var tag = questionnaireResourcesMapper.tagToModel(tagResources);
+        return questionnaireResourcesMapper.tagToResources(tagRepository.saveTag(tag));
     }
 
 }

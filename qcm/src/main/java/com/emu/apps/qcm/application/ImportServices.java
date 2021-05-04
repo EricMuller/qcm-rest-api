@@ -3,18 +3,14 @@ package com.emu.apps.qcm.application;
 import com.emu.apps.qcm.domain.dtos.FileQuestionDto;
 import com.emu.apps.qcm.domain.model.Category;
 import com.emu.apps.qcm.domain.model.CategoryRepository;
-import com.emu.apps.qcm.domain.model.Status;
-import com.emu.apps.qcm.domain.model.export.v1.Export;
-import com.emu.apps.qcm.domain.model.export.v1.QuestionExport;
+
 
 import com.emu.apps.qcm.domain.model.imports.ImportStatus;
 import com.emu.apps.qcm.domain.model.question.QuestionRepository;
-import com.emu.apps.qcm.domain.model.question.TypeQuestion;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireRepository;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireTag;
 import com.emu.apps.qcm.domain.model.question.Response;
 import com.emu.apps.qcm.domain.model.tag.TagRepository;
-import com.emu.apps.qcm.domain.model.upload.TypeUpload;
 import com.emu.apps.qcm.domain.model.upload.Upload;
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
 import com.emu.apps.qcm.domain.model.question.Question;
@@ -24,9 +20,10 @@ import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireId;
 import com.emu.apps.qcm.domain.model.upload.UploadId;
 
 import com.emu.apps.qcm.domain.model.upload.UploadRepository;
+import com.emu.apps.qcm.infra.reporting.model.Export;
+import com.emu.apps.qcm.infra.reporting.model.QuestionExport;
 import com.emu.apps.shared.exceptions.TechnicalException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -43,6 +40,16 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.emu.apps.qcm.domain.model.Status.DRAFT;
+import static com.emu.apps.qcm.domain.model.imports.ImportStatus.DONE;
+import static com.emu.apps.qcm.domain.model.imports.ImportStatus.REJECTED;
+import static com.emu.apps.qcm.domain.model.question.TypeQuestion.FREE_TEXT;
+import static com.emu.apps.qcm.domain.model.upload.TypeUpload.EXPORT_JSON;
+import static com.fasterxml.jackson.databind.SerializationFeature.INDENT_OUTPUT;
+import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS;
+import static java.util.Arrays.asList;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+
 
 @Service
 public class ImportServices {
@@ -53,13 +60,11 @@ public class ImportServices {
 
     public static String TYPE_QUESTIONNAIRE = "QUESTIONNAIRE";
 
-
     private final QuestionnaireRepository questionnaireRepository;
 
     private final QuestionRepository questionRepository;
 
     private final TagRepository tagRepository;
-
 
     private final UploadRepository uploadRepository;
 
@@ -81,14 +86,14 @@ public class ImportServices {
         var upload = uploadRepository.getUploadByUuid(uploadId);
 
         //  use strategy
-        if (TypeUpload.EXPORT_JSON.name().equals(upload.getType())) {
+        if (EXPORT_JSON.name().equals(upload.getType())) {
             ObjectMapper mapper = new ObjectMapper()
                     .findAndRegisterModules()
-                    .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-                    .configure(SerializationFeature.INDENT_OUTPUT, true);
+                    .disable(WRITE_DATES_AS_TIMESTAMPS)
+                    .configure(INDENT_OUTPUT, true);
 
-            Export exportDataDto = mapper.readValue(new ByteArrayInputStream(upload.getData()), Export.class);
-            ImportStatus importStatus = importQuestionnaire(upload.getFileName(), exportDataDto, principal);
+            Export export = mapper.readValue(new ByteArrayInputStream(upload.getData()), Export.class);
+            ImportStatus importStatus = importQuestionnaire(upload.getFileName(), export, principal);
             upload.setStatus(importStatus.name());
         } else {
             final FileQuestionDto[] fileQuestionDtos = new ObjectMapper().readValue(new ByteArrayInputStream(upload.getData()), FileQuestionDto[].class);
@@ -100,18 +105,18 @@ public class ImportServices {
 
     }
 
-    private Question mapToQuestionDto(QuestionExport questionExportDto, Category categoryDto) {
+    private Question mapToQuestionDto(QuestionExport questionExport, Category categoryDto) {
 
         var questionDto = new Question();
 
-        questionDto.setQuestionText(questionExportDto.getQuestionText());
-        questionDto.setType(questionExportDto.getType());
-        questionDto.setStatus(questionExportDto.getStatus());
+        questionDto.setQuestionText(questionExport.getQuestionText());
+        questionDto.setType(questionExport.getType());
+        questionDto.setStatus(questionExport.getStatus());
 
         questionDto.setCategory(categoryDto);
 
         List <Response> responseDtos = new ArrayList <>();
-        for (var response : questionExportDto.getResponses()) {
+        for (var response : questionExport.getResponses()) {
 
             Response responseDto = new Response();
             responseDto.setResponseText(response.getResponseText());
@@ -123,37 +128,37 @@ public class ImportServices {
 
         questionDto.setResponses(responseDtos);
 
-        Set <QuestionTag> questionTagDtos = new HashSet <>();
+        Set <QuestionTag> questionTags = new HashSet <>();
 
-        for (var qtag : questionExportDto.getQuestionTags()) {
+        for (var qtag : questionExport.getQuestionTags()) {
             QuestionTag questionTagDto = new QuestionTag();
             questionTagDto.setLibelle(qtag.getLibelle());
-            questionTagDtos.add(questionTagDto);
+            questionTags.add(questionTagDto);
         }
-        questionDto.setQuestionTags(questionTagDtos);
+        questionDto.setQuestionTags(questionTags);
         return questionDto;
 
     }
 
 
-    private Question mapToQuestionDto(FileQuestionDto fileQuestionDto, Category categoryDto) {
+    private Question mapToQuestionDto(FileQuestionDto fileQuestionDto, Category category) {
 
         var questionDto = new Question();
 
         questionDto.setQuestionText(fileQuestionDto.getQuestion());
-        questionDto.setType(TypeQuestion.FREE_TEXT.name());
-        questionDto.setStatus(Status.DRAFT.name());
+        questionDto.setType(FREE_TEXT.name());
+        questionDto.setStatus(DRAFT.name());
 
-        questionDto.setCategory(categoryDto);
+        questionDto.setCategory(category);
 
         Response responseDto = new Response();
         responseDto.setResponseText(fileQuestionDto.getResponse());
-        questionDto.setResponses(Arrays.asList(responseDto));
+        questionDto.setResponses(asList(responseDto));
 
         QuestionTag questionTagDto = new QuestionTag();
         questionTagDto.setLibelle(fileQuestionDto.getCategorie());
 
-        questionDto.setQuestionTags(new HashSet <>(Arrays.asList(questionTagDto)));
+        questionDto.setQuestionTags(new HashSet <>(asList(questionTagDto)));
 
         return questionDto;
 
@@ -161,24 +166,24 @@ public class ImportServices {
 
 
     @Transactional
-    public ImportStatus importQuestionnaire(String name, Export exportDataDto, PrincipalId principal) {
+    public ImportStatus importQuestionnaire(String name, Export export, PrincipalId principal) {
 
         Questionnaire questionnaireDto = new Questionnaire();
 
         // questionnaire
-        questionnaireDto.setTitle(exportDataDto.getQuestionnaire().getTitle());
-        questionnaireDto.setStatus(exportDataDto.getQuestionnaire().getStatus());
-        if (StringUtils.isNotBlank(exportDataDto.getQuestionnaire().getUuid())) {
-            questionnaireDto.setUuid(exportDataDto.getQuestionnaire().getUuid());
-            questionnaireDto.setVersion(exportDataDto.getQuestionnaire().getVersion());
-            questionnaireDto.setDateCreation(exportDataDto.getQuestionnaire().getDateCreation());
-            questionnaireDto.setDateModification(exportDataDto.getQuestionnaire().getDateModification());
+        questionnaireDto.setTitle(export.getQuestionnaire().getTitle());
+        questionnaireDto.setStatus(export.getQuestionnaire().getStatus());
+        if (StringUtils.isNotBlank(export.getQuestionnaire().getUuid())) {
+            questionnaireDto.setUuid(export.getQuestionnaire().getUuid());
+            questionnaireDto.setVersion(export.getQuestionnaire().getVersion());
+            questionnaireDto.setDateCreation(export.getQuestionnaire().getDateCreation());
+            questionnaireDto.setDateModification(export.getQuestionnaire().getDateModification());
         }
 
         // tags
         HashSet <QuestionnaireTag> qtags = new HashSet <>();
-        if (Objects.nonNull(exportDataDto.getQuestionnaire().getQuestionnaireTags())) {
-            for (var qtag : exportDataDto.getQuestionnaire().getQuestionnaireTags()) {
+        if (Objects.nonNull(export.getQuestionnaire().getQuestionnaireTags())) {
+            for (var qtag : export.getQuestionnaire().getQuestionnaireTags()) {
                 QuestionnaireTag questionnaireTagDto = new QuestionnaireTag();
                 questionnaireTagDto.setLibelle(qtag.getLibelle());
                 qtags.add(questionnaireTagDto);
@@ -187,9 +192,9 @@ public class ImportServices {
         questionnaireDto.setQuestionnaireTags(qtags);
 
         // categorie
-        if (Objects.nonNull(exportDataDto.getQuestionnaire().getCategory())) {
+        if (Objects.nonNull(export.getQuestionnaire().getCategory())) {
             Category category = new Category();
-            category.setLibelle(exportDataDto.getQuestionnaire().getCategory().getLibelle());
+            category.setLibelle(export.getQuestionnaire().getCategory().getLibelle());
             category.setType(TYPE_QUESTIONNAIRE);
             category.setUserId(principal.toUUID());
             category = categoryRepository.saveCategory(category, principal);
@@ -199,7 +204,7 @@ public class ImportServices {
         Questionnaire questionnaire = questionnaireRepository.saveQuestionnaire(questionnaireDto, principal);
 
         //questions
-        List <Question> questions = exportDataDto.getQuestions()
+        List <Question> questions = export.getQuestions()
                 .stream()
                 .map(questionExportDto ->
                 {
@@ -220,7 +225,7 @@ public class ImportServices {
 
         questionnaireRepository.addQuestions(new QuestionnaireId(questionnaire.getUuid()), questionDtos, principal);
 
-        return ImportStatus.DONE;
+        return DONE;
     }
 
 
@@ -232,13 +237,13 @@ public class ImportServices {
                 Questionnaire questionnaireDto = new Questionnaire();
 
                 questionnaireDto.setTitle(IMPORT);
-                questionnaireDto.setStatus(Status.DRAFT.name());
+                questionnaireDto.setStatus(DRAFT.name());
 
                 final var tagQuestionnaire = tagRepository.findOrCreateByLibelle(IMPORT, principal);
 
                 QuestionnaireTag questionnaireTagDto = new QuestionnaireTag();
                 questionnaireTagDto.setUuid(tagQuestionnaire.getUuid());
-                questionnaireDto.setQuestionnaireTags(new HashSet <>(Arrays.asList(questionnaireTagDto)));
+                questionnaireDto.setQuestionnaireTags(new HashSet <>(asList(questionnaireTagDto)));
                 Questionnaire questionnaire = questionnaireRepository.saveQuestionnaire(questionnaireDto, principal);
 
                 Category category = new Category();
@@ -250,7 +255,7 @@ public class ImportServices {
 
                 List <Question> questions = Arrays
                         .stream(fileQuestionDtos)
-                        .filter(fileQuestionDto -> StringUtils.isNotEmpty(fileQuestionDto.getCategorie()))
+                        .filter(fileQuestionDto -> isNotEmpty(fileQuestionDto.getCategorie()))
                         .map(fileQuestionDto -> mapToQuestionDto(fileQuestionDto, categoryDto))
                         .collect(Collectors.toList());
 
@@ -260,12 +265,12 @@ public class ImportServices {
 
             } catch (TechnicalException e) {
 
-                return ImportStatus.REJECTED;
+                return REJECTED;
             }
 
         }
 
-        return ImportStatus.DONE;
+        return DONE;
     }
 
 }

@@ -2,14 +2,15 @@ package com.emu.apps.qcm.rest.controllers;
 
 
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
-import com.emu.apps.qcm.domain.model.question.Question;
 import com.emu.apps.qcm.domain.model.question.QuestionId;
-import com.emu.apps.qcm.domain.model.questionnaire.Questionnaire;
-import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireQuestion;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireId;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireRepository;
-import com.emu.apps.shared.exceptions.EntityNotFoundException;
+import com.emu.apps.qcm.rest.controllers.mappers.QuestionnaireResourcesMapper;
+import com.emu.apps.qcm.rest.controllers.resources.QuestionResources;
+import com.emu.apps.qcm.rest.controllers.resources.QuestionnaireQuestionResources;
+import com.emu.apps.qcm.rest.controllers.resources.QuestionnaireResources;
 import com.emu.apps.shared.annotations.Timer;
+import com.emu.apps.shared.exceptions.EntityNotFoundException;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -24,9 +25,9 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static com.emu.apps.shared.exceptions.MessageSupport.UNKNOWN_UUID_QUESTIONNAIRE;
-import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.*;
 import static com.emu.apps.qcm.rest.config.cache.CacheName.Names.QUESTIONNAIRE;
+import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.*;
+import static com.emu.apps.shared.exceptions.MessageSupport.UNKNOWN_UUID_QUESTIONNAIRE;
 import static com.emu.apps.shared.security.AuthentificationContextHolder.getPrincipal;
 import static java.util.Optional.empty;
 import static org.springframework.data.domain.Sort.Direction.ASC;
@@ -34,90 +35,94 @@ import static org.springframework.data.domain.Sort.Direction.DESC;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-
 @RestController
 @Profile("webmvc")
-@RequestMapping(value = PUBLIC_API + QUESTIONNAIRES, produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = PUBLIC_API + QUESTIONNAIRES, produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
 @Tag(name = "Questionnaire")
 @Slf4j
 public class QuestionnaireRestController {
 
     private final QuestionnaireRepository questionnaireRepository;
 
-    public QuestionnaireRestController(QuestionnaireRepository questionnaireServicePort) {
+    private final QuestionnaireResourcesMapper questionnaireResourcesMapper;
+
+    public QuestionnaireRestController(QuestionnaireRepository questionnaireServicePort,
+                                       QuestionnaireResourcesMapper questionnaireResourcesMapper) {
         this.questionnaireRepository = questionnaireServicePort;
+        this.questionnaireResourcesMapper = questionnaireResourcesMapper;
     }
 
     @GetMapping(value = "/{uuid}")
     @Timer
     @Cacheable(cacheNames = QUESTIONNAIRE, key = "#uuid")
     @ResponseBody
-    public Questionnaire getQuestionnaireById(@PathVariable("uuid") String uuid) {
-        return questionnaireRepository.getQuestionnaireById(new QuestionnaireId(uuid))
-                .orElseThrow(()-> new EntityNotFoundException(uuid, UNKNOWN_UUID_QUESTIONNAIRE));
+    public QuestionnaireResources getQuestionnaireById(@PathVariable("uuid") String uuid) {
+        return questionnaireResourcesMapper.questionnaireToResources(questionnaireRepository.getQuestionnaireById(new QuestionnaireId(uuid))
+                .orElseThrow(() -> new EntityNotFoundException(uuid, UNKNOWN_UUID_QUESTIONNAIRE)));
     }
 
     @DeleteMapping(value = "/{uuid}")
     @CacheEvict(cacheNames = QUESTIONNAIRE, key = "#uuid")
     @ResponseBody
-    public ResponseEntity <Questionnaire> deleteQuestionnaireById(@PathVariable("uuid") String uuid) {
+    public ResponseEntity <QuestionnaireResources> deleteQuestionnaireById(@PathVariable("uuid") String uuid) {
         questionnaireRepository.deleteQuestionnaireById(new QuestionnaireId(uuid));
         return new ResponseEntity <>(NO_CONTENT);
     }
 
     @PutMapping
-    @CachePut(cacheNames = QUESTIONNAIRE, condition = "#questionnaire != null", key = "#questionnaire.uuid")
+    @CachePut(cacheNames = QUESTIONNAIRE, condition = "#questionnaireResources != null", key = "#questionnaireResources.uuid")
     @Timer
     @ResponseBody
-    public Questionnaire updateQuestionnaire(@RequestBody Questionnaire questionnaire) {
-        return questionnaireRepository.updateQuestionnaire(questionnaire, new PrincipalId(getPrincipal()));
+    public QuestionnaireResources updateQuestionnaire(@RequestBody QuestionnaireResources questionnaireResources) {
+        var questionnaire = questionnaireResourcesMapper.questionnaireToModel(questionnaireResources);
+        return questionnaireResourcesMapper.questionnaireToResources(questionnaireRepository.updateQuestionnaire(questionnaire, new PrincipalId(getPrincipal())));
     }
 
     @PostMapping
     @ResponseBody
-    public Questionnaire saveQuestionnaire(@RequestBody Questionnaire questionnaire) {
-        return questionnaireRepository.saveQuestionnaire(questionnaire, new PrincipalId(getPrincipal()));
+    public QuestionnaireResources saveQuestionnaire(@RequestBody QuestionnaireResources questionnaireResources) {
+        var questionnaire = questionnaireResourcesMapper.questionnaireToModel(questionnaireResources);
+        return questionnaireResourcesMapper.questionnaireToResources(questionnaireRepository.saveQuestionnaire(questionnaire, new PrincipalId(getPrincipal())));
     }
 
     /* /{id:[\d]+}/questions*/
     @GetMapping(value = "/{uuid}" + QUESTIONS)
     @ResponseBody
     @PageableAsQueryParam
-    public Page <QuestionnaireQuestion> getQuestionsByQuestionnaireId(@PathVariable("uuid") String uuid,
-                                                                      @Parameter(hidden = true)
-                                                                        @PageableDefault(direction = ASC, sort = {"position"}) Pageable pageable) {
+    public Page <QuestionnaireQuestionResources> getQuestionsByQuestionnaireId(@PathVariable("uuid") String uuid,
+                                                                               @Parameter(hidden = true)
+                                                                               @PageableDefault(direction = ASC, sort = {"position"}) Pageable pageable) {
 
         LOGGER.warn("getQuestionsByQuestionnaireUuid");
-        return questionnaireRepository.getQuestionsByQuestionnaireId(new QuestionnaireId(uuid), pageable);
+        return questionnaireResourcesMapper.questionnaireQuestionToResources(questionnaireRepository.getQuestionsByQuestionnaireId(new QuestionnaireId(uuid), pageable));
     }
 
 
-
-    @GetMapping(value = "/{uuid}"+ QUESTIONS +"/{q_uuid}")
+    @GetMapping(value = "/{uuid}" + QUESTIONS + "/{q_uuid}")
     @Timer
     @ResponseBody
-    public QuestionnaireQuestion getQuestionnaireQuestionById(@PathVariable("uuid") String uuid, @PathVariable("question_uuid") String questionUuid ) {
-        return questionnaireRepository.getQuestion(new QuestionnaireId(uuid),new QuestionId(questionUuid)) ;
+    public QuestionnaireQuestionResources getQuestionnaireQuestionById(@PathVariable("uuid") String uuid, @PathVariable("question_uuid") String questionUuid) {
+        return questionnaireResourcesMapper.questionnaireQuestionToResources(questionnaireRepository.getQuestion(new QuestionnaireId(uuid), new QuestionId(questionUuid)));
     }
-
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     @Timer
     @ResponseBody
     @PageableAsQueryParam
-    public Page <Questionnaire> getQuestionnaires(@RequestParam(value = "tag_uuid", required = false) String[] tagUuid,
-                                                  @Parameter(hidden = true)
-                                                  @PageableDefault(direction = DESC, sort = {"dateModification"}) Pageable pageable) {
+    public Page <QuestionnaireResources> getQuestionnaires(@RequestParam(value = "tag_uuid", required = false) String[] tagUuid,
+                                                           @Parameter(hidden = true)
+                                                           @PageableDefault(direction = DESC, sort = {"dateModification"}) Pageable pageable) {
 
-        return questionnaireRepository.getQuestionnaires(tagUuid, pageable, new PrincipalId(getPrincipal()));
+        return questionnaireResourcesMapper.questionnaireToResources(questionnaireRepository.getQuestionnaires(tagUuid, pageable, new PrincipalId(getPrincipal())));
     }
 
     @PutMapping(value = "/{uuid}/questions")
     @ResponseBody
-    public Question addQuestionByQuestionnaireId(@PathVariable("uuid") String uuid, @RequestBody Question question) {
+    public QuestionResources addQuestionByQuestionnaireId(@PathVariable("uuid") String uuid, @RequestBody QuestionResources questionResources) {
 
-        // send QuestionnaireQuestionDto
-        return questionnaireRepository.addQuestion(new QuestionnaireId(uuid), question, empty(), new PrincipalId(getPrincipal()));
+        var question = questionnaireResourcesMapper.questionToModel(questionResources);
+        return questionnaireResourcesMapper.questionToResources(
+                questionnaireRepository.addQuestion(new QuestionnaireId(uuid), question, empty(), new PrincipalId(getPrincipal())));
     }
 
 

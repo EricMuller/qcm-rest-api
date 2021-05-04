@@ -68,7 +68,7 @@ public interface QuestionnaireQuestionRepository extends JpaRepository <Question
     @EntityGraph(value = "QuestionnaireQuestion.question")
     @Query("SELECT qq FROM QuestionnaireQuestionEntity  qq  WHERE qq.questionnaire.uuid = :questionnaireUuid")
     @NotNull
-    Iterable <QuestionnaireQuestionEntity> findAllWithTagsAndResponseByQuestionnaireUuid(@Param("questionnaireUuid") UUID uuid);
+    Iterable <QuestionnaireQuestionEntity> findWithTagsAndResponseByQuestionnaireUuid(@Param("questionnaireUuid") UUID uuid);
 
 
     @EntityGraph(value = "QuestionnaireQuestion.question")

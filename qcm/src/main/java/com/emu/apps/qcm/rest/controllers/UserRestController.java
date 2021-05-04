@@ -1,21 +1,29 @@
 package com.emu.apps.qcm.rest.controllers;
 
-import com.emu.apps.qcm.domain.model.user.User;
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
+import com.emu.apps.qcm.domain.model.user.User;
 import com.emu.apps.qcm.domain.model.user.UserRepository;
+import com.emu.apps.qcm.rest.controllers.mappers.QuestionnaireResourcesMapper;
+import com.emu.apps.qcm.rest.controllers.resources.UserResources;
 import com.emu.apps.qcm.rest.exceptions.UserAuthenticationException;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 import java.util.Map;
 
-import static com.emu.apps.shared.exceptions.MessageSupport.EXISTS_UUID_USER;
-import static com.emu.apps.shared.exceptions.MessageSupport.INVALID_UUID_USER;
 import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.PUBLIC_API;
 import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.USERS;
+import static com.emu.apps.shared.exceptions.MessageSupport.EXISTS_UUID_USER;
+import static com.emu.apps.shared.exceptions.MessageSupport.INVALID_UUID_USER;
 import static com.emu.apps.shared.security.PrincipalUtils.getEmailOrName;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -29,8 +37,12 @@ public class UserRestController {
 
     private final UserRepository userRepository;
 
-    public UserRestController(UserRepository userServicePort) {
+    private final QuestionnaireResourcesMapper questionnaireResourcesMapper;
+
+
+    public UserRestController(UserRepository userServicePort, QuestionnaireResourcesMapper questionnaireResourcesMapper) {
         this.userRepository = userServicePort;
+        this.questionnaireResourcesMapper = questionnaireResourcesMapper;
     }
 
     public Map <String, String> principal(Principal principal) {
@@ -43,24 +55,26 @@ public class UserRestController {
      */
     @GetMapping(value = "/me", produces = APPLICATION_JSON_VALUE)
     @ResponseBody
-    public User getAuthentifiedUser(Principal principal) {
+    public UserResources getAuthentifiedUser(Principal principal) {
         String email = getEmailOrName(principal);
         User user = userRepository.userByEmail(email);
         if (isNull(user)) {
             user = new User();
             user.setEmail(getEmailOrName(principal));
         }
-        return user;
+        return questionnaireResourcesMapper.userToResources(user);
     }
 
-//    @PostAuthorize("hasAuthority('PROFIL_CREATED')")
+    //    @PostAuthorize("hasAuthority('PROFIL_CREATED')")
     @PutMapping(value = "/me", produces = APPLICATION_JSON_VALUE)
     @ResponseBody
-    public User updateAuthentifiedUser(@RequestBody User user, Principal principal) {
+    public UserResources updateAuthentifiedUser(@RequestBody UserResources userResources, Principal principal) {
+
+        var user = questionnaireResourcesMapper.userToModel(userResources);
         String email = getEmailOrName(principal);
         User authentUser = userRepository.userByEmail(email);
         if (nonNull(authentUser) && authentUser.getEmail().equals(user.getEmail())) {
-            return userRepository.updateUser(user, new PrincipalId(email));
+            return questionnaireResourcesMapper.userToResources(userRepository.updateUser(user, new PrincipalId(email)));
         } else {
             throw new UserAuthenticationException(INVALID_UUID_USER);
         }
@@ -68,11 +82,12 @@ public class UserRestController {
 
     @PostMapping(value = "/me", produces = APPLICATION_JSON_VALUE)
     @ResponseBody
-    public User createAuthentifiedUser(@RequestBody User user, Principal principal) {
+    public UserResources createAuthentifiedUser(@RequestBody UserResources userResources, Principal principal) {
+        var user = questionnaireResourcesMapper.userToModel(userResources);
         String email = getEmailOrName(principal);
         User authentUser = userRepository.userByEmail(email);
         if (isNull(authentUser)) {
-            return userRepository.createUser(user, new PrincipalId(email));
+            return questionnaireResourcesMapper.userToResources(userRepository.createUser(user, new PrincipalId(email)));
         } else {
             throw new UserAuthenticationException(EXISTS_UUID_USER);
         }
@@ -81,8 +96,9 @@ public class UserRestController {
     @PostMapping(produces = APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseBody
-    public User updateUser(@RequestBody User user, Principal principal) {
-        return userRepository.updateUser(user, new PrincipalId(getEmailOrName(principal)));
+    public UserResources updateUser(@RequestBody UserResources userResources, Principal principal) {
+        var user = questionnaireResourcesMapper.userToModel(userResources);
+        return questionnaireResourcesMapper.userToResources(userRepository.updateUser(user, new PrincipalId(getEmailOrName(principal))));
     }
 
 }

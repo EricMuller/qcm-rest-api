@@ -5,6 +5,9 @@ import com.emu.apps.qcm.domain.model.question.Question;
 import com.emu.apps.qcm.domain.model.question.QuestionTag;
 import com.emu.apps.qcm.domain.model.question.Response;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig;
+import com.emu.apps.qcm.rest.controllers.resources.QuestionResources;
+import com.emu.apps.qcm.rest.controllers.resources.QuestionTagResources;
+import com.emu.apps.qcm.rest.controllers.resources.ResponseResources;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 import org.junit.jupiter.api.Test;
@@ -54,43 +57,43 @@ public class QuestionRestControllerTest {
     }
 
 
-    private Question createQuestionDto() {
-        Question questionDto = new Question();
-        questionDto.setQuestionText(QUESTION1);
+    private QuestionResources createQuestion() {
+        QuestionResources questionResources = new QuestionResources();
+        questionResources.setQuestionText(QUESTION1);
 
-        Response responseDto = new Response();
-        responseDto.setResponseText(RESPONSE1);
-        responseDto.setGood(true);
+        ResponseResources responseResources = new ResponseResources();
+        responseResources.setResponseText(RESPONSE1);
+        responseResources.setGood(true);
 
-        questionDto.setResponses(Arrays.asList(responseDto));
+        questionResources.setResponses(Arrays.asList(responseResources));
 
-        QuestionTag questionTagDto = new QuestionTag();
-        questionTagDto.setLibelle(TAG1);
+        QuestionTagResources questionTagResources = new QuestionTagResources();
+        questionTagResources.setLibelle(TAG1);
 
-        questionDto.setQuestionTags(Sets.newHashSet(questionTagDto));
+        questionResources.setQuestionTags(Sets.newHashSet(questionTagResources));
 
-        return questionDto;
+        return questionResources;
     }
 
     @Test
     public void postQuestionShouldCreateQuestionResponseAndTag() {
 
         // create a new question
-        final ResponseEntity <Question> postResponse = restTemplate
+        final ResponseEntity <QuestionResources> postResponse = restTemplate
                 .exchange(getURL(QUESTIONS_URI), HttpMethod.POST,
-                        new HttpEntity <>(createQuestionDto(),
-                                headers()), Question.class);
+                        new HttpEntity <>(createQuestion(),
+                                headers()), QuestionResources.class);
 
         assertThat(postResponse.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
         assertThat(postResponse.getBody().getUuid()).isNotNull();
         assertThat(postResponse.getBody().getResponses()).isNotNull().isNotEmpty();
 
-        Response firstResponse = Iterables.getFirst(postResponse.getBody().getResponses(), null);
+        ResponseResources firstResponse = Iterables.getFirst(postResponse.getBody().getResponses(), null);
         assertThat(firstResponse).isNotNull();
         assertThat(firstResponse.getResponseText()).isNotNull().isEqualTo(RESPONSE1);
 
         assertThat(postResponse.getBody().getQuestionTags()).isNotNull().isNotEmpty();
-        QuestionTag questionTagDto = Iterables.getFirst(postResponse.getBody().getQuestionTags(), null);
+        QuestionTagResources questionTagDto = Iterables.getFirst(postResponse.getBody().getQuestionTags(), null);
 
         assertThat(questionTagDto).isNotNull();
         assertThat(questionTagDto.getLibelle()).isNotNull().isEqualTo(TAG1);
@@ -99,30 +102,30 @@ public class QuestionRestControllerTest {
     @Test
     public void postQuestionShouldCreateQuestionResponsesAndTags() {
 
-        Question questionDto = new Question();
-        questionDto.setQuestionText(QUESTION1);
+        QuestionResources question = new QuestionResources();
+        question.setQuestionText(QUESTION1);
 
-        Response responseDto1 = new Response();
-        responseDto1.setResponseText(RESPONSE1);
-        responseDto1.setGood(true);
+        ResponseResources response1 = new ResponseResources();
+        response1.setResponseText(RESPONSE1);
+        response1.setGood(true);
 
-        Response responseDto2 = new Response();
-        responseDto2.setResponseText(RESPONSE2);
-        responseDto2.setGood(true);
+        ResponseResources response2 = new ResponseResources();
+        response2.setResponseText(RESPONSE2);
+        response2.setGood(true);
 
-        questionDto.setResponses(Arrays.asList(responseDto1, responseDto2));
+        question.setResponses(Arrays.asList(response1, response2));
 
-        QuestionTag questionTagDto1 = new QuestionTag();
-        questionTagDto1.setLibelle(TAG1);
-        QuestionTag questionTagDto2 = new QuestionTag();
-        questionTagDto2.setLibelle(TAG2);
+        QuestionTagResources questionTag1 = new QuestionTagResources();
+        questionTag1.setLibelle(TAG1);
+        QuestionTagResources questionTag2 = new QuestionTagResources();
+        questionTag2.setLibelle(TAG2);
 
-        questionDto.setQuestionTags(Sets.newHashSet(questionTagDto1, questionTagDto2));
+        question.setQuestionTags(Sets.newHashSet(questionTag1, questionTag2));
 
 
         // create a new question
-        final ResponseEntity <Question> postResponse = restTemplate
-                .exchange(getURL(QUESTIONS_URI), HttpMethod.POST, new HttpEntity <>(questionDto, headers()), Question.class);
+        final ResponseEntity <QuestionResources> postResponse = restTemplate
+                .exchange(getURL(QUESTIONS_URI), HttpMethod.POST, new HttpEntity <>(question, headers()), QuestionResources.class);
 
         assertThat(postResponse.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
         assertThat(postResponse.getBody().getUuid()).isNotNull();
@@ -139,8 +142,8 @@ public class QuestionRestControllerTest {
     public void getQuestionByIdShouldReturnQuestion() {
 
         // create a new question
-        final ResponseEntity <Question> postResponse = restTemplate
-                .exchange(getURL(QUESTIONS_URI), HttpMethod.POST, new HttpEntity <>(createQuestionDto(), headers()), Question.class);
+        final ResponseEntity <QuestionResources> postResponse = restTemplate
+                .exchange(getURL(QUESTIONS_URI), HttpMethod.POST, new HttpEntity <>(createQuestion(), headers()), QuestionResources.class);
         assertThat(postResponse.getBody()).isNotNull();
 
         // get the question
@@ -148,14 +151,14 @@ public class QuestionRestControllerTest {
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getURL(QUESTIONS_URI + "/{uuid}"));
         URI uri = builder.build().expand(uuid).encode().toUri();
 
-        final ResponseEntity <Question> getResponse = restTemplate
-                .exchange(uri, HttpMethod.GET, new HttpEntity <>(headers()), Question.class);
+        final ResponseEntity <QuestionResources> getResponse = restTemplate
+                .exchange(uri, HttpMethod.GET, new HttpEntity <>(headers()), QuestionResources.class);
 
         assertThat(getResponse.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
 
         assertThat(getResponse.getBody()).isNotNull();
 
-        Response firstResponse = Iterables.getFirst(getResponse.getBody().getResponses(), null);
+        ResponseResources firstResponse = Iterables.getFirst(getResponse.getBody().getResponses(), null);
         assertThat(firstResponse).isNotNull();
         assertThat(firstResponse.getResponseText()).isNotNull().isEqualTo(RESPONSE1);
     }
@@ -166,16 +169,16 @@ public class QuestionRestControllerTest {
 
         final HttpHeaders httpHeaders = headers();
         // create a new question
-        final ResponseEntity <Question> postResponse = restTemplate
-                .exchange(getURL(QUESTIONS_URI), HttpMethod.POST, new HttpEntity <>(createQuestionDto(), httpHeaders), Question.class);
+        final ResponseEntity <QuestionResources> postResponse = restTemplate
+                .exchange(getURL(QUESTIONS_URI), HttpMethod.POST, new HttpEntity <>(createQuestion(), httpHeaders), QuestionResources.class);
         assertThat(postResponse.getBody()).isNotNull();
 
-        Response firstResponse = Iterables.getFirst(postResponse.getBody().getResponses(), null);
+        ResponseResources firstResponse = Iterables.getFirst(postResponse.getBody().getResponses(), null);
         firstResponse.setResponseText(RESPONSE2);
 
         // put the question
-        final ResponseEntity <Question> putResponse = restTemplate.exchange(
-                getURL(QUESTIONS_URI), HttpMethod.PUT, new HttpEntity <>(postResponse.getBody(), httpHeaders), Question.class);
+        final ResponseEntity <QuestionResources> putResponse = restTemplate.exchange(
+                getURL(QUESTIONS_URI), HttpMethod.PUT, new HttpEntity <>(postResponse.getBody(), httpHeaders), QuestionResources.class);
 
         assertThat(putResponse.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
         assertThat(putResponse.getBody().getUuid()).isNotNull();

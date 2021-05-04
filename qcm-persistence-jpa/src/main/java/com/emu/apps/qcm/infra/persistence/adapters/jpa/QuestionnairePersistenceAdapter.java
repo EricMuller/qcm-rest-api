@@ -1,7 +1,6 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa;
 
 
-import com.emu.apps.qcm.domain.model.published.PublishedQuestionnaireDto;
 import com.emu.apps.qcm.domain.model.question.Question;
 import com.emu.apps.qcm.domain.model.questionnaire.Questionnaire;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireQuestion;
@@ -13,8 +12,12 @@ import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.Que
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireQuestionEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.QuestionnaireTagEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.TagEntity;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.*;
-import com.emu.apps.qcm.infra.persistence.mappers.PublishedMapper;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.CategoryRepository;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.QuestionRepository;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.QuestionnaireQuestionRepository;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.QuestionnaireRepository;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.QuestionnaireTagRepository;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.TagRepository;
 import com.emu.apps.qcm.infra.persistence.mappers.QuestionnaireMapper;
 import com.emu.apps.qcm.infra.persistence.mappers.QuestionnaireQuestionMapper;
 import com.emu.apps.qcm.infra.persistence.mappers.UuidMapper;
@@ -53,8 +56,6 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
 
     private final QuestionnaireTagRepository questionnaireTagRepository;
 
-    private final PublishedMapper publishedMapper;
-
     private final QuestionnaireQuestionMapper questionnaireQuestionMapper;
 
     private final Javers javers;
@@ -63,7 +64,7 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
                                            QuestionnaireQuestionRepository questionnaireQuestionRepository,
                                            CategoryRepository categoryRepository, QuestionnaireMapper questionnaireMapper,
                                            UuidMapper uuidMapper, TagRepository tagRepository,
-                                           QuestionnaireTagRepository questionnaireTagRepository, PublishedMapper guestMapper, QuestionnaireQuestionMapper questionnaireQuestionMapper, Javers javers) {
+                                           QuestionnaireTagRepository questionnaireTagRepository, QuestionnaireQuestionMapper questionnaireQuestionMapper, Javers javers) {
         this.questionnaireRepository = questionnaireRepository;
         this.questionRepository = questionRepository;
         this.questionnaireQuestionRepository = questionnaireQuestionRepository;
@@ -72,8 +73,6 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
         this.uuidMapper = uuidMapper;
         this.tagRepository = tagRepository;
         this.questionnaireTagRepository = questionnaireTagRepository;
-        this.publishedMapper = guestMapper;
-
         this.questionnaireQuestionMapper = questionnaireQuestionMapper;
         this.javers = javers;
     }
@@ -194,29 +193,52 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
     }
 
 
+//    @Override
+//    @Transactional(readOnly = true)
+//    public PublishedQuestionnaire findOnePublishedByUuid(final String uuid) {
+//
+//        var questionnaire = questionnaireRepository.findByUuid(UUID.fromString(uuid))
+//                .orElseThrow(() -> new EntityNotFoundException(uuid, MessageSupport.UNKNOWN_UUID_QUESTIONNAIRE));
+//
+//        return publishedMapper.questionnaireToPublishedQuestionnaireDto(questionnaire);
+//
+//    }
+
     @Override
     @Transactional(readOnly = true)
-    public PublishedQuestionnaireDto findOnePublishedByUuid(final String uuid) {
+    public Questionnaire findOnePublishedByUuid(final String uuid) {
 
         var questionnaire = questionnaireRepository.findByUuid(UUID.fromString(uuid))
                 .orElseThrow(() -> new EntityNotFoundException(uuid, MessageSupport.UNKNOWN_UUID_QUESTIONNAIRE));
 
-        return publishedMapper.questionnaireToPublishedQuestionnaireDto(questionnaire);
-
+        return questionnaireMapper.modelToDto(questionnaire);
     }
 
+//    @Override
+//    @Transactional(readOnly = true)
+//    public Page <PublishedQuestionnaire> findAllPublishedByPage(Pageable pageable) {
+//
+//        var specificationBuilder = new QuestionnaireEntity.SpecificationBuilder();
+//
+//        specificationBuilder.setPublished(Boolean.TRUE);
+//
+//        return publishedMapper.pageQuestionnaireToPublishedQuestionnaireDto(questionnaireRepository.findAll(specificationBuilder.build(), pageable));
+//
+//    }
 
     @Override
     @Transactional(readOnly = true)
-    public Page <PublishedQuestionnaireDto> findAllPublishedByPage(Pageable pageable) {
+    public Page <Questionnaire> findAllPublishedByPage(Pageable pageable) {
 
         var specificationBuilder = new QuestionnaireEntity.SpecificationBuilder();
 
         specificationBuilder.setPublished(Boolean.TRUE);
 
-        return publishedMapper.pageQuestionnaireToPublishedQuestionnaireDto(questionnaireRepository.findAll(specificationBuilder.build(), pageable));
+        // return publishedMapper.pageQuestionnaireToPublishedQuestionnaireDto(questionnaireRepository.findAll(specificationBuilder.build(), pageable));
 
+        return questionnaireMapper.pageToDto(questionnaireRepository.findAll(specificationBuilder.build(), pageable));
     }
+
 
     @Override
     public Iterable <String> findPublishedCategories() {
@@ -254,4 +276,12 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
 
 
     }
+
+    @Transactional(readOnly = true)
+    public Iterable <QuestionnaireQuestion> getQuestionsByQuestionnaireUuid(String questionnaireUuid) {
+        return questionnaireQuestionMapper.questionnaireQuestionEntityToDto(
+                questionnaireQuestionRepository.findWithTagsAndResponseByQuestionnaireUuid(UUID.fromString(questionnaireUuid)));
+    }
+
+
 }

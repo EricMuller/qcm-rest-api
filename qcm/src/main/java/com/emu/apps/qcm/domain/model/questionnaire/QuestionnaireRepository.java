@@ -1,11 +1,8 @@
 package com.emu.apps.qcm.domain.model.questionnaire;
 
-import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireQuestion;
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
 import com.emu.apps.qcm.domain.model.question.Question;
 import com.emu.apps.qcm.domain.model.question.QuestionId;
-import com.emu.apps.qcm.domain.model.questionnaire.Questionnaire;
-import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +12,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface QuestionnaireRepository {
-    Optional <Questionnaire> getQuestionnaireById(QuestionnaireId questionnaireUuid);
+    Optional <Questionnaire> getQuestionnaireById(QuestionnaireId questionnaireId);
 
     ResponseEntity <Questionnaire> deleteQuestionnaireById(QuestionnaireId questionnaireId);
 
     Page <QuestionnaireQuestion> getQuestionsByQuestionnaireId(QuestionnaireId questionnaireId, Pageable pageable);
+
+    Iterable <QuestionnaireQuestion> getQuestionsByQuestionnaireId(QuestionnaireId questionnaireId);
 
     Question addQuestion(QuestionnaireId questionnaireId, Question question, Optional <Integer> position, PrincipalId principal);
 

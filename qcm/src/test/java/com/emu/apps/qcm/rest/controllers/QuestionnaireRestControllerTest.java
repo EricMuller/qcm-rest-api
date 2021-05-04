@@ -1,9 +1,9 @@
 package com.emu.apps.qcm.rest.controllers;
 
 
-import com.emu.apps.qcm.domain.model.question.Question;
 import com.emu.apps.qcm.domain.model.questionnaire.Questionnaire;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig;
+import com.emu.apps.qcm.rest.controllers.resources.QuestionnaireResources;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -41,8 +41,8 @@ public class QuestionnaireRestControllerTest {
     }
 
 
-    private Questionnaire createQuestionnaireDto() {
-        Questionnaire questionnaire = new Questionnaire();
+    private QuestionnaireResources createQuestionnaire() {
+        QuestionnaireResources questionnaire = new QuestionnaireResources();
 
         questionnaire.setTitle(TITLE);
 
@@ -55,8 +55,8 @@ public class QuestionnaireRestControllerTest {
     public void getQuestionnaireByIdShouldReturnQuestionnaire() {
 
         // create a new question
-        final ResponseEntity <Question> postResponse = restTemplate
-                .exchange(getURL(QUESTIONNAIRES_URI), HttpMethod.POST, new HttpEntity <>(createQuestionnaireDto(), headers()), Question.class);
+        final ResponseEntity <QuestionnaireResources> postResponse = restTemplate
+                .exchange(getURL(QUESTIONNAIRES_URI), HttpMethod.POST, new HttpEntity <>(createQuestionnaire(), headers()), QuestionnaireResources.class);
         assertThat(postResponse.getBody()).isNotNull();
 
         // get the question
@@ -64,8 +64,8 @@ public class QuestionnaireRestControllerTest {
         URI uriGet = UriComponentsBuilder.fromHttpUrl(getURL(QUESTIONNAIRES_URI + "/{uuid}"))
                 .build().expand(uuid).encode().toUri();
 
-        final ResponseEntity <Questionnaire> getResponse = restTemplate
-                .exchange(uriGet, HttpMethod.GET, new HttpEntity <>(headers()), Questionnaire.class);
+        final ResponseEntity <QuestionnaireResources> getResponse = restTemplate
+                .exchange(uriGet, HttpMethod.GET, new HttpEntity <>(headers()), QuestionnaireResources.class);
 
         assertThat(getResponse.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
 

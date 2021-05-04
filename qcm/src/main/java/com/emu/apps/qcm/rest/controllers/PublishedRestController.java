@@ -1,9 +1,10 @@
 package com.emu.apps.qcm.rest.controllers;
 
 
+import com.emu.apps.qcm.application.PublishedServices;
 import com.emu.apps.qcm.domain.model.PublishedRepository;
-import com.emu.apps.qcm.domain.model.published.PublishedQuestionnaireDto;
-import com.emu.apps.qcm.domain.model.published.PushishedQuestionnaireQuestionDto;
+import com.emu.apps.qcm.rest.controllers.resources.published.PublishedQuestionnaire;
+import com.emu.apps.qcm.rest.controllers.resources.published.PushishedQuestionnaireQuestion;
 
 import com.emu.apps.shared.annotations.Timer;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -26,44 +27,44 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping(value = PUBLISHED_API, produces = APPLICATION_JSON_VALUE)
 public class PublishedRestController {
 
-    private final PublishedRepository publishedRepository;
+    private final PublishedServices publishedServices;
 
-    public PublishedRestController(PublishedRepository publishedServicePort) {
-        this.publishedRepository = publishedServicePort;
+    public PublishedRestController(PublishedServices publishedServices) {
+        this.publishedServices = publishedServices;
     }
 
     @GetMapping(value = QUESTIONNAIRES)
     @Timer
     @ResponseBody
     @PageableAsQueryParam
-    public Page <PublishedQuestionnaireDto> getPublishedQuestionnaires(
+    public Page <PublishedQuestionnaire> getPublishedQuestionnaires(
             @Parameter(hidden = true)
             @PageableDefault(direction = DESC, sort = {"dateModification"}) Pageable pageable) {
-        return publishedRepository.getPublishedQuestionnaires(pageable);
+        return publishedServices.getPublishedQuestionnaires(pageable);
     }
 
     @GetMapping(value = QUESTIONNAIRES + "/{uuid}")
     @ResponseBody
-    public PublishedQuestionnaireDto getPublishedQuestionnaireByUuid(@PathVariable("uuid") String uuid) {
-        return publishedRepository.getPublishedQuestionnaireByUuid(uuid);
+    public PublishedQuestionnaire getPublishedQuestionnaireByUuid(@PathVariable("uuid") String uuid) {
+        return publishedServices.getPublishedQuestionnaireByUuid(uuid);
     }
 
     @GetMapping(value = CATEGORIES)
     @ResponseBody
     public Iterable <String> getPublishedCategories() {
-        return publishedRepository.getPublishedCategories();
+        return publishedServices.getPublishedCategories();
     }
 
     @GetMapping(value = TAGS)
     @ResponseBody
     public Iterable <String> getPublishedTags() {
-        return publishedRepository.getPublishedTags();
+        return publishedServices.getPublishedTags();
     }
 
     @GetMapping(value = QUESTIONNAIRES + "/{uuid}/" + QUESTIONS)
     @ResponseBody
-    public Iterable <PushishedQuestionnaireQuestionDto> getPublishedQuestionByQuestionnaireUuid(@PathVariable("uuid") String uuid) {
-        return publishedRepository.getPublishedQuestionsByQuestionnaireUuid(uuid);
+    public Iterable <PushishedQuestionnaireQuestion> getPublishedQuestionByQuestionnaireUuid(@PathVariable("uuid") String uuid) {
+        return publishedServices.getPublishedQuestionsByQuestionnaireUuid(uuid);
     }
 
 
