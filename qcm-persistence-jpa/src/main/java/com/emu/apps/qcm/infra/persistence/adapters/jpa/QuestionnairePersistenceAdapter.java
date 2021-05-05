@@ -102,10 +102,10 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
         }
 
         QuestionnaireEntity questionnaireEntity = null;
-        if (StringUtils.isNotBlank(questionnaire.getUuid())) {
-            questionnaireEntity = questionnaireRepository.findByUuid(UUID.fromString(questionnaire.getUuid()))
-                    .orElseThrow(() -> new EntityNotFoundException(questionnaire.getUuid(), MessageSupport.UNKNOWN_UUID_QUESTIONNAIRE));
-        }
+//        if (StringUtils.isNotBlank(questionnaire.getUuid())) {
+//            questionnaireEntity = questionnaireRepository.findByUuid(UUID.fromString(questionnaire.getUuid()))
+//                    .orElseThrow(() -> new EntityNotFoundException(questionnaire.getUuid(), MessageSupport.UNKNOWN_UUID_QUESTIONNAIRE));
+//        }
 
         if (Objects.nonNull(questionnaireEntity)) {
             questionnaireEntity = questionnaireMapper.dtoToModel(questionnaireEntity, questionnaire);

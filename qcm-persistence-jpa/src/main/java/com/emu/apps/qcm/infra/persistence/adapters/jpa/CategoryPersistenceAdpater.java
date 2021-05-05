@@ -45,7 +45,7 @@ public class CategoryPersistenceAdpater implements CategoryPersistencePort {
 
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public Iterable <Category> findCategories(String userId, String type) {
 
         CategoryEntity category = findOrCreateRoot(userId, type);

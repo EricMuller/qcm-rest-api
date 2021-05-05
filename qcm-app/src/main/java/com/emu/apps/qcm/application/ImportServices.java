@@ -168,16 +168,16 @@ public class ImportServices {
     @Transactional
     public ImportStatus importQuestionnaire(String name, Export export, PrincipalId principal) {
 
-        Questionnaire questionnaireDto = new Questionnaire();
+        Questionnaire questionnaire = new Questionnaire();
 
         // questionnaire
-        questionnaireDto.setTitle(export.getQuestionnaire().getTitle());
-        questionnaireDto.setStatus(export.getQuestionnaire().getStatus());
+        questionnaire.setTitle(export.getQuestionnaire().getTitle());
+        questionnaire.setStatus(export.getQuestionnaire().getStatus());
         if (StringUtils.isNotBlank(export.getQuestionnaire().getUuid())) {
-            questionnaireDto.setUuid(export.getQuestionnaire().getUuid());
-            questionnaireDto.setVersion(export.getQuestionnaire().getVersion());
-            questionnaireDto.setDateCreation(export.getQuestionnaire().getDateCreation());
-            questionnaireDto.setDateModification(export.getQuestionnaire().getDateModification());
+            questionnaire.setUuid(export.getQuestionnaire().getUuid());
+            questionnaire.setVersion(export.getQuestionnaire().getVersion());
+            questionnaire.setDateCreation(export.getQuestionnaire().getDateCreation());
+            questionnaire.setDateModification(export.getQuestionnaire().getDateModification());
         }
 
         // tags
@@ -189,7 +189,7 @@ public class ImportServices {
                 qtags.add(questionnaireTagDto);
             }
         }
-        questionnaireDto.setQuestionnaireTags(qtags);
+        questionnaire.setQuestionnaireTags(qtags);
 
         // categorie
         if (Objects.nonNull(export.getQuestionnaire().getCategory())) {
@@ -198,10 +198,10 @@ public class ImportServices {
             category.setType(TYPE_QUESTIONNAIRE);
             category.setUserId(principal.toUUID());
             category = categoryRepository.saveCategory(category, principal);
-            questionnaireDto.setCategory(category);
+            questionnaire.setCategory(category);
         }
 
-        Questionnaire questionnaire = questionnaireRepository.saveQuestionnaire(questionnaireDto, principal);
+        Questionnaire newQuestionnaire = questionnaireRepository.saveQuestionnaire(questionnaire, principal);
 
         //questions
         List <Question> questions = export.getQuestions()
@@ -223,7 +223,7 @@ public class ImportServices {
 
         Collection <Question> questionDtos = questionRepository.saveQuestions(questions, principal);
 
-        questionnaireRepository.addQuestions(new QuestionnaireId(questionnaire.getUuid()), questionDtos, principal);
+        questionnaireRepository.addQuestions(new QuestionnaireId(newQuestionnaire.getUuid()), questionDtos, principal);
 
         return DONE;
     }

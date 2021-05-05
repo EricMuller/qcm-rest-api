@@ -46,9 +46,9 @@
     </distributionManagement>
 
     <modules>
-        <module>qcm</module>
+        <module>qcm-app</module>
         <module>qcm-shared</module>
-        <module>qcm-model</module>
+        <module>qcm-domain</module>
         <module>qcm-persistence-api</module>
         <module>qcm-persistence-jpa</module>
         <module>qcm-report</module>
@@ -98,13 +98,13 @@
 
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm</artifactId>
+                <artifactId>qcm-app</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-model</artifactId>
+                <artifactId>qcm-domain</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -149,12 +149,6 @@
                 <version>${project.version}</version>
                 <scope>test</scope>
                 <type>test-jar</type>
-            </dependency>
-
-            <dependency>
-                <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-rest</artifactId>
-                <version>${project.version}</version>
             </dependency>
 
 

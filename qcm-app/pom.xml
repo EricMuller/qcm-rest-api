@@ -37,10 +37,10 @@
         <version>2.2.0-SNAPSHOT</version>
     </parent>
 
-   <artifactId>qcm</artifactId>
+   <artifactId>qcm-app</artifactId>
 
-    <name>Qcm</name>
-    <description>Qcm</description>
+    <name>Qcm App</name>
+    <description>Qcm App</description>
 
     <dependencies>
 

@@ -54,12 +54,12 @@
 
         <dependency>
             <groupId>com.emu.apps.qcm</groupId>
-            <artifactId>qcm</artifactId>
+            <artifactId>qcm-app</artifactId>
         </dependency>
 
         <dependency>
             <groupId>com.emu.apps.qcm</groupId>
-            <artifactId>qcm-model</artifactId>
+            <artifactId>qcm-domain</artifactId>
         </dependency>
 
         <dependency>
