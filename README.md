@@ -1,6 +1,5 @@
 # Qcm Api  [![License](http://img.shields.io/:license-mit-blue.svg)](https://opensource.org/licenses/mit-license.php)
  
- 
 
 qcm-rest-api is a sample QCM Rest API.
 
