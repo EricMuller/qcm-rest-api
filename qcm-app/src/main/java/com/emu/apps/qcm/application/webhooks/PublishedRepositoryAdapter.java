@@ -1,4 +1,4 @@
-package com.emu.apps.qcm.domain.model;
+package com.emu.apps.qcm.application.webhooks;
 
 import com.emu.apps.qcm.infra.persistence.QuestionPersistencePort;
 import com.emu.apps.qcm.infra.persistence.QuestionnairePersistencePort;
@@ -62,6 +62,7 @@ public class PublishedRepositoryAdapter implements PublishedRepository {
     }
 
     @Override
+    //todo: a terminer
     public Iterable <PushishedQuestionnaireQuestion> getPublishedQuestionsByQuestionnaireUuid(String uuid) {
 //
 //        Iterable <QuestionnaireQuestionEntity>  questionnaireQuestions = questionPersistencePort.findAllWithTagsAndResponseByQuestionnaireUuid(uuid);

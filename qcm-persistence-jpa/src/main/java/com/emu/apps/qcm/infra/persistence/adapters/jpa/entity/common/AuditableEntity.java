@@ -23,30 +23,31 @@ import java.util.UUID;
 @EntityListeners(AuditingEntityListener.class)
 public abstract class AuditableEntity<U extends Serializable> implements Serializable {
 
-    @Column(name = "uuid", nullable = false, updatable = false)
+    @Column(name = "UUID", nullable = false, updatable = false)
     @Type(type = "org.hibernate.type.UUIDCharType")
     @NaturalId
     private UUID uuid = UUID.randomUUID();
 
-    @Column(name = "created_by", updatable = false)
+    @Column(name = "CREATED_BY", updatable = false)
     @CreatedBy
     protected U createdBy;
 
-    @Column(name = "modified_by")
+    @Column(name = "MODIFIED_BY")
     @LastModifiedBy
     private U lastModifiedBy;
 
     @SuppressWarnings("squid:S3437")
-    @Column(name = "created_date", nullable = false, updatable = false)
+    @Column(name = "CREATED_DATE", nullable = false, updatable = false)
     @CreatedDate
     private ZonedDateTime dateCreation;
 
     @SuppressWarnings("squid:S3437")
-    @Column(name = "modified_date")
+    @Column(name = "MODIFIED_DATE")
     @LastModifiedDate
     private ZonedDateTime dateModification;
 
     @Version
+    @Column(name = "VERSION")
     private Long version;
 
     public abstract Long getId();

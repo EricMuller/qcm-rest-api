@@ -8,7 +8,6 @@ import lombok.Setter;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.*;
-
 import java.util.Objects;
 
 import static org.springframework.data.jpa.domain.Specification.where;
@@ -18,7 +17,7 @@ import static org.springframework.data.jpa.domain.Specification.where;
  */
 
 @Entity
-@Table(name = "category",
+@Table(name = "CATEGORY",
         indexes = {@Index(name = "IDX_CTG_CREATE_BY_IDX", columnList = "type,created_by"),
                 @Index(name = "IDX_CTG_UUID_IDX", columnList = "uuid")})
 @NoArgsConstructor
@@ -27,6 +26,8 @@ import static org.springframework.data.jpa.domain.Specification.where;
 @NamedQueries(value = {
 
         @NamedQuery(name = "deleteAll", query = "DELETE FROM CategoryEntity"),
+
+        @NamedQuery(name = "deleteAllByCreatedBy", query = "DELETE FROM CategoryEntity Where userId= :hierarchyId"),
 
         @NamedQuery(name = "findByUuid", query = "SELECT node FROM CategoryEntity node WHERE node.uuid = :uuid "),
         @NamedQuery(name = "findAncestors", query =
@@ -101,24 +102,25 @@ public class CategoryEntity extends AuditableEntity <String> implements MpttHier
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "category_generator")
     @SequenceGenerator(name = "category_generator", sequenceName = "category_seq", allocationSize = 1)
-    @Column(name = "id", updatable = false, nullable = false)
+    @Column(name = "ID", updatable = false, nullable = false)
     private Long id;
 
+    @Column(name = "LIBELLE")
     protected String libelle;
 
     @Enumerated(EnumType.STRING)
     private Type type;
 
-    @Column(name = "userId", nullable = false)
+    @Column(name = "USER_ID", nullable = false)
     private String userId;
 
-    @Column(nullable = false)
+    @Column(name = "LFT", nullable = false)
     private Long lft;
 
-    @Column(nullable = false)
+    @Column(name = "RGT", nullable = false)
     private Long rgt;
 
-    @Column(nullable = false)
+    @Column(name = "LEVEL", nullable = false)
     private Integer level;
 
     public CategoryEntity(String libelle) {
@@ -161,4 +163,4 @@ public class CategoryEntity extends AuditableEntity <String> implements MpttHier
         }
     }
 
-    }
+}

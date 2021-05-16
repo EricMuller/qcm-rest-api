@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.rest.controllers;
 
 
-import com.emu.apps.qcm.domain.model.Category;
+import com.emu.apps.qcm.domain.model.category.Category;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.fixtures.DbFixture;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category.Type;

@@ -1,6 +1,5 @@
-package com.emu.apps.qcm.application;
+package com.emu.apps.qcm.application.webhooks;
 
-import com.emu.apps.qcm.domain.model.PublishedRepository;
 import com.emu.apps.qcm.rest.controllers.resources.published.PublishedQuestionnaire;
 import com.emu.apps.qcm.rest.controllers.resources.published.PushishedQuestionnaireQuestion;
 import org.springframework.data.domain.Page;

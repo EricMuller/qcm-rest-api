@@ -56,4 +56,6 @@ public interface QuestionnaireRepository extends JpaRepository <QuestionnaireEnt
 
     Iterable <QuestionnaireProjection> findAllByPublishedTrue();
 
+    void deleteByCreatedByEquals(String user);
+
 }

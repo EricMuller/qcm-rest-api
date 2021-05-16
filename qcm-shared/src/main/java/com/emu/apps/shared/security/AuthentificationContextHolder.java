@@ -11,7 +11,8 @@ public final class AuthentificationContextHolder {
         return context.get();
     }
 
-    public static void setPrincipal(String user) {
+    public static String setPrincipal(String user) {
         context.set(user);
+        return context.get();
     }
 }

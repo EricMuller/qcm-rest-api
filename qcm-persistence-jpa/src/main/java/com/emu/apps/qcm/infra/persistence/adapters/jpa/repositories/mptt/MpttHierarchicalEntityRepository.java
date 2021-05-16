@@ -23,7 +23,7 @@ public interface MpttHierarchicalEntityRepository<T extends MpttHierarchicalEnti
 
     Set <T> findEntitiesWhichRgtIsGreaterThan(String userId, Long value);
 
-    Set <T> findEntitiesWhichRgtIsGreaterThanOrEqual(String userID, Long value) ;
+    Set <T> findEntitiesWhichRgtIsGreaterThanOrEqual(String userID, Long value);
 
     Set <T> findSubTree(T node);
 
@@ -36,5 +36,7 @@ public interface MpttHierarchicalEntityRepository<T extends MpttHierarchicalEnti
     T createChild(T parent, T child) throws MpttExceptions.HierarchyIdAlreadySetException, MpttExceptions.HierarchyIdNotSetException;
 
     void removeChild(T parent, T child) throws MpttExceptions.NotADescendantException, MpttExceptions.HierarchyIdNotSetException, MpttExceptions.NotInTheSameHierarchyException;
+
+    void deleteAllByUser(String user);
 
 }

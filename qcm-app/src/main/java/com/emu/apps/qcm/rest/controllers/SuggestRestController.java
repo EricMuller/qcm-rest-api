@@ -2,7 +2,7 @@ package com.emu.apps.qcm.rest.controllers;
 
 
 
-import com.emu.apps.qcm.domain.model.SuggestBusinessPort;
+import com.emu.apps.qcm.application.SuggestBusinessPort;
 import com.emu.apps.qcm.domain.model.questionnaire.Suggest;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.context.annotation.Profile;

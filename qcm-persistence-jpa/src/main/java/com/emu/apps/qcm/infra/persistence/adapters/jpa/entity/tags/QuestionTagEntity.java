@@ -19,7 +19,7 @@ import java.util.Objects;
 import static org.springframework.data.jpa.domain.Specification.where;
 
 @Entity
-@Table(name = "question_tag")
+@Table(name = "QUESTION_TAG")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -29,11 +29,11 @@ public class QuestionTagEntity implements Serializable {
     private QuestionTagId id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "question_id", insertable = false, updatable = false)
+    @JoinColumn(name = "QUESTION_ID", insertable = false, updatable = false)
     private QuestionEntity question;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tag_id", insertable = false, updatable = false)
+    @JoinColumn(name = "TAG_ID", insertable = false, updatable = false)
     private TagEntity tag;
 
     public QuestionTagEntity(QuestionEntity question, TagEntity tag) {

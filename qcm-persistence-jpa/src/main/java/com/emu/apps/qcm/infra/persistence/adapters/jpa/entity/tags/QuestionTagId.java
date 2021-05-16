@@ -15,10 +15,10 @@ import java.util.Objects;
 @NoArgsConstructor
 public class QuestionTagId implements Serializable {
 
-    @Column(name = "question_id")
+    @Column(name = "QUESTION_ID")
     private Long questionId;
 
-    @Column(name = "tag_id")
+    @Column(name = "TAG_ID")
     private Long tagId;
 
     public QuestionTagId(Long entityId, Long tagId) {

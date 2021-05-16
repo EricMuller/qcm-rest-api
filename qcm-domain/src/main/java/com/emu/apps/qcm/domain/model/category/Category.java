@@ -1,4 +1,4 @@
-package com.emu.apps.qcm.domain.model;
+package com.emu.apps.qcm.domain.model.category;
 
 
 import com.emu.apps.qcm.domain.model.base.DomainId;

@@ -28,7 +28,7 @@
 
 package com.emu.apps.qcm.infra.persistence.mappers;
 
-import com.emu.apps.qcm.domain.model.Category;
+import com.emu.apps.qcm.domain.model.category.Category;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category.CategoryEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;

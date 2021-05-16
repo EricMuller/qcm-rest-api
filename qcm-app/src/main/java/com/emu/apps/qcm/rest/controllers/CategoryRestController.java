@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.rest.controllers;
 
-import com.emu.apps.qcm.domain.model.CategoryRepository;
+import com.emu.apps.qcm.domain.model.category.CategoryRepository;
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
 import com.emu.apps.qcm.rest.controllers.mappers.QuestionnaireResourcesMapper;
 import com.emu.apps.qcm.rest.controllers.resources.CategoryResources;

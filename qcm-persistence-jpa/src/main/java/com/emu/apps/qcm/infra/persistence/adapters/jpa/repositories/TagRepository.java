@@ -21,4 +21,7 @@ public interface TagRepository extends PagingAndSortingRepository<TagEntity, Lon
 
     Optional<TagEntity> findByUuid(UUID uuid);
 
+    void deleteByCreatedByEquals(String user);
+
+
 }

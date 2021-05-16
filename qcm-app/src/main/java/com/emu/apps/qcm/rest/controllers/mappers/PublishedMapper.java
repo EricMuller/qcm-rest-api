@@ -28,7 +28,7 @@
 
 package com.emu.apps.qcm.rest.controllers.mappers;
 
-import com.emu.apps.qcm.domain.model.Category;
+import com.emu.apps.qcm.domain.model.category.Category;
 import com.emu.apps.qcm.domain.model.question.QuestionTag;
 import com.emu.apps.qcm.domain.model.questionnaire.Questionnaire;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireQuestion;

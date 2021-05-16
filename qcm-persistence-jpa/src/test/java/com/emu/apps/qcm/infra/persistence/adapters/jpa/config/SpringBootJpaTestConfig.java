@@ -30,6 +30,7 @@ package com.emu.apps.qcm.infra.persistence.adapters.jpa.config;
 
 
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
+import com.emu.apps.shared.security.AuthentificationContextHolder;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.reactive.ReactiveSecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.reactive.WebFluxAutoConfiguration;
@@ -53,6 +54,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
+import java.util.Objects;
 import java.util.Optional;
 
 import static java.util.Collections.singletonMap;
@@ -63,17 +65,18 @@ import static java.util.Collections.singletonMap;
 @ComponentScan(basePackages = {"com.emu.apps.qcm", "com.emu.apps.shared"})
 @EnableJpaRepositories(basePackages = {"com.emu.apps"})
 @EnableTransactionManagement
-@EnableJpaAuditing(auditorAwareRef = "auditorAware", dateTimeProviderRef = "dateTimeProvider")
+@EnableJpaAuditing(dateTimeProviderRef = "dateTimeProvider")
 public class SpringBootJpaTestConfig {
 
     public static final PrincipalId USER_TEST = new PrincipalId("user");
 
     public static final String USER_PASSWORD = "password";
 
-    @Bean
-    public AuditorAware auditorAware() {
-        return () -> Optional.of(SpringBootJpaTestConfig.USER_TEST.toUUID());
-    }
+//    @Bean
+//    public AuditorAware auditorAware() {
+//        String principal = AuthentificationContextHolder.getPrincipal();
+//        return () -> Objects.nonNull(principal) ? Optional.of(principal) : Optional.empty();
+//    }
 
     @Bean
     DateTimeProvider dateTimeProvider(DateTimeService dateTimeService) {

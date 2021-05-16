@@ -35,7 +35,7 @@ import static org.springframework.data.jpa.domain.Specification.where;
         subgraphs = {@NamedSubgraph(name = "tags", attributeNodes = @NamedAttributeNode("tag")),
                 @NamedSubgraph(name = "questions", attributeNodes = @NamedAttributeNode("question"))}
 )
-@Table(name = "questionnaire",
+@Table(name = "QUESTIONNAIRE",
         indexes = {@Index(name = "IDX_QTE_CREATE_BY_IDX", columnList = "created_by"),
                 @Index(name = "IDX_QTE_UUID_IDX", columnList = "uuid")})
 @Getter
@@ -47,7 +47,7 @@ public class QuestionnaireEntity extends AuditableEntity <String> {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "questionnaire_generator")
     @SequenceGenerator(name = "questionnaire_generator", sequenceName = "questionnaire_seq", allocationSize = 1)
-    @Column(name = "id", updatable = false, nullable = false)
+    @Column(name = "ID", updatable = false, nullable = false)
     private Long id;
 
     @Column(name = "DESCRIPTION",length = 2000)
@@ -59,7 +59,7 @@ public class QuestionnaireEntity extends AuditableEntity <String> {
     @Column(name = "LOCALE")
     private String locale;
 
-    //@Enumerated(EnumType.STRING)
+    @Column(name = "STATUS")
     private String status;
 
     @Column(name = "WEBSITE")
@@ -70,6 +70,7 @@ public class QuestionnaireEntity extends AuditableEntity <String> {
     private Boolean published = Boolean.FALSE;
 
     @OneToMany(mappedBy = "questionnaire", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("position asc")
     private Set <QuestionnaireQuestionEntity> questionnaireQuestions = new HashSet <>();
 
     @ManyToOne(fetch = FetchType.EAGER)

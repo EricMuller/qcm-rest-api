@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.rest.controllers;
 
-import com.emu.apps.qcm.application.ImportServices;
+import com.emu.apps.qcm.application.imports.ImportServices;
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
 import com.emu.apps.qcm.domain.model.upload.UploadId;
 import com.emu.apps.qcm.rest.controllers.mappers.QuestionnaireResourcesMapper;

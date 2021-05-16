@@ -1,8 +1,7 @@
-package com.emu.apps.qcm.application;
+package com.emu.apps.qcm.application.imports;
 
-import com.emu.apps.qcm.domain.dtos.FileQuestionDto;
-import com.emu.apps.qcm.domain.model.Category;
-import com.emu.apps.qcm.domain.model.CategoryRepository;
+import com.emu.apps.qcm.domain.model.category.Category;
+import com.emu.apps.qcm.domain.model.category.CategoryRepository;
 
 
 import com.emu.apps.qcm.domain.model.imports.ImportStatus;
@@ -96,7 +95,7 @@ public class ImportServices {
             ImportStatus importStatus = importQuestionnaire(upload.getFileName(), export, principal);
             upload.setStatus(importStatus.name());
         } else {
-            final FileQuestionDto[] fileQuestionDtos = new ObjectMapper().readValue(new ByteArrayInputStream(upload.getData()), FileQuestionDto[].class);
+            final ImportFileQuestion[] fileQuestionDtos = new ObjectMapper().readValue(new ByteArrayInputStream(upload.getData()), ImportFileQuestion[].class);
             ImportStatus importStatus = importQuestionnaire(upload.getFileName(), fileQuestionDtos, principal);
             upload.setStatus(importStatus.name());
         }
@@ -141,7 +140,7 @@ public class ImportServices {
     }
 
 
-    private Question mapToQuestionDto(FileQuestionDto fileQuestionDto, Category category) {
+    private Question mapToQuestionDto(ImportFileQuestion fileQuestionDto, Category category) {
 
         var questionDto = new Question();
 
@@ -230,7 +229,7 @@ public class ImportServices {
 
 
     @Transactional
-    public ImportStatus importQuestionnaire(String name, FileQuestionDto[] fileQuestionDtos, PrincipalId principal) {
+    public ImportStatus importQuestionnaire(String name, ImportFileQuestion[] fileQuestionDtos, PrincipalId principal) {
 
         if (ArrayUtils.isNotEmpty(fileQuestionDtos)) {
             try {

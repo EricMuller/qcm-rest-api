@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa;
 
 
-import com.emu.apps.qcm.domain.model.Category;
+import com.emu.apps.qcm.domain.model.category.Category;
 import com.emu.apps.qcm.infra.persistence.CategoryPersistencePort;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category.CategoryEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category.Type;

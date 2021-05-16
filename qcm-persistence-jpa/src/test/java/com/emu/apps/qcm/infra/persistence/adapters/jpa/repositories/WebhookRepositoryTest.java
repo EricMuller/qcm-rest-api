@@ -2,7 +2,7 @@ package com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories;
 
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.BaeldungPostgresqlExtension;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.UserEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.AccountEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.events.WebHookEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.fixtures.DbFixture;
 import org.junit.jupiter.api.Assertions;
@@ -19,6 +19,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
 import java.util.stream.StreamSupport;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -53,9 +54,11 @@ public class WebhookRepositoryTest {
     @Transactional
     public void findAllByUser_UuidEqualsTest() {
 
-        UserEntity user = dbFixture.createUser("eee.test.fr");
+        final String principal = getClass().getSimpleName() + "." + UUID.randomUUID();
 
-        WebHookEntity webhook = dbFixture.createWebhook(user);
+        AccountEntity user = dbFixture.createUser("user.test.fr", principal);
+
+        WebHookEntity webhook = dbFixture.createWebhook(user, principal);
 
         assertNotNull(webhook.getId());
 
@@ -65,7 +68,7 @@ public class WebhookRepositoryTest {
 
         Assertions.assertNotNull(webhook1);
 
-        assertEquals("eee.test.fr", webhook1.getUser().getEmail());
+        assertEquals("user.test.fr", webhook1.getUser().getEmail());
 
     }
 
@@ -73,9 +76,11 @@ public class WebhookRepositoryTest {
     @Transactional
     public void findPagByUser_UuidEqualsTest() {
 
-        UserEntity user = dbFixture.createUser("eee.test.fr");
+        final String principal = getClass().getSimpleName() + "." + UUID.randomUUID();
 
-        WebHookEntity webhook = dbFixture.createWebhook(user);
+        AccountEntity user = dbFixture.createUser("user.test.fr", principal);
+
+        WebHookEntity webhook = dbFixture.createWebhook(user, principal);
 
         assertNotNull(webhook.getId());
 
@@ -85,7 +90,7 @@ public class WebhookRepositoryTest {
 
         Assertions.assertNotNull(webhook1);
 
-        assertEquals("eee.test.fr", webhook1.getUser().getEmail());
+        assertEquals("user.test.fr", webhook1.getUser().getEmail());
 
     }
 
@@ -93,9 +98,11 @@ public class WebhookRepositoryTest {
     @Transactional
     public void findAllByUuidTest() {
 
-        UserEntity user = dbFixture.createUser("eee.test.fr");
+        final String principal = getClass().getSimpleName() + "." + UUID.randomUUID();
 
-        WebHookEntity webhook = dbFixture.createWebhook(user);
+        AccountEntity user = dbFixture.createUser("user.test.fr", principal);
+
+        WebHookEntity webhook = dbFixture.createWebhook(user, principal);
 
         assertNotNull(webhook.getId());
 
@@ -103,7 +110,7 @@ public class WebhookRepositoryTest {
 
         Assertions.assertNotNull(webhook1);
 
-        assertEquals("eee.test.fr", webhook1.getUser().getEmail());
+        assertEquals("user.test.fr", webhook1.getUser().getEmail());
 
     }
 

@@ -1,4 +1,4 @@
-package com.emu.apps.qcm.domain.model;
+package com.emu.apps.qcm.application;
 
 import com.emu.apps.qcm.domain.model.questionnaire.Suggest;
 

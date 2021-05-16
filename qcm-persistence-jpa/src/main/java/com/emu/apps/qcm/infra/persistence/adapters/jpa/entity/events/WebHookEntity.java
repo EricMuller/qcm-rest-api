@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.events;
 
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.UserEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.AccountEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.common.AuditableEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,7 +32,7 @@ public class WebHookEntity extends AuditableEntity <String> {
     private String secret;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    private UserEntity user;
+    private AccountEntity user;
 
     private Long defaultTimeOut;
 

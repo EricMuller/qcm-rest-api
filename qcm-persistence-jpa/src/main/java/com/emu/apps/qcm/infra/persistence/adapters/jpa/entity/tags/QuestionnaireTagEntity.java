@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-@Table(name = "questionnaire_tag")
+@Table(name = "QUESTIONNAIRE_TAG")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,14 +20,14 @@ public class QuestionnaireTagEntity implements Serializable {
     private QuestionnaireTagId id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "questionnaire_id", insertable = false, updatable = false)
+    @JoinColumn(name = "QUESTIONNAIRE_ID", insertable = false, updatable = false)
     private QuestionnaireEntity questionnaire;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tag_id", insertable = false, updatable = false)
+    @JoinColumn(name = "TAG_ID", insertable = false, updatable = false)
     private TagEntity tag;
 
-    @Column
+    @Column(name = "DELETED")
     private boolean deleted;
 
 

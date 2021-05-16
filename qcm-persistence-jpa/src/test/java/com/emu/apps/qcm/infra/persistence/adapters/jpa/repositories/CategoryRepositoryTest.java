@@ -1,12 +1,12 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories;
 
 
-import com.emu.apps.qcm.domain.model.Category;
-import com.emu.apps.qcm.domain.model.base.PrincipalId;
+import com.emu.apps.qcm.domain.model.category.Category;
 import com.emu.apps.qcm.infra.persistence.CategoryPersistencePort;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.BaeldungPostgresqlExtension;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.fixtures.DbFixture;
+import org.apache.commons.collections4.IterableUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -20,12 +20,14 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.StreamSupport;
 
 import static com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category.Type.QUESTION;
 import static com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category.Type.QUESTIONNAIRE;
+import static java.util.UUID.fromString;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.StreamSupport.stream;
 
 @SpringBootTest(classes = SpringBootJpaTestConfig.class)
 @ActiveProfiles(value = "test")
@@ -46,32 +48,31 @@ public class CategoryRepositoryTest {
         }
     }
 
-    private static final PrincipalId USER_TEST = SpringBootJpaTestConfig.USER_TEST;
-
     @Autowired
-    private CategoryPersistencePort categoryService;
+    private CategoryPersistencePort categoryPersistencePort;
 
     @Autowired
     private DbFixture dbFixture;
-
 
     @Test
     @Transactional
     public void findOrCreateByLibelle() {
 
-        dbFixture.emptyDatabase();
 
+        final String principal = getClass().getSimpleName() + "." + UUID.randomUUID();
 
-        Category categoryA = categoryService.findOrCreateByLibelle(USER_TEST.toUUID(), QUESTIONNAIRE.name(), "InterviewsA");
-        Category categoryB = categoryService.findOrCreateByLibelle(USER_TEST.toUUID(), QUESTIONNAIRE.name(), "InterviewsB");
-        Category categoryC = categoryService.findOrCreateByLibelle(USER_TEST.toUUID(), QUESTIONNAIRE.name(), "InterviewsC");
+        dbFixture.emptyDatabase(principal);
 
-        Category categoryC2 = categoryService.findOrCreateByLibelle(USER_TEST.toUUID(), QUESTION.name(), "InterviewsC");
+        Category categoryA = categoryPersistencePort.findOrCreateByLibelle(principal, QUESTIONNAIRE.name(), "InterviewsA");
+        Category categoryB = categoryPersistencePort.findOrCreateByLibelle(principal, QUESTIONNAIRE.name(), "InterviewsB");
+        Category categoryC = categoryPersistencePort.findOrCreateByLibelle(principal, QUESTIONNAIRE.name(), "InterviewsC");
 
-        Category categoryD = categoryService.findOrCreateChildByLibelle(UUID.fromString(categoryC.getUuid()), QUESTIONNAIRE.name(), "InterviewsD");
-        Category categoryE = categoryService.findOrCreateChildByLibelle(UUID.fromString(categoryC.getUuid()), QUESTIONNAIRE.name(), "InterviewsE");
-        Category categoryF = categoryService.findOrCreateChildByLibelle(UUID.fromString(categoryC.getUuid()), QUESTIONNAIRE.name(), "InterviewsF");
-        Category categoryG = categoryService.findOrCreateChildByLibelle(UUID.fromString(categoryC.getUuid()), QUESTIONNAIRE.name(), "InterviewsG");
+        Category categoryC2 = categoryPersistencePort.findOrCreateByLibelle(principal, QUESTION.name(), "InterviewsC");
+
+        Category categoryD = categoryPersistencePort.findOrCreateChildByLibelle(fromString(categoryC.getUuid()), QUESTIONNAIRE.name(), "InterviewsD");
+        Category categoryE = categoryPersistencePort.findOrCreateChildByLibelle(fromString(categoryC.getUuid()), QUESTIONNAIRE.name(), "InterviewsE");
+        Category categoryF = categoryPersistencePort.findOrCreateChildByLibelle(fromString(categoryC.getUuid()), QUESTIONNAIRE.name(), "InterviewsF");
+        Category categoryG = categoryPersistencePort.findOrCreateChildByLibelle(fromString(categoryC.getUuid()), QUESTIONNAIRE.name(), "InterviewsG");
 
 
         Assertions.assertNotNull(categoryA);
@@ -84,18 +85,74 @@ public class CategoryRepositoryTest {
         Assertions.assertNotNull(categoryF);
         Assertions.assertNotNull(categoryG);
 
-        Iterable <Category> iterable = categoryService.findCategories(USER_TEST.toUUID(), QUESTIONNAIRE.name());
+        Iterable <Category> iterable = categoryPersistencePort.findCategories(principal, QUESTIONNAIRE.name());
 
-        List <Category> categories = StreamSupport.stream(iterable.spliterator(), false).collect(toList());
+        List <Category> categories = stream(iterable.spliterator(), false).collect(toList());
 
         Assertions.assertEquals(3, categories.size());
 
-        iterable = categoryService.findChildrenCategories(UUID.fromString(categoryC.getUuid()));
+        iterable = categoryPersistencePort.findChildrenCategories(fromString(categoryC.getUuid()));
 
-        List <Category> categoriesC = StreamSupport.stream(iterable.spliterator(), false).collect(toList());
+        List <Category> categoriesC = stream(iterable.spliterator(), false).collect(toList());
 
         Assertions.assertEquals(4, categoriesC.size());
 
     }
 
+    @Test
+    void testGetCategories() {
+
+
+        final String principal = getClass().getSimpleName() + "." + UUID.randomUUID();
+
+        dbFixture.emptyDatabase(principal);
+
+        Iterable <Category> categories = categoryPersistencePort.findCategories(principal, QUESTION.name());
+
+        Assertions.assertTrue(IterableUtils.isEmpty(categories));
+
+    }
+
+    @Test
+    void testSaveCategory() {
+
+        final String principal = getClass().getSimpleName() + "." + UUID.randomUUID();
+
+        dbFixture.emptyDatabase(principal);
+
+        Category category = new Category();
+        category.setLibelle("CategoryBusinessPortTest.testSaveCategory");
+        category.setType(QUESTIONNAIRE.name());
+        category.setUserId(principal);
+
+        Category saveCategory = categoryPersistencePort.saveCategory(category);
+
+        Assertions.assertNotNull(saveCategory);
+        Assertions.assertNotNull(saveCategory.getUuid());
+        Assertions.assertEquals(principal, saveCategory.getUserId());
+
+    }
+
+    @Test
+    void testGetCategoryByUuid() {
+
+        final String principal = getClass().getSimpleName() + "." + UUID.randomUUID();
+        dbFixture.emptyDatabase(principal);
+
+        Category category = new Category();
+        category.setLibelle("CategoryBusinessPortTest.testGetCategoryByUuid");
+        category.setType(QUESTIONNAIRE.name());
+        category.setUserId(principal);
+
+        category = categoryPersistencePort.saveCategory(category);
+        Assertions.assertNotNull(category);
+        Assertions.assertNotNull(category.getUuid());
+
+        Optional <Category> categoryByUuid = categoryPersistencePort.findByUuid(category.getUuid());
+
+        Assertions.assertTrue(categoryByUuid.isPresent());
+        Assertions.assertNotNull(categoryByUuid.get());
+        Assertions.assertEquals(principal, categoryByUuid.get().getUserId());
+
+    }
 }

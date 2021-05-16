@@ -26,6 +26,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -69,16 +70,20 @@ class QuestionnairePersistenceAdapterTest {
 
     @BeforeEach
     void setUp() {
-        dbFixture.emptyDatabase();
+     //   dbFixture.emptyDatabase();
     }
 
     @Test
     @Transactional
     void saveQuestionnaire() {
 
+        final String principal = getClass().getSimpleName() + "." + UUID.randomUUID();
+
+        dbFixture.emptyDatabase(principal);
+
         Questionnaire questionnaire = modelFixture.createQuestionaire();
 
-        Questionnaire questionnaire1 = questionnairePersistenceAdapter.saveQuestionnaire(questionnaire, Fixture.USER);
+        Questionnaire questionnaire1 = questionnairePersistenceAdapter.saveQuestionnaire(questionnaire, principal);
 
         assertNotNull(questionnaire1);
         assertEquals(questionnaire.getTitle(), questionnaire1.getTitle());

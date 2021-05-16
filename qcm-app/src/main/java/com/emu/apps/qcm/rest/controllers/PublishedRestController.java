@@ -1,8 +1,7 @@
 package com.emu.apps.qcm.rest.controllers;
 
 
-import com.emu.apps.qcm.application.PublishedServices;
-import com.emu.apps.qcm.domain.model.PublishedRepository;
+import com.emu.apps.qcm.application.webhooks.PublishedServices;
 import com.emu.apps.qcm.rest.controllers.resources.published.PublishedQuestionnaire;
 import com.emu.apps.qcm.rest.controllers.resources.published.PushishedQuestionnaireQuestion;
 

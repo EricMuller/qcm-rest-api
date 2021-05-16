@@ -2,7 +2,7 @@ package com.emu.apps.qcm.infra.persistence;
 
 
 
-import com.emu.apps.qcm.domain.model.Category;
+import com.emu.apps.qcm.domain.model.category.Category;
 
 import java.util.Optional;
 import java.util.UUID;

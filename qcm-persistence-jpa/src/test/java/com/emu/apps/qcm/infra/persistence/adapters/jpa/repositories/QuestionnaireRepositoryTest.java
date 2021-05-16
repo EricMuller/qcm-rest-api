@@ -9,6 +9,7 @@ import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.Response
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.QuestionTagEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.TagEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.fixtures.DbFixture;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.fixtures.Fixture;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.projections.QuestionnaireProjection;
 import com.google.common.collect.Iterables;
 import org.assertj.core.api.Assertions;
@@ -57,30 +58,34 @@ public class QuestionnaireRepositoryTest {
     @Autowired
     private QuestionnaireRepository questionnaireRepository;
 
-
     @Test
     @Transactional
-    public void findOne() {
+    public void findById() {
 
-        dbFixture.emptyDatabase();
+        final String principal = getClass().getSimpleName() + "." + UUID.randomUUID();
 
-        QuestionnaireEntity questionnaire1 = dbFixture.createOneQuestionnaireWithTwoQuestionTags();
+        dbFixture.emptyDatabase(principal);
 
-        QuestionnaireEntity questionnaire = questionnaireRepository.findById(questionnaire1.getId()).orElse(null);
+        QuestionnaireEntity newQuestionnaireEntity = dbFixture.createOneQuestionnaireWithTwoQuestionTags(principal);
 
-        assertNotNull(questionnaire);
-        assertNotNull(questionnaire.getId());
-        assertNotNull(questionnaire.getCategory());
-        assertEquals(DbFixture.CATEGORIE_LIBELLE, questionnaire.getCategory().getLibelle());
-        assertNotNull(questionnaire.getDescription());
-        assertEquals(DbFixture.QUESTIONNAIRE_DESC, questionnaire.getDescription());
+        QuestionnaireEntity questionnaireEntity = questionnaireRepository.findById(newQuestionnaireEntity.getId()).orElse(null);
 
-        assertEquals(2, questionnaire.getQuestionnaireQuestions().size());
+        assertNotNull(questionnaireEntity);
+        assertNotNull(questionnaireEntity.getId());
+        assertNotNull(questionnaireEntity.getCategory());
+        assertEquals(DbFixture.CATEGORIE_LIBELLE, questionnaireEntity.getCategory().getLibelle());
+        assertNotNull(questionnaireEntity.getDescription());
+        assertEquals(DbFixture.QUESTIONNAIRE_DESC, questionnaireEntity.getDescription());
 
-        QuestionnaireQuestionEntity questionnaireQuestion1 = Iterables.getFirst(questionnaire.getQuestionnaireQuestions(), null);
+        assertEquals(2, questionnaireEntity.getQuestionnaireQuestions().size());
+
+        QuestionnaireQuestionEntity questionnaireQuestion1 = Iterables.getFirst(questionnaireEntity.getQuestionnaireQuestions(), null);
 
         assertNotNull(questionnaireQuestion1);
         assertNotNull(questionnaireQuestion1.getQuestion());
+        assertEquals(Fixture.QUESTION_QUESTION_1,questionnaireQuestion1.getQuestion().getQuestionText());
+
+
         assertEquals(2, questionnaireQuestion1.getQuestion().getResponses().size());
 
         ResponseEntity response1 = Iterables.getFirst(questionnaireQuestion1.getQuestion().getResponses(), null);
@@ -100,9 +105,11 @@ public class QuestionnaireRepositoryTest {
     @Test
     public void findQuestionnaireById() {
 
-        dbFixture.emptyDatabase();
+        final String principal = getClass().getSimpleName() + "." + UUID.randomUUID();
 
-        QuestionnaireEntity q = dbFixture.createOneQuestionnaireWithTwoQuestionTags();
+        dbFixture.emptyDatabase(principal);
+
+        QuestionnaireEntity q = dbFixture.createOneQuestionnaireWithTwoQuestionTags(principal);
 
         QuestionnaireProjection questionnaire = questionnaireRepository.findQuestionnaireById(q.getId());
 
@@ -116,18 +123,18 @@ public class QuestionnaireRepositoryTest {
     @Test
     public void findAllWithSpecification() {
 
-        dbFixture.emptyDatabase();
+        final String principal = getClass().getSimpleName() + "." + UUID.randomUUID();
 
-        dbFixture.createOneQuestionnaireWithTwoQuestionTags();
+        dbFixture.emptyDatabase(principal);
 
-        TagEntity tag = dbFixture.findTagbyLibelle(dbFixture.QUESTIONNAIRE_TAG_LIBELLE_1, () -> SpringBootJpaTestConfig.USER_TEST.toUUID());
+        dbFixture.createOneQuestionnaireWithTwoQuestionTags(principal);
+
+        TagEntity tag = dbFixture.findTagbyLibelle(dbFixture.QUESTIONNAIRE_TAG_LIBELLE_1, () -> principal);
         Assertions.assertThat(tag).isNotNull();
 
         QuestionnaireEntity.SpecificationBuilder specificationBuilder = new QuestionnaireEntity.SpecificationBuilder();
         specificationBuilder.setTagUuids(new UUID[]{tag.getUuid()});
-
-        specificationBuilder.setPrincipal(SpringBootJpaTestConfig.USER_TEST.toUUID());
-
+        specificationBuilder.setPrincipal(principal);
         Pageable pageable = PageRequest.of(0, 3, Sort.by("id"));
 
         Page <QuestionnaireEntity> page = questionnaireRepository.findAll(specificationBuilder.build(), pageable);

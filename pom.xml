@@ -52,7 +52,6 @@
         <module>qcm-persistence-api</module>
         <module>qcm-persistence-jpa</module>
         <module>qcm-report</module>
-<!--        <module>qcm-rest</module>-->
         <module>jacoco-report</module>
     </modules>
 
@@ -253,7 +252,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <!--  only true in local ( heroku issue ) -->
-<!--                    <forkCount>1</forkCount>-->
+                    <forkCount>1</forkCount>
                     <reuseForks>${maven-surefire-plugin.reuseForks}</reuseForks>
                 </configuration>
             </plugin>

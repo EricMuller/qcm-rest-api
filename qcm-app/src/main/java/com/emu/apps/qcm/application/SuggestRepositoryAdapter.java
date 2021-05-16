@@ -1,8 +1,7 @@
-package com.emu.apps.qcm.domain.model;
+package com.emu.apps.qcm.application;
 
 
 import com.emu.apps.qcm.domain.model.questionnaire.Suggest;
-import com.emu.apps.qcm.domain.model.SuggestBusinessPort;
 import com.emu.apps.qcm.infra.persistence.QuestionnaireReaderPort;
 import org.springframework.stereotype.Service;
 

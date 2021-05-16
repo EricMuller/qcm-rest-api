@@ -23,4 +23,6 @@ public interface QuestionTagRepository extends JpaRepository <QuestionTagEntity,
             countQuery = "SELECT count(distinct qt.tag) FROM QuestionTagEntity qt join qt.tag t where t.createdBy = :principal  ")
     Page <TagEntity> findAllTagByPrincipal(@Param("principal") String principal, @NotNull Pageable pageable);
 
+
+
 }

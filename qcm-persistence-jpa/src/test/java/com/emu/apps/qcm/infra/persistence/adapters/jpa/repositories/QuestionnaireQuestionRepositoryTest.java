@@ -20,6 +20,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 
 import java.util.List;
+import java.util.UUID;
 
 @SpringBootTest(classes = SpringBootJpaTestConfig.class)
 @ActiveProfiles(value = "test")
@@ -53,9 +54,13 @@ public class QuestionnaireQuestionRepositoryTest {
     @Test
     public void findQuestionsByQuestionnaireUuId() {
 
-        dbFixture.emptyDatabase();
+        final String principal = getClass().getSimpleName() + "." + UUID.randomUUID();
+        dbFixture.emptyDatabase(principal);
 
-        QuestionnaireEntity questionnaire = dbFixture.createOneQuestionnaireWithTwoQuestionTags();
+        //dbFixture.emptyDatabase();
+        dbFixture.createAndSaveUserWithEmail(principal);
+
+        QuestionnaireEntity questionnaire = dbFixture.createOneQuestionnaireWithTwoQuestionTags(principal);
 
         Iterable <QuestionResponseProjection> questions = questionnaireQuestionRepository.findQuestionsByQuestionnaireUuiId(questionnaire.getUuid());
         Assertions.assertThat(questions).isNotEmpty();
@@ -71,9 +76,11 @@ public class QuestionnaireQuestionRepositoryTest {
     @Test
     public void findQuestionsByQuestionnaireIds() {
 
-        dbFixture.emptyDatabase();
+        final String principal = getClass().getSimpleName() + "." + UUID.randomUUID();
+        dbFixture.emptyDatabase(principal);
 
-        QuestionnaireEntity questionnaire = dbFixture.createOneQuestionnaireWithTwoQuestionTags();
+
+        QuestionnaireEntity questionnaire = dbFixture.createOneQuestionnaireWithTwoQuestionTags(principal);
 
         List <Long> longListTag = Lists.newArrayList();
         tagRepository.findAll().forEach((tag) -> longListTag.add(tag.getId()));

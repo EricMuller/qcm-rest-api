@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.domain.model.questionnaire;
 
-import com.emu.apps.qcm.domain.model.Category;
+import com.emu.apps.qcm.domain.model.category.Category;
 import com.emu.apps.qcm.domain.model.base.DomainId;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

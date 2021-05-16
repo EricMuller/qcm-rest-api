@@ -30,8 +30,8 @@ package com.emu.apps.qcm.infra.persistence.adapters.jpa;
 
 import com.emu.apps.qcm.domain.model.user.User;
 import com.emu.apps.qcm.infra.persistence.UserPersistencePort;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.UserEntity;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.UserRepository;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.AccountEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.AccountRepository;
 import com.emu.apps.qcm.infra.persistence.mappers.UserEntityMapper;
 import com.emu.apps.shared.exceptions.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,19 +51,19 @@ import static java.util.Objects.nonNull;
 @Transactional
 public class UserPersistenceAdapter implements UserPersistencePort {
 
-    private final UserRepository userRepository;
+    private final AccountRepository userRepository;
 
     private final UserEntityMapper userMapper;
 
     @Autowired
-    public UserPersistenceAdapter(UserRepository tagRepository, UserEntityMapper userMapper) {
+    public UserPersistenceAdapter(AccountRepository tagRepository, UserEntityMapper userMapper) {
         this.userRepository = tagRepository;
         this.userMapper = userMapper;
     }
 
     @Override
     public User save(User user) {
-        UserEntity userEntity;
+        AccountEntity userEntity;
         if (Objects.isNull(user.getUuid())) {
             userEntity = userMapper.dtoToModel(user);
         } else {

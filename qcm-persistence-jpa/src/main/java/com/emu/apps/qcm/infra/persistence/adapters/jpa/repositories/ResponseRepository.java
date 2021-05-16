@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
  * Created by eric on 05/06/2017.
  */
 @Repository
-public interface ResponseRepository extends PagingAndSortingRepository<ResponseEntity, Long> {
-
-
+public interface ResponseRepository extends PagingAndSortingRepository <ResponseEntity, Long> {
+    void deleteByCreatedByEquals(String user);
 }

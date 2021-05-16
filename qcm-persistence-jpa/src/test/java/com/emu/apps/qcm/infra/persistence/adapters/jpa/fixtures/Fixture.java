@@ -20,11 +20,11 @@ public  class Fixture {
 
     public static final String QUESTION_TAG_LIBELLE_3 = "Tag3";
 
-    public static final String QUESTIONNAIRE_TAG_LIBELLE_1 = "Tag10";
+    public static final String QUESTIONNAIRE_TAG_LIBELLE_1 = "QuestionnaireTagLibelle1";
 
     public static final String CATEGORIE_LIBELLE = "Categ lib";
 
-    public static final String QUESTIONNAIRE_TITLE = "Questionnaire";
+    public static final String QUESTIONNAIRE_TITLE = "QuestionnaireTitle";
 
     public static final String QUESTIONNAIRE_DESC = "Questionnaire desc";
 

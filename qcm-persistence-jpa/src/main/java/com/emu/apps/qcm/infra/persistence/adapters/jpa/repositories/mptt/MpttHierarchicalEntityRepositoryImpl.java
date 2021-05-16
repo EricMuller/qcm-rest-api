@@ -271,6 +271,15 @@ public class MpttHierarchicalEntityRepositoryImpl<T extends MpttHierarchicalEnti
                 .createNamedQuery("deleteAll").executeUpdate();
     }
 
+    @Override
+    public void deleteAllByUser(String user) {
+        entityManager
+                .createNamedQuery("deleteAllByCreatedBy")
+                .setParameter(HIERARCHY_ID, user)
+                .executeUpdate();
+    }
+
+
 
     @Override
     public List <T> findChildren(T node) {

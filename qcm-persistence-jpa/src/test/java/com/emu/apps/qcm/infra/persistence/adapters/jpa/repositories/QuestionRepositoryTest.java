@@ -68,7 +68,13 @@ class QuestionRepositoryTest {
     @Test
     @Transactional
     void findOne() {
-        QuestionEntity question = dbFixture.createQuestionsAndGetFirst();
+
+        final String principal = getClass().getSimpleName() + "." + UUID.randomUUID();
+
+        dbFixture.emptyDatabase(principal);
+
+        QuestionEntity question = dbFixture.createQuestionsAndGetFirst(principal);
+
         assertNotNull(question.getId());
         Optional <QuestionEntity> newQuestion = questionRepository.findById(question.getId());
         assertNotNull(newQuestion.orElse(null));
@@ -82,8 +88,11 @@ class QuestionRepositoryTest {
     @DisplayName("Test LazyInitializationException with lazy collection Tags")
     void findOneLazyInitializationException() {
 
+        final String principal = getClass().getSimpleName() + "." + UUID.randomUUID();
 
-        QuestionEntity question = dbFixture.createQuestionsAndGetFirst();
+        dbFixture.emptyDatabase(principal);
+
+        QuestionEntity question = dbFixture.createQuestionsAndGetFirst(principal);
         assertNotNull(question.getId());
         Optional <QuestionEntity> newQuestion = questionRepository.findById(question.getId());
 
@@ -96,7 +105,11 @@ class QuestionRepositoryTest {
     @Test
     @DisplayName("Test LazyInitializationException with lazy collection responses")
     void findByIdAndFetchTagsLazyInitializationException() {
-        QuestionEntity question = dbFixture.createQuestionsAndGetFirst();
+
+        final String principal = getClass().getSimpleName() + "." + UUID.randomUUID();
+        dbFixture.emptyDatabase(principal);
+
+        QuestionEntity question = dbFixture.createQuestionsAndGetFirst(principal);
 
         QuestionEntity newQuestion = questionRepository.findByIdAndFetchTags(question.getId());
 
@@ -106,7 +119,11 @@ class QuestionRepositoryTest {
 
     @Test
     void findByIdAndFetchTags() {
-        QuestionEntity question = dbFixture.createQuestionsAndGetFirst();
+
+        final String principal = getClass().getSimpleName() + "." + UUID.randomUUID();
+        dbFixture.emptyDatabase(principal);
+
+        QuestionEntity question = dbFixture.createQuestionsAndGetFirst(principal);
 
         QuestionEntity newQuestion = questionRepository.findByIdAndFetchTags(question.getId());
 
@@ -125,7 +142,11 @@ class QuestionRepositoryTest {
 
     @Test
     void findByIdAndFetchTagsAndResponses() {
-        QuestionEntity question = dbFixture.createQuestionsAndGetFirst();
+
+        final String principal = getClass().getSimpleName() + "." + UUID.randomUUID();
+        dbFixture.emptyDatabase(principal);
+
+        QuestionEntity question = dbFixture.createQuestionsAndGetFirst(principal);
 
         //test create
         QuestionEntity newQuestion = questionRepository.findByIdAndFetchTagsAndResponses(question.getId());
@@ -156,9 +177,11 @@ class QuestionRepositoryTest {
     @Test
     void findAllQuestionsTags() {
 
-        dbFixture.emptyDatabase();
+        // dbFixture.emptyDatabase();
+        final String principal = getClass().getSimpleName() + "." + UUID.randomUUID();
+        dbFixture.emptyDatabase(principal);
 
-        dbFixture.createOneQuestionnaireWithTwoQuestionTags();
+        dbFixture.createOneQuestionnaireWithTwoQuestionTags(principal);
 
         Page <QuestionEntity> page = questionRepository.findAllQuestionsTags(null);
 
@@ -185,9 +208,11 @@ class QuestionRepositoryTest {
     @Test
     void findAllStatus() {
 
-        dbFixture.emptyDatabase();
+        final String principal = getClass().getSimpleName() + "." + UUID.randomUUID();
 
-        dbFixture.createOneQuestionnaireWithTwoQuestionTags();
+        dbFixture.emptyDatabase(principal);
+
+        dbFixture.createOneQuestionnaireWithTwoQuestionTags(principal);
 
         Page <String> page = questionRepository.findAllStatusByCreatedBy(Fixture.USER, null);
 
@@ -200,14 +225,16 @@ class QuestionRepositoryTest {
     @Test
     void findAllQuestions() {
 
-        dbFixture.emptyDatabase();
+        final String principal = getClass().getSimpleName() + "." + UUID.randomUUID();
 
-        dbFixture.createOneQuestionnaireWithTwoQuestionTags();
+        dbFixture.emptyDatabase(principal);
 
-        TagEntity tag1 = dbFixture.findTagbyLibelle(QUESTION_TAG_LIBELLE_1, () -> USER_TEST.toUUID());
+        dbFixture.createOneQuestionnaireWithTwoQuestionTags(principal);
+
+        TagEntity tag1 = dbFixture.findTagbyLibelle(QUESTION_TAG_LIBELLE_1,  principal);
         assertThat(tag1).isNotNull();
 
-        Specification <QuestionEntity> specification = new QuestionEntity.SpecificationBuilder(PrincipalUtils.getEmailOrName((Principal) () -> USER_TEST.toUUID()))
+        Specification <QuestionEntity> specification = new QuestionEntity.SpecificationBuilder(PrincipalUtils.getEmailOrName((Principal) () -> principal))
                 .setTagUuids(new UUID[]{tag1.getUuid()})
                 .build();
 

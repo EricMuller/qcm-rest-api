@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories;
 
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.UserEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.AccountEntity;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -12,11 +12,13 @@ import java.util.UUID;
 
 
 @Repository
-public interface UserRepository extends PagingAndSortingRepository <UserEntity, Long>, JpaSpecificationExecutor <UserEntity> {
+public interface AccountRepository extends PagingAndSortingRepository <AccountEntity, Long>, JpaSpecificationExecutor <AccountEntity> {
 
     @QueryHints(@QueryHint(name = org.hibernate.annotations.QueryHints.CACHEABLE, value = "true"))
-    Optional<UserEntity> findByEmailEquals(String libelle);
+    Optional<AccountEntity> findByEmailEquals(String libelle);
 
-    Optional<UserEntity> findByUuid(UUID uuid);
+    Optional<AccountEntity> findByUuid(UUID uuid);
+
+    void deleteByEmailEquals(String email);
 
 }

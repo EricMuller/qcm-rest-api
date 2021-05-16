@@ -58,5 +58,6 @@ public interface QuestionRepository extends JpaRepository <QuestionEntity, Long>
             countQuery = "SELECT COUNT(distinct q.status ) from  QuestionEntity  q  ")
     Page <String> findAllStatusByCreatedBy( String principal,Pageable pageable);
 
+    void deleteByCreatedByEquals(String user);
 
 }

@@ -1,14 +1,10 @@
 package com.emu.apps.qcm.domain.model.question;
 
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
-import com.emu.apps.qcm.domain.model.question.Question;
-import com.emu.apps.qcm.domain.model.question.QuestionId;
 import com.emu.apps.qcm.domain.model.tag.Tag;
-import com.emu.apps.qcm.domain.model.question.QuestionTags;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -23,7 +19,7 @@ public interface QuestionRepository {
 
     Collection <Question> saveQuestions(Collection <Question> questions, PrincipalId principal);
 
-    Question saveQuestion(Question question, @NotNull PrincipalId principal);
+    Question saveQuestion(Question question, PrincipalId principal);
 
     void deleteQuestionById(QuestionId questionId);
 

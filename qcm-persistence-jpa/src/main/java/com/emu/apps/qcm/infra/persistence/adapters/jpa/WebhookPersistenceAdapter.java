@@ -3,9 +3,9 @@ package com.emu.apps.qcm.infra.persistence.adapters.jpa;
 
 import com.emu.apps.qcm.domain.model.webhook.WebHook;
 import com.emu.apps.qcm.infra.persistence.WebHookPersistencePort;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.UserEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.AccountEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.events.WebHookEntity;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.UserRepository;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.AccountRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.WebHookRepository;
 import com.emu.apps.qcm.infra.persistence.mappers.WebHookEntityMapper;
 import com.emu.apps.shared.exceptions.EntityNotFoundException;
@@ -28,9 +28,9 @@ public class WebhookPersistenceAdapter implements WebHookPersistencePort {
 
     private final WebHookEntityMapper webHookMapper;
 
-    private final UserRepository userRepository;
+    private final AccountRepository userRepository;
 
-    public WebhookPersistenceAdapter(WebHookRepository webHookRepository, WebHookEntityMapper webHookMapper, UserRepository userRepository) {
+    public WebhookPersistenceAdapter(WebHookRepository webHookRepository, WebHookEntityMapper webHookMapper, AccountRepository userRepository) {
         this.webHookRepository = webHookRepository;
         this.webHookMapper = webHookMapper;
         this.userRepository = userRepository;
@@ -46,7 +46,7 @@ public class WebhookPersistenceAdapter implements WebHookPersistencePort {
                     .orElseThrow(() -> new EntityNotFoundException(webHook.getUuid(), UNKNOWN_UUID_WEBHOOK));
             webHookMapper.dtoToModel(webHookEntity, webHook);
         } else {
-            UserEntity userEntity = userRepository.findByUuid(fromString(principal))
+            AccountEntity userEntity = userRepository.findByUuid(fromString(principal))
                     .orElseThrow(() -> new EntityNotFoundException(principal, UNKNOWN_UUID_USER));
             webHookEntity = webHookMapper.dtoToModel(webHook);
             webHookEntity.setUser(userEntity);

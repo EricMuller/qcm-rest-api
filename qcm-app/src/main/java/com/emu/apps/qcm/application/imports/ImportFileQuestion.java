@@ -1,4 +1,4 @@
-package com.emu.apps.qcm.domain.dtos;
+package com.emu.apps.qcm.application.imports;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class FileQuestionDto {
+public class ImportFileQuestion {
 
     private Long number;
 

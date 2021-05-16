@@ -1,10 +1,6 @@
 package com.emu.apps.qcm.rest.controllers.resources;
 
 
-import com.emu.apps.qcm.domain.model.Category;
-import com.emu.apps.qcm.domain.model.base.DomainId;
-import com.emu.apps.qcm.domain.model.question.QuestionTag;
-import com.emu.apps.qcm.domain.model.question.Response;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

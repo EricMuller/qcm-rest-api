@@ -1,4 +1,4 @@
-package com.emu.apps.qcm.domain.model;
+package com.emu.apps.qcm.application.webhooks;
 
 import com.emu.apps.qcm.rest.controllers.resources.published.PublishedQuestionnaire;
 import com.emu.apps.qcm.rest.controllers.resources.published.PushishedQuestionnaireQuestion;

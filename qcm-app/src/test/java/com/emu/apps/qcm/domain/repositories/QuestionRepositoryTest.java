@@ -1,8 +1,8 @@
 package com.emu.apps.qcm.domain.repositories;
 
 
-import com.emu.apps.qcm.domain.model.Category;
-import com.emu.apps.qcm.domain.model.CategoryRepository;
+import com.emu.apps.qcm.domain.model.category.Category;
+import com.emu.apps.qcm.domain.model.category.CategoryRepository;
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
 import com.emu.apps.qcm.domain.model.question.Question;
 import com.emu.apps.qcm.domain.model.question.QuestionId;

@@ -29,7 +29,7 @@ import java.util.Objects;
         }
 )
 
-@Table(name = "questionnaire_question")
+@Table(name = "QUESTIONNAIRE_QUESTION")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -39,11 +39,11 @@ public class QuestionnaireQuestionEntity implements Serializable {
     private QuestionnaireQuestionId id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "questionnaire_id", insertable = false, updatable = false)
+    @JoinColumn(name = "QUESTIONNAIRE_ID", insertable = false, updatable = false)
     private QuestionnaireEntity questionnaire;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "question_id", insertable = false, updatable = false)
+    @JoinColumn(name = "QUESTION_ID", insertable = false, updatable = false)
     private QuestionEntity question;
 
     @Column

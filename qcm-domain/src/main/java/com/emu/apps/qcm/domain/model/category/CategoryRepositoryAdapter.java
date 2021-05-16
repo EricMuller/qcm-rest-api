@@ -1,9 +1,7 @@
-package com.emu.apps.qcm.domain.model;
+package com.emu.apps.qcm.domain.model.category;
 
 
-import com.emu.apps.qcm.domain.model.Category;
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
-import com.emu.apps.qcm.domain.model.CategoryRepository;
 import com.emu.apps.qcm.infra.persistence.CategoryPersistencePort;
 import org.springframework.stereotype.Service;
 

@@ -34,7 +34,7 @@ import static org.springframework.data.jpa.domain.Specification.where;
                 @NamedAttributeNode(value = "questionTags", subgraph = "tags")
         },
         subgraphs = @NamedSubgraph(name = "tags", attributeNodes = @NamedAttributeNode("tag")))
-@Table(name = "question",
+@Table(name = "QUESTION",
         indexes = {@Index(name = "IDX_QTO_CREATE_BY_IDX", columnList = "created_by"),
                 @Index(name = "IDX_QTO_UUID_IDX", columnList = "uuid")
         }
@@ -48,30 +48,33 @@ public class QuestionEntity extends AuditableEntity <String> {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "question_generator")
     @SequenceGenerator(name = "question_generator", sequenceName = "question_seq", allocationSize = 1)
-    @Column(name = "id", updatable = false, nullable = false)
+    @Column(name = "ID", updatable = false, nullable = false)
     private Long id;
 
     @Convert(converter = BooleanTFConverter.class)
+    @Column(name = "MANDATORY")
     private Boolean mandatory;
 
     @SuppressWarnings("squid:S1700")
-    @Column(name = "question", nullable = false, length = 1024)
+    @Column(name = "QUESTION", nullable = false, length = 1024)
     private String questionText;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "TYPE")
     private TypeQuestion type;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private CategoryEntity category;
 
 //    @Enumerated(EnumType.STRING)
+    @Column(name = "STATUS")
     private String status ;
 
-    @Column(name = "tip", length = 1024)
+    @Column(name = "TIP", length = 1024)
     private String tip;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "question_id")
+    @JoinColumn(name = "question_ID")
     @BatchSize(size = 100)
     private List <ResponseEntity> responses;
 
