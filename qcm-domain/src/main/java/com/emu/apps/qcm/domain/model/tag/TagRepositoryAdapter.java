@@ -1,10 +1,7 @@
 package com.emu.apps.qcm.domain.model.tag;
 
 
-import com.emu.apps.qcm.domain.model.tag.Tag;
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
-import com.emu.apps.qcm.domain.model.tag.TagId;
-import com.emu.apps.qcm.domain.model.tag.TagRepository;
 import com.emu.apps.qcm.infra.persistence.QuestionPersistencePort;
 import com.emu.apps.qcm.infra.persistence.TagPersistencePort;
 import com.emu.apps.shared.parsers.rsql.CriteriaUtils;
@@ -23,7 +20,7 @@ import java.util.Optional;
  * @since 2.2.0
  */
 @Service
-public class TagRepositoryAdapter implements TagRepository {
+class TagRepositoryAdapter implements TagRepository {
 
     private final TagPersistencePort tagPersistencePort;
 

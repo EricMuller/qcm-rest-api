@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
  * @since 2.2.0
  */
 @Service
-public class CategoryRepositoryAdapter implements CategoryRepository {
+class CategoryRepositoryAdapter implements CategoryRepository {
 
     private final CategoryPersistencePort categoryPersistencePort;
 

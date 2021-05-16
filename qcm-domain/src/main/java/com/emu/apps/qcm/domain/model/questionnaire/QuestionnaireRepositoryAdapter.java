@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @Transactional
-public class QuestionnaireRepositoryAdapter implements QuestionnaireRepository {
+class QuestionnaireRepositoryAdapter implements QuestionnaireRepository {
 
     private final QuestionnairePersistencePort questionnairePersistencePort;
 

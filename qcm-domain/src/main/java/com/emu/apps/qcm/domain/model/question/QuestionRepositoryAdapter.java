@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @Transactional
-public class QuestionRepositoryAdapter implements QuestionRepository {
+class QuestionRepositoryAdapter implements QuestionRepository {
 
     private final QuestionPersistencePort questionPersistencePort;
 

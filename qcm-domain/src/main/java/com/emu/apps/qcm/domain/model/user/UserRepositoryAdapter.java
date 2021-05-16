@@ -1,8 +1,6 @@
 package com.emu.apps.qcm.domain.model.user;
 
-import com.emu.apps.qcm.domain.model.user.User;
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
-import com.emu.apps.qcm.domain.model.user.UserRepository;
 import com.emu.apps.qcm.infra.persistence.UserPersistencePort;
 import com.emu.apps.shared.security.PrincipalUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +20,7 @@ import java.util.Objects;
  * @since 2.2.0
  */
 @Service
-public class UserRepositoryAdapter implements UserRepository {
+class UserRepositoryAdapter implements UserRepository {
 
     @Value("${spring.profiles.active}")
     private String profiles;
@@ -49,14 +47,14 @@ public class UserRepositoryAdapter implements UserRepository {
      */
     @Override
     public User userByEmail(String email) {
-         return userPersistencePort.findByEmailEquals(email);
+        return userPersistencePort.findByEmailEquals(email);
 
     }
 
     /**
      * Update a user
      *
-     * @param user   user
+     * @param user      user
      * @param principal principal
      * @return the updated user DTO
      */

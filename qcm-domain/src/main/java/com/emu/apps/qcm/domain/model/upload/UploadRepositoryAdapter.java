@@ -24,7 +24,7 @@ import java.io.InputStream;
  * @since 2.2.0
  */
 @Service
-public class UploadRepositoryAdapter implements UploadRepository {
+class UploadRepositoryAdapter implements UploadRepository {
 
     private final UploadPersistencePort uploadPersistencePort;
 
