@@ -49,7 +49,6 @@
         <module>qcm-app</module>
         <module>qcm-shared</module>
         <module>qcm-domain</module>
-        <module>qcm-persistence-api</module>
         <module>qcm-persistence-jpa</module>
         <module>qcm-report</module>
         <module>jacoco-report</module>
@@ -106,13 +105,6 @@
                 <artifactId>qcm-domain</artifactId>
                 <version>${project.version}</version>
             </dependency>
-
-            <dependency>
-                <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-persistence-api</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
 
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>

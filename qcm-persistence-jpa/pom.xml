@@ -57,11 +57,6 @@
 
         <dependency>
             <groupId>com.emu.apps.qcm</groupId>
-            <artifactId>qcm-persistence-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.emu.apps.qcm</groupId>
             <artifactId>qcm-shared</artifactId>
             <scope>test</scope>
             <type>test-jar</type>
