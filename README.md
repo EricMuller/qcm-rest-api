@@ -74,6 +74,10 @@ Verify the deployment by navigating to your server address in your preferred bro
 ```sh
 http://127.0.0.1:8080/swagger-ui.html#/
 ```
+###Docker
+
+docker run --name qcm-keycloak -p 8082:8082 -e KEYCLOAK_USER=admin -e KEYCLOAK_PASSWORD=admin quay.io/keycloak/keycloak:13.0.0
+
 
 ### Deployment
 
