@@ -4,7 +4,13 @@ cd ..
 
 call mvn clean package -Dmaven.test.skip=true
 
+echo Exit Code = %ERRORLEVEL%
+if not "%ERRORLEVEL%" == "0" exit /b
+
 call docker build -t ericmuller/qcm-rest-api ./qcm-app
+
+echo Exit Code = %ERRORLEVEL%
+if not "%ERRORLEVEL%" == "0" exit /b
 
 rem call docker push  ericmuller/qcm-rest-api
 

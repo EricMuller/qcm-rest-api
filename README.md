@@ -76,7 +76,20 @@ http://127.0.0.1:8080/swagger-ui.html#/
 ```
 ###Docker
 
+
+1. keycloak
+
 docker run --name qcm-keycloak -p 8082:8082 -e KEYCLOAK_USER=admin -e KEYCLOAK_PASSWORD=admin quay.io/keycloak/keycloak:13.0.0
+
+2. postgres
+
+docker run --name qcm-postgres -p 5433:5432 -e POSTGRES_PASSWORD=postgres -d postgres:10.12
+
+###Maven
+
+maven clean install -Dmaven.test.skip=false
+
+maven verify sonar:sonar
 
 
 ### Deployment
