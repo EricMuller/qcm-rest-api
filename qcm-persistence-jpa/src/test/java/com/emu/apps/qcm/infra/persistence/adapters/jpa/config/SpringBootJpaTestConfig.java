@@ -61,7 +61,7 @@ import static java.util.Collections.singletonMap;
 @EnableJpaAuditing(dateTimeProviderRef = "dateTimeProvider")
 public class SpringBootJpaTestConfig {
 
-    public static final PrincipalId USER_TEST = new PrincipalId("user");
+    public static final PrincipalId USER_TEST_ID = new PrincipalId("user");
 
     public static final String USER_PASSWORD = "password";
 

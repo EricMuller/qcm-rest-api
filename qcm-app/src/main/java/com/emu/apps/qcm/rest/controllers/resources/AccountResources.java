@@ -1,6 +1,7 @@
 package com.emu.apps.qcm.rest.controllers.resources;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,7 +11,8 @@ import java.time.ZonedDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserResources {
+@JsonRootName(value = "Account")
+public class AccountResources {
 
     @JsonProperty("uuid")
     private String uuid;
@@ -39,7 +41,7 @@ public class UserResources {
     @JsonProperty("company")
     private String company;
 
-    public UserResources(String email) {
+    public AccountResources(String email) {
         this.email = email;
     }
 

@@ -30,15 +30,23 @@ package com.emu.apps.qcm.infra.persistence.mappers;
 
 import com.emu.apps.qcm.domain.model.category.Category;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category.CategoryEntity;
+import com.emu.apps.qcm.domain.mappers.CategoryIdMapper;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring", uses = {UuidMapper.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring",
+        uses = {UuidMapper.class, CategoryIdMapper.class},
+        unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface CategoryEntityMapper {
 
+
+    @Mapping(target = "id", source = "uuid")
     Category modelToDto(CategoryEntity category);
 
-    CategoryEntity dtoToModel(Category categoryDto);
+    @Mapping(target = "uuid", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    CategoryEntity dtoToModel(Category category);
 
     Iterable <Category> modelsToDtos(Iterable <CategoryEntity> categories);
 

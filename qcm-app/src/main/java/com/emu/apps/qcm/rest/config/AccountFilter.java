@@ -1,8 +1,8 @@
 package com.emu.apps.qcm.rest.config;
 
-import com.emu.apps.qcm.domain.model.user.User;
+import com.emu.apps.qcm.domain.model.user.Account;
 
-import com.emu.apps.qcm.domain.model.user.UserRepository;
+import com.emu.apps.qcm.domain.model.user.AccountRepository;
 import com.emu.apps.shared.security.PrincipalUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
@@ -18,18 +18,18 @@ import java.io.IOException;
 import java.util.Objects;
 
 import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.PUBLIC_API;
-import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.USERS;
+import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.ACCOUNTS;
 import static com.emu.apps.shared.security.AuthentificationContextHolder.setPrincipal;
 import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
 
-@Component("UserFilter")
+@Component("AccountFilter")
 @Slf4j
-public class UserFilter implements Filter {
+public class AccountFilter implements Filter {
 
-    private final UserRepository userServicePort;
+    private final AccountRepository accountRepository;
 
-    public UserFilter(UserRepository userServicePort) {
-        this.userServicePort = userServicePort;
+    public AccountFilter(AccountRepository accountRepository) {
+        this.accountRepository = accountRepository;
     }
 
     @Override
@@ -43,13 +43,13 @@ public class UserFilter implements Filter {
             if (Objects.nonNull(authentication)) {
                 String principal = PrincipalUtils.getEmailOrName(authentication.getPrincipal());
                 if (Objects.nonNull(principal)) {
-                    final User user = userServicePort.userByEmail(principal);
-                    if (Objects.nonNull(user)) {
-                        setPrincipal(user.getUuid());
-                        GrantedAuthority grantedAuthority = () -> user.getUuid();
+                    final Account account = accountRepository.userByEmail(principal);
+                    if (Objects.nonNull(account)) {
+                        setPrincipal(account.getId().toUuid());
+                        GrantedAuthority grantedAuthority = () -> account.getId().toUuid();
                     } else {
                         LOGGER.warn("user with email {} non enregistré!", principal);
-                        if (!request.getRequestURI().startsWith(PUBLIC_API + USERS)) {
+                        if (!request.getRequestURI().startsWith(PUBLIC_API + ACCOUNTS)) {
                             LOGGER.warn("user with email {} non enregistré! send http 303 ", principal);
                             HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
                             httpResponse.sendError(SC_FORBIDDEN, "Required valid email in database");

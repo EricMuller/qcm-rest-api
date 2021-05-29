@@ -38,12 +38,12 @@ class TagRepositoryAdapter implements TagRepository {
         Optional <String> firstLetter = CriteriaUtils.getAttribute("firstLetter", criterias);
         Optional <String> used = CriteriaUtils.getAttribute("used", criterias);
 
-        return tagPersistencePort.findAllByPage(firstLetter, pageable, principal.toUUID());
+        return tagPersistencePort.findAllByPage(firstLetter, pageable, principal.toUuid());
     }
 
     @Override
     public Tag getTagById(TagId tagId) {
-        return tagPersistencePort.findByUuid(tagId.toUUID());
+        return tagPersistencePort.findByUuid(tagId.toUuid());
     }
 
     @Override
@@ -52,7 +52,7 @@ class TagRepositoryAdapter implements TagRepository {
     }
 
     public Tag findOrCreateByLibelle(String libelle, PrincipalId principal) {
-        return tagPersistencePort.findOrCreateByLibelle(libelle, principal.toUUID());
+        return tagPersistencePort.findOrCreateByLibelle(libelle, principal.toUuid());
     }
 
 

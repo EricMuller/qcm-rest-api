@@ -69,10 +69,10 @@ public class CategoryRepositoryTest {
 
         Category categoryC2 = categoryPersistencePort.findOrCreateByLibelle(principal, QUESTION.name(), "InterviewsC");
 
-        Category categoryD = categoryPersistencePort.findOrCreateChildByLibelle(fromString(categoryC.getUuid()), QUESTIONNAIRE.name(), "InterviewsD");
-        Category categoryE = categoryPersistencePort.findOrCreateChildByLibelle(fromString(categoryC.getUuid()), QUESTIONNAIRE.name(), "InterviewsE");
-        Category categoryF = categoryPersistencePort.findOrCreateChildByLibelle(fromString(categoryC.getUuid()), QUESTIONNAIRE.name(), "InterviewsF");
-        Category categoryG = categoryPersistencePort.findOrCreateChildByLibelle(fromString(categoryC.getUuid()), QUESTIONNAIRE.name(), "InterviewsG");
+        Category categoryD = categoryPersistencePort.findOrCreateChildByLibelle(fromString(categoryC.getId().toUuid()), QUESTIONNAIRE.name(), "InterviewsD");
+        Category categoryE = categoryPersistencePort.findOrCreateChildByLibelle(fromString(categoryC.getId().toUuid()), QUESTIONNAIRE.name(), "InterviewsE");
+        Category categoryF = categoryPersistencePort.findOrCreateChildByLibelle(fromString(categoryC.getId().toUuid()), QUESTIONNAIRE.name(), "InterviewsF");
+        Category categoryG = categoryPersistencePort.findOrCreateChildByLibelle(fromString(categoryC.getId().toUuid()), QUESTIONNAIRE.name(), "InterviewsG");
 
 
         Assertions.assertNotNull(categoryA);
@@ -91,7 +91,7 @@ public class CategoryRepositoryTest {
 
         Assertions.assertEquals(3, categories.size());
 
-        iterable = categoryPersistencePort.findChildrenCategories(fromString(categoryC.getUuid()));
+        iterable = categoryPersistencePort.findChildrenCategories(fromString(categoryC.getId().toUuid()));
 
         List <Category> categoriesC = stream(iterable.spliterator(), false).collect(toList());
 
@@ -128,7 +128,7 @@ public class CategoryRepositoryTest {
         Category saveCategory = categoryPersistencePort.saveCategory(category);
 
         Assertions.assertNotNull(saveCategory);
-        Assertions.assertNotNull(saveCategory.getUuid());
+        Assertions.assertNotNull(saveCategory.getId().toUuid());
         Assertions.assertEquals(principal, saveCategory.getUserId());
 
     }
@@ -146,9 +146,9 @@ public class CategoryRepositoryTest {
 
         category = categoryPersistencePort.saveCategory(category);
         Assertions.assertNotNull(category);
-        Assertions.assertNotNull(category.getUuid());
+        Assertions.assertNotNull(category.getId().toUuid());
 
-        Optional <Category> categoryByUuid = categoryPersistencePort.findByUuid(category.getUuid());
+        Optional <Category> categoryByUuid = categoryPersistencePort.findByUuid(category.getId().toUuid());
 
         Assertions.assertTrue(categoryByUuid.isPresent());
         Assertions.assertNotNull(categoryByUuid.get());

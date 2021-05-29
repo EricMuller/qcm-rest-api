@@ -1,8 +1,8 @@
 package com.emu.apps.qcm.domain.model.question;
 
 
-import com.emu.apps.qcm.domain.model.category.Category;
 import com.emu.apps.qcm.domain.model.base.DomainId;
+import com.emu.apps.qcm.domain.model.category.Category;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,7 +18,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Question extends DomainId {
+public class Question extends DomainId <QuestionId> {
 
     private String type;
 
@@ -28,7 +28,7 @@ public class Question extends DomainId {
 
     private List <Response> responses;
 
-    private Set <QuestionTag> questionTags;
+    private Set <QuestionTag> tags;
 
     private String status;
 

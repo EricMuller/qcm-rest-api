@@ -32,6 +32,7 @@ import com.emu.apps.qcm.domain.model.question.Question;
 import com.emu.apps.qcm.domain.model.question.QuestionTags;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.projections.QuestionResponseProjection;
+import com.emu.apps.qcm.domain.mappers.QuestionIdMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -40,24 +41,29 @@ import org.springframework.data.domain.Page;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {CategoryEntityMapper.class, QuestionTagEntityMapper.class, ResponseEntityMapper.class,
-        UuidMapper.class} , unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring",
+        uses = {CategoryEntityMapper.class, QuestionTagEntityMapper.class, ResponseEntityMapper.class, UuidMapper.class, QuestionIdMapper.class},
+        unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface QuestionEntityMapper {
 
-    @Mapping(target = "questionTags", ignore = true)
-    QuestionEntity dtoToModel(Question questionDto);
+    @Mapping(target = "tags", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    QuestionEntity dtoToModel(Question question);
 
-
-    @Mapping(target = "questionTags", ignore = true)
+    @Mapping(target = "tags", ignore = true)
     @Mapping(target = "uuid", ignore = true)
     @Mapping(target = "dateCreation", ignore = true)
     @Mapping(target = "dateModification", ignore = true)
-    QuestionEntity dtoToModel(@MappingTarget QuestionEntity question, Question questionDto);
+    @Mapping(target = "id", ignore = true)
+    QuestionEntity dtoToModel(@MappingTarget QuestionEntity questionEntity, Question question);
 
-    Question entityToQuestion(QuestionEntity question);
+    @Mapping(target = "id", source = "uuid")
+    Question entityToQuestion(QuestionEntity questionEntity);
 
-    QuestionTags entityToQuestionTags(QuestionEntity question);
+    @Mapping(target = "id", source = "uuid")
+    QuestionTags entityToQuestionTags(QuestionEntity questionEntity);
 
+    @Mapping(target = "id", source = "uuid")
     Question questionResponseProjectionToDto(QuestionResponseProjection questionProjection);
 
     default Page <Question> pageQuestionResponseProjectionToDto(Page <QuestionResponseProjection> page) {

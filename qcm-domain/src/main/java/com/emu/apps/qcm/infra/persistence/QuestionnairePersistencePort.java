@@ -19,7 +19,7 @@ public interface QuestionnairePersistencePort {
 
     Questionnaire saveQuestionnaire(Questionnaire questionnaireDto, String principal);
 
-    Question addQuestion(String uuid, Question questionDto, Optional <Integer> position, String principal);
+    QuestionnaireQuestion addQuestion(String uuid, String questionUuid, Optional <Integer> position, String principal);
 
 //    Iterable <QuestionnaireProjection> findByTitleContaining(String title);
 

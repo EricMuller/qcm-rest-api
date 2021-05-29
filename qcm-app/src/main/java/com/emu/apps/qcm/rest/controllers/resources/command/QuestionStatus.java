@@ -1,4 +1,4 @@
-package com.emu.apps.qcm.rest.controllers.resources;
+package com.emu.apps.qcm.rest.controllers.resources.command;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
@@ -11,8 +11,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonRootName(value = "QuestionPatch")
-public class UpdateStatusQuestionCommand {
+@JsonRootName(value = "Question_status")
+public class QuestionStatus {
 
     @JsonProperty("status")
     private String status;

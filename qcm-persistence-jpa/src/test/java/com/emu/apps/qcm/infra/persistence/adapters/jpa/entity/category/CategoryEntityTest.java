@@ -61,13 +61,7 @@ class CategoryEntityTest {
 		assertEquals(param, result);
 	}
 
-	@Test
-	void testUuid() {
-		UUID param = UUID.randomUUID();
-		aCategoryEntity.setUuid(param);
-		Object result = aCategoryEntity.getUuid();
-		assertEquals(param, result);
-	}
+
 
 	@Test
 	void testDateCreation() {

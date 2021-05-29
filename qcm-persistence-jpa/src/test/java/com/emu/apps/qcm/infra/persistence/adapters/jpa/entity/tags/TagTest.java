@@ -15,7 +15,7 @@ class TagTest {
 	}
 	@Test
 	void testId() {
-		Long param = Long.valueOf(123);
+		Long param = 123L;
 		aTag.setId(param);
 		Object result = aTag.getId();
 		assertEquals(param, result);
@@ -29,13 +29,6 @@ class TagTest {
 		assertEquals(param, result);
 	}
 
-	@Test
-	void testUuid() {
-		UUID param = UUID.randomUUID();
-		aTag.setUuid(param);
-		Object result = aTag.getUuid();
-		assertEquals(param, result);
-	}
 
 	@Test
 	void testDateCreation() {
@@ -55,7 +48,7 @@ class TagTest {
 
 	@Test
 	void testVersion() {
-		Long param = Long.valueOf(123);
+		Long param = 123L;
 		aTag.setVersion(param);
 		Object result = aTag.getVersion();
 		assertEquals(param, result);

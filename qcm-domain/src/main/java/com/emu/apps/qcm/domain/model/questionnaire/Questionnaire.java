@@ -13,7 +13,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Questionnaire extends DomainId {
+public class Questionnaire extends DomainId <QuestionnaireId> {
 
     private String title;
 
@@ -21,7 +21,7 @@ public class Questionnaire extends DomainId {
 
     private Category category;
 
-    private Set <QuestionnaireTag> questionnaireTags;
+    private Set <QuestionnaireTag> tags;
 
     private String status;
 

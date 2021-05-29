@@ -25,17 +25,17 @@ class WebHookRepositoryAdapter implements WebHookRepository {
 
     @Override
     public Page <WebHook> getWebHooks(Pageable pageable, PrincipalId principal) {
-        return this.webHookPersistencePort.findOneByUuid(pageable, principal.toUUID());
+        return this.webHookPersistencePort.findOneByUuid(pageable, principal.toUuid());
     }
 
     @Override
     public void deleteWebHookByUuid(WebhookId webhookId) {
-        webHookPersistencePort.deleteByUuid(webhookId.toUUID());
+        webHookPersistencePort.deleteByUuid(webhookId.toUuid());
     }
 
     @Override
     public WebHook getWebHookByUuid(WebhookId webhookId) {
-        return webHookPersistencePort.findOneByUuid(webhookId.toUUID());
+        return webHookPersistencePort.findOneByUuid(webhookId.toUuid());
     }
 
     @Override

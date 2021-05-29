@@ -1,10 +1,10 @@
 package com.emu.apps.qcm.infra.persistence;
 
-import com.emu.apps.qcm.domain.model.user.User;
+import com.emu.apps.qcm.domain.model.user.Account;
 
 public interface UserPersistencePort {
 
-    User save(User tag);
+    Account save(Account tag);
 
-    User findByEmailEquals(String email);
+    Account findByEmailEquals(String email);
 }

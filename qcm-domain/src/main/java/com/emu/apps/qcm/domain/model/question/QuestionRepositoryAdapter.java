@@ -1,12 +1,7 @@
 package com.emu.apps.qcm.domain.model.question;
 
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
-import com.emu.apps.qcm.domain.model.question.Question;
-import com.emu.apps.qcm.domain.model.question.QuestionId;
-import com.emu.apps.qcm.domain.model.question.Response;
 import com.emu.apps.qcm.domain.model.tag.Tag;
-import com.emu.apps.qcm.domain.model.question.QuestionTags;
-import com.emu.apps.qcm.domain.model.question.QuestionRepository;
 import com.emu.apps.qcm.infra.persistence.QuestionPersistencePort;
 import com.emu.apps.shared.exceptions.EntityNotFoundException;
 import com.emu.apps.shared.exceptions.MessageSupport;
@@ -45,17 +40,17 @@ class QuestionRepositoryAdapter implements QuestionRepository {
                                             String[] questionnaireUuid,
                                             Pageable pageable, PrincipalId principal) {
 
-        return questionPersistencePort.findAllByPage(questionnaireUuid, tagUuid, pageable, principal.toUUID());
+        return questionPersistencePort.findAllByPage(questionnaireUuid, tagUuid, pageable, principal.toUuid());
     }
 
     @Override
     public Optional <Question> getQuestionById(QuestionId questionId) {
-        return questionPersistencePort.findByUuid(questionId.toUUID());
+        return questionPersistencePort.findByUuid(questionId.toUuid());
     }
 
     @Override
     public Question updateQuestion(Question question, PrincipalId principal) {
-        return questionPersistencePort.saveQuestion(question, principal.toUUID());
+        return questionPersistencePort.saveQuestion(question, principal.toUuid());
     }
 
     @Override
@@ -73,31 +68,31 @@ class QuestionRepositoryAdapter implements QuestionRepository {
 
         if (Objects.nonNull(question.getResponses())) {
             AtomicLong numberLong = new AtomicLong(0);
-            for (Response responseDto : question.getResponses()) {
-                responseDto.setNumber(numberLong.incrementAndGet());
+            for (Response response : question.getResponses()) {
+                response.setNumber(numberLong.incrementAndGet());
             }
         }
 
-        return questionPersistencePort.saveQuestion(question, principal.toUUID());
+        return questionPersistencePort.saveQuestion(question, principal.toUuid());
 
     }
 
     @Override
     public void deleteQuestionById(QuestionId questionId) {
 
-        var questionOptional = questionPersistencePort.findByUuid(questionId.toUUID())
-                .orElseThrow(() -> new EntityNotFoundException(questionId.toUUID(), MessageSupport.UNKNOWN_UUID_QUESTION));
+        var questionOptional = questionPersistencePort.findByUuid(questionId.toUuid())
+                .orElseThrow(() -> new EntityNotFoundException(questionId.toUuid(), MessageSupport.UNKNOWN_UUID_QUESTION));
 
-        questionPersistencePort.deleteByUuid(questionOptional.toUUID());
+        questionPersistencePort.deleteByUuid(questionOptional.getId().toUuid());
     }
 
     public Iterable <Tag> findAllQuestionTagByPage(Pageable pageable, PrincipalId principal) {
-        return questionPersistencePort.findAllTagByPage(pageable, principal.toUUID());
+        return questionPersistencePort.findAllTagByPage(pageable, principal.toUuid());
     }
 
     public Iterable <String> findAllStatusByPage(Pageable pageable, PrincipalId principal){
 
-        return questionPersistencePort.findAllStatusByPage(principal.toUUID(),pageable );
+        return questionPersistencePort.findAllStatusByPage(principal.toUuid(),pageable );
 
     }
 

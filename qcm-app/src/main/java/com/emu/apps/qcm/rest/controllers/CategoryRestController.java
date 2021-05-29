@@ -1,12 +1,18 @@
 package com.emu.apps.qcm.rest.controllers;
 
-import com.emu.apps.qcm.domain.model.category.CategoryRepository;
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
+import com.emu.apps.qcm.domain.model.category.CategoryRepository;
 import com.emu.apps.qcm.rest.controllers.mappers.QuestionnaireResourcesMapper;
 import com.emu.apps.qcm.rest.controllers.resources.CategoryResources;
 import com.emu.apps.qcm.rest.controllers.resources.MessageResources;
+import com.emu.apps.qcm.rest.controllers.resources.openui.CategoryView;
 import com.emu.apps.shared.exceptions.FunctionnalException;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
@@ -55,6 +61,8 @@ public class CategoryRestController {
 
     @GetMapping
     @ResponseBody
+    @ApiResponse(responseCode = "200", description = "successful operation",
+            content = @Content(array = @ArraySchema(schema = @Schema(implementation = CategoryResources.class))))
     public Iterable <CategoryResources> getCategoriesByType(@RequestParam("type") String typeCategory) throws FunctionnalException {
 
         return questionnaireResourcesMapper.categoriesToResources(
@@ -63,7 +71,8 @@ public class CategoryRestController {
 
     @PostMapping
     @ResponseBody
-    public CategoryResources saveCategory(@RequestBody CategoryResources categoryResources) {
+    public CategoryResources saveCategory(
+            @JsonView(CategoryView.Create.class) @RequestBody CategoryResources categoryResources) {
         var category = questionnaireResourcesMapper.categoryToModel(categoryResources);
         return questionnaireResourcesMapper.categoryToResources(
                 categoryRepository.saveCategory(category, new PrincipalId(getPrincipal())));

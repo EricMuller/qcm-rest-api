@@ -31,23 +31,25 @@ package com.emu.apps.qcm.infra.persistence.mappers;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireQuestion;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireQuestionEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.projections.QuestionResponseProjection;
+import com.emu.apps.qcm.domain.mappers.QuestionIdMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 import org.springframework.data.domain.Page;
 
-@Mapper(componentModel = "spring", uses = {CategoryEntityMapper.class, QuestionTagEntityMapper.class, ResponseEntityMapper.class, UuidMapper.class}
+@Mapper(componentModel = "spring"
+        , uses = {CategoryEntityMapper.class, QuestionTagEntityMapper.class, ResponseEntityMapper.class, UuidMapper.class, QuestionIdMapper.class}
         , unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface QuestionnaireQuestionEntityMapper {
 
-    QuestionnaireQuestion questionResponseProjectionToDto(QuestionResponseProjection questionProjection);
+    @Mapping(source = "uuid", target = "id")
+    QuestionnaireQuestion questionResponseProjectionToDomain(QuestionResponseProjection questionProjection);
 
     default Page <QuestionnaireQuestion> pageQuestionResponseProjectionToDto(Page <QuestionResponseProjection> page) {
-        return page.map(this::questionResponseProjectionToDto);
+        return page.map(this::questionResponseProjectionToDomain);
     }
 
-
-    @Mapping(source = "question.uuid", target = "uuid")
+    @Mapping(source = "question.uuid", target = "id")
     @Mapping(source = "question.version", target = "version")
     @Mapping(source = "question.dateCreation", target = "dateCreation")
     @Mapping(source = "question.dateModification", target = "dateModification")
@@ -55,17 +57,17 @@ public interface QuestionnaireQuestionEntityMapper {
     @Mapping(source = "question.questionText", target = "question")
     @Mapping(source = "question.category", target = "category")
     @Mapping(source = "question.responses", target = "responses")
-    @Mapping(source = "question.questionTags", target = "questionTags")
+    @Mapping(source = "question.tags", target = "questionTags")
     @Mapping(source = "question.tip", target = "tip")
     @Mapping(source = "question.status", target = "status")
     @Mapping(source = "position", target = "position")
     @Mapping(source = "points", target = "points")
-    QuestionnaireQuestion questionnaireQuestionEntityToDto(QuestionnaireQuestionEntity questionnaireQuestionEntity);
+    QuestionnaireQuestion questionnaireQuestionEntityToDomain(QuestionnaireQuestionEntity questionnaireQuestionEntity);
 
-    default Page <QuestionnaireQuestion> pageQuestionnaireQuestionEntityToDto(Page <QuestionnaireQuestionEntity> page) {
-        return page.map(this::questionnaireQuestionEntityToDto);
+    default Page <QuestionnaireQuestion> pageQuestionnaireQuestionEntityToDomain(Page <QuestionnaireQuestionEntity> page) {
+        return page.map(this::questionnaireQuestionEntityToDomain);
     }
 
-    Iterable <QuestionnaireQuestion> questionnaireQuestionEntityToDto(Iterable <QuestionnaireQuestionEntity> page);
+    Iterable <QuestionnaireQuestion> questionnaireQuestionEntityToDomain(Iterable <QuestionnaireQuestionEntity> page);
 
 }

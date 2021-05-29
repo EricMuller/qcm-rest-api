@@ -31,22 +31,25 @@ package com.emu.apps.qcm.infra.persistence.mappers;
 
 import com.emu.apps.qcm.domain.model.tag.Tag;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.TagEntity;
+import com.emu.apps.qcm.domain.mappers.TagIdMapper;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 import org.springframework.data.domain.Page;
 
-@Mapper(componentModel = "spring", uses = {UuidMapper.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring", uses = {UuidMapper.class, TagIdMapper.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface TagEntityMapper {
 
+    @Mapping(target = "id", source = "uuid")
     Tag modelToDto(TagEntity tag);
 
-    TagEntity dtoToModel(Tag tagDto);
+    @Mapping(target = "id", ignore = true)
+    TagEntity dtoToModel(Tag tag);
 
     Iterable <Tag> modelsToDtos(Iterable <TagEntity> tags);
 
     default Page <Tag> pageToDto(Page <TagEntity> page) {
         return page.map(this::modelToDto);
     }
-
 
 }

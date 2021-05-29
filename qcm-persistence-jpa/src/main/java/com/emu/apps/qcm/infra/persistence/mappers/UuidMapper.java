@@ -23,8 +23,8 @@ public interface UuidMapper {
 
     default  UUID getUuid(DomainId domainVersionedId) {
 
-        if (Objects.nonNull(domainVersionedId) && Objects.nonNull(domainVersionedId.getUuid())) {
-            return UUID.fromString (domainVersionedId.getUuid());
+        if (Objects.nonNull(domainVersionedId) && Objects.nonNull(domainVersionedId.getId().toUuid())) {
+            return UUID.fromString (domainVersionedId.getId().toUuid());
         }
         return null;
     }

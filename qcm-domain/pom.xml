@@ -43,7 +43,6 @@
     <name>Qcm Business Model</name>
     <description>Qcm Business Model</description>
 
-
     <dependencies>
 
         <dependency>
@@ -61,6 +60,11 @@
             <artifactId>qcm-shared</artifactId>
             <scope>test</scope>
             <type>test-jar</type>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
         </dependency>
 
         <dependency>

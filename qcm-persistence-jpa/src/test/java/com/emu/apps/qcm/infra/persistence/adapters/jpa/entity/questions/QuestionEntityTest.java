@@ -54,13 +54,6 @@ class QuestionEntityTest {
 		assertEquals(param, result);
 	}
 
-	@Test
-	void testUuid() {
-		UUID param = UUID.randomUUID();
-		aQuestionEntity.setUuid(param);
-		Object result = aQuestionEntity.getUuid();
-		assertEquals(param, result);
-	}
 
 	@Test
 	void testDateCreation() {

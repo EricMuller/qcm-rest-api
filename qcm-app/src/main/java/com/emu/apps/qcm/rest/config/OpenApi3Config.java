@@ -80,8 +80,9 @@ public class OpenApi3Config {
 
     @Bean
     GroupedOpenApi qcmApis() {
-        return GroupedOpenApi.builder().group("basics")
-                .pathsToMatch(PUBLIC_API + USERS + "/**"
+        return GroupedOpenApi.builder()
+                .group("basics")
+                .pathsToMatch(PUBLIC_API + ACCOUNTS + "/**"
                         , PUBLIC_API + QUESTIONNAIRES + "/**"
                         , PUBLIC_API + QUESTIONS + "/**"
                         , PUBLIC_API + TAGS + "/**"
@@ -91,7 +92,8 @@ public class OpenApi3Config {
 
     @Bean
     GroupedOpenApi exportApis() {
-        return GroupedOpenApi.builder().group("exports")
+        return GroupedOpenApi.builder()
+                .group("exports")
                 .pathsToMatch(PUBLIC_API + EXPORTS + "/**"
                         , PUBLIC_API + IMPORTS + "/**"
                         , PUBLIC_API + UPLOADS + "/**")
@@ -100,7 +102,8 @@ public class OpenApi3Config {
 
     @Bean
     GroupedOpenApi settingsApis() {
-        return GroupedOpenApi.builder().group("notifications")
+        return GroupedOpenApi.builder()
+                .group("notifications")
                 .pathsToMatch(PUBLIC_API + WEBHOOKS + "/**")
                 .build();
     }

@@ -63,13 +63,6 @@ class WebHookEntityTest {
 		assertEquals(param, result);
 	}
 
-	@Test
-	void testUuid() {
-		UUID param = UUID.randomUUID();
-		aWebHookEntity.setUuid(param);
-		Object result = aWebHookEntity.getUuid();
-		assertEquals(param, result);
-	}
 
 	@Test
 	void testDateCreation() {

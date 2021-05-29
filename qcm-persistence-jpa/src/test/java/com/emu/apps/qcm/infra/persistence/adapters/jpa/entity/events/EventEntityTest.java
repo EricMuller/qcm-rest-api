@@ -15,7 +15,7 @@ class EventEntityTest {
 	}
 	@Test
 	void testId() {
-		Long param = Long.valueOf(123);
+		Long param = 123L;
 		aEventEntity.setId(param);
 		Object result = aEventEntity.getId();
 		assertEquals(param, result);
@@ -29,13 +29,7 @@ class EventEntityTest {
 		assertEquals(param, result);
 	}
 
-	@Test
-	void testUuid() {
-		UUID param = UUID.randomUUID();
-		aEventEntity.setUuid(param);
-		Object result = aEventEntity.getUuid();
-		assertEquals(param, result);
-	}
+
 
 	@Test
 	void testDateCreation() {

@@ -1,5 +1,6 @@
 package com.emu.apps.qcm.rest.controllers.resources;
 
+import com.fasterxml.jackson.annotation.JsonRootName;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonRootName(value = "Message")
 public class MessageResources {
 
     public static final String OK = "OK";

@@ -31,19 +31,20 @@ package com.emu.apps.qcm.infra.persistence.mappers;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireTag;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.QuestionnaireTagEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.TagEntity;
+import com.emu.apps.qcm.domain.mappers.TagIdMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring", uses = {CategoryEntityMapper.class, UuidMapper.class}
+@Mapper(componentModel = "spring", uses = {CategoryEntityMapper.class, UuidMapper.class, TagIdMapper.class}
         , unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface QuestionnaireTagEntityMapper {
+
 
     @Mapping(source = "tag.uuid", target = "uuid")
     @Mapping(source = "tag.libelle", target = "libelle")
     QuestionnaireTag modelToDto(QuestionnaireTagEntity questionnaireTag);
 
-    @Mapping(source = "uuid", target = "tag.uuid")
     @Mapping(source = "libelle", target = "tag.libelle")
     QuestionnaireTagEntity dtoToModel(QuestionnaireTag questionnaireTagDto);
 

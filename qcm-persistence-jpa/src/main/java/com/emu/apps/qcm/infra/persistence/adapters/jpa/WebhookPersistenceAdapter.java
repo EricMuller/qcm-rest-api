@@ -41,9 +41,9 @@ public class WebhookPersistenceAdapter implements WebHookPersistencePort {
     public WebHook saveWebHook(WebHook webHook, String principal) {
 
         WebHookEntity webHookEntity;
-        if (nonNull(webHook.getUuid())) {
-            webHookEntity = webHookRepository.findOneByUuidEquals(fromString(webHook.getUuid()))
-                    .orElseThrow(() -> new EntityNotFoundException(webHook.getUuid(), UNKNOWN_UUID_WEBHOOK));
+        if (nonNull(webHook.getId().toUuid())) {
+            webHookEntity = webHookRepository.findOneByUuidEquals(fromString(webHook.getId().toUuid()))
+                    .orElseThrow(() -> new EntityNotFoundException(webHook.getId().toUuid(), UNKNOWN_UUID_WEBHOOK));
             webHookMapper.dtoToModel(webHookEntity, webHook);
         } else {
             AccountEntity userEntity = userRepository.findByUuid(fromString(principal))

@@ -19,7 +19,6 @@ import com.emu.apps.qcm.infra.persistence.mappers.QuestionEntityMapper;
 import com.emu.apps.qcm.infra.persistence.mappers.QuestionnaireQuestionEntityMapper;
 import com.emu.apps.qcm.infra.persistence.mappers.TagEntityMapper;
 import com.emu.apps.qcm.infra.persistence.mappers.UuidMapper;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,6 +31,9 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+
+import static java.util.Objects.nonNull;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 /**
  * Created by eric on 05/06/2017.
@@ -92,14 +94,14 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
 
         QuestionEntity questionEntity;
         CategoryEntity categoryEntity = null;
-        UUID uuid = uuidMapper.getUuid(question.getCategory());
+        UUID categoryUuid = uuidMapper.getUuid(question.getCategory());
 
-        if (Objects.nonNull(uuid)) {
-            categoryEntity = categoryRepository.findByUuid(uuid);
+        if (nonNull(categoryUuid)) {
+            categoryEntity = categoryRepository.findByUuid(categoryUuid);
         }
 
-        if (StringUtils.isNotBlank(question.getUuid())) {
-            questionEntity = questionRepository.findByUuid(UUID.fromString(question.getUuid())).orElse(null);
+        if (nonNull(question.getId()) && isNotBlank(question.getId().toUuid())) {
+            questionEntity = questionRepository.findByUuid(UUID.fromString(question.getId().toUuid())).orElse(null);
             questionEntity = questionMapper.dtoToModel(questionEntity, question);
         } else {
             questionEntity = questionMapper.dtoToModel(question);
@@ -109,7 +111,7 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
 
         questionEntity = questionRepository.save(questionEntity);
 
-        saveQuestionWithTags(questionEntity, question.getQuestionTags(), principal);
+        saveQuestionWithTags(questionEntity, question.getTags(), principal);
 
         return questionMapper.entityToQuestion(questionEntity);
 
@@ -147,18 +149,18 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
 
     private QuestionEntity saveQuestionWithTags(QuestionEntity questionEntity, Iterable <QuestionTag> questionTags, String principal) {
 
-        if (Objects.nonNull(questionEntity)) {
-            questionEntity.getQuestionTags().clear();
-            if (Objects.nonNull(questionTags)) {
+        if (nonNull(questionEntity)) {
+            questionEntity.getTags().clear();
+            if (nonNull(questionTags)) {
                 StreamSupport.stream(questionTags.spliterator(), false)
                         .forEach(questionTag -> {
                             TagEntity tagEntity = findTag(questionTag, principal);
-                            if (Objects.nonNull(tagEntity)) {
+                            if (nonNull(tagEntity)) {
                                 var newQuestionTag = new QuestionTagBuilder()
                                         .setQuestion(questionEntity)
                                         .setTag(tagEntity)
                                         .build();
-                                questionEntity.getQuestionTags().add(questionTagRepository.save(newQuestionTag));
+                                questionEntity.getTags().add(questionTagRepository.save(newQuestionTag));
                             }
                         });
             }
@@ -168,7 +170,7 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
 
     private TagEntity findTag(QuestionTag questionTag, String principal) {
         TagEntity tagEntity;
-        if (Objects.nonNull(questionTag.getUuid())) {
+        if (nonNull(questionTag.getUuid())) {
             tagEntity = tagRepository.findByUuid(UUID.fromString(questionTag.getUuid())).orElse(null);
         } else {
             tagEntity = tagRepository.findByLibelle(questionTag.getLibelle(), principal);
@@ -184,7 +186,7 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
     @Transactional(readOnly = true)
     public Iterable <QuestionnaireQuestion> findAllWithTagsAndResponseByQuestionnaireUuid(String questionnaireUuid) {
 
-        return questionnaireQuestionMapper.questionnaireQuestionEntityToDto(
+        return questionnaireQuestionMapper.questionnaireQuestionEntityToDomain(
                 questionnaireQuestionRepository.findWithTagsAndResponseByQuestionnaireUuid(UUID.fromString(questionnaireUuid)));
     }
 

@@ -15,7 +15,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Category extends DomainId {
+public class Category extends DomainId<CategoryId> {
 
     private String libelle;
 

@@ -50,7 +50,7 @@ public final class ApiRestMappings {
 
     public static final String WEBHOOKS =  "/webhooks";
 
-    public static final String USERS =  "/users";
+    public static final String ACCOUNTS =  "/users";
 
     public static final String EXPORTS =  "/exports";
 

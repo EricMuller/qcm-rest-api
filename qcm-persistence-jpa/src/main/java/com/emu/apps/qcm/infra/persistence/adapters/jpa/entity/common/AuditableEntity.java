@@ -26,7 +26,7 @@ public abstract class AuditableEntity<U extends Serializable> implements Seriali
     @Column(name = "UUID", nullable = false, updatable = false)
     @Type(type = "org.hibernate.type.UUIDCharType")
     @NaturalId
-    private UUID uuid = UUID.randomUUID();
+    private UUID uuid; // = UUID.randomUUID();
 
     @Column(name = "CREATED_BY", updatable = false)
     @CreatedBy
@@ -50,19 +50,26 @@ public abstract class AuditableEntity<U extends Serializable> implements Seriali
     @Column(name = "VERSION")
     private Long version;
 
+    public AuditableEntity() {
+    }
+
+    public AuditableEntity(UUID uuid) {
+        this.uuid = uuid;
+    }
+
     public abstract Long getId();
 
     public UUID getUuid() {
         return uuid;
     }
 
-    public void setUuid(UUID uuid) {
+    protected void setUuid(UUID uuid) {
         this.uuid = uuid;
     }
 
     @PrePersist
     public void prePersist() {
-        this.setUuid(UUID.randomUUID());
+        this.uuid = UUID.randomUUID();
     }
 
     public Long getVersion() {

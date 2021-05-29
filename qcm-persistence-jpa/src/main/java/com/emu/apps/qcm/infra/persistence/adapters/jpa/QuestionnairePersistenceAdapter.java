@@ -1,7 +1,6 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa;
 
 
-import com.emu.apps.qcm.domain.model.question.Question;
 import com.emu.apps.qcm.domain.model.questionnaire.Questionnaire;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireQuestion;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireTag;
@@ -23,18 +22,21 @@ import com.emu.apps.qcm.infra.persistence.mappers.QuestionnaireQuestionEntityMap
 import com.emu.apps.qcm.infra.persistence.mappers.UuidMapper;
 import com.emu.apps.shared.exceptions.EntityNotFoundException;
 import com.emu.apps.shared.exceptions.MessageSupport;
-import org.apache.commons.lang3.StringUtils;
 import org.javers.core.Javers;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Objects;
+import javax.validation.constraints.NotNull;
 import java.util.Optional;
 import java.util.UUID;
 
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;
+import static java.util.UUID.fromString;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Service
 @Transactional
@@ -80,7 +82,7 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
     @Override
     @Transactional()
     public void deleteByUuid(String uuid) {
-        questionnaireRepository.deleteByUuid(UUID.fromString(uuid));
+        questionnaireRepository.deleteByUuid(fromString(uuid));
     }
 
     @Override
@@ -88,7 +90,7 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
     public Optional <Questionnaire> findByUuid(String uuid) {
 
         return ofNullable(questionnaireMapper
-                .modelToDto(questionnaireRepository.findByUuid(UUID.fromString(uuid)).orElse(null)));
+                .modelToDto(questionnaireRepository.findByUuid(fromString(uuid)).orElse(null)));
     }
 
 
@@ -97,17 +99,17 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
 
         CategoryEntity category = null;
         UUID uuid = uuidMapper.getUuid(questionnaire.getCategory());
-        if (Objects.nonNull(uuid)) {
+        if (nonNull(uuid)) {
             category = categoryRepository.findByUuid(uuid);
         }
 
         QuestionnaireEntity questionnaireEntity = null;
-//        if (StringUtils.isNotBlank(questionnaire.getUuid())) {
-//            questionnaireEntity = questionnaireRepository.findByUuid(UUID.fromString(questionnaire.getUuid()))
-//                    .orElseThrow(() -> new EntityNotFoundException(questionnaire.getUuid(), MessageSupport.UNKNOWN_UUID_QUESTIONNAIRE));
-//        }
+        if (nonNull(questionnaire.getId()) && isNotBlank(questionnaire.getId().toUuid())) {
+            questionnaireEntity = questionnaireRepository.findByUuid(fromString(questionnaire.getId().toUuid()))
+                    .orElseThrow(() -> new EntityNotFoundException(questionnaire.getId().toUuid(), MessageSupport.UNKNOWN_UUID_QUESTIONNAIRE));
+        }
 
-        if (Objects.nonNull(questionnaireEntity)) {
+        if (nonNull(questionnaireEntity)) {
             questionnaireEntity = questionnaireMapper.dtoToModel(questionnaireEntity, questionnaire);
             questionnaireEntity.setCategory(category);
         } else {
@@ -117,7 +119,7 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
             questionnaireEntity = questionnaireRepository.saveAndFlush(questionnaireEntity);
         }
 
-        saveQuestionnaireTags(questionnaireEntity, questionnaire.getQuestionnaireTags(), principal);
+        saveQuestionnaireTags(questionnaireEntity, questionnaire.getTags(), principal);
 
         //fixme: performance issue avec javers
         // javers.commit(principal, questionnaireEntity);
@@ -145,17 +147,17 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
 
     private QuestionnaireEntity saveQuestionnaireTags(QuestionnaireEntity questionnaireEntity, Iterable <QuestionnaireTag> questionnaireTagDtos, String principal) {
 
-        questionnaireEntity.getQuestionnaireTags().clear();
+        questionnaireEntity.getTags().clear();
 
-        if (Objects.nonNull(questionnaireTagDtos)) {
+        if (nonNull(questionnaireTagDtos)) {
             for (QuestionnaireTag questionnaireTagDto : questionnaireTagDtos) {
                 TagEntity tag;
-                if (Objects.nonNull(questionnaireTagDto.getUuid())) {
-                    tag = tagRepository.findByUuid(UUID.fromString(questionnaireTagDto.getUuid()))
+                if (nonNull(questionnaireTagDto.getUuid())) {
+                    tag = tagRepository.findByUuid(fromString(questionnaireTagDto.getUuid()))
                             .orElse(null);
                 } else {
                     tag = tagRepository.findByLibelle(questionnaireTagDto.getLibelle(), principal);
-                    if (Objects.isNull(tag)) {
+                    if (isNull(tag)) {
                         tag = tagRepository.save(new TagEntity(questionnaireTagDto.getLibelle(), true));
                     }
                 }
@@ -164,7 +166,7 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
                             .setQuestionnaire(questionnaireEntity)
                             .setTag(tag)
                             .build();
-                    questionnaireEntity.getQuestionnaireTags().add(questionnaireTagRepository.save(newTag));
+                    questionnaireEntity.getTags().add(questionnaireTagRepository.save(newTag));
                 }
             }
         }
@@ -173,23 +175,30 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
     }
 
     @Override
-    public Question addQuestion(String uuid, Question question, Optional <Integer> positionOpt, String principal) {
+    public QuestionnaireQuestion addQuestion(@NotNull String uuid, String questionUUid, Optional <Integer> positionOpt, String principal) {
 
-        var questionnaireEntity = questionnaireRepository.findByUuid(UUID.fromString(uuid))
+        if ( isNull(questionUUid)) {
+            throw new EntityNotFoundException(uuid, MessageSupport.INVALID_UUID_QUESTION);
+        }
+
+        if ( isNull(uuid)) {
+            throw new EntityNotFoundException(uuid, MessageSupport.INVALID_UUID_QUESTIONNAIRE);
+        }
+
+        var questionnaireEntity = questionnaireRepository.findByUuid(fromString(uuid))
                 .orElseThrow(() -> new EntityNotFoundException(uuid, MessageSupport.UNKNOWN_UUID_QUESTIONNAIRE));
 
 
-        if (Objects.nonNull(questionnaireEntity) && Objects.nonNull(question.getUuid())) {
+        Integer position = positionOpt.isEmpty() ? questionnaireEntity.getQuestionnaireQuestions().size() + 1 : positionOpt.get();
+        var questionEntity = questionRepository.findByUuid(fromString(questionUUid))
+                .orElseThrow(() -> new EntityNotFoundException(questionUUid, MessageSupport.UNKNOWN_UUID_QUESTION));
 
-            Integer position = positionOpt.isEmpty() ? questionnaireEntity.getQuestionnaireQuestions().size() + 1 : positionOpt.get();
-            var questionEntity = questionRepository.findByUuid(UUID.fromString(question.getUuid())).orElse(null);
-            if (Objects.nonNull(questionEntity)) {
-                questionnaireQuestionRepository.save(new QuestionnaireQuestionEntity(questionnaireEntity, questionEntity, position));
-                javers.commit(principal, questionnaireEntity);
-            }
-        }
+        QuestionnaireQuestionEntity questionnaireQuestionEntity = questionnaireQuestionRepository
+                .save(new QuestionnaireQuestionEntity(questionnaireEntity, questionEntity, position));
 
-        return question;
+        javers.commit(principal, questionnaireEntity);
+
+        return questionnaireQuestionMapper.questionnaireQuestionEntityToDomain(questionnaireQuestionEntity);
     }
 
 
@@ -208,7 +217,7 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
     @Transactional(readOnly = true)
     public Questionnaire findOnePublishedByUuid(final String uuid) {
 
-        var questionnaire = questionnaireRepository.findByUuid(UUID.fromString(uuid))
+        var questionnaire = questionnaireRepository.findByUuid(fromString(uuid))
                 .orElseThrow(() -> new EntityNotFoundException(uuid, MessageSupport.UNKNOWN_UUID_QUESTIONNAIRE));
 
         return questionnaireMapper.modelToDto(questionnaire);
@@ -254,7 +263,7 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
     public void deleteQuestion(String questionnaireUuid, String questionUuid) {
 
         QuestionnaireQuestionEntity questionnaireQuestionEntity =
-                questionnaireQuestionRepository.findByQuestionUuid(UUID.fromString(questionnaireUuid), UUID.fromString(questionUuid))
+                questionnaireQuestionRepository.findByQuestionUuid(fromString(questionnaireUuid), fromString(questionUuid))
                         .orElseThrow(() -> new EntityNotFoundException(questionUuid, MessageSupport.UNKNOWN_UUID_QUESTION));
         questionnaireQuestionRepository.delete(questionnaireQuestionEntity);
     }
@@ -262,8 +271,8 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
 
     @Override
     public QuestionnaireQuestion getQuestion(String questionnaireUuid, String questionUuid) {
-        return questionnaireQuestionMapper.questionnaireQuestionEntityToDto(
-                questionnaireQuestionRepository.findByQuestionUuid(UUID.fromString(questionnaireUuid), UUID.fromString(questionUuid))
+        return questionnaireQuestionMapper.questionnaireQuestionEntityToDomain(
+                questionnaireQuestionRepository.findByQuestionUuid(fromString(questionnaireUuid), fromString(questionUuid))
                         .orElseThrow(() -> new EntityNotFoundException(questionUuid, MessageSupport.UNKNOWN_UUID_QUESTION)));
 
     }
@@ -271,16 +280,16 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
     @Transactional(readOnly = true)
     public Page <QuestionnaireQuestion> getQuestionsByQuestionnaireUuid(String questionnaireUuid, Pageable pageable) {
 
-        return questionnaireQuestionMapper.pageQuestionnaireQuestionEntityToDto(
-                questionnaireQuestionRepository.findWithTagsAndResponseByQuestionnaireUuid(UUID.fromString(questionnaireUuid), pageable));
+        return questionnaireQuestionMapper.pageQuestionnaireQuestionEntityToDomain(
+                questionnaireQuestionRepository.findWithTagsAndResponseByQuestionnaireUuid(fromString(questionnaireUuid), pageable));
 
 
     }
 
     @Transactional(readOnly = true)
     public Iterable <QuestionnaireQuestion> getQuestionsByQuestionnaireUuid(String questionnaireUuid) {
-        return questionnaireQuestionMapper.questionnaireQuestionEntityToDto(
-                questionnaireQuestionRepository.findWithTagsAndResponseByQuestionnaireUuid(UUID.fromString(questionnaireUuid)));
+        return questionnaireQuestionMapper.questionnaireQuestionEntityToDomain(
+                questionnaireQuestionRepository.findWithTagsAndResponseByQuestionnaireUuid(fromString(questionnaireUuid)));
     }
 
 

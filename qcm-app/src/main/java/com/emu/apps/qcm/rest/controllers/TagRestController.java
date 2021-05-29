@@ -6,10 +6,12 @@ import com.emu.apps.qcm.domain.model.tag.TagId;
 import com.emu.apps.qcm.domain.model.tag.TagRepository;
 import com.emu.apps.qcm.rest.controllers.mappers.QuestionnaireResourcesMapper;
 import com.emu.apps.qcm.rest.controllers.resources.TagResources;
+import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.List;
 
 import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.PUBLIC_API;
 import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.TAGS;
@@ -43,19 +46,22 @@ public class TagRestController {
 
     private final QuestionnaireResourcesMapper questionnaireResourcesMapper;
 
-    public TagRestController(TagRepository tagServicePort, QuestionnaireResourcesMapper questionnaireResourcesMapper) {
-        this.tagRepository = tagServicePort;
+    public TagRestController(TagRepository tagRepository, QuestionnaireResourcesMapper questionnaireResourcesMapper) {
+        this.tagRepository = tagRepository;
         this.questionnaireResourcesMapper = questionnaireResourcesMapper;
     }
 
     @GetMapping
     @ResponseBody
     @PageableAsQueryParam
-    public Page <TagResources> getTags(@RequestParam(value = "search", required = false) String search,
-                                       @Parameter(hidden = true)
-                                       @PageableDefault(direction = DESC, sort = {"dateModification"}, size = 100) Pageable pageable) throws IOException {
+    public PageTag getTags(@RequestParam(value = "search", required = false) String search,
+                           @Parameter(hidden = true)
+                           @PageableDefault(direction = DESC, sort = {"dateModification"}, size = 100) Pageable pageable) throws IOException {
 
-        return questionnaireResourcesMapper.tagToResources(tagRepository.getTags(search, pageable, new PrincipalId(getPrincipal())));
+        Page <TagResources> tagResourcesPage =
+                questionnaireResourcesMapper.tagToResources(tagRepository.getTags(search, pageable, new PrincipalId(getPrincipal())));
+
+        return new PageTag(tagResourcesPage.getContent(), pageable, tagResourcesPage.getContent().size());
     }
 
     @GetMapping(value = "{uuid}")
@@ -66,17 +72,26 @@ public class TagRestController {
 
     @PostMapping
     @ResponseBody
-    public TagResources createTag(@RequestBody TagResources tagResources) {
+    public TagResources createTag(@JsonView(TagResources.Create.class) @RequestBody TagResources tagResources) {
         var tag = questionnaireResourcesMapper.tagToModel(tagResources);
         return questionnaireResourcesMapper.tagToResources(tagRepository.saveTag(tag));
     }
 
-
-    @PutMapping
+    @PutMapping(value = "{uuid}")
     @ResponseBody
-    public TagResources updateTag(@RequestBody TagResources tagResources) {
-        var tag = questionnaireResourcesMapper.tagToModel(tagResources);
+    public TagResources updateTag(@PathVariable("uuid") String uuid,
+                                  @JsonView(TagResources.Update.class) @RequestBody TagResources tagResources) {
+        var tag = questionnaireResourcesMapper.tagToModel(uuid, tagResources);
         return questionnaireResourcesMapper.tagToResources(tagRepository.saveTag(tag));
+    }
+
+    /**
+     * Springdoc issue
+     */
+    class PageTag extends PageImpl <TagResources> {
+        public PageTag(List <TagResources> content, Pageable pageable, long total) {
+            super(content, pageable, total);
+        }
     }
 
 }

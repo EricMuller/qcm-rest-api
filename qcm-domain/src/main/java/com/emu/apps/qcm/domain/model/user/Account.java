@@ -1,6 +1,7 @@
 package com.emu.apps.qcm.domain.model.user;
 
 import com.emu.apps.qcm.domain.model.base.DomainId;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,7 +9,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class User extends DomainId {
+@AllArgsConstructor
+public class Account extends DomainId<AccountId> {
 
     private String email;
 
@@ -20,7 +22,7 @@ public class User extends DomainId {
 
     private String company;
 
-    public User(String email) {
+    public Account(String email) {
         this.email = email;
     }
 

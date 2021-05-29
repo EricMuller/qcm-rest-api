@@ -31,25 +31,36 @@ package com.emu.apps.qcm.infra.persistence.mappers;
 
 import com.emu.apps.qcm.domain.model.questionnaire.Questionnaire;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireEntity;
-import org.mapstruct.*;
+import com.emu.apps.qcm.domain.mappers.QuestionnaireIdMapper;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.Named;
+import org.mapstruct.ReportingPolicy;
 import org.springframework.data.domain.Page;
 
 import java.util.Optional;
 
 
-@Mapper(componentModel = "spring", uses = {CategoryEntityMapper.class, QuestionnaireTagEntityMapper.class, UuidMapper.class}
-        , unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring",
+        uses = {CategoryEntityMapper.class, QuestionnaireTagEntityMapper.class, UuidMapper.class, QuestionnaireIdMapper.class},
+        unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface QuestionnaireEntityMapper {
 
-
+    //QuestionId toId(long id);
+    @Mapping(target = "id", source = "uuid")
     Questionnaire modelToDto(QuestionnaireEntity questionnaire);
 
-    @Mapping(target = "questionnaireTags", ignore = true)
+    @Mapping(target = "tags", ignore = true)
+    @Mapping(target = "uuid", ignore = true)
+    @Mapping(target = "id", ignore = true)
     QuestionnaireEntity dtoToModel(Questionnaire questionnaire);
 
-    @Mapping(target = "questionnaireTags", ignore = true)
+    @Mapping(target = "tags", ignore = true)
     @Mapping(target = "dateModification", ignore = true)
     @Mapping(target = "lastModifiedBy", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "uuid", ignore = true)
     QuestionnaireEntity dtoToModel(@MappingTarget QuestionnaireEntity questionnaireEntity, Questionnaire questionnaire);
 
     default Page <Questionnaire> pageToDto(Page <QuestionnaireEntity> page) {

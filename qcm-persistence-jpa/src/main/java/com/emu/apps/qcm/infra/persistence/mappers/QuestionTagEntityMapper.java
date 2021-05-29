@@ -38,13 +38,11 @@ import org.mapstruct.ReportingPolicy;
         , unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface QuestionTagEntityMapper {
 
-
     @Mapping(source = "tag.uuid", target = "uuid")
     @Mapping(source = "tag.libelle", target = "libelle")
     QuestionTag entityToModel(QuestionTagEntity questionTagEntity);
 
 
-    @Mapping(source = "uuid", target = "tag.uuid")
     @Mapping(source = "libelle", target = "tag.libelle")
     QuestionTagEntity modelToEntity(QuestionTag questionTag);
 

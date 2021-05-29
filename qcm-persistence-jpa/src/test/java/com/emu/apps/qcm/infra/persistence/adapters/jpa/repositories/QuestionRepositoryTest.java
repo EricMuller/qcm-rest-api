@@ -31,7 +31,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
-import static com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig.USER_TEST;
 import static com.emu.apps.qcm.infra.persistence.adapters.jpa.fixtures.DbFixture.QUESTION_TAG_LIBELLE_1;
 import static com.google.common.collect.Iterables.getFirst;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -98,7 +97,7 @@ class QuestionRepositoryTest {
 
         assertThat(newQuestion).isPresent();
 
-        assertThrows(LazyInitializationException.class, () -> newQuestion.get().getQuestionTags().size());
+        assertThrows(LazyInitializationException.class, () -> newQuestion.get().getTags().size());
 
     }
 
@@ -128,10 +127,10 @@ class QuestionRepositoryTest {
         QuestionEntity newQuestion = questionRepository.findByIdAndFetchTags(question.getId());
 
         assertThat(newQuestion).isNotNull();
-        assertThat(newQuestion.getQuestionTags()).isNotEmpty();
-        assertThat(newQuestion.getQuestionTags().size()).isEqualTo(2);
+        assertThat(newQuestion.getTags()).isNotEmpty();
+        assertThat(newQuestion.getTags().size()).isEqualTo(2);
 
-        Optional <QuestionTagEntity> optional = newQuestion.getQuestionTags()
+        Optional <QuestionTagEntity> optional = newQuestion.getTags()
                 .stream()
                 .filter(q -> QUESTION_TAG_LIBELLE_1.equals(q.getTag().getLibelle()))
                 .findFirst();
@@ -154,10 +153,10 @@ class QuestionRepositoryTest {
         assertThat(newQuestion).isNotNull();
 
         //tags
-        assertThat(newQuestion.getQuestionTags()).isNotEmpty();
-        assertThat(newQuestion.getQuestionTags().size()).isEqualTo(2);
+        assertThat(newQuestion.getTags()).isNotEmpty();
+        assertThat(newQuestion.getTags().size()).isEqualTo(2);
 
-        Optional <QuestionTagEntity> optional = newQuestion.getQuestionTags()
+        Optional <QuestionTagEntity> optional = newQuestion.getTags()
                 .stream()
                 .filter(q -> QUESTION_TAG_LIBELLE_1.equals(q.getTag().getLibelle()))
                 .findFirst();
@@ -166,7 +165,7 @@ class QuestionRepositoryTest {
 
         // responses
         assertThat(newQuestion.getResponses()).isNotEmpty();
-        assertThat(newQuestion.getQuestionTags().size()).isEqualTo(2);
+        assertThat(newQuestion.getTags().size()).isEqualTo(2);
 
         ResponseEntity response = getFirst(newQuestion.getResponses(), null);
 
@@ -194,7 +193,7 @@ class QuestionRepositoryTest {
 
         assertThat(first).isNotNull();
 
-        Set <QuestionTagEntity> questionTags = first.getQuestionTags();
+        Set <QuestionTagEntity> questionTags = first.getTags();
         assertThat(questionTags).isNotEmpty();
         assertThat(questionTags.size()).isEqualTo(2);
 

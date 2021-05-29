@@ -29,6 +29,7 @@
 package com.emu.apps.qcm.infra.persistence.mappers;
 
 import com.emu.apps.qcm.domain.model.webhook.WebHook;
+import com.emu.apps.qcm.domain.model.webhook.WebhookId;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.events.WebHookEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -36,15 +37,25 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 import org.springframework.data.domain.Page;
 
-@Mapper(componentModel = "spring", uses = UuidMapper.class  , unmappedTargetPolicy = ReportingPolicy.IGNORE)
+import java.util.UUID;
+
+@Mapper(componentModel = "spring", uses = UuidMapper.class, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface WebHookEntityMapper {
 
-    WebHook modelToDto(WebHookEntity webhook);
 
-    WebHookEntity dtoToModel(WebHook webhookDto);
+    default WebhookId toId(UUID uuid) {
+        return new WebhookId(uuid.toString());
+    }
+
+    @Mapping(target = "id", source = "uuid")
+    WebHook modelToDto(WebHookEntity webHookEntity);
+
+    @Mapping(target = "id", ignore = true)
+    WebHookEntity dtoToModel(WebHook webHook);
 
     @Mapping(target = "user", ignore = true)
-    WebHookEntity dtoToModel(@MappingTarget WebHookEntity webhook, WebHook webhookDto);
+    @Mapping(target = "id", ignore = true)
+    WebHookEntity dtoToModel(@MappingTarget WebHookEntity webHookEntity, WebHook webHook);
 
     default Page <WebHook> pageToPageDto(Page <WebHookEntity> page) {
         return page.map(this::modelToDto);

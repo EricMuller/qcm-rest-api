@@ -1,8 +1,12 @@
 package com.emu.apps.qcm.infra.persistence.mappers;
 
+import com.emu.apps.qcm.domain.mappers.CategoryIdMapperImpl;
+import com.emu.apps.qcm.domain.mappers.QuestionnaireIdMapperImpl;
 import com.emu.apps.qcm.domain.model.questionnaire.Questionnaire;
+import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireId;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireTag;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireEntity;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -20,9 +24,11 @@ import java.util.UUID;
 
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {QuestionnaireEntityMapperImpl.class, CategoryEntityMapperImpl.class, QuestionnaireTagEntityMapperImpl.class, UuidMapperImpl.class})
+@ContextConfiguration(
+        classes = {QuestionnaireEntityMapperImpl.class, CategoryEntityMapperImpl.class, QuestionnaireTagEntityMapperImpl.class, UuidMapperImpl.class,
+                QuestionnaireIdMapperImpl.class, CategoryIdMapperImpl.class})
 @Tag("MapstructTest")
-class QuestionnaireMapperTest {
+class QuestionnaireEntityMapperTest {
 
     @Autowired
     private QuestionnaireEntityMapper questionnaireMapper;
@@ -30,8 +36,8 @@ class QuestionnaireMapperTest {
     @Test
     void modelToDto() {
 
-        QuestionnaireEntity questionnaireEntity = new QuestionnaireEntity();
-        questionnaireEntity.setUuid(UUID.randomUUID());
+        QuestionnaireEntity questionnaireEntity = new QuestionnaireEntity(UUID.randomUUID());
+
 
         Questionnaire questionnaire = questionnaireMapper.modelToDto(questionnaireEntity);
 
@@ -42,16 +48,15 @@ class QuestionnaireMapperTest {
     void dtoToModel() {
 
         Questionnaire questionnaire = new Questionnaire();
-        questionnaire.setUuid(UUID.randomUUID().toString());
+        questionnaire.setId(new QuestionnaireId(UUID.randomUUID().toString()));
 
         QuestionnaireTag questionnaireTag = new QuestionnaireTag();
         questionnaireTag.setUuid(UUID.randomUUID().toString());
-        questionnaire.setQuestionnaireTags(Set.of(questionnaireTag));
+        questionnaire.setTags(Set.of(questionnaireTag));
 
         QuestionnaireEntity questionnaireEntity = questionnaireMapper.dtoToModel(questionnaire);
 
-        Assertions.assertNotNull(questionnaireEntity.getUuid());
-        Assertions.assertNotNull(questionnaireEntity.getQuestionnaireTags().isEmpty());
+        Assertions.assertNotNull(questionnaireEntity.getTags().isEmpty());
     }
 
     @Test
@@ -60,20 +65,20 @@ class QuestionnaireMapperTest {
         final ZonedDateTime now = ZonedDateTime.now();
 
         Questionnaire questionnaire = new Questionnaire();
-        questionnaire.setUuid(UUID.randomUUID().toString());
+        questionnaire.setId(new QuestionnaireId(UUID.randomUUID().toString()));
 
         QuestionnaireTag questionnaireTag = new QuestionnaireTag();
         questionnaireTag.setUuid(UUID.randomUUID().toString());
-        questionnaire.setQuestionnaireTags(Set.of(questionnaireTag));
+        questionnaire.setTags(Set.of(questionnaireTag));
 
-        QuestionnaireEntity questionnaireEntity = new QuestionnaireEntity();
+        QuestionnaireEntity questionnaireEntity = new QuestionnaireEntity(UUID.randomUUID());
         questionnaireEntity.setDateModification(now);
         questionnaireEntity.setLastModifiedBy("me");
 
         questionnaireMapper.dtoToModel(questionnaireEntity, questionnaire);
 
         Assertions.assertNotNull(questionnaireEntity.getUuid());
-        Assertions.assertNotNull(questionnaireEntity.getQuestionnaireTags().isEmpty());
+        Assertions.assertNotNull(questionnaireEntity.getTags().isEmpty());
         Assertions.assertTrue(now.equals(questionnaireEntity.getDateModification()));
         Assertions.assertTrue("me".equals(questionnaireEntity.getLastModifiedBy()));
 
@@ -82,7 +87,7 @@ class QuestionnaireMapperTest {
     @Test
     void pageToDto() {
         final ZonedDateTime now = ZonedDateTime.now();
-        QuestionnaireEntity questionnaireEntity = new QuestionnaireEntity();
+        QuestionnaireEntity questionnaireEntity = new QuestionnaireEntity(UUID.randomUUID());
         questionnaireEntity.setDateModification(now);
         questionnaireEntity.setLastModifiedBy("me");
 

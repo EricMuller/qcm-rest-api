@@ -20,14 +20,14 @@ import java.util.Objects;
  * @since 2.2.0
  */
 @Service
-class UserRepositoryAdapter implements UserRepository {
+class AccountRepositoryAdapter implements AccountRepository {
 
     @Value("${spring.profiles.active}")
     private String profiles;
 
     private final UserPersistencePort userPersistencePort;
 
-    public UserRepositoryAdapter(UserPersistencePort userPersistencePort) {
+    public AccountRepositoryAdapter(UserPersistencePort userPersistencePort) {
         this.userPersistencePort = userPersistencePort;
     }
 
@@ -46,7 +46,7 @@ class UserRepositoryAdapter implements UserRepository {
      * @return the current user
      */
     @Override
-    public User userByEmail(String email) {
+    public Account userByEmail(String email) {
         return userPersistencePort.findByEmailEquals(email);
 
     }
@@ -54,23 +54,23 @@ class UserRepositoryAdapter implements UserRepository {
     /**
      * Update a user
      *
-     * @param user      user
+     * @param account      user
      * @param principal principal
      * @return the updated user DTO
      */
 
     @Override
-    public User updateUser(@RequestBody User user, PrincipalId principal) {
+    public Account updateUser(@RequestBody Account account, PrincipalId principal) {
 
-        return userPersistencePort.save(user);
+        return userPersistencePort.save(account);
 
     }
 
     @Override
-    public User createUser(@RequestBody User user, PrincipalId principal) {
+    public Account createUser(@RequestBody Account account, PrincipalId principal) {
 
-        user.setEmail(principal.toUUID());
-        return userPersistencePort.save(user);
+        account.setEmail(principal.toUuid());
+        return userPersistencePort.save(account);
 
     }
 

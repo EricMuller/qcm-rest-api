@@ -28,5 +28,5 @@ public  class Fixture {
 
     public static final String QUESTIONNAIRE_DESC = "Questionnaire desc";
 
-    public static final String USER = SpringBootJpaTestConfig.USER_TEST.toUUID();
+    public static final String USER = SpringBootJpaTestConfig.USER_TEST_ID.toUuid();
 }

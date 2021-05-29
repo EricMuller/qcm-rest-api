@@ -53,13 +53,7 @@ class UploadEntityTest {
 		assertEquals(param, result);
 	}
 
-	@Test
-	void testUuid() {
-		UUID param = UUID.randomUUID();
-		aUploadEntity.setUuid(param);
-		Object result = aUploadEntity.getUuid();
-		assertEquals(param, result);
-	}
+
 
 	@Test
 	void testDateCreation() {

@@ -30,6 +30,7 @@ package com.emu.apps.qcm.rest.controllers.resources;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -43,6 +44,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
+@JsonRootName(value = "QuestionTags")
 public class QuestionTagsResources {
 
     @JsonProperty("uuid")
@@ -67,6 +69,6 @@ public class QuestionTagsResources {
     private String status;
 
     @JsonProperty("tags")
-    private Set <QuestionTagResources> questionTags;
+    private Set <TagResources> tags;
 
 }

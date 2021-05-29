@@ -93,10 +93,10 @@ public class QuestionnaireRepositoryTest {
 
         QuestionEntity question = questionnaireQuestion1.getQuestion();
         //tags
-        Assertions.assertThat(question.getQuestionTags()).isNotNull();
+        Assertions.assertThat(question.getTags()).isNotNull();
 
 
-        QuestionTagEntity questionTag = Iterables.getFirst(question.getQuestionTags(), null);
+        QuestionTagEntity questionTag = Iterables.getFirst(question.getTags(), null);
         Assertions.assertThat(questionTag.getTag()).isNotNull();
         Assertions.assertThat(questionTag.getTag().getLibelle()).isNotNull().startsWith(DbFixture.QUESTION_TAG_LIBELLE_1.substring(0, 3));
 

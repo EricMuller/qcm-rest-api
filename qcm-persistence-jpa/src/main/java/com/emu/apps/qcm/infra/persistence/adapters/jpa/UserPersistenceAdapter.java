@@ -28,11 +28,11 @@
 
 package com.emu.apps.qcm.infra.persistence.adapters.jpa;
 
-import com.emu.apps.qcm.domain.model.user.User;
+import com.emu.apps.qcm.domain.model.user.Account;
 import com.emu.apps.qcm.infra.persistence.UserPersistencePort;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.AccountEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.AccountRepository;
-import com.emu.apps.qcm.infra.persistence.mappers.UserEntityMapper;
+import com.emu.apps.qcm.infra.persistence.mappers.AccountEntityMapper;
 import com.emu.apps.shared.exceptions.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,6 +42,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import static com.emu.apps.shared.exceptions.MessageSupport.UNKNOWN_UUID_USER;
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 /**
@@ -53,23 +54,23 @@ public class UserPersistenceAdapter implements UserPersistencePort {
 
     private final AccountRepository userRepository;
 
-    private final UserEntityMapper userMapper;
+    private final AccountEntityMapper userMapper;
 
     @Autowired
-    public UserPersistenceAdapter(AccountRepository tagRepository, UserEntityMapper userMapper) {
+    public UserPersistenceAdapter(AccountRepository tagRepository, AccountEntityMapper userMapper) {
         this.userRepository = tagRepository;
         this.userMapper = userMapper;
     }
 
     @Override
-    public User save(User user) {
+    public Account save(Account account) {
         AccountEntity userEntity;
-        if (Objects.isNull(user.getUuid())) {
-            userEntity = userMapper.dtoToModel(user);
+        if (isNull(account.getId()) || isNull(account.getId().toUuid())) {
+            userEntity = userMapper.dtoToModel(account);
         } else {
-            userEntity = userRepository.findByUuid(UUID.fromString(user.getUuid()))
-                    .orElseThrow(() -> new EntityNotFoundException(user.getUuid(), UNKNOWN_UUID_USER));
-            userMapper.dtoToModel(userEntity, user);
+            userEntity = userRepository.findByUuid(UUID.fromString(account.getId().toUuid()))
+                    .orElseThrow(() -> new EntityNotFoundException(account.getId().toUuid(), UNKNOWN_UUID_USER));
+            userMapper.dtoToModel(userEntity, account);
         }
         userEntity = nonNull(userEntity) ? userRepository.save(userEntity) : null;
 
@@ -78,7 +79,7 @@ public class UserPersistenceAdapter implements UserPersistencePort {
 
     @Override
     @Transactional(readOnly = true)
-    public User findByEmailEquals(String email) {
+    public Account findByEmailEquals(String email) {
         return userMapper.modelToDto(userRepository.findByEmailEquals(email).orElse(null));
     }
 

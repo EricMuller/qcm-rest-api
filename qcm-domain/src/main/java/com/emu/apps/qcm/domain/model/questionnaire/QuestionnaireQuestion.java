@@ -3,6 +3,7 @@ package com.emu.apps.qcm.domain.model.questionnaire;
 
 import com.emu.apps.qcm.domain.model.category.Category;
 import com.emu.apps.qcm.domain.model.base.DomainId;
+import com.emu.apps.qcm.domain.model.question.QuestionId;
 import com.emu.apps.qcm.domain.model.question.QuestionTag;
 import com.emu.apps.qcm.domain.model.question.Response;
 import lombok.Getter;
@@ -19,7 +20,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-public class QuestionnaireQuestion extends DomainId {
+public class QuestionnaireQuestion extends DomainId<QuestionId> {
 
     private String question;
 

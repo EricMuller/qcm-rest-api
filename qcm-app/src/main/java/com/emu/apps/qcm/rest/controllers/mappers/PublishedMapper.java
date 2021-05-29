@@ -29,6 +29,7 @@
 package com.emu.apps.qcm.rest.controllers.mappers;
 
 import com.emu.apps.qcm.domain.model.category.Category;
+import com.emu.apps.qcm.domain.model.question.QuestionId;
 import com.emu.apps.qcm.domain.model.question.QuestionTag;
 import com.emu.apps.qcm.domain.model.questionnaire.Questionnaire;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireQuestion;
@@ -51,6 +52,10 @@ public interface PublishedMapper {
         return Objects.nonNull(category) ? category.getLibelle() : null;
     }
 
+    default String questionIdToString(QuestionId questionId) {
+        return Objects.nonNull(questionId) ? questionId.toUuid() : null;
+    }
+
    default String questionnaireTagToString(QuestionnaireTag questionnaireTag) {
         return questionnaireTag.getLibelle();
     }
@@ -70,7 +75,7 @@ public interface PublishedMapper {
     }
 
     // questions
-    @Mapping(source = "uuid", target = "questionnaireUuid")
+    @Mapping(source = "id", target = "questionnaireUuid")
     @Mapping(source = "type", target = "type")
     @Mapping(source = "question", target = "questionText")
     @Mapping(source = "status", target = "status")

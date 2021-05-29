@@ -1,9 +1,6 @@
 package com.emu.apps.qcm.domain.model.upload;
 
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
-import com.emu.apps.qcm.domain.model.upload.Upload;
-import com.emu.apps.qcm.domain.model.upload.UploadId;
-import com.emu.apps.qcm.domain.model.upload.UploadRepository;
 import com.emu.apps.qcm.infra.persistence.UploadPersistencePort;
 import com.emu.apps.shared.exceptions.EntityNotFoundException;
 import com.emu.apps.shared.exceptions.MessageSupport;
@@ -54,13 +51,13 @@ class UploadRepositoryAdapter implements UploadRepository {
     @Override
     public Page <Upload> getUploads(Pageable pageable, PrincipalId principal) {
 
-        return uploadPersistencePort.findAllByPage(pageable, principal.toUUID());
+        return uploadPersistencePort.findAllByPage(pageable, principal.toUuid());
     }
 
     @Override
     public void deleteUploadByUuid(UploadId uploadId) {
-        var upload = uploadPersistencePort.findByUuid(uploadId.toUUID())
-                .orElseThrow(() -> new EntityNotFoundException(uploadId.toUUID(), MessageSupport.UNKNOWN_UUID_UPLOAD));
+        var upload = uploadPersistencePort.findByUuid(uploadId.toUuid())
+                .orElseThrow(() -> new EntityNotFoundException(uploadId.toUuid(), MessageSupport.UNKNOWN_UUID_UPLOAD));
 
         uploadPersistencePort.deleteByUuid(upload.getUuid());
 
@@ -69,8 +66,8 @@ class UploadRepositoryAdapter implements UploadRepository {
     @Override
     public Upload getUploadByUuid(UploadId uploadId) {
 
-        return  uploadPersistencePort.findByUuid(uploadId.toUUID())
-                .orElseThrow(() -> new EntityNotFoundException(uploadId.toUUID(), MessageSupport.UNKNOWN_UUID_UPLOAD));
+        return  uploadPersistencePort.findByUuid(uploadId.toUuid())
+                .orElseThrow(() -> new EntityNotFoundException(uploadId.toUuid(), MessageSupport.UNKNOWN_UUID_UPLOAD));
 
 
     }

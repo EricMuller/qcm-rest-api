@@ -72,7 +72,6 @@ public class AppErrorController implements ErrorController {
         return ERROR_PATH;
     }
 
-
     private boolean getTraceParameter(HttpServletRequest request) {
         String parameter = request.getParameter("trace");
         if (parameter == null) {

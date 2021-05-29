@@ -1,5 +1,11 @@
 package com.emu.apps.qcm.rest.controllers.mappers;
 
+import com.emu.apps.qcm.domain.mappers.AccountIdMapper;
+import com.emu.apps.qcm.domain.mappers.CategoryIdMapper;
+import com.emu.apps.qcm.domain.mappers.QuestionIdMapper;
+import com.emu.apps.qcm.domain.mappers.QuestionnaireIdMapper;
+import com.emu.apps.qcm.domain.mappers.TagIdMapper;
+import com.emu.apps.qcm.domain.mappers.WebhookIdMapper;
 import com.emu.apps.qcm.domain.model.category.Category;
 import com.emu.apps.qcm.domain.model.question.Question;
 import com.emu.apps.qcm.domain.model.question.QuestionTag;
@@ -10,45 +16,62 @@ import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireQuestion;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireTag;
 import com.emu.apps.qcm.domain.model.tag.Tag;
 import com.emu.apps.qcm.domain.model.upload.Upload;
-import com.emu.apps.qcm.domain.model.user.User;
+import com.emu.apps.qcm.domain.model.user.Account;
 import com.emu.apps.qcm.domain.model.webhook.WebHook;
 import com.emu.apps.qcm.rest.controllers.resources.*;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 import org.springframework.data.domain.Page;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring",
+        uses = {QuestionIdMapper.class, QuestionnaireIdMapper.class, AccountIdMapper.class, CategoryIdMapper.class,
+                WebhookIdMapper.class, TagIdMapper.class},
+        unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface QuestionnaireResourcesMapper {
 
+    @Mapping(target = "uuid", source = "id")
     QuestionnaireResources questionnaireToResources(Questionnaire questionnaire);
 
     Questionnaire questionnaireToModel(QuestionnaireResources questionnaireResources);
 
-    QuestionnaireTagResources questionnaireTagToResources(QuestionnaireTag questionnaireTag);
+    Questionnaire questionnaireToModel(String id, QuestionnaireResources questionnaireResources);
 
-    QuestionnaireTag questionnaireTagToModel(QuestionnaireTagResources questionnaireTagResources);
+    TagResources questionnaireTagToResources(QuestionnaireTag questionnaireTag);
 
+    QuestionnaireTag questionnaireTagToModel(TagResources tagResources);
+
+    @Mapping(target = "uuid", source = "id")
     CategoryResources categoryToResources(Category category);
 
+    @Mapping(target = "id", source = "uuid")
     Category categoryToModel(CategoryResources categoryResources);
 
+    @Mapping(target = "uuid", source = "id")
     QuestionnaireQuestionResources questionnaireQuestionToResources(QuestionnaireQuestion questionnaireQuestion);
 
     Question questionToModel(QuestionResources questionResources);
 
+    Question questionToModel(String id, QuestionResources questionResources);
+
+    @Mapping(target = "uuid", source = "id")
     QuestionResources questionToResources(Question question);
 
     Response responseToModel(ResponseResources responseResources);
 
     ResponseResources responseToResources(Response response);
 
-    QuestionTagResources questionTagToResources(QuestionTag questionnaireTag);
+    TagResources questionTagToResources(QuestionTag questionTag);
 
-    QuestionTag questionTagToModel(QuestionTagResources questionTagResources);
+    QuestionTag questionTagToModel(TagResources tagResources);
 
+    @Mapping(target = "uuid", source = "id")
     QuestionTagsResources questionTagsToResources(QuestionTags questionTags);
 
+    @Mapping(target = "uuid", source = "id")
     TagResources tagToResources(Tag tag);
+
+    Tag tagToModel(String id, TagResources tagResources);
 
     Tag tagToModel(TagResources tagResources);
 
@@ -58,16 +81,20 @@ public interface QuestionnaireResourcesMapper {
 
     Upload uploadToModel(UploadResources uploadResources);
 
-    UserResources userToResources(User user);
+    @Mapping(target = "uuid", source = "id")
+    AccountResources userToResources(Account account);
 
-    User userToModel(UserResources userResources);
+    Account userToModel(AccountResources accountResources);
 
+    @Mapping(target = "uuid", source = "id")
     WebHookResources webhookToResources(WebHook webHook);
 
     WebHook webhookToModel(WebHookResources webHookResources);
 
+    WebHook webhookToModel(String id, WebHookResources webHookResources);
 
-    Iterable <CategoryResources> categoriesToResources(Iterable <Category> categories) ;
+
+    Iterable <CategoryResources> categoriesToResources(Iterable <Category> categories);
 
     default Page <WebHookResources> webhookToResources(Page <WebHook> page) {
         return page.map(this::webhookToResources);

@@ -26,10 +26,10 @@ import java.util.Arrays;
 @Profile("webmvc")
 class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final Filter userFilter;
+    private final Filter accountFilter;
 
-    WebSecurityConfig(@Qualifier("UserFilter") Filter userFilter) {
-        this.userFilter = userFilter;
+    WebSecurityConfig(@Qualifier("AccountFilter") Filter accountFilter) {
+        this.accountFilter = accountFilter;
     }
 
 
@@ -60,7 +60,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/actuator/**").permitAll()
                 .anyRequest().permitAll();
 
-        http.addFilterAfter(userFilter, OAuth2LoginAuthenticationFilter.class);
+        http.addFilterAfter(accountFilter, OAuth2LoginAuthenticationFilter.class);
 
     }
 

@@ -25,7 +25,7 @@ import org.springframework.test.context.TestPropertySource;
 
 import java.util.Arrays;
 
-import static com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig.USER_TEST;
+import static com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig.USER_TEST_ID;
 import static com.emu.apps.shared.security.AuthentificationContextHolder.setPrincipal;
 import static org.apache.commons.collections4.IterableUtils.isEmpty;
 import static org.apache.commons.collections4.IterableUtils.size;
@@ -35,34 +35,34 @@ import static org.apache.commons.collections4.IterableUtils.size;
 class QuestionRepositoryTest {
 
     @Autowired
-    private QuestionRepository questionBusinessPort;
+    private QuestionRepository questionRepository;
 
     @Autowired
-    private CategoryRepository categoryBusinessPort;
+    private CategoryRepository categoryRepository;
 
     @BeforeEach
     void setUp() {
-        setPrincipal(USER_TEST.toUUID());
+        setPrincipal(USER_TEST_ID.toUuid());
     }
 
     @Test
     void testGetQuestions() {
 
 
-        Iterable <QuestionTags> questionTags = questionBusinessPort.getQuestions(new String[0], new String[0], PageRequest.of(0, 10), new PrincipalId("toto"));
+        Iterable <QuestionTags> questionTags = questionRepository.getQuestions(new String[0], new String[0], PageRequest.of(0, 10), new PrincipalId("toto"));
 
         Assertions.assertTrue(isEmpty(questionTags));
 
     }
 
     @Test
-    void testSaveQuestion() throws FunctionnalException {
+    void testSaveQuestion()  {
 
         Category category = new Category();
         category.setType(Type.QUESTION.name());
         category.setLibelle("QuestionBusinessPortTest.testSaveQuestion");
 
-        category = categoryBusinessPort.saveCategory(category, USER_TEST);
+        category = categoryRepository.saveCategory(category, USER_TEST_ID);
 
         Question question = new Question();
         question.setQuestionText("why?");
@@ -73,21 +73,22 @@ class QuestionRepositoryTest {
 
         question.setResponses(Arrays.asList(response));
 
-        Question saveQuestion = questionBusinessPort.saveQuestion(question, USER_TEST);
+        Question saveQuestion = questionRepository.saveQuestion(question, USER_TEST_ID);
 
         Assertions.assertNotNull(saveQuestion);
-        Assertions.assertNotNull(saveQuestion.getUuid());
+        Assertions.assertNotNull(saveQuestion.getId());
+        Assertions.assertNotNull(saveQuestion.getId().toUuid());
         Assertions.assertEquals("why?",saveQuestion.getQuestionText());
         Assertions.assertEquals(1, size(saveQuestion.getResponses()));
 
-        Question getQuestion = questionBusinessPort.getQuestionById(new QuestionId(saveQuestion.getUuid())).orElse(null);
+        Question getQuestion = questionRepository.getQuestionById(new QuestionId(saveQuestion.getId().toUuid())).orElse(null);
         Assertions.assertNotNull(getQuestion);
         Assertions.assertEquals("why?",saveQuestion.getQuestionText());
         Assertions.assertEquals(1, size(saveQuestion.getResponses()));
 
 
         getQuestion.setQuestionText("why2?");
-        Question updateQuestion = questionBusinessPort.saveQuestion(getQuestion, USER_TEST);
+        Question updateQuestion = questionRepository.saveQuestion(getQuestion, USER_TEST_ID);
 
 
         Assertions.assertNotNull(updateQuestion);

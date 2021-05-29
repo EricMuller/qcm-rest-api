@@ -31,13 +31,13 @@ class CategoryRepositoryAdapter implements CategoryRepository {
 
     @Override
     public Iterable <Category> getCategories(PrincipalId principal, String type) {
-        return categoryPersistencePort.findCategories(principal.toUUID(), type);
+        return categoryPersistencePort.findCategories(principal.toUuid(), type);
     }
 
 
     @Override
     public Category saveCategory(Category category, PrincipalId principal) {
-        category.setUserId(principal.toUUID());
+        category.setUserId(principal.toUuid());
         return categoryPersistencePort.saveCategory(category);
     }
 

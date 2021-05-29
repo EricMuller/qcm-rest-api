@@ -51,7 +51,7 @@ public interface QuestionnaireQuestionRepository extends JpaRepository <Question
     @Query("SELECT distinct qq.question.id as id, qq.question.uuid as uuid, qq.question.dateCreation as dateCreation,qq.question.version as version,qq.question.questionText as question ,qq.question.type as type,qq.position as position " +
             " FROM QuestionnaireQuestionEntity qq " +
             " join qq.question q " +
-            " left join q.questionTags  qt " +
+            " left join q.tags  qt " +
             " join qt.tag t  " +
             " WHERE qq.id.questionnaireId in :questionnaireIds  and t.id in :tagIds  order by qq.position")
     @Deprecated(forRemoval = true)

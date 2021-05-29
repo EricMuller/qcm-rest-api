@@ -1,19 +1,16 @@
 package com.emu.apps.qcm.domain.model.base;
 
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.Objects;
 import java.util.UUID;
 
-@Getter
-@Setter
-@NoArgsConstructor
+
 /**
  * Base class for value objects that are used as identifiers for {@link IdentifiableDomainObject}s. These are
  * essentially UUID-wrappers.
  */
+@NoArgsConstructor
 public abstract class DomainObjectId implements ValueObject {
 
     private String uuid;
@@ -38,7 +35,7 @@ public abstract class DomainObjectId implements ValueObject {
      * Returns the ID as a UUID string.
      */
 //    @JsonValue
-    public String toUUID() {
+    public String toUuid() {
         return uuid;
     }
 

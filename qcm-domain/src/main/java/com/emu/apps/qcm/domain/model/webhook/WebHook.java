@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class WebHook extends DomainId {
+public class WebHook extends DomainId<WebhookId> {
 
     private String url;
 

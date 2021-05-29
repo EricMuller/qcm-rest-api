@@ -104,7 +104,7 @@ public class ImportServices {
 
     }
 
-    private Question mapToQuestionDto(QuestionExport questionExport, Category categoryDto) {
+    private Question mapToQuestion(QuestionExport questionExport, Category categoryDto) {
 
         var questionDto = new Question();
 
@@ -134,32 +134,32 @@ public class ImportServices {
             questionTagDto.setLibelle(qtag.getLibelle());
             questionTags.add(questionTagDto);
         }
-        questionDto.setQuestionTags(questionTags);
+        questionDto.setTags(questionTags);
         return questionDto;
 
     }
 
 
-    private Question mapToQuestionDto(ImportFileQuestion fileQuestionDto, Category category) {
+    private Question mapToQuestion(ImportFileQuestion fileQuestionDto, Category category) {
 
-        var questionDto = new Question();
+        var question = new Question();
 
-        questionDto.setQuestionText(fileQuestionDto.getQuestion());
-        questionDto.setType(FREE_TEXT.name());
-        questionDto.setStatus(DRAFT.name());
+        question.setQuestionText(fileQuestionDto.getQuestion());
+        question.setType(FREE_TEXT.name());
+        question.setStatus(DRAFT.name());
 
-        questionDto.setCategory(category);
+        question.setCategory(category);
 
         Response responseDto = new Response();
         responseDto.setResponseText(fileQuestionDto.getResponse());
-        questionDto.setResponses(asList(responseDto));
+        question.setResponses(asList(responseDto));
 
-        QuestionTag questionTagDto = new QuestionTag();
-        questionTagDto.setLibelle(fileQuestionDto.getCategorie());
+        QuestionTag questionTag = new QuestionTag();
+        questionTag.setLibelle(fileQuestionDto.getCategorie());
 
-        questionDto.setQuestionTags(new HashSet <>(asList(questionTagDto)));
+        question.setTags(new HashSet <>(asList(questionTag)));
 
-        return questionDto;
+        return question;
 
     }
 
@@ -173,7 +173,7 @@ public class ImportServices {
         questionnaire.setTitle(export.getQuestionnaire().getTitle());
         questionnaire.setStatus(export.getQuestionnaire().getStatus());
         if (StringUtils.isNotBlank(export.getQuestionnaire().getUuid())) {
-            questionnaire.setUuid(export.getQuestionnaire().getUuid());
+            questionnaire.setId(new QuestionnaireId(export.getQuestionnaire().getUuid()));
             questionnaire.setVersion(export.getQuestionnaire().getVersion());
             questionnaire.setDateCreation(export.getQuestionnaire().getDateCreation());
             questionnaire.setDateModification(export.getQuestionnaire().getDateModification());
@@ -188,14 +188,14 @@ public class ImportServices {
                 qtags.add(questionnaireTagDto);
             }
         }
-        questionnaire.setQuestionnaireTags(qtags);
+        questionnaire.setTags(qtags);
 
         // categorie
         if (Objects.nonNull(export.getQuestionnaire().getCategory())) {
             Category category = new Category();
             category.setLibelle(export.getQuestionnaire().getCategory().getLibelle());
             category.setType(TYPE_QUESTIONNAIRE);
-            category.setUserId(principal.toUUID());
+            category.setUserId(principal.toUuid());
             category = categoryRepository.saveCategory(category, principal);
             questionnaire.setCategory(category);
         }
@@ -205,33 +205,33 @@ public class ImportServices {
         //questions
         List <Question> questions = export.getQuestions()
                 .stream()
-                .map(questionExportDto ->
+                .map(questionExport ->
                 {
-                    Category categoryDto = null;
-                    if (Objects.nonNull(questionExportDto.getCategory())) {
-                        categoryDto = new Category();
-                        categoryDto.setLibelle(questionExportDto.getCategory().getLibelle());
-                        categoryDto.setType(TYPE_QUESTION);
-                        categoryDto.setUserId(principal.toUUID());
-                        categoryDto = categoryRepository.saveCategory(categoryDto, principal);
+                    Category category = null;
+                    if (Objects.nonNull(questionExport.getCategory())) {
+                        category = new Category();
+                        category.setLibelle(questionExport.getCategory().getLibelle());
+                        category.setType(TYPE_QUESTION);
+                        category.setUserId(principal.toUuid());
+                        category = categoryRepository.saveCategory(category, principal);
                     }
 
-                    return mapToQuestionDto(questionExportDto, categoryDto);
+                    return mapToQuestion(questionExport, category);
                 })
                 .collect(Collectors.toList());
 
         Collection <Question> questionDtos = questionRepository.saveQuestions(questions, principal);
 
-        questionnaireRepository.addQuestions(new QuestionnaireId(newQuestionnaire.getUuid()), questionDtos, principal);
+        questionnaireRepository.addQuestions(new QuestionnaireId(newQuestionnaire.getId().toUuid()), questionDtos, principal);
 
         return DONE;
     }
 
 
     @Transactional
-    public ImportStatus importQuestionnaire(String name, ImportFileQuestion[] fileQuestionDtos, PrincipalId principal) {
+    public ImportStatus importQuestionnaire(String name, ImportFileQuestion[] fileQuestions, PrincipalId principal) {
 
-        if (ArrayUtils.isNotEmpty(fileQuestionDtos)) {
+        if (ArrayUtils.isNotEmpty(fileQuestions)) {
             try {
                 Questionnaire questionnaireDto = new Questionnaire();
 
@@ -240,27 +240,27 @@ public class ImportServices {
 
                 final var tagQuestionnaire = tagRepository.findOrCreateByLibelle(IMPORT, principal);
 
-                QuestionnaireTag questionnaireTagDto = new QuestionnaireTag();
-                questionnaireTagDto.setUuid(tagQuestionnaire.getUuid());
-                questionnaireDto.setQuestionnaireTags(new HashSet <>(asList(questionnaireTagDto)));
+                QuestionnaireTag questionnaireTag = new QuestionnaireTag();
+                questionnaireTag.setUuid(tagQuestionnaire.getId().toUuid());
+                questionnaireDto.setTags(new HashSet <>(asList(questionnaireTag)));
                 Questionnaire questionnaire = questionnaireRepository.saveQuestionnaire(questionnaireDto, principal);
 
-                Category category = new Category();
-                category.setLibelle(IMPORT);
-                category.setType(TYPE_QUESTION);
-                category.setUserId(principal.toUUID());
+                Category QuestionCategory = new Category();
+                QuestionCategory.setLibelle(IMPORT);
+                QuestionCategory.setType(TYPE_QUESTION);
+                QuestionCategory.setUserId(principal.toUuid());
 
-                final Category categoryDto = categoryRepository.saveCategory(category, principal);
+                final Category category = categoryRepository.saveCategory(QuestionCategory, principal);
 
                 List <Question> questions = Arrays
-                        .stream(fileQuestionDtos)
-                        .filter(fileQuestionDto -> isNotEmpty(fileQuestionDto.getCategorie()))
-                        .map(fileQuestionDto -> mapToQuestionDto(fileQuestionDto, categoryDto))
+                        .stream(fileQuestions)
+                        .filter(fileQuestion -> isNotEmpty(fileQuestion.getCategorie()))
+                        .map(fileQuestion -> mapToQuestion(fileQuestion, category))
                         .collect(Collectors.toList());
 
                 Collection <Question> questionDtos = questionRepository.saveQuestions(questions, principal);
 
-                questionnaireRepository.addQuestions(new QuestionnaireId(questionnaire.getUuid()), questionDtos, principal);
+                questionnaireRepository.addQuestions(new QuestionnaireId(questionnaire.getId().toUuid()), questionDtos, principal);
 
             } catch (TechnicalException e) {
 

@@ -12,7 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class QuestionLight extends DomainId {
+public class QuestionLight extends DomainId<QuestionId> {
 
     private String questionText;
 

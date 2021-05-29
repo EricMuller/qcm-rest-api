@@ -137,9 +137,9 @@ public class DbFixture extends Fixture {
 
             Category questionCategoryDto = categoryPersistencePort.findOrCreateByLibelle(principal, QUESTION.name(), CATEGORIE_LIBELLE);
 
-            CategoryEntity questionnaireCategory = categoryRepository.findByUuid(UUID.fromString(questionnaireCategoryDto.getUuid()));
+            CategoryEntity questionnaireCategory = categoryRepository.findByUuid(UUID.fromString(questionnaireCategoryDto.getId().toUuid()));
 
-            CategoryEntity questionCategory = categoryRepository.findByUuid(UUID.fromString(questionCategoryDto.getUuid()));
+            CategoryEntity questionCategory = categoryRepository.findByUuid(UUID.fromString(questionCategoryDto.getId().toUuid()));
 
             //questionnaire
             QuestionnaireEntity questionnaireEntity = new QuestionnaireEntity();

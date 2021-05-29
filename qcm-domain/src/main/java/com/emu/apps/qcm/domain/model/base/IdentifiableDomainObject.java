@@ -14,5 +14,5 @@ public interface IdentifiableDomainObject<ID extends Serializable> extends Domai
      *
      * @return the ID or {@code null} if an ID has not been assigned yet.
      */
-    ID id();
+    ID getId();
 }

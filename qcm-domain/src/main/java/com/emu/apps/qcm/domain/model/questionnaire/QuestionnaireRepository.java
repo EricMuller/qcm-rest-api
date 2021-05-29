@@ -20,9 +20,9 @@ public interface QuestionnaireRepository {
 
     Iterable <QuestionnaireQuestion> getQuestionsByQuestionnaireId(QuestionnaireId questionnaireId);
 
-    Question addQuestion(QuestionnaireId questionnaireId, Question question, Optional <Integer> position, PrincipalId principal);
+    QuestionnaireQuestion addQuestion(QuestionnaireId questionnaireId, QuestionId questionId, Optional <Integer> position, PrincipalId principal);
 
-    List <Question> addQuestions(QuestionnaireId questionnaireId, Collection <Question> questionDtos, PrincipalId principal);
+    List <QuestionnaireQuestion> addQuestions(QuestionnaireId questionnaireId, Collection <Question> questionDtos, PrincipalId principal);
 
     Questionnaire updateQuestionnaire(Questionnaire questionnaire, PrincipalId principal);
 

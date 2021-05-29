@@ -31,7 +31,7 @@ import static org.springframework.data.jpa.domain.Specification.where;
 @Entity
 @NamedEntityGraph(name = "Question.questionTags",
         attributeNodes = {
-                @NamedAttributeNode(value = "questionTags", subgraph = "tags")
+                @NamedAttributeNode(value = "tags", subgraph = "tags")
         },
         subgraphs = @NamedSubgraph(name = "tags", attributeNodes = @NamedAttributeNode("tag")))
 @Table(name = "QUESTION",
@@ -80,11 +80,16 @@ public class QuestionEntity extends AuditableEntity <String> {
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @BatchSize(size = 100)
-    private Set <QuestionTagEntity> questionTags = new HashSet <>();
+    private Set <QuestionTagEntity> tags = new HashSet <>();
 
     // used in QuestionSpecificationBuilder !
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set <QuestionnaireQuestionEntity> questionnaireQuestions = new HashSet <>();
+
+
+    public QuestionEntity(UUID uuid) {
+        super(uuid);
+    }
 
     @Override
     public String toString() {
@@ -139,7 +144,7 @@ public class QuestionEntity extends AuditableEntity <String> {
 
         private Specification<QuestionEntity> questionnaireTagsUuidIn(@Nullable UUID[] tagUuids) {
             return ArrayUtils.isEmpty(tagUuids) ? null :
-                    (root, query, cb) -> root.joinSet("questionTags", JoinType.INNER)
+                    (root, query, cb) -> root.joinSet("tags", JoinType.INNER)
                             .join("tag").get(UUID)
                             .in(tagUuids);
         }

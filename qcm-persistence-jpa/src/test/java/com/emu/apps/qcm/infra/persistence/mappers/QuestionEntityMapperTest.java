@@ -1,8 +1,11 @@
 package com.emu.apps.qcm.infra.persistence.mappers;
 
+import com.emu.apps.qcm.domain.mappers.CategoryIdMapperImpl;
+import com.emu.apps.qcm.domain.mappers.QuestionIdMapperImpl;
 import com.emu.apps.qcm.domain.model.question.Question;
 import com.emu.apps.qcm.domain.model.question.QuestionTags;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionEntity;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -16,9 +19,9 @@ import java.util.UUID;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {QuestionEntityMapperImpl.class, CategoryEntityMapperImpl.class, UuidMapperImpl.class
-        , QuestionTagEntityMapperImpl.class, ResponseEntityMapperImpl.class})
+        , QuestionTagEntityMapperImpl.class, ResponseEntityMapperImpl.class, QuestionIdMapperImpl.class, CategoryIdMapperImpl.class})
 @Tag("MapstructTest")
-class QuestionMapperTest {
+class QuestionEntityMapperTest {
 
     static final String QUESTION_TEXT = "Text";
 
@@ -28,8 +31,8 @@ class QuestionMapperTest {
     @Test
     void entityToModel() {
 
-        QuestionEntity questionEntity = new QuestionEntity();
-        questionEntity.setUuid(UUID.randomUUID());
+        QuestionEntity questionEntity = new QuestionEntity(UUID.randomUUID());
+
         questionEntity.setQuestionText(QUESTION_TEXT);
 
         Question question = questionMapper.entityToQuestion(questionEntity);
@@ -41,10 +44,10 @@ class QuestionMapperTest {
     }
 
     @Test
-    void entityToQuestionTags(){
+    void entityToQuestionTags() {
 
-        QuestionEntity questionEntity = new QuestionEntity();
-        questionEntity.setUuid(UUID.randomUUID());
+        QuestionEntity questionEntity = new QuestionEntity(UUID.randomUUID());
+
         questionEntity.setQuestionText(QUESTION_TEXT);
 
         QuestionTags questionTags = questionMapper.entityToQuestionTags(questionEntity);

@@ -1,10 +1,10 @@
 package com.emu.apps.qcm.rest.controllers;
 
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
-import com.emu.apps.qcm.domain.model.user.User;
-import com.emu.apps.qcm.domain.model.user.UserRepository;
+import com.emu.apps.qcm.domain.model.user.Account;
+import com.emu.apps.qcm.domain.model.user.AccountRepository;
 import com.emu.apps.qcm.rest.controllers.mappers.QuestionnaireResourcesMapper;
-import com.emu.apps.qcm.rest.controllers.resources.UserResources;
+import com.emu.apps.qcm.rest.controllers.resources.AccountResources;
 import com.emu.apps.qcm.rest.exceptions.UserAuthenticationException;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.context.annotation.Profile;
@@ -21,7 +21,7 @@ import java.security.Principal;
 import java.util.Map;
 
 import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.PUBLIC_API;
-import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.USERS;
+import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.ACCOUNTS;
 import static com.emu.apps.shared.exceptions.MessageSupport.EXISTS_UUID_USER;
 import static com.emu.apps.shared.exceptions.MessageSupport.INVALID_UUID_USER;
 import static com.emu.apps.shared.security.PrincipalUtils.getEmailOrName;
@@ -31,22 +31,22 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @Profile("webmvc")
-@RequestMapping(PUBLIC_API + USERS)
-@Tag(name = "User")
-public class UserRestController {
+@RequestMapping(PUBLIC_API + ACCOUNTS)
+@Tag(name = "Account")
+public class AccountRestController {
 
-    private final UserRepository userRepository;
+    private final AccountRepository accountRepository;
 
     private final QuestionnaireResourcesMapper questionnaireResourcesMapper;
 
 
-    public UserRestController(UserRepository userServicePort, QuestionnaireResourcesMapper questionnaireResourcesMapper) {
-        this.userRepository = userServicePort;
+    public AccountRestController(AccountRepository userServicePort, QuestionnaireResourcesMapper questionnaireResourcesMapper) {
+        this.accountRepository = userServicePort;
         this.questionnaireResourcesMapper = questionnaireResourcesMapper;
     }
 
     public Map <String, String> principal(Principal principal) {
-        return userRepository.principal(principal);
+        return accountRepository.principal(principal);
     }
 
     /**
@@ -55,26 +55,26 @@ public class UserRestController {
      */
     @GetMapping(value = "/me", produces = APPLICATION_JSON_VALUE)
     @ResponseBody
-    public UserResources getAuthentifiedUser(Principal principal) {
+    public AccountResources getAuthentifiedUser(Principal principal) {
         String email = getEmailOrName(principal);
-        User user = userRepository.userByEmail(email);
-        if (isNull(user)) {
-            user = new User();
-            user.setEmail(getEmailOrName(principal));
+        Account account = accountRepository.userByEmail(email);
+        if (isNull(account)) {
+            account = new Account();
+            account.setEmail(getEmailOrName(principal));
         }
-        return questionnaireResourcesMapper.userToResources(user);
+        return questionnaireResourcesMapper.userToResources(account);
     }
 
     //    @PostAuthorize("hasAuthority('PROFIL_CREATED')")
     @PutMapping(value = "/me", produces = APPLICATION_JSON_VALUE)
     @ResponseBody
-    public UserResources updateAuthentifiedUser(@RequestBody UserResources userResources, Principal principal) {
+    public AccountResources updateAuthentifiedUser(@RequestBody AccountResources accountResources, Principal principal) {
 
-        var user = questionnaireResourcesMapper.userToModel(userResources);
+        var user = questionnaireResourcesMapper.userToModel(accountResources);
         String email = getEmailOrName(principal);
-        User authentUser = userRepository.userByEmail(email);
-        if (nonNull(authentUser) && authentUser.getEmail().equals(user.getEmail())) {
-            return questionnaireResourcesMapper.userToResources(userRepository.updateUser(user, new PrincipalId(email)));
+        Account authentAccount = accountRepository.userByEmail(email);
+        if (nonNull(authentAccount) && authentAccount.getEmail().equals(user.getEmail())) {
+            return questionnaireResourcesMapper.userToResources(accountRepository.updateUser(user, new PrincipalId(email)));
         } else {
             throw new UserAuthenticationException(INVALID_UUID_USER);
         }
@@ -82,12 +82,12 @@ public class UserRestController {
 
     @PostMapping(value = "/me", produces = APPLICATION_JSON_VALUE)
     @ResponseBody
-    public UserResources createAuthentifiedUser(@RequestBody UserResources userResources, Principal principal) {
-        var user = questionnaireResourcesMapper.userToModel(userResources);
+    public AccountResources createAuthentifiedUser(@RequestBody AccountResources accountResources, Principal principal) {
+        var user = questionnaireResourcesMapper.userToModel(accountResources);
         String email = getEmailOrName(principal);
-        User authentUser = userRepository.userByEmail(email);
-        if (isNull(authentUser)) {
-            return questionnaireResourcesMapper.userToResources(userRepository.createUser(user, new PrincipalId(email)));
+        Account authentAccount = accountRepository.userByEmail(email);
+        if (isNull(authentAccount)) {
+            return questionnaireResourcesMapper.userToResources(accountRepository.createUser(user, new PrincipalId(email)));
         } else {
             throw new UserAuthenticationException(EXISTS_UUID_USER);
         }
@@ -96,9 +96,9 @@ public class UserRestController {
     @PostMapping(produces = APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseBody
-    public UserResources updateUser(@RequestBody UserResources userResources, Principal principal) {
-        var user = questionnaireResourcesMapper.userToModel(userResources);
-        return questionnaireResourcesMapper.userToResources(userRepository.updateUser(user, new PrincipalId(getEmailOrName(principal))));
+    public AccountResources updateUser(@RequestBody AccountResources accountResources, Principal principal) {
+        var user = questionnaireResourcesMapper.userToModel(accountResources);
+        return questionnaireResourcesMapper.userToResources(accountRepository.updateUser(user, new PrincipalId(getEmailOrName(principal))));
     }
 
 }
