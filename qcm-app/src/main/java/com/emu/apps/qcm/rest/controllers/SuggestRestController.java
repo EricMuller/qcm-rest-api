@@ -2,7 +2,7 @@ package com.emu.apps.qcm.rest.controllers;
 
 
 
-import com.emu.apps.qcm.application.SuggestBusinessPort;
+import com.emu.apps.qcm.application.SuggestService;
 import com.emu.apps.qcm.domain.model.questionnaire.Suggest;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.context.annotation.Profile;
@@ -22,10 +22,10 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 public class SuggestRestController {
 
-    private final SuggestBusinessPort suggestBusinessPort;
+    private final SuggestService suggestService;
 
-    public SuggestRestController(SuggestBusinessPort suggestServicePort) {
-        this.suggestBusinessPort = suggestServicePort;
+    public SuggestRestController(SuggestService suggestServicePort) {
+        this.suggestService = suggestServicePort;
     }
 
     @GetMapping(value = "/title")
@@ -34,7 +34,7 @@ public class SuggestRestController {
     @SuppressWarnings("squid:CommentedOutCodeLine")
     public Iterable <Suggest> getSuggestions(@RequestParam("queryText") String queryText) {
 
-        return suggestBusinessPort.getSuggestions(queryText);
+        return suggestService.getSuggestions(queryText);
     }
 
 }

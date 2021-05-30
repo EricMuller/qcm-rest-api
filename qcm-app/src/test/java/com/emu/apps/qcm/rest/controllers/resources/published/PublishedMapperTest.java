@@ -1,12 +1,7 @@
 package com.emu.apps.qcm.rest.controllers.resources.published;
 
-import com.emu.apps.qcm.domain.model.question.Question;
-import com.emu.apps.qcm.domain.model.questionnaire.Questionnaire;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireQuestion;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireEntity;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireQuestionEntity;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionEntity;
-import com.emu.apps.qcm.infra.persistence.mappers.UuidMapperImpl;
+import com.emu.apps.qcm.infra.persistence.adapters.mappers.UuidMapperImpl;
 import com.emu.apps.qcm.rest.controllers.mappers.PublishedMapper;
 import com.emu.apps.qcm.rest.controllers.mappers.PublishedMapperImpl;
 import org.junit.jupiter.api.Assertions;
@@ -16,8 +11,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import java.util.UUID;
 
 
 @ExtendWith(SpringExtension.class)

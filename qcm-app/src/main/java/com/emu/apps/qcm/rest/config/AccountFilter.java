@@ -1,24 +1,26 @@
 package com.emu.apps.qcm.rest.config;
 
+import com.emu.apps.qcm.application.AccountService;
 import com.emu.apps.qcm.domain.model.user.Account;
-
-import com.emu.apps.qcm.domain.model.user.AccountRepository;
 import com.emu.apps.shared.security.PrincipalUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.*;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Objects;
 
-import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.PUBLIC_API;
 import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.ACCOUNTS;
+import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.PUBLIC_API;
 import static com.emu.apps.shared.security.AuthentificationContextHolder.setPrincipal;
 import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
 
@@ -26,10 +28,10 @@ import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
 @Slf4j
 public class AccountFilter implements Filter {
 
-    private final AccountRepository accountRepository;
+    private final AccountService accountService;
 
-    public AccountFilter(AccountRepository accountRepository) {
-        this.accountRepository = accountRepository;
+    public AccountFilter(AccountService accountService) {
+        this.accountService = accountService;
     }
 
     @Override
@@ -43,10 +45,10 @@ public class AccountFilter implements Filter {
             if (Objects.nonNull(authentication)) {
                 String principal = PrincipalUtils.getEmailOrName(authentication.getPrincipal());
                 if (Objects.nonNull(principal)) {
-                    final Account account = accountRepository.userByEmail(principal);
+                    final Account account = accountService.userByEmail(principal);
                     if (Objects.nonNull(account)) {
                         setPrincipal(account.getId().toUuid());
-                        GrantedAuthority grantedAuthority = () -> account.getId().toUuid();
+                        // GrantedAuthority grantedAuthority = () -> account.getId().toUuid();
                     } else {
                         LOGGER.warn("user with email {} non enregistré!", principal);
                         if (!request.getRequestURI().startsWith(PUBLIC_API + ACCOUNTS)) {

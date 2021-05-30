@@ -8,7 +8,7 @@
     <version>2.2.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>Qcm Management</name>
+    <name>Qcm Api</name>
     <description>Qcm Parent</description>
     <url>https://github.com/EricMuller/qcm-rest-api</url>
 
@@ -48,9 +48,8 @@
     <modules>
         <module>qcm-app</module>
         <module>qcm-shared</module>
-        <module>qcm-domain</module>
-        <module>qcm-persistence-jpa</module>
-        <module>qcm-report</module>
+        <module>qcm-context</module>
+        <module>qcm-infra-db</module>
         <module>jacoco-report</module>
     </modules>
 
@@ -102,30 +101,22 @@
 
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-domain</artifactId>
+                <artifactId>qcm-context</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-persistence-jpa</artifactId>
+                <artifactId>qcm-infra-db</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
-
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-persistence-jpa</artifactId>
+                <artifactId>qcm-infra-db</artifactId>
                 <version>${project.version}</version>
                 <scope>test</scope>
                 <type>test-jar</type>
-            </dependency>
-
-
-            <dependency>
-                <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-report</artifactId>
-                <version>${project.version}</version>
             </dependency>
 
             <dependency>

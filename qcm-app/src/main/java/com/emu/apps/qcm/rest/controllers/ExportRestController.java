@@ -1,10 +1,10 @@
 package com.emu.apps.qcm.rest.controllers;
 
 
-import com.emu.apps.qcm.application.imports.ExportServices;
-import com.emu.apps.qcm.infra.reporting.model.Export;
-import com.emu.apps.qcm.infra.reporting.FileFormat;
-import com.emu.apps.qcm.infra.reporting.TemplateReportServicePort;
+import com.emu.apps.qcm.application.reporting.ExportService;
+import com.emu.apps.qcm.application.reporting.dtos.Export;
+import com.emu.apps.qcm.application.reporting.template.FileFormat;
+import com.emu.apps.qcm.application.reporting.template.TemplateReportServices;
 import com.emu.apps.shared.annotations.Timer;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Objects;
 
-import static com.emu.apps.qcm.infra.reporting.FileFormat.getByName;
-import static com.emu.apps.qcm.infra.reporting.ReportTemplate.TEMPLATE_QUESTIONNAIRE;
+import static com.emu.apps.qcm.application.reporting.template.FileFormat.getByName;
+import static com.emu.apps.qcm.application.reporting.template.ReportTemplate.TEMPLATE_QUESTIONNAIRE;
 import static java.util.Locale.getDefault;
 import static org.springframework.http.HttpHeaders.CONTENT_DISPOSITION;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -34,21 +34,21 @@ import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM_VALUE;
 @Tag(name = "Export")
 public class ExportRestController {
 
-    private final ExportServices exportServices;
+    private final ExportService exportService;
 
-    private final TemplateReportServicePort reportServicePort;
+    private final TemplateReportServices templateReportServices;
 
     @Autowired
-    public ExportRestController(ExportServices exportService, TemplateReportServicePort reportServicePort) {
-        this.exportServices = exportService;
-        this.reportServicePort = reportServicePort;
+    public ExportRestController(ExportService exportService, TemplateReportServices templateReportServices) {
+        this.exportService = exportService;
+        this.templateReportServices = templateReportServices;
     }
 
     @Timer
     @GetMapping(value = "/{uuid}", produces = APPLICATION_JSON_VALUE)
     @ResponseBody
     public Export getExportByQuestionnaireUuid(@PathVariable("uuid") String id) {
-        return exportServices.getbyQuestionnaireUuid(id);
+        return exportService.getbyQuestionnaireUuid(id);
     }
 
 
@@ -63,9 +63,9 @@ public class ExportRestController {
 
         FileFormat reportFormat = getByName(type.toUpperCase(getDefault()));
 
-        final Export export = exportServices.getbyQuestionnaireUuid(uuid);
+        final Export export = exportService.getbyQuestionnaireUuid(uuid);
 
-        ByteArrayResource resource = new ByteArrayResource(reportServicePort
+        ByteArrayResource resource = new ByteArrayResource(templateReportServices
                 .convertAsStream(export, TEMPLATE_QUESTIONNAIRE, reportFormat));
 
         return ResponseEntity.ok()

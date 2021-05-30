@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.rest.controllers;
 
-import com.emu.apps.qcm.application.imports.ImportServices;
+import com.emu.apps.qcm.application.importation.ImportService;
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
 import com.emu.apps.qcm.domain.model.upload.UploadId;
 import com.emu.apps.qcm.rest.controllers.mappers.QuestionnaireResourcesMapper;
@@ -26,19 +26,19 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Tag(name = "Import")
 public class ImportRestController {
 
-    private final ImportServices importServices;
+    private final ImportService importService;
 
     private final QuestionnaireResourcesMapper questionnaireResourcesMapper;
 
-    public ImportRestController(ImportServices importServices, QuestionnaireResourcesMapper questionnaireResourcesMapper) {
-        this.importServices = importServices;
+    public ImportRestController(ImportService importService, QuestionnaireResourcesMapper questionnaireResourcesMapper) {
+        this.importService = importService;
         this.questionnaireResourcesMapper = questionnaireResourcesMapper;
     }
 
     @ResponseBody
     @GetMapping(value = "/{uuid}")
     public UploadResources importFileByUploadUuid(@PathVariable("uuid") String uploadUuid) throws IOException {
-        return questionnaireResourcesMapper.uploadToResources(importServices.importFile(new UploadId(uploadUuid), new PrincipalId(getPrincipal())));
+        return questionnaireResourcesMapper.uploadToResources(importService.importFile(new UploadId(uploadUuid), new PrincipalId(getPrincipal())));
     }
 
 }

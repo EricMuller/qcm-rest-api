@@ -42,8 +42,8 @@
     <packaging>pom</packaging>
 
 
-    <name>Qcm Coverage</name>
-    <description>Qcm Coverage</description>
+    <name>Coverage</name>
+    <description>Coverage</description>
 
     <dependencies>
 
@@ -54,12 +54,7 @@
 
         <dependency>
             <groupId>com.emu.apps.qcm</groupId>
-            <artifactId>qcm-domain</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.emu.apps.qcm</groupId>
-            <artifactId>qcm-report</artifactId>
+            <artifactId>qcm-context</artifactId>
         </dependency>
 
     </dependencies>

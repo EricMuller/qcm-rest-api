@@ -5,7 +5,9 @@ import com.emu.apps.qcm.domain.model.user.Account;
 import com.emu.apps.qcm.domain.model.user.AccountRepository;
 import com.emu.apps.qcm.rest.controllers.mappers.QuestionnaireResourcesMapper;
 import com.emu.apps.qcm.rest.controllers.resources.AccountResources;
+import com.emu.apps.qcm.rest.controllers.resources.openui.AccountView;
 import com.emu.apps.qcm.rest.exceptions.UserAuthenticationException;
+import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -39,7 +41,6 @@ public class AccountRestController {
 
     private final QuestionnaireResourcesMapper questionnaireResourcesMapper;
 
-
     public AccountRestController(AccountRepository userServicePort, QuestionnaireResourcesMapper questionnaireResourcesMapper) {
         this.accountRepository = userServicePort;
         this.questionnaireResourcesMapper = questionnaireResourcesMapper;
@@ -68,7 +69,7 @@ public class AccountRestController {
     //    @PostAuthorize("hasAuthority('PROFIL_CREATED')")
     @PutMapping(value = "/me", produces = APPLICATION_JSON_VALUE)
     @ResponseBody
-    public AccountResources updateAuthentifiedUser(@RequestBody AccountResources accountResources, Principal principal) {
+    public AccountResources updateAuthentifiedUser(@JsonView(AccountView.Update.class) @RequestBody AccountResources accountResources, Principal principal) {
 
         var user = questionnaireResourcesMapper.userToModel(accountResources);
         String email = getEmailOrName(principal);
@@ -82,7 +83,7 @@ public class AccountRestController {
 
     @PostMapping(value = "/me", produces = APPLICATION_JSON_VALUE)
     @ResponseBody
-    public AccountResources createAuthentifiedUser(@RequestBody AccountResources accountResources, Principal principal) {
+    public AccountResources createAuthentifiedUser(@JsonView(AccountView.Create.class) @RequestBody AccountResources accountResources, Principal principal) {
         var user = questionnaireResourcesMapper.userToModel(accountResources);
         String email = getEmailOrName(principal);
         Account authentAccount = accountRepository.userByEmail(email);

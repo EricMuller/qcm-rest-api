@@ -39,19 +39,14 @@
 
    <artifactId>qcm-app</artifactId>
 
-    <name>Qcm App</name>
-    <description>Qcm App</description>
+    <name>Rest App</name>
+    <description>Rest App</description>
 
     <dependencies>
 
         <dependency>
             <groupId>com.emu.apps.qcm</groupId>
-            <artifactId>qcm-persistence-jpa</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.emu.apps.qcm</groupId>
-            <artifactId>qcm-report</artifactId>
+            <artifactId>qcm-infra-db</artifactId>
         </dependency>
 
         <dependency>
@@ -61,7 +56,7 @@
 
         <dependency>
             <groupId>com.emu.apps.qcm</groupId>
-            <artifactId>qcm-persistence-jpa</artifactId>
+            <artifactId>qcm-infra-db</artifactId>
             <scope>test</scope>
             <type>test-jar</type>
         </dependency>
@@ -248,7 +243,7 @@
                 <configuration>
                     <addResources>true</addResources>
                     <executable>false</executable>
-                    <mainClass>com.emu.apps.qcm.RestApplication</mainClass>
+                    <mainClass>com.emu.apps.qcm.rest.RestApplication</mainClass>
                     <additionalProperties>
                         <encoding.source>UTF-8</encoding.source>
                         <encoding.reporting>UTF-8</encoding.reporting>

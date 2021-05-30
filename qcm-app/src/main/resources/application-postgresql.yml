@@ -63,9 +63,9 @@ spring:
         type: com.zaxxer.hikari.HikariDataSource
         driverClassName: org.postgresql.Driver
         #url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://192.168.1.4:5432/qcm?user=qcm&password=qcm}
-        url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5433/postgres?user=postgres&password=postgres}
+        url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5434/postgres?user=postgres&password=postgres}
         hikari:
-            url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5433/postgres?user=postgres&password=postgres}
+            url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5434/postgres?user=postgres&password=postgres}
             pool-name: qcm-hikari-pool
             autoCommit: false
             connection-test-query: SELECT 1

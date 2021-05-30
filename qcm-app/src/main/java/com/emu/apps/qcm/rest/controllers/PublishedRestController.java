@@ -1,10 +1,10 @@
 package com.emu.apps.qcm.rest.controllers;
 
 
-import com.emu.apps.qcm.application.webhooks.PublishedServices;
+import com.emu.apps.qcm.application.PublishedService;
+import com.emu.apps.qcm.rest.controllers.mappers.PublishedMapper;
 import com.emu.apps.qcm.rest.controllers.resources.published.PublishedQuestionnaire;
 import com.emu.apps.qcm.rest.controllers.resources.published.PushishedQuestionnaireQuestion;
-
 import com.emu.apps.shared.annotations.Timer;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -13,7 +13,11 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.*;
 import static org.springframework.data.domain.Sort.Direction.DESC;
@@ -26,10 +30,13 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping(value = PUBLISHED_API, produces = APPLICATION_JSON_VALUE)
 public class PublishedRestController {
 
-    private final PublishedServices publishedServices;
+    private final PublishedService publishedService;
 
-    public PublishedRestController(PublishedServices publishedServices) {
-        this.publishedServices = publishedServices;
+    private final PublishedMapper publishedMapper;
+
+    public PublishedRestController(PublishedService publishedService, PublishedMapper publishedMapper) {
+        this.publishedService = publishedService;
+        this.publishedMapper = publishedMapper;
     }
 
     @GetMapping(value = QUESTIONNAIRES)
@@ -39,31 +46,31 @@ public class PublishedRestController {
     public Page <PublishedQuestionnaire> getPublishedQuestionnaires(
             @Parameter(hidden = true)
             @PageableDefault(direction = DESC, sort = {"dateModification"}) Pageable pageable) {
-        return publishedServices.getPublishedQuestionnaires(pageable);
+        return publishedMapper.pageQuestionnaireToPublishedQuestionnaires(publishedService.getPublishedQuestionnaires(pageable));
     }
 
     @GetMapping(value = QUESTIONNAIRES + "/{uuid}")
     @ResponseBody
     public PublishedQuestionnaire getPublishedQuestionnaireByUuid(@PathVariable("uuid") String uuid) {
-        return publishedServices.getPublishedQuestionnaireByUuid(uuid);
+        return publishedMapper.questionnaireToPublishedQuestionnaire(publishedService.getPublishedQuestionnaireByUuid(uuid));
     }
 
     @GetMapping(value = CATEGORIES)
     @ResponseBody
     public Iterable <String> getPublishedCategories() {
-        return publishedServices.getPublishedCategories();
+        return publishedService.getPublishedCategories();
     }
 
     @GetMapping(value = TAGS)
     @ResponseBody
     public Iterable <String> getPublishedTags() {
-        return publishedServices.getPublishedTags();
+        return publishedService.getPublishedTags();
     }
 
     @GetMapping(value = QUESTIONNAIRES + "/{uuid}/" + QUESTIONS)
     @ResponseBody
     public Iterable <PushishedQuestionnaireQuestion> getPublishedQuestionByQuestionnaireUuid(@PathVariable("uuid") String uuid) {
-        return publishedServices.getPublishedQuestionsByQuestionnaireUuid(uuid);
+        return publishedMapper.questionnaireQuestionsToPublishedDtos(publishedService.getPublishedQuestionsByQuestionnaireUuid(uuid));
     }
 
 
