@@ -3,7 +3,7 @@ package com.emu.apps.qcm.infra.persistence.adapters.mappers;
 import com.emu.apps.qcm.domain.mappers.CategoryIdMapperImpl;
 import com.emu.apps.qcm.domain.mappers.QuestionIdMapperImpl;
 import com.emu.apps.qcm.domain.model.question.Question;
-import com.emu.apps.qcm.domain.model.question.QuestionTags;
+import com.emu.apps.qcm.domain.model.question.QuestionWithTagsOnly;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionEntity;
 
 import org.junit.jupiter.api.Assertions;
@@ -50,12 +50,12 @@ class QuestionEntityMapperTest {
 
         questionEntity.setQuestionText(QUESTION_TEXT);
 
-        QuestionTags questionTags = questionMapper.entityToQuestionTags(questionEntity);
+        QuestionWithTagsOnly questionWithTagsOnly = questionMapper.entityToQuestionWithTagsOnly(questionEntity);
 
 
-        Assertions.assertNotNull(questionTags);
+        Assertions.assertNotNull(questionWithTagsOnly);
 
-        Assertions.assertEquals(QUESTION_TEXT, questionTags.getQuestionText());
+        Assertions.assertEquals(QUESTION_TEXT, questionWithTagsOnly.getQuestionText());
     }
 
 }

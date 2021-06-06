@@ -2,8 +2,7 @@ package com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires;
 
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category.CategoryEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.common.AuditableEntity;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.converters.BooleanTFConverter;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.QuestionnaireTagEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.converters.BooleanTFConverter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -142,7 +141,7 @@ public class QuestionnaireEntity extends AuditableEntity <String> {
                             .joinSet("tags", JoinType.INNER)
                             .join("tag")
                             .get(UUID)
-                            .in(values);
+                            .in((Object[]) values);
         }
 
         public void setTagUuids(UUID[] tagUuids) {

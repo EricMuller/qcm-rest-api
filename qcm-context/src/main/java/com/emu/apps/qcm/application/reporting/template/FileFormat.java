@@ -15,7 +15,7 @@ public enum FileFormat {
         return extention;
     }
 
-    public static FileFormat getByName(String type) {
+    public static FileFormat getFileFormat(String type) {
         return Arrays.stream(values())
                 .filter(typeReport -> typeReport.name().equals(type))
                 .findFirst().orElse(null);

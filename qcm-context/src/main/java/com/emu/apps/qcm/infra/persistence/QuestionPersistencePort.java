@@ -2,7 +2,7 @@ package com.emu.apps.qcm.infra.persistence;
 
 
 import com.emu.apps.qcm.domain.model.question.Question;
-import com.emu.apps.qcm.domain.model.question.QuestionTags;
+import com.emu.apps.qcm.domain.model.question.QuestionWithTagsOnly;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireQuestion;
 import com.emu.apps.qcm.domain.model.tag.Tag;
 import org.springframework.data.domain.Page;
@@ -18,7 +18,7 @@ public interface QuestionPersistencePort {
 
     Question saveQuestion(Question questionDto, String principal);
 
-    Page <QuestionTags> findAllByPage(String[] questionnaireUuids, String[] tagUuids, Pageable pageable, String principal);
+    Page <QuestionWithTagsOnly> findAllByPage(String[] questionnaireIds, String[] tagIds, Pageable pageable, String principal);
 
     Iterable <Tag> findAllTagByPage(Pageable pageable, String principal);
 

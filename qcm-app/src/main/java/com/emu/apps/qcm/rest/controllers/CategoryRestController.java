@@ -2,10 +2,10 @@ package com.emu.apps.qcm.rest.controllers;
 
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
 import com.emu.apps.qcm.domain.model.category.CategoryRepository;
-import com.emu.apps.qcm.rest.controllers.mappers.QuestionnaireResourcesMapper;
-import com.emu.apps.qcm.rest.controllers.resources.CategoryResources;
-import com.emu.apps.qcm.rest.controllers.resources.MessageResources;
-import com.emu.apps.qcm.rest.controllers.resources.openui.CategoryView;
+import com.emu.apps.qcm.rest.mappers.QuestionnaireResourceMapper;
+import com.emu.apps.qcm.rest.resources.CategoryResource;
+import com.emu.apps.qcm.rest.resources.MessageResource;
+import com.emu.apps.qcm.rest.resources.openui.CategoryView;
 import com.emu.apps.shared.exceptions.FunctionnalException;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -46,41 +46,41 @@ public class CategoryRestController {
 
     private final CategoryRepository categoryRepository;
 
-    private final QuestionnaireResourcesMapper questionnaireResourcesMapper;
+    private final QuestionnaireResourceMapper questionnaireResourceMapper;
 
-    public CategoryRestController(CategoryRepository categoryRepository, QuestionnaireResourcesMapper questionnaireResourcesMapper) {
+    public CategoryRestController(CategoryRepository categoryRepository, QuestionnaireResourceMapper questionnaireResourceMapper) {
         this.categoryRepository = categoryRepository;
-        this.questionnaireResourcesMapper = questionnaireResourcesMapper;
+        this.questionnaireResourceMapper = questionnaireResourceMapper;
     }
 
     @GetMapping(value = "/{uuid}", produces = APPLICATION_JSON_VALUE)
     @ResponseBody
-    public CategoryResources getCategoryByUuid(@PathVariable("uuid") String uuid) {
-        return questionnaireResourcesMapper.categoryToResources(categoryRepository.getCategoryByUuid(uuid));
+    public CategoryResource getCategoryByUuid(@PathVariable("uuid") String uuid) {
+        return questionnaireResourceMapper.categoryToResources(categoryRepository.getCategoryByUuid(uuid));
     }
 
     @GetMapping
     @ResponseBody
     @ApiResponse(responseCode = "200", description = "successful operation",
-            content = @Content(array = @ArraySchema(schema = @Schema(implementation = CategoryResources.class))))
-    public Iterable <CategoryResources> getCategoriesByType(@RequestParam("type") String typeCategory) throws FunctionnalException {
+            content = @Content(array = @ArraySchema(schema = @Schema(implementation = CategoryResource.class))))
+    public Iterable <CategoryResource> getCategoriesByType(@RequestParam("type") String typeCategory) throws FunctionnalException {
 
-        return questionnaireResourcesMapper.categoriesToResources(
+        return questionnaireResourceMapper.categoriesToResources(
                 categoryRepository.getCategories(new PrincipalId(getPrincipal()), typeCategory));
     }
 
     @PostMapping
     @ResponseBody
-    public CategoryResources saveCategory(
-            @JsonView(CategoryView.Create.class) @RequestBody CategoryResources categoryResources) {
-        var category = questionnaireResourcesMapper.categoryToModel(categoryResources);
-        return questionnaireResourcesMapper.categoryToResources(
+    public CategoryResource saveCategory(
+            @JsonView(CategoryView.Create.class) @RequestBody CategoryResource categoryResource) {
+        var category = questionnaireResourceMapper.categoryToModel(categoryResource);
+        return questionnaireResourceMapper.categoryToResources(
                 categoryRepository.saveCategory(category, new PrincipalId(getPrincipal())));
     }
 
     @ExceptionHandler({JsonProcessingException.class, IOException.class})
-    public ResponseEntity <MessageResources> handleAllException(Exception e) {
-        return new ResponseEntity <>(new MessageResources(MessageResources.ERROR, e.getMessage()), BAD_REQUEST);
+    public ResponseEntity <MessageResource> handleAllException(Exception e) {
+        return new ResponseEntity <>(new MessageResource(MessageResource.ERROR, e.getMessage()), BAD_REQUEST);
     }
 
 }

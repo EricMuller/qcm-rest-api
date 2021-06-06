@@ -8,4 +8,8 @@ public class QuestionnaireId extends DomainObjectId {
     public QuestionnaireId(String uuid) {
         super(uuid);
     }
+
+    public QuestionnaireId(QuestionnaireId questionnaireId) {
+        super(questionnaireId.toUuid());
+    }
 }

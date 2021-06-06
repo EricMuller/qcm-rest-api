@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories;
 
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.QuestionnaireTagEntity;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.QuestionnaireTagId;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireTagEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireTagId;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.TagEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

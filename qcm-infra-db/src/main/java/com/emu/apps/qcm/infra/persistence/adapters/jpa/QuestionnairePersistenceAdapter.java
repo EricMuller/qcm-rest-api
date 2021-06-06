@@ -9,7 +9,7 @@ import com.emu.apps.qcm.infra.persistence.adapters.jpa.builders.QuestionnaireTag
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category.CategoryEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireQuestionEntity;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.QuestionnaireTagEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireTagEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.TagEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.CategoryRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.QuestionRepository;

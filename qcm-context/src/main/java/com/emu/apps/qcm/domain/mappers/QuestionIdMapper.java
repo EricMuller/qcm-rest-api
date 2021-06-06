@@ -20,4 +20,7 @@ public interface QuestionIdMapper {
     default String toUuid(QuestionId id) {
         return id.toUuid();
     }
+
+    String[] toUuid(QuestionId[] id) ;
+
 }

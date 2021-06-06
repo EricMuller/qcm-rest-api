@@ -21,4 +21,9 @@ public interface TagIdMapper {
         return id.toUuid();
     }
 
+    String[] toUuid(TagId[] tagIds);
+
+    TagId[] toTagId(String[] id);
+
+
 }

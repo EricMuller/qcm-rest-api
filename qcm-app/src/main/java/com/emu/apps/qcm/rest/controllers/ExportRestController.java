@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Objects;
 
-import static com.emu.apps.qcm.application.reporting.template.FileFormat.getByName;
+import static com.emu.apps.qcm.application.reporting.template.FileFormat.getFileFormat;
 import static com.emu.apps.qcm.application.reporting.template.ReportTemplate.TEMPLATE_QUESTIONNAIRE;
 import static java.util.Locale.getDefault;
 import static org.springframework.http.HttpHeaders.CONTENT_DISPOSITION;
@@ -61,7 +61,7 @@ public class ExportRestController {
             throw new IllegalArgumentException(type);
         }
 
-        FileFormat reportFormat = getByName(type.toUpperCase(getDefault()));
+        FileFormat reportFormat = getFileFormat(type.toUpperCase(getDefault()));
 
         final Export export = exportService.getbyQuestionnaireUuid(uuid);
 

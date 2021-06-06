@@ -3,14 +3,16 @@ package com.emu.apps.qcm.rest.controllers;
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
 import com.emu.apps.qcm.domain.model.user.Account;
 import com.emu.apps.qcm.domain.model.user.AccountRepository;
-import com.emu.apps.qcm.rest.controllers.mappers.QuestionnaireResourcesMapper;
-import com.emu.apps.qcm.rest.controllers.resources.AccountResources;
-import com.emu.apps.qcm.rest.controllers.resources.openui.AccountView;
+import com.emu.apps.qcm.rest.mappers.QuestionnaireResourceMapper;
+import com.emu.apps.qcm.rest.resources.AccountResource;
+import com.emu.apps.qcm.rest.resources.openui.AccountView;
 import com.emu.apps.qcm.rest.exceptions.UserAuthenticationException;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -39,15 +41,21 @@ public class AccountRestController {
 
     private final AccountRepository accountRepository;
 
-    private final QuestionnaireResourcesMapper questionnaireResourcesMapper;
+    private final QuestionnaireResourceMapper questionnaireResourceMapper;
 
-    public AccountRestController(AccountRepository userServicePort, QuestionnaireResourcesMapper questionnaireResourcesMapper) {
+    public AccountRestController(AccountRepository userServicePort, QuestionnaireResourceMapper questionnaireResourceMapper) {
         this.accountRepository = userServicePort;
-        this.questionnaireResourcesMapper = questionnaireResourcesMapper;
+        this.questionnaireResourceMapper = questionnaireResourceMapper;
     }
 
     public Map <String, String> principal(Principal principal) {
         return accountRepository.principal(principal);
+    }
+
+    @GetMapping("/whoami")
+    public String whoami(@AuthenticationPrincipal Jwt jwt) {
+        //public String whoami(@AuthenticationPrincipal(expression="name") String name) {
+        return jwt.getTokenValue();
     }
 
     /**
@@ -56,26 +64,26 @@ public class AccountRestController {
      */
     @GetMapping(value = "/me", produces = APPLICATION_JSON_VALUE)
     @ResponseBody
-    public AccountResources getAuthentifiedUser(Principal principal) {
+    public AccountResource getAuthentifiedUser(Principal principal) {
         String email = getEmailOrName(principal);
         Account account = accountRepository.userByEmail(email);
         if (isNull(account)) {
             account = new Account();
             account.setEmail(getEmailOrName(principal));
         }
-        return questionnaireResourcesMapper.userToResources(account);
+        return questionnaireResourceMapper.userToResources(account);
     }
 
     //    @PostAuthorize("hasAuthority('PROFIL_CREATED')")
     @PutMapping(value = "/me", produces = APPLICATION_JSON_VALUE)
     @ResponseBody
-    public AccountResources updateAuthentifiedUser(@JsonView(AccountView.Update.class) @RequestBody AccountResources accountResources, Principal principal) {
+    public AccountResource updateAuthentifiedUser(@JsonView(AccountView.Update.class) @RequestBody AccountResource accountResource, Principal principal) {
 
-        var user = questionnaireResourcesMapper.userToModel(accountResources);
+        var user = questionnaireResourceMapper.userToModel(accountResource);
         String email = getEmailOrName(principal);
         Account authentAccount = accountRepository.userByEmail(email);
         if (nonNull(authentAccount) && authentAccount.getEmail().equals(user.getEmail())) {
-            return questionnaireResourcesMapper.userToResources(accountRepository.updateUser(user, new PrincipalId(email)));
+            return questionnaireResourceMapper.userToResources(accountRepository.updateUser(user, new PrincipalId(email)));
         } else {
             throw new UserAuthenticationException(INVALID_UUID_USER);
         }
@@ -83,12 +91,12 @@ public class AccountRestController {
 
     @PostMapping(value = "/me", produces = APPLICATION_JSON_VALUE)
     @ResponseBody
-    public AccountResources createAuthentifiedUser(@JsonView(AccountView.Create.class) @RequestBody AccountResources accountResources, Principal principal) {
-        var user = questionnaireResourcesMapper.userToModel(accountResources);
+    public AccountResource createAuthentifiedUser(@JsonView(AccountView.Create.class) @RequestBody AccountResource accountResource, Principal principal) {
+        var user = questionnaireResourceMapper.userToModel(accountResource);
         String email = getEmailOrName(principal);
         Account authentAccount = accountRepository.userByEmail(email);
         if (isNull(authentAccount)) {
-            return questionnaireResourcesMapper.userToResources(accountRepository.createUser(user, new PrincipalId(email)));
+            return questionnaireResourceMapper.userToResources(accountRepository.createUser(user, new PrincipalId(email)));
         } else {
             throw new UserAuthenticationException(EXISTS_UUID_USER);
         }
@@ -97,9 +105,9 @@ public class AccountRestController {
     @PostMapping(produces = APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseBody
-    public AccountResources updateUser(@RequestBody AccountResources accountResources, Principal principal) {
-        var user = questionnaireResourcesMapper.userToModel(accountResources);
-        return questionnaireResourcesMapper.userToResources(accountRepository.updateUser(user, new PrincipalId(getEmailOrName(principal))));
+    public AccountResource updateUser(@RequestBody AccountResource accountResource, Principal principal) {
+        var user = questionnaireResourceMapper.userToModel(accountResource);
+        return questionnaireResourceMapper.userToResources(accountRepository.updateUser(user, new PrincipalId(getEmailOrName(principal))));
     }
 
 }

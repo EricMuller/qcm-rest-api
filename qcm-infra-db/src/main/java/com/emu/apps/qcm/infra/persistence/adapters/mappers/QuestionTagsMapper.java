@@ -28,7 +28,7 @@
 
 package com.emu.apps.qcm.infra.persistence.adapters.mappers;
 
-import com.emu.apps.qcm.domain.model.question.QuestionTags;
+import com.emu.apps.qcm.domain.model.question.QuestionWithTagsOnly;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionEntity;
 import com.emu.apps.qcm.domain.mappers.QuestionIdMapper;
 import org.mapstruct.Mapper;
@@ -40,9 +40,9 @@ import org.springframework.data.domain.Page;
 public interface QuestionTagsMapper {
 
     @Mapping(target = "id", source = "uuid")
-    QuestionTags modelToDTo(QuestionEntity questionEntity);
+    QuestionWithTagsOnly modelToDTo(QuestionEntity questionEntity);
 
-    default Page <QuestionTags> pageQuestionResponseProjectionToDto(Page <QuestionEntity> page) {
+    default Page <QuestionWithTagsOnly> pageQuestionResponseProjectionToDto(Page <QuestionEntity> page) {
         return page.map(this::modelToDTo);
     }
 

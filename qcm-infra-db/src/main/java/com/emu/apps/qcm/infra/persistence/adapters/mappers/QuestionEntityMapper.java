@@ -29,7 +29,7 @@
 package com.emu.apps.qcm.infra.persistence.adapters.mappers;
 
 import com.emu.apps.qcm.domain.model.question.Question;
-import com.emu.apps.qcm.domain.model.question.QuestionTags;
+import com.emu.apps.qcm.domain.model.question.QuestionWithTagsOnly;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.projections.QuestionResponseProjection;
 import com.emu.apps.qcm.domain.mappers.QuestionIdMapper;
@@ -53,7 +53,9 @@ public interface QuestionEntityMapper {
     @Mapping(target = "tags", ignore = true)
     @Mapping(target = "uuid", ignore = true)
     @Mapping(target = "dateCreation", ignore = true)
+    @Mapping(target = "createdBy", ignore = true)
     @Mapping(target = "dateModification", ignore = true)
+    @Mapping(target = "lastModifiedBy", ignore = true)
     @Mapping(target = "id", ignore = true)
     QuestionEntity dtoToModel(@MappingTarget QuestionEntity questionEntity, Question question);
 
@@ -61,7 +63,7 @@ public interface QuestionEntityMapper {
     Question entityToQuestion(QuestionEntity questionEntity);
 
     @Mapping(target = "id", source = "uuid")
-    QuestionTags entityToQuestionTags(QuestionEntity questionEntity);
+    QuestionWithTagsOnly entityToQuestionWithTagsOnly(QuestionEntity questionEntity);
 
     @Mapping(target = "id", source = "uuid")
     Question questionResponseProjectionToDto(QuestionResponseProjection questionProjection);
@@ -70,8 +72,8 @@ public interface QuestionEntityMapper {
         return page.map(this::questionResponseProjectionToDto);
     }
 
-    default Page <QuestionTags> pageEntityToPageTagDto(Page <QuestionEntity> page) {
-        return page.map(this::entityToQuestionTags);
+    default Page <QuestionWithTagsOnly> pageEntityToPageTagDto(Page <QuestionEntity> page) {
+        return page.map(this::entityToQuestionWithTagsOnly);
     }
 
     List <Question> modelToDtos(List <QuestionEntity> questions);

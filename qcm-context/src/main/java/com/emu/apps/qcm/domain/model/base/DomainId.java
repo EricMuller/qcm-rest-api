@@ -18,7 +18,11 @@ public abstract class DomainId<ID extends DomainObjectId> implements Identifiabl
 
     private Long version;
 
+    private String createdBy;
+
     private ZonedDateTime dateCreation;
+
+    private String lastModifiedBy;
 
     private ZonedDateTime dateModification;
 

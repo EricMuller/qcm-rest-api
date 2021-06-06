@@ -1,5 +1,6 @@
 package com.emu.apps.qcm.domain.model.questionnaire;
 
+import com.emu.apps.qcm.domain.model.Status;
 import com.emu.apps.qcm.domain.model.category.Category;
 import com.emu.apps.qcm.domain.model.base.DomainId;
 import lombok.AllArgsConstructor;
@@ -23,12 +24,12 @@ public class Questionnaire extends DomainId <QuestionnaireId> {
 
     private Set <QuestionnaireTag> tags;
 
-    private String status;
+    private Status status;
 
     private String website;
 
     private Boolean published;
 
-    private String createdBy;
+
 
 }

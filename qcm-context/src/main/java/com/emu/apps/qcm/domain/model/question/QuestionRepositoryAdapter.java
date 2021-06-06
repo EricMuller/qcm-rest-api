@@ -1,7 +1,11 @@
 package com.emu.apps.qcm.domain.model.question;
 
+import com.emu.apps.qcm.domain.mappers.QuestionnaireIdMapper;
+import com.emu.apps.qcm.domain.mappers.TagIdMapper;
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
+import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireId;
 import com.emu.apps.qcm.domain.model.tag.Tag;
+import com.emu.apps.qcm.domain.model.tag.TagId;
 import com.emu.apps.qcm.infra.persistence.QuestionPersistencePort;
 import com.emu.apps.shared.exceptions.EntityNotFoundException;
 import com.emu.apps.shared.exceptions.MessageSupport;
@@ -30,17 +34,23 @@ class QuestionRepositoryAdapter implements QuestionRepository {
 
     private final QuestionPersistencePort questionPersistencePort;
 
+    private final QuestionnaireIdMapper questionnaireIdMapper;
 
-    public QuestionRepositoryAdapter(QuestionPersistencePort questionPersistencePort) {
+    private final TagIdMapper tagIdMapper;
+
+
+    public QuestionRepositoryAdapter(QuestionPersistencePort questionPersistencePort, QuestionnaireIdMapper questionnaireIdMapper, TagIdMapper tagIdMapper) {
         this.questionPersistencePort = questionPersistencePort;
+        this.questionnaireIdMapper = questionnaireIdMapper;
+        this.tagIdMapper = tagIdMapper;
     }
 
     @Override
-    public Page <QuestionTags> getQuestions(String[] tagUuid,
-                                            String[] questionnaireUuid,
-                                            Pageable pageable, PrincipalId principal) {
+    public Page <QuestionWithTagsOnly> getQuestions(TagId[] tagIds,
+                                                    QuestionnaireId[] questionnaireIds,
+                                                    Pageable pageable, PrincipalId principal) {
 
-        return questionPersistencePort.findAllByPage(questionnaireUuid, tagUuid, pageable, principal.toUuid());
+        return questionPersistencePort.findAllByPage(questionnaireIdMapper.toUuid(questionnaireIds), tagIdMapper.toUuid(tagIds), pageable, principal.toUuid());
     }
 
     @Override
@@ -90,9 +100,9 @@ class QuestionRepositoryAdapter implements QuestionRepository {
         return questionPersistencePort.findAllTagByPage(pageable, principal.toUuid());
     }
 
-    public Iterable <String> findAllStatusByPage(Pageable pageable, PrincipalId principal){
+    public Iterable <String> findAllStatusByPage(Pageable pageable, PrincipalId principal) {
 
-        return questionPersistencePort.findAllStatusByPage(principal.toUuid(),pageable );
+        return questionPersistencePort.findAllStatusByPage(principal.toUuid(), pageable);
 
     }
 

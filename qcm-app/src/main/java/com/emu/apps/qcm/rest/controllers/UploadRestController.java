@@ -3,8 +3,8 @@ package com.emu.apps.qcm.rest.controllers;
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
 import com.emu.apps.qcm.domain.model.upload.UploadId;
 import com.emu.apps.qcm.domain.model.upload.UploadRepository;
-import com.emu.apps.qcm.rest.controllers.mappers.QuestionnaireResourcesMapper;
-import com.emu.apps.qcm.rest.controllers.resources.UploadResources;
+import com.emu.apps.qcm.rest.mappers.QuestionnaireResourceMapper;
+import com.emu.apps.qcm.rest.resources.UploadResource;
 import com.emu.apps.shared.annotations.Timer;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -41,28 +41,28 @@ public class UploadRestController {
 
     private final UploadRepository uploadRepository;
 
-    private final QuestionnaireResourcesMapper questionnaireResourcesMapper;
+    private final QuestionnaireResourceMapper questionnaireResourceMapper;
 
-    public UploadRestController(UploadRepository uploadServicePort, QuestionnaireResourcesMapper questionnaireResourcesMapper) {
+    public UploadRestController(UploadRepository uploadServicePort, QuestionnaireResourceMapper questionnaireResourceMapper) {
         this.uploadRepository = uploadServicePort;
-        this.questionnaireResourcesMapper = questionnaireResourcesMapper;
+        this.questionnaireResourceMapper = questionnaireResourceMapper;
     }
 
     @ResponseBody
     @PostMapping(value = "/{fileType}")
-    public UploadResources uploadFileByType(@PathVariable("fileType") String fileType,
-                                            @RequestParam("file") MultipartFile multipartFile,
-                                            @RequestParam(value = "async", required = false) Boolean async) throws IOException {
+    public UploadResource uploadFileByType(@PathVariable("fileType") String fileType,
+                                           @RequestParam("file") MultipartFile multipartFile,
+                                           @RequestParam(value = "async", required = false) Boolean async) throws IOException {
 
-        return questionnaireResourcesMapper.uploadToResources(uploadRepository.uploadFile(fileType, multipartFile, async, new PrincipalId(getPrincipal())));
+        return questionnaireResourceMapper.uploadToResources(uploadRepository.uploadFile(fileType, multipartFile, async, new PrincipalId(getPrincipal())));
     }
 
     @GetMapping
     @Timer
     @PageableAsQueryParam
-    public Page <UploadResources> getUploads(@Parameter(hidden = true)
+    public Page <UploadResource> getUploads(@Parameter(hidden = true)
                                              @PageableDefault(direction = DESC, sort = {"dateModification"}) Pageable pageable) {
-        return questionnaireResourcesMapper.uploadToResources(uploadRepository.getUploads(pageable, new PrincipalId(getPrincipal())));
+        return questionnaireResourceMapper.uploadToResources(uploadRepository.getUploads(pageable, new PrincipalId(getPrincipal())));
     }
 
 
@@ -75,8 +75,8 @@ public class UploadRestController {
 
     @GetMapping(value = "/{uuid}")
     @ResponseBody
-    public UploadResources getUploadByUuid(@PathVariable("uuid") String uuid) {
-        return questionnaireResourcesMapper.uploadToResources(uploadRepository.getUploadByUuid(new UploadId(uuid)));
+    public UploadResource getUploadByUuid(@PathVariable("uuid") String uuid) {
+        return questionnaireResourceMapper.uploadToResources(uploadRepository.getUploadByUuid(new UploadId(uuid)));
     }
 
 }

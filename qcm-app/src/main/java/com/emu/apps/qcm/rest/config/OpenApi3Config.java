@@ -81,7 +81,7 @@ public class OpenApi3Config {
     @Bean
     GroupedOpenApi qcmApis() {
         return GroupedOpenApi.builder()
-                .group("basics")
+                .group("crud qcm")
                 .pathsToMatch(PUBLIC_API + ACCOUNTS + "/**"
                         , PUBLIC_API + QUESTIONNAIRES + "/**"
                         , PUBLIC_API + QUESTIONS + "/**"

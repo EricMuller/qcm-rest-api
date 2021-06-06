@@ -1,20 +1,18 @@
 package com.emu.apps.qcm.domain.repositories;
 
 
+import com.emu.apps.qcm.domain.model.base.PrincipalId;
 import com.emu.apps.qcm.domain.model.category.Category;
 import com.emu.apps.qcm.domain.model.category.CategoryRepository;
-import com.emu.apps.qcm.domain.model.base.PrincipalId;
 import com.emu.apps.qcm.domain.model.question.Question;
 import com.emu.apps.qcm.domain.model.question.QuestionId;
 import com.emu.apps.qcm.domain.model.question.QuestionRepository;
+import com.emu.apps.qcm.domain.model.question.QuestionWithTagsOnly;
 import com.emu.apps.qcm.domain.model.question.Response;
-
-import com.emu.apps.qcm.domain.model.question.QuestionTags;
+import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireId;
+import com.emu.apps.qcm.domain.model.tag.TagId;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category.Type;
-
-
-import com.emu.apps.shared.exceptions.FunctionnalException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -49,14 +47,14 @@ class QuestionRepositoryTest {
     void testGetQuestions() {
 
 
-        Iterable <QuestionTags> questionTags = questionRepository.getQuestions(new String[0], new String[0], PageRequest.of(0, 10), new PrincipalId("toto"));
+        Iterable <QuestionWithTagsOnly> questionTags = questionRepository.getQuestions(new TagId[0], new QuestionnaireId[0], PageRequest.of(0, 10), new PrincipalId("toto"));
 
         Assertions.assertTrue(isEmpty(questionTags));
 
     }
 
     @Test
-    void testSaveQuestion()  {
+    void testSaveQuestion() {
 
         Category category = new Category();
         category.setType(Type.QUESTION.name());
@@ -78,12 +76,12 @@ class QuestionRepositoryTest {
         Assertions.assertNotNull(saveQuestion);
         Assertions.assertNotNull(saveQuestion.getId());
         Assertions.assertNotNull(saveQuestion.getId().toUuid());
-        Assertions.assertEquals("why?",saveQuestion.getQuestionText());
+        Assertions.assertEquals("why?", saveQuestion.getQuestionText());
         Assertions.assertEquals(1, size(saveQuestion.getResponses()));
 
         Question getQuestion = questionRepository.getQuestionById(new QuestionId(saveQuestion.getId().toUuid())).orElse(null);
         Assertions.assertNotNull(getQuestion);
-        Assertions.assertEquals("why?",saveQuestion.getQuestionText());
+        Assertions.assertEquals("why?", saveQuestion.getQuestionText());
         Assertions.assertEquals(1, size(saveQuestion.getResponses()));
 
 
@@ -92,7 +90,7 @@ class QuestionRepositoryTest {
 
 
         Assertions.assertNotNull(updateQuestion);
-        Assertions.assertEquals("why2?",updateQuestion.getQuestionText());
+        Assertions.assertEquals("why2?", updateQuestion.getQuestionText());
     }
 
 

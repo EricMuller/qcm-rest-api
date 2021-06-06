@@ -2,9 +2,9 @@ package com.emu.apps.qcm.rest.controllers;
 
 
 import com.emu.apps.qcm.application.PublishedService;
-import com.emu.apps.qcm.rest.controllers.mappers.PublishedMapper;
-import com.emu.apps.qcm.rest.controllers.resources.published.PublishedQuestionnaire;
-import com.emu.apps.qcm.rest.controllers.resources.published.PushishedQuestionnaireQuestion;
+import com.emu.apps.qcm.rest.mappers.PublishedMapper;
+import com.emu.apps.qcm.rest.resources.published.PublishedQuestionnaire;
+import com.emu.apps.qcm.rest.resources.published.PushishedQuestionnaireQuestion;
 import com.emu.apps.shared.annotations.Timer;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;

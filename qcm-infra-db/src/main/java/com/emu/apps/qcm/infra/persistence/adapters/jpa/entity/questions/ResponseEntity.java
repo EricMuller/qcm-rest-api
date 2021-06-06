@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions;
 
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.common.AuditableEntity;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.converters.BooleanTFConverter;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.converters.BooleanTFConverter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

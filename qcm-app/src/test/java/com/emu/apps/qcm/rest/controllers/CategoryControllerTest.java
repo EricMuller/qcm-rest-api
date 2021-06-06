@@ -5,7 +5,7 @@ import com.emu.apps.qcm.domain.model.category.Category;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.fixtures.DbFixture;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category.Type;
-import com.emu.apps.qcm.rest.controllers.resources.CategoryResources;
+import com.emu.apps.qcm.rest.resources.CategoryResource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,10 +65,10 @@ public class CategoryControllerTest {
     public void postCategoryShouldBeOk() {
 
         // create a new category
-        final ResponseEntity <CategoryResources> posteResponse = restTemplate
+        final ResponseEntity <CategoryResource> posteResponse = restTemplate
                 .exchange(getURL(CATEGORY_URI), HttpMethod.POST,
                         new HttpEntity <>(createCategoryDto(),
-                                headers()), CategoryResources.class);
+                                headers()), CategoryResource.class);
 
         assertThat(posteResponse.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
         assertThat(posteResponse.getBody().getUuid()).isNotNull();
@@ -79,10 +79,10 @@ public class CategoryControllerTest {
     public void getCategoryByIdShouldReturnCategory() {
 
         // create a new category
-        final ResponseEntity <CategoryResources> postResponse = restTemplate
+        final ResponseEntity <CategoryResource> postResponse = restTemplate
                 .exchange(getURL(CATEGORY_URI), HttpMethod.POST,
                         new HttpEntity <>(createCategoryDto(),
-                                headers()), CategoryResources.class);
+                                headers()), CategoryResource.class);
 
         assertThat(postResponse.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
 
@@ -91,8 +91,8 @@ public class CategoryControllerTest {
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getURL(CATEGORY_URI + "/{uuid}"));
         URI uri = builder.build().expand(uuid).encode().toUri();
 
-        final ResponseEntity <CategoryResources> getResponse = restTemplate
-                .exchange(uri, HttpMethod.GET, new HttpEntity <>(headers()), CategoryResources.class);
+        final ResponseEntity <CategoryResource> getResponse = restTemplate
+                .exchange(uri, HttpMethod.GET, new HttpEntity <>(headers()), CategoryResource.class);
 
 
         assertThat(getResponse.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
@@ -107,22 +107,22 @@ public class CategoryControllerTest {
     @Test
     public void getCategoryShouldReturnCategory() {
 
-        final ResponseEntity <CategoryResources> postResponse = restTemplate
+        final ResponseEntity <CategoryResource> postResponse = restTemplate
                 .exchange(getURL(CATEGORY_URI), HttpMethod.POST,
                         new HttpEntity <>(createCategoryDto(),
-                                headers()), CategoryResources.class);
+                                headers()), CategoryResource.class);
 
         String uuid = postResponse.getBody().getUuid();
 
         URI uriQuestion = UriComponentsBuilder.fromHttpUrl(getURL(CATEGORY_URI))
                 .queryParam("type", Type.QUESTION.name()).build().toUri();
 
-        final ResponseEntity <CategoryResources[]> getResponse = restTemplate
-                .exchange(uriQuestion, HttpMethod.GET, new HttpEntity <>(headers()), CategoryResources[].class);
+        final ResponseEntity <CategoryResource[]> getResponse = restTemplate
+                .exchange(uriQuestion, HttpMethod.GET, new HttpEntity <>(headers()), CategoryResource[].class);
 
         assertThat(getResponse.getBody()).isNotEmpty();
 
-        CategoryResources category = getResponse.getBody()[0];
+        CategoryResource category = getResponse.getBody()[0];
 
         assertThat(category.getUuid()).isNotNull().isEqualTo(uuid);
         assertThat(category.getType()).isNotNull().isEqualTo(Type.QUESTION.name());
@@ -131,8 +131,8 @@ public class CategoryControllerTest {
         URI uriQuestionnaire = UriComponentsBuilder.fromHttpUrl(getURL(CATEGORY_URI))
                 .queryParam("type", Type.QUESTIONNAIRE.name()).build().toUri();
 
-        final ResponseEntity <CategoryResources[]> getResponse2 = restTemplate
-                .exchange(uriQuestionnaire, HttpMethod.GET, new HttpEntity <>(headers()), CategoryResources[].class);
+        final ResponseEntity <CategoryResource[]> getResponse2 = restTemplate
+                .exchange(uriQuestionnaire, HttpMethod.GET, new HttpEntity <>(headers()), CategoryResource[].class);
 
         assertThat(getResponse2.getBody()).isEmpty();
 

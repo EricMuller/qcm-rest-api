@@ -29,7 +29,7 @@
 package com.emu.apps.qcm.infra.persistence.adapters.mappers;
 
 import com.emu.apps.qcm.domain.model.question.QuestionTag;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.QuestionTagEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionTagEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
@@ -40,6 +40,12 @@ public interface QuestionTagEntityMapper {
 
     @Mapping(source = "tag.uuid", target = "uuid")
     @Mapping(source = "tag.libelle", target = "libelle")
+
+    @Mapping(source = "tag.dateCreation", target = "dateCreation")
+    @Mapping(source = "tag.dateModification", target = "dateModification")
+    @Mapping(source = "tag.createdBy", target = "createdBy")
+    @Mapping(source = "tag.lastModifiedBy", target = "lastModifiedBy")
+
     QuestionTag entityToModel(QuestionTagEntity questionTagEntity);
 
 

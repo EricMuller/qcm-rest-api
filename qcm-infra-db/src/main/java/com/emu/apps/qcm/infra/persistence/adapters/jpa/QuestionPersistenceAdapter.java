@@ -1,8 +1,10 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa;
 
+import com.emu.apps.qcm.domain.mappers.QuestionnaireIdMapper;
+import com.emu.apps.qcm.domain.mappers.TagIdMapper;
 import com.emu.apps.qcm.domain.model.question.Question;
 import com.emu.apps.qcm.domain.model.question.QuestionTag;
-import com.emu.apps.qcm.domain.model.question.QuestionTags;
+import com.emu.apps.qcm.domain.model.question.QuestionWithTagsOnly;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireQuestion;
 import com.emu.apps.qcm.domain.model.tag.Tag;
 import com.emu.apps.qcm.infra.persistence.QuestionPersistencePort;
@@ -64,7 +66,7 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
     public QuestionPersistenceAdapter(QuestionRepository questionRepository, QuestionTagRepository questionTagRepository,
                                       QuestionnaireQuestionRepository questionnaireQuestionRepository,
                                       QuestionEntityMapper questionMapper, TagRepository tagRepository,
-                                      CategoryRepository categoryRepository, UuidMapper uuidMapper, TagEntityMapper tagMapper, QuestionnaireQuestionEntityMapper questionnaireQuestionMapper) {
+                                      CategoryRepository categoryRepository, UuidMapper uuidMapper, TagEntityMapper tagMapper, QuestionnaireQuestionEntityMapper questionnaireQuestionMapper, QuestionnaireIdMapper questionnaireIdMapper, TagIdMapper tagIdMapper) {
         this.questionRepository = questionRepository;
         this.questionTagRepository = questionTagRepository;
         this.questionnaireQuestionRepository = questionnaireQuestionRepository;
@@ -86,6 +88,7 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
 
     @Override
     public void deleteByUuid(String uuid) {
+
         questionRepository.deleteByUuid(UUID.fromString(uuid));
     }
 
@@ -119,12 +122,12 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
 
     @Override
     @Transactional(readOnly = true)
-    public Page <QuestionTags> findAllByPage(String[] questionnaireUuids, String[] tagUuids, Pageable pageable, String principal) {
+    public Page <QuestionWithTagsOnly> findAllByPage(String[] questionnaireIds, String[] tagIds, Pageable pageable, String principal) {
 
         var questionSpecificationBuilder = new QuestionEntity.SpecificationBuilder(principal);
 
-        questionSpecificationBuilder.setQuestionnaireUuids(uuidMapper.toUUIDs(questionnaireUuids));
-        questionSpecificationBuilder.setTagUuids(uuidMapper.toUUIDs(tagUuids));
+        questionSpecificationBuilder.setQuestionnaireUuids(uuidMapper.toUUIDs(questionnaireIds));
+        questionSpecificationBuilder.setTagUuids(uuidMapper.toUUIDs(tagIds));
 
         return questionMapper.pageEntityToPageTagDto(questionRepository.findAll(questionSpecificationBuilder.build(), pageable));
 

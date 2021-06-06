@@ -4,9 +4,8 @@ package com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions;
 import com.emu.apps.qcm.domain.model.question.TypeQuestion;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category.CategoryEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.common.AuditableEntity;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.converters.BooleanTFConverter;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.converters.BooleanTFConverter;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireQuestionEntity;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.QuestionTagEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -146,14 +145,14 @@ public class QuestionEntity extends AuditableEntity <String> {
             return ArrayUtils.isEmpty(tagUuids) ? null :
                     (root, query, cb) -> root.joinSet("tags", JoinType.INNER)
                             .join("tag").get(UUID)
-                            .in(tagUuids);
+                            .in((Object[]) tagUuids);
         }
 
         private Specification<QuestionEntity> questionnaireQuestionsUuidIn(UUID[] questionnaireUuids) {
             return ArrayUtils.isEmpty(questionnaireUuids) ? null :
                     (root, query, cb) -> root.joinSet("questionnaireQuestions", JoinType.INNER)
                             .join("questionnaire").get(UUID)
-                            .in(questionnaireUuids);
+                            .in((Object[]) questionnaireUuids);
         }
 
     }

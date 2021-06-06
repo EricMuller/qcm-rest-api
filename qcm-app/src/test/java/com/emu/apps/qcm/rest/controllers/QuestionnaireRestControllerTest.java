@@ -2,7 +2,7 @@ package com.emu.apps.qcm.rest.controllers;
 
 
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig;
-import com.emu.apps.qcm.rest.controllers.resources.QuestionnaireResources;
+import com.emu.apps.qcm.rest.resources.QuestionnaireResource;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -42,8 +42,8 @@ public class QuestionnaireRestControllerTest {
     }
 
 
-    private QuestionnaireResources createQuestionnaire() {
-        QuestionnaireResources questionnaire = new QuestionnaireResources();
+    private QuestionnaireResource createQuestionnaire() {
+        QuestionnaireResource questionnaire = new QuestionnaireResource();
 
         questionnaire.setTitle(TITLE);
 
@@ -56,8 +56,8 @@ public class QuestionnaireRestControllerTest {
     public void getQuestionnaireByIdShouldReturnQuestionnaire() {
 
         // create a new question
-        final ResponseEntity <QuestionnaireResources> postResponse = restTemplate
-                .exchange(getURL(QUESTIONNAIRES_URI), HttpMethod.POST, new HttpEntity <>(createQuestionnaire(), headers()), QuestionnaireResources.class);
+        final ResponseEntity <QuestionnaireResource> postResponse = restTemplate
+                .exchange(getURL(QUESTIONNAIRES_URI), HttpMethod.POST, new HttpEntity <>(createQuestionnaire(), headers()), QuestionnaireResource.class);
         assertThat(postResponse.getBody()).isNotNull();
 
         // get the question
@@ -65,8 +65,8 @@ public class QuestionnaireRestControllerTest {
         URI uriGet = UriComponentsBuilder.fromHttpUrl(getURL(QUESTIONNAIRES_URI + "/{uuid}"))
                 .build().expand(uuid).encode().toUri();
 
-        final ResponseEntity <QuestionnaireResources> getResponse = restTemplate
-                .exchange(uriGet, HttpMethod.GET, new HttpEntity <>(headers()), QuestionnaireResources.class);
+        final ResponseEntity <QuestionnaireResource> getResponse = restTemplate
+                .exchange(uriGet, HttpMethod.GET, new HttpEntity <>(headers()), QuestionnaireResource.class);
 
         assertThat(getResponse.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
 
@@ -81,8 +81,8 @@ public class QuestionnaireRestControllerTest {
     public void putQuestionnaireByIdShouldReturnSameQuestionnaire() {
 
         // create a new question
-        final ResponseEntity <QuestionnaireResources> postResponse = restTemplate
-                .exchange(getURL(QUESTIONNAIRES_URI), HttpMethod.POST, new HttpEntity <>(createQuestionnaire(), headers()), QuestionnaireResources.class);
+        final ResponseEntity <QuestionnaireResource> postResponse = restTemplate
+                .exchange(getURL(QUESTIONNAIRES_URI), HttpMethod.POST, new HttpEntity <>(createQuestionnaire(), headers()), QuestionnaireResource.class);
         assertThat(postResponse.getBody()).isNotNull();
 
         // get the question
@@ -95,8 +95,8 @@ public class QuestionnaireRestControllerTest {
 
         postResponse.getBody().setTitle(TITLE2);
 
-        final ResponseEntity <QuestionnaireResources> putResponse = restTemplate
-                .exchange(uriPut, HttpMethod.PUT, new HttpEntity <>(postResponse.getBody(), headers()), QuestionnaireResources.class);
+        final ResponseEntity <QuestionnaireResource> putResponse = restTemplate
+                .exchange(uriPut, HttpMethod.PUT, new HttpEntity <>(postResponse.getBody(), headers()), QuestionnaireResource.class);
 
         assertThat(putResponse.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
 

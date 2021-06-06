@@ -57,6 +57,8 @@ public interface QuestionnaireEntityMapper {
     QuestionnaireEntity dtoToModel(Questionnaire questionnaire);
 
     @Mapping(target = "tags", ignore = true)
+    @Mapping(target = "dateCreation", ignore = true)
+    @Mapping(target = "createdBy", ignore = true)
     @Mapping(target = "dateModification", ignore = true)
     @Mapping(target = "lastModifiedBy", ignore = true)
     @Mapping(target = "id", ignore = true)

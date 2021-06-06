@@ -21,4 +21,7 @@ public interface QuestionnaireIdMapper {
         return id.toUuid();
     }
 
+    String[] toUuid(QuestionnaireId[] id);
+
+    QuestionnaireId[] toQuestionnaireId(String[] id);
 }

@@ -4,8 +4,8 @@ package com.emu.apps.qcm.rest.controllers;
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
 import com.emu.apps.qcm.domain.model.tag.TagId;
 import com.emu.apps.qcm.domain.model.tag.TagRepository;
-import com.emu.apps.qcm.rest.controllers.mappers.QuestionnaireResourcesMapper;
-import com.emu.apps.qcm.rest.controllers.resources.TagResources;
+import com.emu.apps.qcm.rest.mappers.QuestionnaireResourceMapper;
+import com.emu.apps.qcm.rest.resources.TagResource;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
@@ -44,11 +44,11 @@ public class TagRestController {
 
     private final TagRepository tagRepository;
 
-    private final QuestionnaireResourcesMapper questionnaireResourcesMapper;
+    private final QuestionnaireResourceMapper questionnaireResourceMapper;
 
-    public TagRestController(TagRepository tagRepository, QuestionnaireResourcesMapper questionnaireResourcesMapper) {
+    public TagRestController(TagRepository tagRepository, QuestionnaireResourceMapper questionnaireResourceMapper) {
         this.tagRepository = tagRepository;
-        this.questionnaireResourcesMapper = questionnaireResourcesMapper;
+        this.questionnaireResourceMapper = questionnaireResourceMapper;
     }
 
     @GetMapping
@@ -58,38 +58,38 @@ public class TagRestController {
                            @Parameter(hidden = true)
                            @PageableDefault(direction = DESC, sort = {"dateModification"}, size = 100) Pageable pageable) throws IOException {
 
-        Page <TagResources> tagResourcesPage =
-                questionnaireResourcesMapper.tagToResources(tagRepository.getTags(search, pageable, new PrincipalId(getPrincipal())));
+        Page <TagResource> tagResourcesPage =
+                questionnaireResourceMapper.tagToResources(tagRepository.getTags(search, pageable, new PrincipalId(getPrincipal())));
 
         return new PageTag(tagResourcesPage.getContent(), pageable, tagResourcesPage.getContent().size());
     }
 
     @GetMapping(value = "{uuid}")
     @ResponseBody
-    public TagResources getTagByUuid(@PathVariable("uuid") String uuid) {
-        return questionnaireResourcesMapper.tagToResources(tagRepository.getTagById(new TagId(uuid)));
+    public TagResource getTagByUuid(@PathVariable("uuid") String uuid) {
+        return questionnaireResourceMapper.tagToResources(tagRepository.getTagById(new TagId(uuid)));
     }
 
     @PostMapping
     @ResponseBody
-    public TagResources createTag(@JsonView(TagResources.Create.class) @RequestBody TagResources tagResources) {
-        var tag = questionnaireResourcesMapper.tagToModel(tagResources);
-        return questionnaireResourcesMapper.tagToResources(tagRepository.saveTag(tag));
+    public TagResource createTag(@JsonView(TagResource.Create.class) @RequestBody TagResource tagResource) {
+        var tag = questionnaireResourceMapper.tagToModel(tagResource);
+        return questionnaireResourceMapper.tagToResources(tagRepository.saveTag(tag));
     }
 
     @PutMapping(value = "{uuid}")
     @ResponseBody
-    public TagResources updateTag(@PathVariable("uuid") String uuid,
-                                  @JsonView(TagResources.Update.class) @RequestBody TagResources tagResources) {
-        var tag = questionnaireResourcesMapper.tagToModel(uuid, tagResources);
-        return questionnaireResourcesMapper.tagToResources(tagRepository.saveTag(tag));
+    public TagResource updateTag(@PathVariable("uuid") String uuid,
+                                 @JsonView(TagResource.Update.class) @RequestBody TagResource tagResource) {
+        var tag = questionnaireResourceMapper.tagToModel(uuid, tagResource);
+        return questionnaireResourceMapper.tagToResources(tagRepository.saveTag(tag));
     }
 
     /**
      * Springdoc issue
      */
-    class PageTag extends PageImpl <TagResources> {
-        public PageTag(List <TagResources> content, Pageable pageable, long total) {
+    class PageTag extends PageImpl <TagResource> {
+        public PageTag(List <TagResource> content, Pageable pageable, long total) {
             super(content, pageable, total);
         }
     }

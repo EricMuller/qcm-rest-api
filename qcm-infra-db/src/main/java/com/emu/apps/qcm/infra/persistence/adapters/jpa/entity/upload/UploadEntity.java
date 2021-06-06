@@ -22,7 +22,7 @@ import static org.springframework.data.jpa.domain.Specification.where;
 @Table(name = "UPLOAD",
         indexes = {@Index(name = "IDX_UPD_CREATE_BY", columnList = "created_by"),
                 @Index(name = "IDX_UPD_UUID", columnList = "uuid")}
-        , uniqueConstraints = {@UniqueConstraint(name = "UK_UPD_UUID", columnNames  = {"uuid"})}
+        , uniqueConstraints = {@UniqueConstraint(name = "UK_UPD_UUID", columnNames = {"uuid"})}
 )
 @Getter
 @Setter
