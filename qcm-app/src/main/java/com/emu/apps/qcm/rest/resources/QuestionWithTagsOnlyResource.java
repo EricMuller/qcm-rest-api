@@ -52,6 +52,7 @@ public class QuestionWithTagsOnlyResource {
     @JsonProperty("uuid")
     @JsonView({QuestionView.Find.class})
     private String uuid;
+
     @JsonProperty("version")
     @JsonView({QuestionView.Find.class})
     private Long version;

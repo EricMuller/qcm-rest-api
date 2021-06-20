@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by eric on 05/06/2017.
@@ -28,7 +27,7 @@ public class Question extends DomainId <QuestionId> {
 
     private List <Response> responses;
 
-    private Set <QuestionTag> tags;
+    private List <QuestionTag> tags;
 
     private String status;
 

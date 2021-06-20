@@ -11,7 +11,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.hateoas.RepresentationModel;
 
 import java.time.ZonedDateTime;
 import java.util.Set;
@@ -22,7 +21,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonRootName(value = "Questionnaire")
-public class QuestionnaireResource extends RepresentationModel<QuestionnaireResource>  {
+public class QuestionnaireResource {
 
     @JsonProperty("uuid")
     @JsonView({Find.class, Update.class,})

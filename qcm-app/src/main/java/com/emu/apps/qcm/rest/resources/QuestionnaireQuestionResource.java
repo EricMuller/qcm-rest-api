@@ -28,6 +28,9 @@ public class QuestionnaireQuestionResource {
     @JsonProperty("uuid")
     private String uuid;
 
+    @JsonProperty("questionnaire_uuid")
+    private String questionnaireUuid;
+
     @JsonProperty("version")
     private Long version;
 
@@ -36,7 +39,6 @@ public class QuestionnaireQuestionResource {
 
     @JsonProperty("dateModification")
     private ZonedDateTime dateModification;
-
 
     @JsonProperty("question")
     @NotNull(message = "{question.question.notNull}")

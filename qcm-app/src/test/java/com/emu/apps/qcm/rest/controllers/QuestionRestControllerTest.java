@@ -7,7 +7,6 @@ import com.emu.apps.qcm.rest.resources.QuestionResource;
 import com.emu.apps.qcm.rest.resources.ResponseResource;
 import com.emu.apps.qcm.rest.resources.TagResource;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Sets;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -24,8 +23,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.Arrays;
+import java.util.List;
 
 import static com.emu.apps.qcm.rest.config.RestHeaders.headers;
+import static com.google.common.collect.Sets.newHashSet;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
 @SpringBootTest(classes = {SpringBootJpaTestConfig.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -68,7 +69,7 @@ public class QuestionRestControllerTest {
         var questionTagResources = new TagResource();
         questionTagResources.setLibelle(TAG1);
 
-        questionResource.setTags(Sets.newHashSet(questionTagResources));
+        questionResource.setTags(List.of(questionTagResources));
 
         questionResource.setType(TypeQuestion.FREE_TEXT.name());
 
@@ -115,12 +116,13 @@ public class QuestionRestControllerTest {
 
         question.setResponses(Arrays.asList(response1, response2));
 
-        var questionTag1 = new TagResource();
-        questionTag1.setLibelle(TAG1);
-        var questionTag2 = new TagResource();
-        questionTag2.setLibelle(TAG2);
+        var tagResource1 = new TagResource();
+        tagResource1.setLibelle(TAG1);
 
-        question.setTags(Sets.newHashSet(questionTag1, questionTag2));
+        var tagResource2 = new TagResource();
+        tagResource2.setLibelle(TAG2);
+
+        question.setTags(List.of(tagResource1, tagResource2));
 
 
         // create a new question

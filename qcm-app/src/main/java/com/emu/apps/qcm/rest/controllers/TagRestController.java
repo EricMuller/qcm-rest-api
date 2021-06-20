@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -66,15 +67,15 @@ public class TagRestController {
 
     @GetMapping(value = "{uuid}")
     @ResponseBody
-    public TagResource getTagByUuid(@PathVariable("uuid") String uuid) {
-        return questionnaireResourceMapper.tagToResources(tagRepository.getTagById(new TagId(uuid)));
+    public EntityModel <TagResource> getTagByUuid(@PathVariable("uuid") String uuid) {
+        return EntityModel.of(questionnaireResourceMapper.tagToResources(tagRepository.getTagById(new TagId(uuid))));
     }
 
     @PostMapping
     @ResponseBody
-    public TagResource createTag(@JsonView(TagResource.Create.class) @RequestBody TagResource tagResource) {
+    public EntityModel <TagResource> createTag(@JsonView(TagResource.Create.class) @RequestBody TagResource tagResource) {
         var tag = questionnaireResourceMapper.tagToModel(tagResource);
-        return questionnaireResourceMapper.tagToResources(tagRepository.saveTag(tag));
+        return EntityModel.of(questionnaireResourceMapper.tagToResources(tagRepository.saveTag(tag)));
     }
 
     @PutMapping(value = "{uuid}")

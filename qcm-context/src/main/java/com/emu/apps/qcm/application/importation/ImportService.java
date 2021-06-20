@@ -124,7 +124,7 @@ public class ImportService {
 
         question.setResponses(responses);
 
-        Set <QuestionTag> questionTags = new HashSet <>();
+        List <QuestionTag> questionTags = new ArrayList <>();
 
         for (var qtag : questionExport.getQuestionTags()) {
             var questionTagDto = new QuestionTag();
@@ -154,7 +154,7 @@ public class ImportService {
         QuestionTag questionTag = new QuestionTag();
         questionTag.setLibelle(importFileQuestion.getCategorie());
 
-        question.setTags(new HashSet <>(asList(questionTag)));
+        question.setTags(new ArrayList <>(asList(questionTag)));
 
         return question;
 

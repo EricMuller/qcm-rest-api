@@ -9,7 +9,8 @@ import com.emu.apps.qcm.application.reporting.template.TemplateReportServices;
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
 import com.emu.apps.qcm.domain.model.question.QuestionId;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireId;
-import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireQuestion;
+import com.emu.apps.qcm.rest.hal.QuestionnaireModelAssembler;
+import com.emu.apps.qcm.rest.hal.QuestionnaireQuestionModelAssembler;
 import com.emu.apps.qcm.rest.mappers.QuestionnaireResourceMapper;
 import com.emu.apps.qcm.rest.resources.QuestionnaireQuestionResource;
 import com.emu.apps.qcm.rest.resources.QuestionnaireResource;
@@ -28,13 +29,15 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import static com.emu.apps.qcm.application.reporting.template.FileFormat.getFileFormat;
 import static com.emu.apps.qcm.application.reporting.template.ReportTemplate.TEMPLATE_QUESTIONNAIRE;
@@ -69,21 +72,27 @@ public class QuestionnaireRestController {
 
     private final TemplateReportServices templateReportServices;
 
-    public QuestionnaireRestController(QuestionnaireCatalog questionnaireCatalog, QuestionnaireResourceMapper questionnaireResourceMapper, ExportService exportService, TemplateReportServices templateReportServices) {
+    private final QuestionnaireModelAssembler questionnaireModelAssembler;
+
+    private final QuestionnaireQuestionModelAssembler questionnaireQuestionModelAssembler;
+
+    public QuestionnaireRestController(QuestionnaireCatalog questionnaireCatalog, QuestionnaireResourceMapper questionnaireResourceMapper, ExportService exportService, TemplateReportServices templateReportServices, QuestionnaireModelAssembler questionnaireModelAssembler, QuestionnaireQuestionModelAssembler questionnaireQuestionModelAssembler) {
         this.questionnaireCatalog = questionnaireCatalog;
         this.questionnaireResourceMapper = questionnaireResourceMapper;
         this.exportService = exportService;
         this.templateReportServices = templateReportServices;
+        this.questionnaireModelAssembler = questionnaireModelAssembler;
+        this.questionnaireQuestionModelAssembler = questionnaireQuestionModelAssembler;
     }
 
     @GetMapping(value = "/{uuid}")
     @Timer
     @Cacheable(cacheNames = QUESTIONNAIRE, key = "#uuid")
     @ResponseBody
-    public QuestionnaireResource getQuestionnaireById(@PathVariable("uuid") String uuid) {
+    public EntityModel <QuestionnaireResource> getQuestionnaireById(@PathVariable("uuid") String uuid) {
 
-        return questionnaireResourceMapper.questionnaireToResources(questionnaireCatalog.getQuestionnaireById(new QuestionnaireId(uuid))
-                .orElseThrow(() -> new EntityNotFoundException(uuid, UNKNOWN_UUID_QUESTIONNAIRE)))
+        return EntityModel.of(questionnaireResourceMapper.questionnaireToResources(questionnaireCatalog.getQuestionnaireById(new QuestionnaireId(uuid))
+                .orElseThrow(() -> new EntityNotFoundException(uuid, UNKNOWN_UUID_QUESTIONNAIRE))))
                 .add(linkTo(QuestionnaireRestController.class).slash(uuid).withSelfRel())
                 .add(linkTo(methodOn(QuestionnaireRestController.class).getExportByQuestionnaireUuid(uuid)).withRel("export"));
     }
@@ -100,71 +109,70 @@ public class QuestionnaireRestController {
     @CachePut(cacheNames = QUESTIONNAIRE, condition = "#questionnaireResource != null", key = "#uuid")
     @Timer
     @ResponseBody
-    public QuestionnaireResource updateQuestionnaire(@PathVariable("uuid") String uuid,
-                                                     @JsonView(QuestionnaireView.Update.class) @RequestBody QuestionnaireResource questionnaireResource) {
+    public EntityModel <QuestionnaireResource> updateQuestionnaire(@PathVariable("uuid") String uuid,
+                                                                   @JsonView(QuestionnaireView.Update.class) @RequestBody QuestionnaireResource questionnaireResource) {
         var questionnaire = questionnaireResourceMapper.questionnaireToModel(uuid, questionnaireResource);
-        return questionnaireResourceMapper.questionnaireToResources(questionnaireCatalog.updateQuestionnaire(questionnaire, new PrincipalId(getPrincipal())))
+        return EntityModel.of(questionnaireResourceMapper.questionnaireToResources(questionnaireCatalog.updateQuestionnaire(questionnaire, new PrincipalId(getPrincipal()))))
                 .add(linkTo(QuestionnaireRestController.class).slash(uuid).withSelfRel());
     }
 
     @PostMapping
     @ResponseBody
-    public QuestionnaireResource createQuestionnaire(@JsonView(QuestionnaireView.Create.class) @RequestBody QuestionnaireResource questionnaireResource) {
+    public EntityModel <QuestionnaireResource> createQuestionnaire(@JsonView(QuestionnaireView.Create.class) @RequestBody QuestionnaireResource questionnaireResource) {
         var questionnaire = questionnaireResourceMapper.questionnaireToModel(questionnaireResource);
 
         var createdQuestionnaire = questionnaireResourceMapper.questionnaireToResources(questionnaireCatalog.saveQuestionnaire(questionnaire, new PrincipalId(getPrincipal())));
 
-        return createdQuestionnaire.add(linkTo(QuestionnaireRestController.class).slash(createdQuestionnaire.getUuid()).withSelfRel());
+        return EntityModel.of(createdQuestionnaire).add(linkTo(QuestionnaireRestController.class).slash(createdQuestionnaire.getUuid()).withSelfRel());
     }
 
     /* /{id:[\d]+}/questions*/
     @GetMapping(value = "/{uuid}" + QUESTIONS)
     @ResponseBody
     @PageableAsQueryParam
+    public PagedModel <EntityModel <QuestionnaireQuestionResource>> getQuestionsByQuestionnaireId(@PathVariable("uuid") String uuid,
+                                                                                                  @Parameter(hidden = true) @PageableDefault(direction = ASC, sort = {"position"}) Pageable pageable,
+                                                                                                  @Parameter(hidden = true) PagedResourcesAssembler <QuestionnaireQuestionResource> pagedResourcesAssembler) {
+        var page =
+                questionnaireResourceMapper.questionnaireQuestionToResources(questionnaireCatalog.getQuestionsByQuestionnaireId(new QuestionnaireId(uuid), pageable), uuid);
 
-    public PageQuestionnaireQuestion getQuestionsByQuestionnaireId(@PathVariable("uuid") String uuid,
-                                                                   @Parameter(hidden = true)
-                                                                   @PageableDefault(direction = ASC, sort = {"position"}) Pageable pageable) {
+        Link selfLink = Link.of(ServletUriComponentsBuilder.fromCurrentRequest().build().toUriString());
 
-              var questionnaireQuestionResources =
-                questionnaireResourceMapper.questionnaireQuestionToResources(questionnaireCatalog.getQuestionsByQuestionnaireId(new QuestionnaireId(uuid), pageable));
-
-        return new PageQuestionnaireQuestion(questionnaireQuestionResources.getContent(), pageable, questionnaireQuestionResources.getContent().size());
+        return pagedResourcesAssembler.toModel(page, this.questionnaireQuestionModelAssembler, selfLink);
     }
-
 
     @GetMapping(value = "/{uuid}" + QUESTIONS + "/{q_uuid}")
     @Timer
     @ResponseBody
-    public QuestionnaireQuestionResource getQuestionnaireQuestionById(@PathVariable("uuid") String uuid, @PathVariable("question_uuid") String questionUuid) {
-
-        return questionnaireResourceMapper.questionnaireQuestionToResources(questionnaireCatalog.getQuestion(new QuestionnaireId(uuid), new QuestionId(questionUuid)));
+    public QuestionnaireQuestionResource getQuestionnaireQuestionById(@PathVariable("uuid") String uuid, @PathVariable("q_uuid") String questionUuid) {
+        return questionnaireResourceMapper.questionnaireQuestionToResources(questionnaireCatalog.getQuestion(new QuestionnaireId(uuid), new QuestionId(questionUuid)), uuid);
     }
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     @Timer
     @ResponseBody
     @PageableAsQueryParam
-    public PageQuestionnaire getQuestionnaires(@RequestParam(value = "tag_uuid", required = false) String[] tagUuid,
-                                               @Parameter(hidden = true)
-                                               @PageableDefault(direction = DESC, sort = {"dateModification"}) Pageable pageable) {
+    public PagedModel <EntityModel <QuestionnaireResource>> getQuestionnaires(@RequestParam(value = "tag_uuid", required = false) String[] tagUuid,
+                                                                              @Parameter(hidden = true) @PageableDefault(direction = DESC, sort = {"dateModification"}) Pageable pageable,
+                                                                              @Parameter(hidden = true) PagedResourcesAssembler <QuestionnaireResource> pagedResourcesAssembler) {
 
-        var questionnaireResources = questionnaireResourceMapper.questionnaireToResources(questionnaireCatalog.getQuestionnaires(tagUuid, pageable, new PrincipalId(getPrincipal())));
-
-        return new PageQuestionnaire(questionnaireResources.getContent(), pageable, questionnaireResources.getContent().size());
+        var page = questionnaireResourceMapper.questionnaireToResources(questionnaireCatalog.getQuestionnaires(tagUuid, pageable, new PrincipalId(getPrincipal())));
+        Link selfLink = Link.of(ServletUriComponentsBuilder.fromCurrentRequest().build().toUriString());
+        return pagedResourcesAssembler.toModel(page, this.questionnaireModelAssembler, selfLink);
 
     }
 
     @PutMapping(value = "/{uuid}/questions")
     @ResponseBody
-    public QuestionnaireQuestionResource addQuestionByQuestionnaireId(@PathVariable("uuid") String uuid, @RequestBody QuestionnaireQuestionUpdate questionnaireQuestionUpdate) {
+    public EntityModel <QuestionnaireQuestionResource> addQuestionByQuestionnaireId(@PathVariable("uuid") String uuid, @RequestBody QuestionnaireQuestionUpdate questionnaireQuestionUpdate) {
 
-
-        QuestionnaireQuestion questionnaireQuestion = questionnaireCatalog.addQuestion(new QuestionnaireId(uuid)
+        var questionnaireQuestion = questionnaireCatalog.addQuestion(new QuestionnaireId(uuid)
                 , new QuestionId(questionnaireQuestionUpdate.getUuid()), of(questionnaireQuestionUpdate.getPosition())
                 , new PrincipalId(getPrincipal()));
 
-        return questionnaireResourceMapper.questionnaireQuestionToResources(questionnaireQuestion);
+        var model = EntityModel.of(questionnaireResourceMapper.questionnaireQuestionToResources(questionnaireQuestion, uuid));
+        questionnaireQuestionModelAssembler.addLinks(model);
+        return model;
     }
 
 
@@ -175,17 +183,6 @@ public class QuestionnaireRestController {
         return new ResponseEntity <>(NO_CONTENT);
     }
 
-    final class PageQuestionnaireQuestion extends PageImpl <QuestionnaireQuestionResource> {
-        public PageQuestionnaireQuestion(List <QuestionnaireQuestionResource> content, Pageable pageable, long total) {
-            super(content, pageable, total);
-        }
-    }
-
-    final class PageQuestionnaire extends PageImpl <QuestionnaireResource> {
-        public PageQuestionnaire(List <QuestionnaireResource> content, Pageable pageable, long total) {
-            super(content, pageable, total);
-        }
-    }
 
     @Timer
     @GetMapping(value = "/{uuid}" + EXPORTS, produces = APPLICATION_JSON_VALUE)
@@ -193,7 +190,6 @@ public class QuestionnaireRestController {
     public Export getExportByQuestionnaireUuid(@PathVariable("uuid") String uuid) {
         return exportService.getbyQuestionnaireUuid(uuid);
     }
-
 
     @Timer
     @GetMapping(value = "/{uuid}" + EXPORTS + "/{type-report}", produces = APPLICATION_OCTET_STREAM_VALUE)

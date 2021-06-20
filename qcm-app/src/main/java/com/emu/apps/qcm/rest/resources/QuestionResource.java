@@ -16,7 +16,7 @@ import org.springframework.hateoas.RepresentationModel;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.ZonedDateTime;
-import java.util.Set;
+import java.util.List;
 
 /**
  * Created by eric on 05/06/2017.
@@ -27,7 +27,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @JsonRootName(value = "Question")
-public class QuestionResource extends RepresentationModel <QuestionResource> {
+public class QuestionResource  {
 
     @JsonProperty("uuid")
     @JsonView({Find.class, Update.class,})
@@ -73,7 +73,7 @@ public class QuestionResource extends RepresentationModel <QuestionResource> {
 
     @JsonProperty("tags")
     @JsonView({Find.class, Create.class, Update.class,})
-    private Set <TagResource> tags;
+    private List <TagResource> tags;
 
     @JsonProperty("status")
     @JsonView({Find.class, Create.class, Update.class,})

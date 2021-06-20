@@ -48,8 +48,9 @@ public interface QuestionnaireResourceMapper {
     @Mapping(target = "id", source = "uuid")
     Category categoryToModel(CategoryResource categoryResource);
 
-    @Mapping(target = "uuid", source = "id")
-    QuestionnaireQuestionResource questionnaireQuestionToResources(QuestionnaireQuestion questionnaireQuestion);
+    @Mapping(target = "uuid", source = "questionnaireQuestion.id")
+    @Mapping(target = "questionnaireUuid", source = "questionnaireUuid")
+    QuestionnaireQuestionResource questionnaireQuestionToResources(QuestionnaireQuestion questionnaireQuestion, String questionnaireUuid);
 
     Question questionToModel(QuestionResource questionResource);
 
@@ -97,6 +98,8 @@ public interface QuestionnaireResourceMapper {
 
     Iterable <CategoryResource> categoriesToResources(Iterable <Category> categories);
 
+    Iterable <QuestionWithTagsOnlyResource> questionTagsToResources(Page <QuestionWithTagsOnly> page);
+
     default Page <WebHookResource> webhookToResources(Page <WebHook> page) {
         return page.map(this::webhookToResources);
     }
@@ -109,7 +112,8 @@ public interface QuestionnaireResourceMapper {
         return page.map(this::tagToResources);
     }
 
-    default Page <QuestionWithTagsOnlyResource> questionTagsToResources(Page <QuestionWithTagsOnly> page) {
+
+    default Page <QuestionWithTagsOnlyResource> pageQuestionTagsToResources(Page <QuestionWithTagsOnly> page) {
         return page.map(this::questionTagsToResources);
     }
 
@@ -117,11 +121,11 @@ public interface QuestionnaireResourceMapper {
         return page.map(this::questionnaireToResources);
     }
 
-    default Page <QuestionnaireQuestionResource> questionnaireQuestionToResources(Page <QuestionnaireQuestion> page) {
-        return page.map(this::questionnaireQuestionToResources);
+    default Page <QuestionnaireQuestionResource> questionnaireQuestionToResources(Page <QuestionnaireQuestion> page, String questionnaireUuid) {
+        return page.map(q -> this.questionnaireQuestionToResources(q, questionnaireUuid));
     }
 
-    default Status getByName(String name){
+    default Status getByName(String name) {
         return Status.getByName(name);
     }
 

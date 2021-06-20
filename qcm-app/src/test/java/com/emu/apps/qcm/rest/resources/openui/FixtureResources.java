@@ -52,7 +52,7 @@ public class FixtureResources {
         q.setResponses(List.of(createResponseResources()));
         q.setTip("Tip");
 
-        q.setTags(Set.of(createQuestionTag()));
+        q.setTags(List.of(createQuestionTag()));
 
         q.setVersion(1L);
         q.setDateCreation(ZonedDateTime.now());

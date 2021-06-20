@@ -10,7 +10,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.hateoas.RepresentationModel;
 
 import java.time.ZonedDateTime;
 
@@ -22,7 +21,7 @@ import java.time.ZonedDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonRootName(value = "Tag")
-public class TagResource extends RepresentationModel <TagResource> {
+public class TagResource {
 
     public interface Base {
     }
@@ -46,23 +45,23 @@ public class TagResource extends RepresentationModel <TagResource> {
     private String libelle;
 
     @JsonProperty("version")
-    @JsonView({Base.class, QuestionnaireView.Find.class,QuestionView.Find.class})
+    @JsonView({Base.class, QuestionnaireView.Find.class, QuestionView.Find.class})
     private Long version;
 
     @JsonProperty("created_by")
-    @JsonView({Base.class, QuestionnaireView.Find.class,QuestionView.Find.class})
+    @JsonView({Base.class, QuestionnaireView.Find.class, QuestionView.Find.class})
     private String createdBy;
 
     @JsonProperty("dateCreation")
-    @JsonView({Base.class, QuestionnaireView.Find.class,QuestionView.Find.class})
+    @JsonView({Base.class, QuestionnaireView.Find.class, QuestionView.Find.class})
     private ZonedDateTime dateCreation;
 
     @JsonProperty("lastModified_By")
-    @JsonView({Base.class, QuestionnaireView.Find.class,QuestionView.Find.class})
+    @JsonView({Base.class, QuestionnaireView.Find.class, QuestionView.Find.class})
     private String lastModifiedBy;
 
     @JsonProperty("dateModification")
-    @JsonView({Base.class, QuestionnaireView.Find.class,QuestionView.Find.class})
+    @JsonView({Base.class, QuestionnaireView.Find.class, QuestionView.Find.class})
     private ZonedDateTime dateModification;
 
 
