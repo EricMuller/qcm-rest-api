@@ -2,7 +2,7 @@ package com.emu.apps.qcm.rest.controllers;
 
 
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig;
-import com.emu.apps.qcm.rest.resources.QuestionnaireResource;
+import com.emu.apps.qcm.rest.controllers.secured.resources.QuestionnaireResource;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -26,7 +26,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 @ActiveProfiles(value = "webmvc")
 public class QuestionnaireRestControllerTest {
 
-    private static final String QUESTIONNAIRES_URI = ApiRestMappings.PUBLIC_API + ApiRestMappings.QUESTIONNAIRES;
+    private static final String QUESTIONNAIRES_URI = ApiRestMappings.PROTECTED_API + ApiRestMappings.QUESTIONNAIRES;
 
     @LocalServerPort
     private int port;

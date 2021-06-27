@@ -19,7 +19,7 @@ import com.emu.apps.qcm.domain.model.tag.Tag;
 import com.emu.apps.qcm.domain.model.upload.Upload;
 import com.emu.apps.qcm.domain.model.user.Account;
 import com.emu.apps.qcm.domain.model.webhook.WebHook;
-import com.emu.apps.qcm.rest.resources.*;
+import com.emu.apps.qcm.rest.controllers.secured.resources.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;

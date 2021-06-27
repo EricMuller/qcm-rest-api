@@ -4,6 +4,7 @@ import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireQuestion;
 import com.emu.apps.qcm.infra.persistence.adapters.mappers.UuidMapperImpl;
 import com.emu.apps.qcm.rest.mappers.PublishedMapper;
 import com.emu.apps.qcm.rest.mappers.PublishedMapperImpl;
+import com.emu.apps.qcm.rest.controllers.publicized.resources.PushishedQuestionnaireQuestion;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;

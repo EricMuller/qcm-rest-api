@@ -2,7 +2,7 @@ package com.emu.apps.qcm.rest.controllers;
 
 
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig;
-import com.emu.apps.qcm.rest.resources.UploadResource;
+import com.emu.apps.qcm.rest.controllers.secured.resources.UploadResource;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -45,7 +45,7 @@ public class UploadRestControllerTest {
 
         final ResponseEntity <UploadResource> postResponse = restTemplate
                 .withBasicAuth(SpringBootJpaTestConfig.USER_TEST_ID.toUuid(), SpringBootJpaTestConfig.USER_PASSWORD)
-                .exchange(getURL(ApiRestMappings.PUBLIC_API + ApiRestMappings.UPLOADS + "/json"), HttpMethod.POST, new HttpEntity <>(map), UploadResource.class);
+                .exchange(getURL(ApiRestMappings.PROTECTED_API + ApiRestMappings.UPLOADS + "/json"), HttpMethod.POST, new HttpEntity <>(map), UploadResource.class);
         assertThat(postResponse.getBody()).isNotNull();
 
 

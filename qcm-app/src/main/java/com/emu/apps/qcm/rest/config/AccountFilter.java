@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.ACCOUNTS;
-import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.PUBLIC_API;
+import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.PROTECTED_API;
 import static com.emu.apps.shared.security.AuthentificationContextHolder.setPrincipal;
 import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
 
@@ -51,7 +51,7 @@ public class AccountFilter implements Filter {
                         // GrantedAuthority grantedAuthority = () -> account.getId().toUuid();
                     } else {
                         LOGGER.warn("user with email {} non enregistré!", principal);
-                        if (!request.getRequestURI().startsWith(PUBLIC_API + ACCOUNTS)) {
+                        if (!request.getRequestURI().startsWith(PROTECTED_API + ACCOUNTS)) {
                             LOGGER.warn("user with email {} non enregistré! send http 303 ", principal);
                             HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
                             httpResponse.sendError(SC_FORBIDDEN, "Required valid email in database");

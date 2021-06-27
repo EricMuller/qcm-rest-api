@@ -3,9 +3,9 @@ package com.emu.apps.qcm.rest.controllers;
 
 import com.emu.apps.qcm.domain.model.question.TypeQuestion;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig;
-import com.emu.apps.qcm.rest.resources.QuestionResource;
-import com.emu.apps.qcm.rest.resources.ResponseResource;
-import com.emu.apps.qcm.rest.resources.TagResource;
+import com.emu.apps.qcm.rest.controllers.secured.resources.QuestionResource;
+import com.emu.apps.qcm.rest.controllers.secured.resources.ResponseResource;
+import com.emu.apps.qcm.rest.controllers.secured.resources.TagResource;
 import com.google.common.collect.Iterables;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,7 +34,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 @ActiveProfiles(value = "webmvc")
 public class QuestionRestControllerTest {
 
-    private static final String QUESTIONS_URI = ApiRestMappings.PUBLIC_API + ApiRestMappings.QUESTIONS;
+    private static final String QUESTIONS_URI = ApiRestMappings.PROTECTED_API + ApiRestMappings.QUESTIONS;
 
     private static final String QUESTION1 = "Question 1";
 

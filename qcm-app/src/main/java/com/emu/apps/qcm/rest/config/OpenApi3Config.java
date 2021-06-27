@@ -79,32 +79,45 @@ public class OpenApi3Config {
     }
 
     @Bean
-    GroupedOpenApi qcmApis() {
+    GroupedOpenApi qcmHateosApis() {
         return GroupedOpenApi.builder()
-                .group("crud qcm")
-                .pathsToMatch(PUBLIC_API + ACCOUNTS + "/**"
-                        , PUBLIC_API + QUESTIONNAIRES + "/**"
-                        , PUBLIC_API + QUESTIONS + "/**"
-                        , PUBLIC_API + TAGS + "/**"
-                        , PUBLIC_API + CATEGORIES + "/**")
+                .group("Public api")
+                .pathsToMatch(PUBLICIZED_API + "/**")
                 .build();
     }
 
     @Bean
-    GroupedOpenApi exportApis() {
+    GroupedOpenApi qcmApis() {
         return GroupedOpenApi.builder()
-                .group("exports")
-                .pathsToMatch(PUBLIC_API + EXPORTS + "/**"
-                        , PUBLIC_API + IMPORTS + "/**"
-                        , PUBLIC_API + UPLOADS + "/**")
+                .group("Protected api")
+                .pathsToMatch(PROTECTED_API + "/"
+                        , PROTECTED_API + ACCOUNTS + "/**"
+                        , PROTECTED_API + QUESTIONNAIRES + "/**"
+                        , PROTECTED_API + QUESTIONS + "/**"
+                        , PROTECTED_API + TAGS + "/**"
+                        , PROTECTED_API + CATEGORIES + "/**"
+                        , PROTECTED_API + EXPORTS + "/**"
+                        , PROTECTED_API + IMPORTS + "/**"
+                        , PROTECTED_API + UPLOADS + "/**"
+                )
                 .build();
     }
+
+//    @Bean
+//    GroupedOpenApi exportApis() {
+//        return GroupedOpenApi.builder()
+//                .group("exports")
+//                .pathsToMatch(PROTECTED_API + EXPORTS + "/**"
+//                        , PROTECTED_API + IMPORTS + "/**"
+//                        , PROTECTED_API + UPLOADS + "/**")
+//                .build();
+//    }
 
     @Bean
     GroupedOpenApi settingsApis() {
         return GroupedOpenApi.builder()
-                .group("notifications")
-                .pathsToMatch(PUBLIC_API + WEBHOOKS + "/**")
+                .group("webhooks")
+                .pathsToMatch(PROTECTED_API + WEBHOOKS + "/**")
                 .build();
     }
 
