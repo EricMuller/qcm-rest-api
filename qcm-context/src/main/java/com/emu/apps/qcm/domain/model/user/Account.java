@@ -6,11 +6,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.security.Principal;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Account extends DomainId<AccountId> {
+public class Account extends DomainId<AccountId> implements Principal {
 
     private String email;
 
@@ -26,4 +28,12 @@ public class Account extends DomainId<AccountId> {
         this.email = email;
     }
 
+    public Account(AccountId accountId) {
+        this.setId(accountId);
+    }
+
+    @Override
+    public String getName() {
+        return getId().toUuid();
+    }
 }

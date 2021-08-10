@@ -3,16 +3,20 @@ package com.emu.apps.qcm.rest.controllers.secured;
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
 import com.emu.apps.qcm.domain.model.upload.UploadId;
 import com.emu.apps.qcm.domain.model.upload.UploadRepository;
-import com.emu.apps.qcm.rest.mappers.QuestionnaireResourceMapper;
+import com.emu.apps.qcm.rest.controllers.secured.hal.UploadModelAssembler;
 import com.emu.apps.qcm.rest.controllers.secured.resources.UploadResource;
+import com.emu.apps.qcm.rest.mappers.QuestionnaireResourceMapper;
 import com.emu.apps.shared.annotations.Timer;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.context.annotation.Profile;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
 
@@ -43,9 +48,12 @@ public class UploadRestController {
 
     private final QuestionnaireResourceMapper questionnaireResourceMapper;
 
-    public UploadRestController(UploadRepository uploadServicePort, QuestionnaireResourceMapper questionnaireResourceMapper) {
+    private final UploadModelAssembler uploadModelAssembler;
+
+    public UploadRestController(UploadRepository uploadServicePort, QuestionnaireResourceMapper questionnaireResourceMapper, UploadModelAssembler uploadModelAssembler) {
         this.uploadRepository = uploadServicePort;
         this.questionnaireResourceMapper = questionnaireResourceMapper;
+        this.uploadModelAssembler = uploadModelAssembler;
     }
 
     @ResponseBody
@@ -54,15 +62,21 @@ public class UploadRestController {
                                            @RequestParam("file") MultipartFile multipartFile,
                                            @RequestParam(value = "async", required = false) Boolean async) throws IOException {
 
-        return questionnaireResourceMapper.uploadToResources(uploadRepository.uploadFile(fileType, multipartFile, async, new PrincipalId(getPrincipal())));
+        return questionnaireResourceMapper.uploadToResources(uploadRepository.uploadFile(fileType, multipartFile, async, PrincipalId.of(getPrincipal())));
     }
 
     @GetMapping
     @Timer
     @PageableAsQueryParam
-    public Page <UploadResource> getUploads(@Parameter(hidden = true)
-                                             @PageableDefault(direction = DESC, sort = {"dateModification"}) Pageable pageable) {
-        return questionnaireResourceMapper.uploadToResources(uploadRepository.getUploads(pageable, new PrincipalId(getPrincipal())));
+    public PagedModel <EntityModel <UploadResource>> getUploads(@Parameter(hidden = true)
+                                                                @PageableDefault(direction = DESC, sort = {"dateModification"}) Pageable pageable,
+                                                                @Parameter(hidden = true) PagedResourcesAssembler <UploadResource> pagedResourcesAssembler) {
+
+        Link selfLink = Link.of(ServletUriComponentsBuilder.fromCurrentRequest().build().toUriString());
+
+        var page = questionnaireResourceMapper.uploadToResources(uploadRepository.getUploads(pageable, PrincipalId.of(getPrincipal())));
+
+        return pagedResourcesAssembler.toModel(page, this.uploadModelAssembler, selfLink);
     }
 
 

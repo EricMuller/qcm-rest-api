@@ -13,8 +13,8 @@ import java.util.Map;
 
 import static com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig.USER_TEST_ID;
 
-@Component
-@Primary
+//@Component
+//@Primary
 public class AccountRepositoryMock implements AccountRepository {
 
     @Override
@@ -30,12 +30,12 @@ public class AccountRepositoryMock implements AccountRepository {
     }
 
     @Override
-    public Account updateUser(Account account, PrincipalId principal) {
+    public Account updateUser(Account account) {
         return createUSer();
     }
 
     @Override
-    public Account createUser(Account account, PrincipalId principal) {
+    public Account createUser(Account account) {
         return createUSer();
     }
 
@@ -47,4 +47,8 @@ public class AccountRepositoryMock implements AccountRepository {
         return account;
     }
 
+    @Override
+    public Account userById(String id) {
+         return createUSer();
+    }
 }

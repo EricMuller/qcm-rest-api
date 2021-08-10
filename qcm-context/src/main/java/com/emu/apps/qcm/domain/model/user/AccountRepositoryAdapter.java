@@ -48,7 +48,11 @@ class AccountRepositoryAdapter implements AccountRepository {
     @Override
     public Account userByEmail(String email) {
         return userPersistencePort.findByEmailEquals(email);
+    }
 
+    @Override
+    public Account userById(String id) {
+        return userPersistencePort.findById(id);
     }
 
     /**
@@ -60,16 +64,16 @@ class AccountRepositoryAdapter implements AccountRepository {
      */
 
     @Override
-    public Account updateUser(@RequestBody Account account, PrincipalId principal) {
+    public Account updateUser(@RequestBody Account account) {
 
         return userPersistencePort.save(account);
 
     }
 
     @Override
-    public Account createUser(@RequestBody Account account, PrincipalId principal) {
+    public Account createUser(@RequestBody Account account) {
 
-        account.setEmail(principal.toUuid());
+
         return userPersistencePort.save(account);
 
     }

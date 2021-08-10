@@ -7,4 +7,8 @@ public class AccountId extends DomainObjectId {
     public AccountId(String uuid) {
         super(uuid);
     }
+
+    public static AccountId of(String uuid){
+        return new AccountId(uuid);
+    }
 }

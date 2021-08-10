@@ -28,12 +28,12 @@ public class WebhookPersistenceAdapter implements WebHookPersistencePort {
 
     private final WebHookEntityMapper webHookMapper;
 
-    private final AccountRepository userRepository;
+    private final AccountRepository accountRepository;
 
-    public WebhookPersistenceAdapter(WebHookRepository webHookRepository, WebHookEntityMapper webHookMapper, AccountRepository userRepository) {
+    public WebhookPersistenceAdapter(WebHookRepository webHookRepository, WebHookEntityMapper webHookMapper, AccountRepository accountRepository) {
         this.webHookRepository = webHookRepository;
         this.webHookMapper = webHookMapper;
-        this.userRepository = userRepository;
+        this.accountRepository = accountRepository;
     }
 
 
@@ -46,7 +46,7 @@ public class WebhookPersistenceAdapter implements WebHookPersistencePort {
                     .orElseThrow(() -> new EntityNotFoundException(webHook.getId().toUuid(), UNKNOWN_UUID_WEBHOOK));
             webHookMapper.dtoToModel(webHookEntity, webHook);
         } else {
-            AccountEntity userEntity = userRepository.findByUuid(fromString(principal))
+            AccountEntity userEntity = accountRepository.findById(fromString(principal))
                     .orElseThrow(() -> new EntityNotFoundException(principal, UNKNOWN_UUID_USER));
             webHookEntity = webHookMapper.dtoToModel(webHook);
             webHookEntity.setUser(userEntity);
@@ -59,7 +59,7 @@ public class WebhookPersistenceAdapter implements WebHookPersistencePort {
 
     @Override
     public Page <WebHook> findOneByUuid(Pageable pageable, String principal) {
-        return webHookMapper.pageToPageDto(webHookRepository.findPageByUserUuidEquals(fromString(principal), pageable));
+        return webHookMapper.pageToPageDto(webHookRepository.findPageByUserIdEquals(fromString(principal), pageable));
     }
 
     @Override

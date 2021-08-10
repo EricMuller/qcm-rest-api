@@ -6,12 +6,10 @@ import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.Que
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.fixtures.DbFixture;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.fixtures.Fixture;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.fixtures.ModelFixture;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.CategoryRepositoryTest;
 import lombok.extern.slf4j.Slf4j;
 import org.javers.core.Javers;
 import org.javers.core.metamodel.object.CdoSnapshot;
 import org.javers.repository.jql.QueryBuilder;
-import org.junit.ClassRule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -22,7 +20,6 @@ import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
-import org.testcontainers.containers.PostgreSQLContainer;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -39,7 +36,7 @@ class QuestionnairePersistenceAdapterTest {
 
 
     @RegisterExtension
-    static BaeldungPostgresqlExtension postgresqlContainer =  BaeldungPostgresqlExtension.getInstance();
+    static BaeldungPostgresqlExtension postgresqlContainer = BaeldungPostgresqlExtension.getInstance();
 
     static class Initializer
             implements ApplicationContextInitializer <ConfigurableApplicationContext> {
@@ -70,7 +67,7 @@ class QuestionnairePersistenceAdapterTest {
 
     @BeforeEach
     void setUp() {
-     //   dbFixture.emptyDatabase();
+        //   dbFixture.emptyDatabase();
     }
 
     @Test

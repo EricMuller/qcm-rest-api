@@ -62,7 +62,7 @@ public class QuestionnaireRepositoryTest {
     @Transactional
     public void findById() {
 
-        final String principal = getClass().getSimpleName() + "." + UUID.randomUUID();
+        final String principal =  UUID.randomUUID().toString();
 
         dbFixture.emptyDatabase(principal);
 
@@ -105,7 +105,7 @@ public class QuestionnaireRepositoryTest {
     @Test
     public void findQuestionnaireById() {
 
-        final String principal = getClass().getSimpleName() + "." + UUID.randomUUID();
+        final String principal =  UUID.randomUUID().toString();
 
         dbFixture.emptyDatabase(principal);
 
@@ -123,7 +123,7 @@ public class QuestionnaireRepositoryTest {
     @Test
     public void findAllWithSpecification() {
 
-        final String principal = getClass().getSimpleName() + "." + UUID.randomUUID();
+        final String principal =  UUID.randomUUID().toString();
 
         dbFixture.emptyDatabase(principal);
 

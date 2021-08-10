@@ -2,27 +2,27 @@ version: "2.1"
 
 services:
     qcm-server:
+        depends_on:
+            - qcm-db-server
+        environment:
+            - SPRING_PROFILES_ACTIVE=postgresql
+            - SPRING_DATASOURCE_URL=jdbc:postgresql://qcm-db-server:5432/postgres?user=postgres&password=postgres
         image: "ericmuller/qcm-rest-api"
         build:
             context: ../qcm-app
         mem_limit: 1024m
-        environment:
-            - SPRING_PROFILES_ACTIVE=postgresql
-            - SPRING_DATASOURCE_URL=jdbc:postgresql://qcm-db-server:5432/postgres?user=postgres&password=postgres
         ports:
             - "8080:8081"
         networks:
             - qcm-network
-        depends_on:
-            - qcm-db-server
 
     qcm-db-server:
         container_name: qcm-postgres-10.12
         image: postgres:10.12
         environment:
-            - 'POSTGRES_ROOT_PASSWORD=postgres'
-            - 'POSTGRES_USER=postgres'
-            - 'POSTGRES_PASSWORD=postgres'
+            POSTGRES_ROOT_PASSWORD: postgres
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
         ports:
             - "5432:5432"
         networks:

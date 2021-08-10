@@ -22,7 +22,7 @@ import static java.util.Collections.singletonMap;
 @EnableTransactionManagement
 public class H2TestProfileJPAConfig {
 
-    public static final String USER_TEST = "user";
+    public static final String USERNAME_TEST = "user";
     public static final String USER_PASSWORD = "password";
  
     @Bean

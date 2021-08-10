@@ -2,12 +2,15 @@ package com.emu.apps.qcm.rest.controllers;
 
 
 import com.emu.apps.qcm.domain.model.question.TypeQuestion;
+import com.emu.apps.qcm.domain.repositories.DbRepositoryFixture;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig;
 import com.emu.apps.qcm.rest.controllers.secured.resources.QuestionResource;
 import com.emu.apps.qcm.rest.controllers.secured.resources.ResponseResource;
 import com.emu.apps.qcm.rest.controllers.secured.resources.TagResource;
 import com.google.common.collect.Iterables;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -55,6 +58,11 @@ public class QuestionRestControllerTest {
         return "http://localhost:" + port + uri;
     }
 
+
+    @BeforeAll
+    private static void beforeAll(@Autowired DbRepositoryFixture dbFixture){
+        dbFixture.createAccountTest();
+    }
 
     private QuestionResource createQuestionResources() {
         QuestionResource questionResource = new QuestionResource();

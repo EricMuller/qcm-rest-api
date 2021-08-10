@@ -1,6 +1,5 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa.entity;
 
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.common.AuditableEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -9,7 +8,17 @@ import lombok.Setter;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import javax.persistence.*;
+import javax.persistence.Cacheable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.PrePersist;
+import javax.persistence.Table;
+import javax.persistence.Version;
+import java.io.Serializable;
+import java.util.Objects;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -20,13 +29,11 @@ import javax.persistence.*;
 @Table(name = "account",
         indexes = {@Index(name = "IDX_USR_EMAIL_IDX", columnList = "email")})
 @Cacheable
-public class AccountEntity extends AuditableEntity <String> {
+public class AccountEntity implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_generator")
-    @SequenceGenerator(name = "user_generator", sequenceName = "user_seq", allocationSize = 1)
     @Column(name = "id", updatable = false, nullable = false)
-    private Long id;
+    private UUID id;
 
     @NonNull
     private String email;
@@ -40,5 +47,21 @@ public class AccountEntity extends AuditableEntity <String> {
     private String company;
 
     private String apiKey;
+
+    @Version
+    @Column(name = "VERSION")
+    private Long version;
+
+    public AccountEntity(UUID uuid) {
+        this.id = uuid;
+    }
+
+    @PrePersist
+    public void autofill() {
+        if (Objects.isNull(id)) {
+            this.id = UUID.randomUUID();
+        }
+    }
+
 
 }

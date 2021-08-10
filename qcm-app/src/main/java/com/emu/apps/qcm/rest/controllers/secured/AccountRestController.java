@@ -1,12 +1,11 @@
 package com.emu.apps.qcm.rest.controllers.secured;
 
-import com.emu.apps.qcm.domain.model.base.PrincipalId;
 import com.emu.apps.qcm.domain.model.user.Account;
 import com.emu.apps.qcm.domain.model.user.AccountRepository;
+import com.emu.apps.qcm.rest.controllers.secured.openui.AccountView;
+import com.emu.apps.qcm.rest.controllers.secured.resources.AccountResource;
 import com.emu.apps.qcm.rest.exceptions.UserAuthenticationException;
 import com.emu.apps.qcm.rest.mappers.QuestionnaireResourceMapper;
-import com.emu.apps.qcm.rest.controllers.secured.resources.AccountResource;
-import com.emu.apps.qcm.rest.controllers.secured.openui.AccountView;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -86,7 +85,7 @@ public class AccountRestController {
         String email = getEmailOrName(principal);
         Account authentAccount = accountRepository.userByEmail(email);
         if (nonNull(authentAccount) && authentAccount.getEmail().equals(user.getEmail())) {
-            return EntityModel.of(questionnaireResourceMapper.userToResources(accountRepository.updateUser(user, PrincipalId.of(email))));
+            return EntityModel.of(questionnaireResourceMapper.userToResources(accountRepository.updateUser(user)));
         } else {
             throw new UserAuthenticationException(INVALID_UUID_USER);
         }
@@ -99,7 +98,8 @@ public class AccountRestController {
         String email = getEmailOrName(principal);
         Account authentAccount = accountRepository.userByEmail(email);
         if (isNull(authentAccount)) {
-            return EntityModel.of(questionnaireResourceMapper.userToResources(accountRepository.createUser(user, PrincipalId.of(email))));
+            user.setEmail(email);
+            return EntityModel.of(questionnaireResourceMapper.userToResources(accountRepository.createUser(user)));
         } else {
             throw new UserAuthenticationException(EXISTS_UUID_USER);
         }
@@ -110,7 +110,8 @@ public class AccountRestController {
     @ResponseBody
     public EntityModel <AccountResource> updateUser(@RequestBody AccountResource accountResource, Principal principal) {
         var user = questionnaireResourceMapper.userToModel(accountResource);
-        return EntityModel.of(questionnaireResourceMapper.userToResources(accountRepository.updateUser(user, PrincipalId.of(getEmailOrName(principal)))));
+        // fixme: ???
+        return EntityModel.of(questionnaireResourceMapper.userToResources(accountRepository.updateUser(user)));
     }
 
 }

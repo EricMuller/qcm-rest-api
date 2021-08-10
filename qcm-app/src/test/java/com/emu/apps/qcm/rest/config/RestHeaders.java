@@ -17,10 +17,11 @@ public final class RestHeaders {
         headers.set("Content-type", MediaType.APPLICATION_JSON_VALUE);
         headers.setContentType(MediaType.APPLICATION_JSON);
         String token = new String(Base64.getEncoder().encode(
-                (SpringBootJpaTestConfig.USER_TEST_ID.toUuid() + ":" + SpringBootJpaTestConfig.USER_PASSWORD).getBytes()));
+                (H2TestProfileJPAConfig.USERNAME_TEST + ":" + H2TestProfileJPAConfig.USER_PASSWORD).getBytes()));
         headers.add(HttpHeaders.AUTHORIZATION, "Basic " + token);
 
         return headers;
     }
+
 
 }

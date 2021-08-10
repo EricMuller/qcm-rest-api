@@ -29,6 +29,7 @@
 package com.emu.apps.qcm.infra.persistence.adapters.mappers;
 
 import com.emu.apps.qcm.domain.model.question.QuestionWithTagsOnly;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.AccountEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionEntity;
 import com.emu.apps.qcm.domain.mappers.QuestionIdMapper;
 import org.mapstruct.Mapper;
@@ -38,6 +39,10 @@ import org.springframework.data.domain.Page;
 @Mapper(componentModel = "spring", uses = {CategoryEntityMapper.class, QuestionTagEntityMapper.class, UuidMapper.class
         , QuestionIdMapper.class})
 public interface QuestionTagsMapper {
+
+    default String getAccString(AccountEntity accountEntity) {
+        return accountEntity.getUserName();
+    }
 
     @Mapping(target = "id", source = "uuid")
     QuestionWithTagsOnly modelToDTo(QuestionEntity questionEntity);

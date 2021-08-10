@@ -1,18 +1,21 @@
 package com.emu.apps.shared.security;
 
-public final class AuthentificationContextHolder {
+import java.security.Principal;
 
-    private static ThreadLocal <String> context = new ThreadLocal <>();
+public final class AuthentificationContextHolder<T extends Principal> {
+
+    private static ThreadLocal <Principal> context = new ThreadLocal <>();
 
     private AuthentificationContextHolder() {
     }
 
-    public static String getPrincipal() {
+    public static Principal getPrincipal() {
         return context.get();
     }
 
-    public static String setPrincipal(String user) {
+    public static Principal setPrincipal(Principal user) {
         context.set(user);
         return context.get();
     }
+
 }

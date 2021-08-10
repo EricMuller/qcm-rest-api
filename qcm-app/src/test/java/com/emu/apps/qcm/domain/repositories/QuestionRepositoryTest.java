@@ -11,10 +11,10 @@ import com.emu.apps.qcm.domain.model.question.QuestionWithTagsOnly;
 import com.emu.apps.qcm.domain.model.question.Response;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireId;
 import com.emu.apps.qcm.domain.model.tag.TagId;
+import com.emu.apps.qcm.domain.model.user.Account;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category.Type;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,9 +22,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.TestPropertySource;
 
 import java.util.Arrays;
+import java.util.UUID;
 
-import static com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig.USER_TEST_ID;
-import static com.emu.apps.shared.security.AuthentificationContextHolder.setPrincipal;
 import static org.apache.commons.collections4.IterableUtils.isEmpty;
 import static org.apache.commons.collections4.IterableUtils.size;
 
@@ -38,16 +37,13 @@ class QuestionRepositoryTest {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    @BeforeEach
-    void setUp() {
-        setPrincipal(USER_TEST_ID.toUuid());
-    }
+    @Autowired
+    private DbRepositoryFixture dbFixture;
 
     @Test
     void testGetQuestions() {
 
-
-        Iterable <QuestionWithTagsOnly> questionTags = questionRepository.getQuestions(new TagId[0], new QuestionnaireId[0], PageRequest.of(0, 10), new PrincipalId("toto"));
+        Iterable <QuestionWithTagsOnly> questionTags = questionRepository.getQuestions(new TagId[0], new QuestionnaireId[0], PageRequest.of(0, 10), new PrincipalId(UUID.randomUUID().toString()));
 
         Assertions.assertTrue(isEmpty(questionTags));
 
@@ -56,11 +52,15 @@ class QuestionRepositoryTest {
     @Test
     void testSaveQuestion() {
 
+        Account account = dbFixture.createAccountTest();
+
         Category category = new Category();
         category.setType(Type.QUESTION.name());
         category.setLibelle("QuestionBusinessPortTest.testSaveQuestion");
 
-        category = categoryRepository.saveCategory(category, USER_TEST_ID);
+        final PrincipalId principalId = new PrincipalId(account.getId().toUuid());
+
+        category = categoryRepository.saveCategory(category, principalId);
 
         Question question = new Question();
         question.setQuestionText("why?");
@@ -71,7 +71,8 @@ class QuestionRepositoryTest {
 
         question.setResponses(Arrays.asList(response));
 
-        Question saveQuestion = questionRepository.saveQuestion(question, USER_TEST_ID);
+
+        Question saveQuestion = questionRepository.saveQuestion(question, principalId);
 
         Assertions.assertNotNull(saveQuestion);
         Assertions.assertNotNull(saveQuestion.getId());
@@ -86,7 +87,7 @@ class QuestionRepositoryTest {
 
 
         getQuestion.setQuestionText("why2?");
-        Question updateQuestion = questionRepository.saveQuestion(getQuestion, USER_TEST_ID);
+        Question updateQuestion = questionRepository.saveQuestion(getQuestion, principalId);
 
 
         Assertions.assertNotNull(updateQuestion);

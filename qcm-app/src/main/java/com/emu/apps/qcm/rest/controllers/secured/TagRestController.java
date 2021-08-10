@@ -60,7 +60,7 @@ public class TagRestController {
                            @PageableDefault(direction = DESC, sort = {"dateModification"}, size = 100) Pageable pageable) throws IOException {
 
         Page <TagResource> tagResourcesPage =
-                questionnaireResourceMapper.tagToResources(tagRepository.getTags(search, pageable, new PrincipalId(getPrincipal())));
+                questionnaireResourceMapper.tagToResources(tagRepository.getTags(search, pageable,  PrincipalId.of(getPrincipal())));
 
         return new PageTag(tagResourcesPage.getContent(), pageable, tagResourcesPage.getContent().size());
     }

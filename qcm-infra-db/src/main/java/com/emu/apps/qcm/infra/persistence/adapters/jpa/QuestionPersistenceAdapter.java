@@ -1,7 +1,5 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa;
 
-import com.emu.apps.qcm.domain.mappers.QuestionnaireIdMapper;
-import com.emu.apps.qcm.domain.mappers.TagIdMapper;
 import com.emu.apps.qcm.domain.model.question.Question;
 import com.emu.apps.qcm.domain.model.question.QuestionTag;
 import com.emu.apps.qcm.domain.model.question.QuestionWithTagsOnly;
@@ -9,9 +7,11 @@ import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireQuestion;
 import com.emu.apps.qcm.domain.model.tag.Tag;
 import com.emu.apps.qcm.infra.persistence.QuestionPersistencePort;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.builders.QuestionTagBuilder;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.AccountEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category.CategoryEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.TagEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.AccountRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.CategoryRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.QuestionRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.QuestionTagRepository;
@@ -62,11 +62,14 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
 
     private final QuestionnaireQuestionEntityMapper questionnaireQuestionMapper;
 
+    private final AccountRepository accountRepository;
+
     @Autowired
     public QuestionPersistenceAdapter(QuestionRepository questionRepository, QuestionTagRepository questionTagRepository,
                                       QuestionnaireQuestionRepository questionnaireQuestionRepository,
                                       QuestionEntityMapper questionMapper, TagRepository tagRepository,
-                                      CategoryRepository categoryRepository, UuidMapper uuidMapper, TagEntityMapper tagMapper, QuestionnaireQuestionEntityMapper questionnaireQuestionMapper, QuestionnaireIdMapper questionnaireIdMapper, TagIdMapper tagIdMapper) {
+                                      CategoryRepository categoryRepository, UuidMapper uuidMapper, TagEntityMapper tagMapper, QuestionnaireQuestionEntityMapper questionnaireQuestionMapper,
+                                      AccountRepository accountRepository) {
         this.questionRepository = questionRepository;
         this.questionTagRepository = questionTagRepository;
         this.questionnaireQuestionRepository = questionnaireQuestionRepository;
@@ -76,6 +79,7 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
         this.uuidMapper = uuidMapper;
         this.tagMapper = tagMapper;
         this.questionnaireQuestionMapper = questionnaireQuestionMapper;
+        this.accountRepository = accountRepository;
     }
 
     @Override
@@ -108,6 +112,11 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
             questionEntity = questionMapper.dtoToModel(questionEntity, question);
         } else {
             questionEntity = questionMapper.dtoToModel(question);
+        }
+
+        Optional <AccountEntity> accountEntity = accountRepository.findById(UUID.fromString(principal));
+        if(accountEntity.isPresent()) {
+            questionEntity.setAccount(accountEntity.get());
         }
 
         questionEntity.setCategory(categoryEntity);

@@ -1,9 +1,12 @@
 package com.emu.apps.qcm.rest.controllers;
 
 
+import com.emu.apps.qcm.domain.repositories.DbRepositoryFixture;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig;
 import com.emu.apps.qcm.rest.controllers.secured.resources.QuestionnaireResource;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -49,6 +52,11 @@ public class QuestionnaireRestControllerTest {
 
 
         return questionnaire;
+    }
+
+    @BeforeAll
+    private static void beforeAll(@Autowired DbRepositoryFixture dbFixture){
+        dbFixture.createAccountTest();
     }
 
     @Test

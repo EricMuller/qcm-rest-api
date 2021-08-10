@@ -68,7 +68,7 @@ public class UserPersistenceAdapter implements UserPersistencePort {
         if (isNull(account.getId()) || isNull(account.getId().toUuid())) {
             accountEntity = accountEntityMapper.dtoToModel(account);
         } else {
-            accountEntity = accountRepository.findByUuid(UUID.fromString(account.getId().toUuid()))
+            accountEntity = accountRepository.findById(UUID.fromString(account.getId().toUuid()))
                     .orElseThrow(() -> new EntityNotFoundException(account.getId().toUuid(), UNKNOWN_UUID_USER));
             accountEntityMapper.dtoToModel(accountEntity, account);
         }
@@ -81,6 +81,14 @@ public class UserPersistenceAdapter implements UserPersistencePort {
     @Transactional(readOnly = true)
     public Account findByEmailEquals(String email) {
         return accountEntityMapper.modelToDto(accountRepository.findByEmailEquals(email).orElse(null));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Account findById(String id) {
+        return accountEntityMapper.modelToDto(accountRepository.findById(UUID.fromString(id))
+                .orElseThrow(() -> new EntityNotFoundException(id, UNKNOWN_UUID_USER))
+        );
     }
 
 }

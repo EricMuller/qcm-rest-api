@@ -47,7 +47,7 @@ public class AccountFilter implements Filter {
                 if (Objects.nonNull(principal)) {
                     final Account account = accountService.userByEmail(principal);
                     if (Objects.nonNull(account)) {
-                        setPrincipal(account.getId().toUuid());
+                        setPrincipal(account);
                         // GrantedAuthority grantedAuthority = () -> account.getId().toUuid();
                     } else {
                         LOGGER.warn("user with email {} non enregistré!", principal);

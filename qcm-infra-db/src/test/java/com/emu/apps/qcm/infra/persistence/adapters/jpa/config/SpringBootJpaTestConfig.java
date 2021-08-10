@@ -50,6 +50,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
+import java.util.UUID;
+
 import static java.util.Collections.singletonMap;
 
 
@@ -61,7 +63,7 @@ import static java.util.Collections.singletonMap;
 @EnableJpaAuditing(dateTimeProviderRef = "dateTimeProvider")
 public class SpringBootJpaTestConfig {
 
-    public static final PrincipalId USER_TEST_ID = new PrincipalId("user");
+    public static final PrincipalId USER_TEST_ID = new PrincipalId(UUID.randomUUID().toString());
 
     public static final String USER_PASSWORD = "password";
 

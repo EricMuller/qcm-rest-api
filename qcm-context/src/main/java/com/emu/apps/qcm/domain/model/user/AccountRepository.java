@@ -10,7 +10,9 @@ public interface AccountRepository {
 
     Account userByEmail(String email);
 
-    Account updateUser(Account account, PrincipalId principal);
+    Account updateUser(Account account);
 
-    Account createUser(Account account, PrincipalId principal);
+    Account createUser(Account account);
+
+    Account userById(String id) ;
 }

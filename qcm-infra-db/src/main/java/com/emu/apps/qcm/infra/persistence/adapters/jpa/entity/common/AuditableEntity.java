@@ -1,9 +1,6 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.common;
 
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.TagEntity;
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.annotations.NaturalId;
-import org.hibernate.annotations.Type;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -11,7 +8,12 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Locale;
@@ -21,12 +23,7 @@ import java.util.UUID;
 @SuppressWarnings("serial")
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class AuditableEntity<U extends Serializable> implements Serializable {
-
-    @Column(name = "UUID", nullable = false, updatable = false)
-    @Type(type = "org.hibernate.type.UUIDCharType")
-    @NaturalId
-    private UUID uuid; // = UUID.randomUUID();
+public abstract class AuditableEntity<U extends Serializable> extends IdentifiableEntity {
 
     @Column(name = "CREATED_BY", updatable = false)
     @CreatedBy
@@ -46,38 +43,12 @@ public abstract class AuditableEntity<U extends Serializable> implements Seriali
     @LastModifiedDate
     private ZonedDateTime dateModification;
 
-    @Version
-    @Column(name = "VERSION")
-    private Long version;
 
     public AuditableEntity() {
     }
 
     public AuditableEntity(UUID uuid) {
-        this.uuid = uuid;
-    }
-
-    public abstract Long getId();
-
-    public UUID getUuid() {
-        return uuid;
-    }
-
-    protected void setUuid(UUID uuid) {
-        this.uuid = uuid;
-    }
-
-    @PrePersist
-    public void prePersist() {
-        this.uuid = UUID.randomUUID();
-    }
-
-    public Long getVersion() {
-        return version;
-    }
-
-    public void setVersion(Long version) {
-        this.version = version;
+        super(uuid);
     }
 
     public ZonedDateTime getDateCreation() {

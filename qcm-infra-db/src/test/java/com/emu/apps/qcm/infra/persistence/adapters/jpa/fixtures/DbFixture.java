@@ -1,11 +1,9 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa.fixtures;
 
 
-import com.emu.apps.qcm.domain.model.category.Category;
 import com.emu.apps.qcm.infra.persistence.CategoryPersistencePort;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.builders.QuestionnaireTagBuilder;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.AccountEntity;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category.CategoryEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.events.WebHookEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireQuestionEntity;
@@ -28,11 +26,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.security.Principal;
 import java.util.List;
-import java.util.UUID;
 
 import static com.emu.apps.qcm.domain.model.question.TypeQuestion.FREE_TEXT;
 import static com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category.Type.QUESTION;
 import static com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category.Type.QUESTIONNAIRE;
+import static java.util.UUID.fromString;
 
 
 @Component
@@ -107,18 +105,18 @@ public class DbFixture extends Fixture {
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void emptyDatabase(String user) {
+    public void emptyDatabase(String userId) {
 
-        responseCrudRepository.deleteByCreatedByEquals(user);
+        responseCrudRepository.deleteByCreatedByEquals(userId);
         // questionTagRepository.deleteAll();
         // questionnaireTagRepository.deleteAll();
         // questionnaireQuestionRepository.deleteAll();
-        questionRepository.deleteByCreatedByEquals(user);
-        tagRepository.deleteByCreatedByEquals(user);
-        questionnaireRepository.deleteByCreatedByEquals(user);
+        questionRepository.deleteByCreatedByEquals(userId);
+        tagRepository.deleteByCreatedByEquals(userId);
+        questionnaireRepository.deleteByCreatedByEquals(userId);
 
-        categoryRepository.deleteAllByUser(user);
-        accountRepository.deleteByEmailEquals(user);
+        categoryRepository.deleteAllByUser(userId);
+        accountRepository.deleteByEmailEquals(userId);
         entityManager.flush();
         // addUserTest(USER);
     }
@@ -129,47 +127,63 @@ public class DbFixture extends Fixture {
         entityManager.flush();
     }
 
+    private AccountEntity getAccountByUserName(String uuid){
+       var accountEntityOptional = accountRepository.findByUserNameEquals(uuid);
+        AccountEntity accountEntity;
+        if(accountEntityOptional.isEmpty()){
+            accountEntity = new AccountEntity(fromString(uuid));
+            accountEntity.setId(fromString(uuid));
+            accountEntity.setUserName(uuid);
+            accountEntity = accountRepository.save(accountEntity);
+        }else{
+            accountEntity = accountEntityOptional.get();
+        }
+        return accountEntity;
+    }
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public QuestionnaireEntity createOneQuestionnaireWithTwoQuestionTags(String principal) {
+    public QuestionnaireEntity createOneQuestionnaireWithTwoQuestionTags(String userUuid) {
         try {
 
-            Category questionnaireCategoryDto = categoryPersistencePort.findOrCreateByLibelle(principal, QUESTIONNAIRE.name(), CATEGORIE_LIBELLE);
+            var accountEntity = getAccountByUserName(userUuid);
 
-            Category questionCategoryDto = categoryPersistencePort.findOrCreateByLibelle(principal, QUESTION.name(), CATEGORIE_LIBELLE);
+            var questionnaireCategory = categoryPersistencePort.findOrCreateByLibelle(userUuid, QUESTIONNAIRE.name(), CATEGORIE_LIBELLE);
 
-            CategoryEntity questionnaireCategory = categoryRepository.findByUuid(UUID.fromString(questionnaireCategoryDto.getId().toUuid()));
+            var questionCategory = categoryPersistencePort.findOrCreateByLibelle(userUuid, QUESTION.name(), CATEGORIE_LIBELLE);
 
-            CategoryEntity questionCategory = categoryRepository.findByUuid(UUID.fromString(questionCategoryDto.getId().toUuid()));
+            var questionnaireCategoryEntity = categoryRepository.findByUuid(fromString(questionnaireCategory.getId().toUuid()));
+
+            var questionCategoryEntity = categoryRepository.findByUuid(fromString(questionCategory.getId().toUuid()));
 
             //questionnaire
-            QuestionnaireEntity questionnaireEntity = new QuestionnaireEntity();
+            var questionnaireEntity = new QuestionnaireEntity();
             questionnaireEntity.setTitle(QUESTIONNAIRE_TITLE);
             questionnaireEntity.setDescription(QUESTIONNAIRE_DESC);
-            questionnaireEntity.setCategory(questionnaireCategory);
-            questionnaireEntity.setCreatedBy(principal);
+            questionnaireEntity.setCategory(questionnaireCategoryEntity);
+            questionnaireEntity.setCreatedBy(userUuid);
             questionnaireEntity = questionnaireRepository.save(questionnaireEntity);
 
 
-            ResponseEntity responseEntity1 = new ResponseEntity();
+            var responseEntity1 = new ResponseEntity();
             responseEntity1.setNumber(1l);
             responseEntity1.setResponseText(RESPONSE_RESPONSE_1);
-            responseEntity1.setCreatedBy(principal);
+            responseEntity1.setCreatedBy(userUuid);
             responseEntity1 = responseCrudRepository.save(responseEntity1);
 
 
-            ResponseEntity responseEntity2 = new ResponseEntity();
+            var responseEntity2 = new ResponseEntity();
             responseEntity2.setNumber(2l);
             responseEntity2.setResponseText(RESPONSE_RESPONSE_2);
-            responseEntity2.setCreatedBy(principal);
+            responseEntity2.setCreatedBy(userUuid);
             responseEntity2 = responseCrudRepository.save(responseEntity2);
-            responseEntity2.setCreatedBy(principal);
+            responseEntity2.setCreatedBy(userUuid);
 
             //question 1
-            QuestionEntity questionEntity1 = new QuestionEntity();
+            var questionEntity1 = new QuestionEntity();
             questionEntity1.setQuestionText(QUESTION_QUESTION_1);
             questionEntity1.setType(FREE_TEXT);
-            questionEntity1.setCreatedBy(principal);
-            questionEntity1.setCategory(questionCategory);
+            questionEntity1.setCreatedBy(userUuid);
+            questionEntity1.setCategory(questionCategoryEntity);
+            questionEntity1.setAccount(accountEntity);
 
             // question.setQuestionnaire(questionnaire);
             responseEntity1.setQuestion(questionEntity1);
@@ -178,16 +192,17 @@ public class DbFixture extends Fixture {
             questionEntity1 = questionRepository.save(questionEntity1);
 
             //question 2
-            QuestionEntity questionEntity2 = new QuestionEntity();
+            var questionEntity2 = new QuestionEntity();
             questionEntity2.setQuestionText(QUESTION_QUESTION_2);
             questionEntity2.setType(FREE_TEXT);
-            questionEntity2.setCategory(questionCategory);
-            questionEntity2.setCreatedBy(principal);
+            questionEntity2.setCategory(questionCategoryEntity);
+            questionEntity2.setCreatedBy(userUuid);
+            questionEntity2.setAccount(accountEntity);
             questionEntity2 = questionRepository.save(questionEntity2);
 
             //questionTag
-            TagEntity tagEntity1 = tagRepository.save(new TagEntity(QUESTION_TAG_LIBELLE_1, false, principal));
-            TagEntity tagEntity2 = tagRepository.save(new TagEntity(QUESTION_TAG_LIBELLE_2, false, principal));
+            var tagEntity1 = tagRepository.save(new TagEntity(QUESTION_TAG_LIBELLE_1, false, userUuid));
+            var tagEntity2 = tagRepository.save(new TagEntity(QUESTION_TAG_LIBELLE_2, false, userUuid));
 
             questionTagRepository.save(new QuestionTagEntity(questionEntity1, tagEntity1));
             questionTagRepository.save(new QuestionTagEntity(questionEntity1, tagEntity2));
@@ -199,7 +214,7 @@ public class DbFixture extends Fixture {
             questionnaireQuestionRepository.save(new QuestionnaireQuestionEntity(questionnaireEntity, questionEntity2, 2));
 
             //questionnaireTag
-            TagEntity tagEntity = tagRepository.save(new TagEntity(QUESTIONNAIRE_TAG_LIBELLE_1, false, principal));
+            var tagEntity = tagRepository.save(new TagEntity(QUESTIONNAIRE_TAG_LIBELLE_1, false, userUuid));
             questionnaireTagRepository.save(new QuestionnaireTagBuilder()
                     .setQuestionnaire(questionnaireEntity)
                     .setTag(tagEntity)
@@ -223,7 +238,7 @@ public class DbFixture extends Fixture {
     public AccountEntity createUser(String email, String principal) {
         AccountEntity user = new AccountEntity();
         user.setEmail(email);
-        user.setCreatedBy(principal);
+        // user.setCreatedBy(principal);
         return accountRepository.save(user);
     }
 
@@ -238,7 +253,7 @@ public class DbFixture extends Fixture {
 
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public QuestionEntity createQuestionsAndGetFirst(String principal) {
+    public QuestionEntity createQuestionsAndGetFirst(String accountId) {
 
 //        questionnaireQuestionRepository.deleteAll();
 //        responseCrudRepository.deleteAll();
@@ -251,17 +266,19 @@ public class DbFixture extends Fixture {
 //        Choice choice = new Choice("message", 1L, true);
 //        Choice choice2 = new Choice("message", 2L, false);
 
+        var accountEntity = getAccountByUserName(accountId);
+
         ResponseEntity response = new ResponseEntity();
         response.setNumber(1l);
         response.setResponseText(RESPONSE_RESPONSE_1);
-        response.setCreatedBy(principal);
+        response.setCreatedBy(accountId);
 //        response.setChoices(Sets.newHashSet(choice, choice2));
         responseCrudRepository.save(response);
 
         ResponseEntity response2 = new ResponseEntity();
         response2.setNumber(2l);
         response2.setResponseText(RESPONSE_RESPONSE_2);
-        response2.setCreatedBy(principal);
+        response2.setCreatedBy(accountId);
         responseCrudRepository.save(response2);
 
         //question 1
@@ -269,7 +286,7 @@ public class DbFixture extends Fixture {
         question1.setQuestionText(QUESTION_QUESTION_1);
         question1.setType(FREE_TEXT);
         question1.setTip(QUESTION_TIP_1);
-        question1.setCreatedBy(principal);
+        question1.setCreatedBy(accountId);
 
         question1.setResponses(Lists.newArrayList(response, response2));
         questionRepository.save(question1);
@@ -278,14 +295,14 @@ public class DbFixture extends Fixture {
         QuestionEntity question2 = new QuestionEntity();
         question2.setQuestionText(QUESTION_QUESTION_2);
         question2.setType(FREE_TEXT);
-        question2.setCreatedBy(principal);
+        question2.setCreatedBy(accountId);
 
         questionRepository.save(question2);
 
         //questionTag
-        TagEntity tag1 = tagRepository.save(new TagEntity(QUESTION_TAG_LIBELLE_1, false, principal));
-        TagEntity tag2 = tagRepository.save(new TagEntity(QUESTION_TAG_LIBELLE_2, false, principal));
-        TagEntity tag3 = tagRepository.save(new TagEntity(QUESTION_TAG_LIBELLE_3, false, principal));
+        TagEntity tag1 = tagRepository.save(new TagEntity(QUESTION_TAG_LIBELLE_1, false, accountId));
+        TagEntity tag2 = tagRepository.save(new TagEntity(QUESTION_TAG_LIBELLE_2, false, accountId));
+        TagEntity tag3 = tagRepository.save(new TagEntity(QUESTION_TAG_LIBELLE_3, false, accountId));
 
 
         questionTagRepository.save(new QuestionTagEntity(question1, tag1));

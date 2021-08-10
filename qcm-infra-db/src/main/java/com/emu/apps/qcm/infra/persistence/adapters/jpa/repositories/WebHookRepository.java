@@ -11,9 +11,9 @@ import java.util.UUID;
 public interface WebHookRepository extends PagingAndSortingRepository <WebHookEntity, Long> {
 
 
-    Iterable <WebHookEntity> findPageByUserUuidEquals(UUID uuid);
+    Iterable <WebHookEntity> findPageByUserIdEquals(UUID uuid);
 
-    Page <WebHookEntity> findPageByUserUuidEquals(UUID uuid, Pageable pageable);
+    Page <WebHookEntity> findPageByUserIdEquals(UUID uuid, Pageable pageable);
 
     Optional <WebHookEntity> findOneByUuidEquals(UUID uuid);
 

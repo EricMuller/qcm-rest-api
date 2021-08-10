@@ -38,7 +38,7 @@ public class ImportRestController {
     @ResponseBody
     @GetMapping(value = "/{uuid}")
     public UploadResource importFileByUploadUuid(@PathVariable("uuid") String uploadUuid) throws IOException {
-        return questionnaireResourceMapper.uploadToResources(importService.importFile(new UploadId(uploadUuid), new PrincipalId(getPrincipal())));
+        return questionnaireResourceMapper.uploadToResources(importService.importFile(new UploadId(uploadUuid),  PrincipalId.of(getPrincipal())));
     }
 
 }

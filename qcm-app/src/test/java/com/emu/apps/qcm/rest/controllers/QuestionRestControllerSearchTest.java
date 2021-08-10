@@ -1,11 +1,14 @@
 package com.emu.apps.qcm.rest.controllers;
 
 
+import com.emu.apps.qcm.domain.repositories.DbRepositoryFixture;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig;
 import com.emu.apps.qcm.rest.controllers.secured.resources.QuestionResource;
 import com.emu.apps.qcm.rest.controllers.secured.resources.ResponseResource;
 import com.google.common.collect.Iterables;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -27,7 +30,6 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 @SpringBootTest(classes = {SpringBootJpaTestConfig.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("classpath:application-test.properties")
 @ActiveProfiles(value = "webmvc")
-
 public class QuestionRestControllerSearchTest {
     private static final String QUESTIONS_URI = ApiRestMappings.PROTECTED_API + ApiRestMappings.QUESTIONS;
 
@@ -57,6 +59,11 @@ public class QuestionRestControllerSearchTest {
         questionResource.setResponses(Arrays.asList(responseResource));
 
         return questionResource;
+    }
+
+    @BeforeAll
+    private static void beforeAll(@Autowired DbRepositoryFixture dbFixture){
+        dbFixture.createAccountTest();
     }
 
 

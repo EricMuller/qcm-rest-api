@@ -31,7 +31,7 @@ public class WebSecurityTestConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         authenticationManagerBuilder.inMemoryAuthentication()
-                .withUser(H2TestProfileJPAConfig.USER_TEST)
+                .withUser(H2TestProfileJPAConfig.USERNAME_TEST)
                 .password("{noop}" + H2TestProfileJPAConfig.USER_PASSWORD)
                 .roles("USER");
     }

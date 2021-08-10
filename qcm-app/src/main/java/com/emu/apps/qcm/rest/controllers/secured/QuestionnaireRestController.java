@@ -112,7 +112,7 @@ public class QuestionnaireRestController {
     public EntityModel <QuestionnaireResource> updateQuestionnaire(@PathVariable("uuid") String uuid,
                                                                    @JsonView(QuestionnaireView.Update.class) @RequestBody QuestionnaireResource questionnaireResource) {
         var questionnaire = questionnaireResourceMapper.questionnaireToModel(uuid, questionnaireResource);
-        return EntityModel.of(questionnaireResourceMapper.questionnaireToResources(questionnaireCatalog.updateQuestionnaire(questionnaire, new PrincipalId(getPrincipal()))))
+        return EntityModel.of(questionnaireResourceMapper.questionnaireToResources(questionnaireCatalog.updateQuestionnaire(questionnaire,  PrincipalId.of(getPrincipal()))))
                 .add(linkTo(QuestionnaireRestController.class).slash(uuid).withSelfRel());
     }
 
@@ -121,7 +121,7 @@ public class QuestionnaireRestController {
     public EntityModel <QuestionnaireResource> createQuestionnaire(@JsonView(QuestionnaireView.Create.class) @RequestBody QuestionnaireResource questionnaireResource) {
         var questionnaire = questionnaireResourceMapper.questionnaireToModel(questionnaireResource);
 
-        var createdQuestionnaire = questionnaireResourceMapper.questionnaireToResources(questionnaireCatalog.saveQuestionnaire(questionnaire, new PrincipalId(getPrincipal())));
+        var createdQuestionnaire = questionnaireResourceMapper.questionnaireToResources(questionnaireCatalog.saveQuestionnaire(questionnaire,  PrincipalId.of(getPrincipal())));
 
         return EntityModel.of(createdQuestionnaire).add(linkTo(QuestionnaireRestController.class).slash(createdQuestionnaire.getUuid()).withSelfRel());
     }
@@ -156,7 +156,7 @@ public class QuestionnaireRestController {
                                                                               @Parameter(hidden = true) @PageableDefault(direction = DESC, sort = {"dateModification"}) Pageable pageable,
                                                                               @Parameter(hidden = true) PagedResourcesAssembler <QuestionnaireResource> pagedResourcesAssembler) {
 
-        var page = questionnaireResourceMapper.questionnaireToResources(questionnaireCatalog.getQuestionnaires(tagUuid, pageable, new PrincipalId(getPrincipal())));
+        var page = questionnaireResourceMapper.questionnaireToResources(questionnaireCatalog.getQuestionnaires(tagUuid, pageable,  PrincipalId.of(getPrincipal())));
         Link selfLink = Link.of(ServletUriComponentsBuilder.fromCurrentRequest().build().toUriString());
         return pagedResourcesAssembler.toModel(page, this.questionnaireModelAssembler, selfLink);
 
@@ -168,7 +168,7 @@ public class QuestionnaireRestController {
 
         var questionnaireQuestion = questionnaireCatalog.addQuestion(new QuestionnaireId(uuid)
                 , new QuestionId(questionnaireQuestionUpdate.getUuid()), of(questionnaireQuestionUpdate.getPosition())
-                , new PrincipalId(getPrincipal()));
+                ,  PrincipalId.of(getPrincipal()));
 
         var model = EntityModel.of(questionnaireResourceMapper.questionnaireQuestionToResources(questionnaireQuestion, uuid));
         questionnaireQuestionModelAssembler.addLinks(model);

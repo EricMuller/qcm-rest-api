@@ -17,5 +17,9 @@ public class AccountService {
         return accountRepository.userByEmail(email);
     }
 
+    public Account userById(String id) {
+        return accountRepository.userByEmail(id);
+    }
+
 
 }

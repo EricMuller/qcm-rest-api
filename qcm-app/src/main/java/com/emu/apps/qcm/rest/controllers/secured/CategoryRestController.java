@@ -66,7 +66,7 @@ public class CategoryRestController {
     public Iterable <CategoryResource> getCategoriesByType(@RequestParam("type") String typeCategory) throws FunctionnalException {
 
         return questionnaireResourceMapper.categoriesToResources(
-                categoryRepository.getCategories(new PrincipalId(getPrincipal()), typeCategory));
+                categoryRepository.getCategories(PrincipalId.of(getPrincipal()), typeCategory));
     }
 
     @PostMapping
@@ -75,7 +75,7 @@ public class CategoryRestController {
             @JsonView(CategoryView.Create.class) @RequestBody CategoryResource categoryResource) {
         var category = questionnaireResourceMapper.categoryToModel(categoryResource);
         return questionnaireResourceMapper.categoryToResources(
-                categoryRepository.saveCategory(category, new PrincipalId(getPrincipal())));
+                categoryRepository.saveCategory(category,  PrincipalId.of(getPrincipal())));
     }
 
     @ExceptionHandler({JsonProcessingException.class, IOException.class})

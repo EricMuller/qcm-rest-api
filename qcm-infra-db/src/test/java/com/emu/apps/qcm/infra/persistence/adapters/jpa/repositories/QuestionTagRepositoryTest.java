@@ -48,7 +48,7 @@ public class QuestionTagRepositoryTest {
     @Test
     public void findByQuestionId() {
 
-        final String principal = getClass().getSimpleName() + "." + UUID.randomUUID();
+        final String principal =  UUID.randomUUID().toString();
 
         dbFixture.emptyDatabase(principal);
 

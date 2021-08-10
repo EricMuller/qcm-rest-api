@@ -2,7 +2,10 @@ package com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions;
 
 
 import com.emu.apps.qcm.domain.model.question.TypeQuestion;
+import com.emu.apps.qcm.domain.model.user.Account;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.AccountEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category.CategoryEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.common.AuditableAccountEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.common.AuditableEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.converters.BooleanTFConverter;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireQuestionEntity;
@@ -18,9 +21,11 @@ import javax.persistence.*;
 import javax.persistence.criteria.JoinType;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
+import static java.util.UUID.fromString;
 import static org.springframework.data.jpa.domain.Specification.where;
 
 /**
@@ -85,6 +90,10 @@ public class QuestionEntity extends AuditableEntity <String> {
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set <QuestionnaireQuestionEntity> questionnaireQuestions = new HashSet <>();
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    // @JoinColumn(name = "CREATED_BY", updatable = false, nullable = false)
+    protected AccountEntity account;
+
 
     public QuestionEntity(UUID uuid) {
         super(uuid);
@@ -108,14 +117,16 @@ public class QuestionEntity extends AuditableEntity <String> {
 
     public static final class SpecificationBuilder extends BaseSpecification <QuestionEntity> {
 
+        private final UUID accountUuid;
+
         private UUID[] tagUuids;
 
         private UUID[] questionnaireUuids;
 
-        private final String principal;
+        private String principal;
 
-        public SpecificationBuilder(String principal) {
-            this.principal = principal;
+        public SpecificationBuilder(String accountUuid) {
+            this.accountUuid = fromString(accountUuid);
         }
 
         public SpecificationBuilder setTagUuids(UUID[] tagUuids) {
@@ -131,7 +142,12 @@ public class QuestionEntity extends AuditableEntity <String> {
         @Override
         public Specification <QuestionEntity> build() {
 
-            Specification<QuestionEntity> where = fieldEquals(CREATED_BY, principal)
+//            Specification<QuestionEntity> where = fieldEquals(CREATED_BY, principal)
+//                    .and(questionnaireQuestionsUuidIn(questionnaireUuids))
+//                    .and(questionnaireTagsUuidIn(tagUuids));
+
+            Specification<QuestionEntity> where =
+                    accountUuidIn(accountUuid)
                     .and(questionnaireQuestionsUuidIn(questionnaireUuids))
                     .and(questionnaireTagsUuidIn(tagUuids));
 
@@ -141,6 +157,11 @@ public class QuestionEntity extends AuditableEntity <String> {
             };
         }
 
+        private Specification<QuestionEntity> accountUuidIn(@Nullable UUID uuid) {
+            return Objects.isNull(uuid) ? null :
+                    (root, query, cb) -> root.join("account", JoinType.INNER)
+                            .get(ID).in(uuid);
+        }
         private Specification<QuestionEntity> questionnaireTagsUuidIn(@Nullable UUID[] tagUuids) {
             return ArrayUtils.isEmpty(tagUuids) ? null :
                     (root, query, cb) -> root.joinSet("tags", JoinType.INNER)

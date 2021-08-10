@@ -1,9 +1,13 @@
 package com.emu.apps.qcm.rest.controllers;
 
 
+import com.emu.apps.qcm.domain.repositories.DbRepositoryFixture;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig;
+import com.emu.apps.qcm.rest.config.H2TestProfileJPAConfig;
 import com.emu.apps.qcm.rest.controllers.secured.resources.UploadResource;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -35,6 +39,11 @@ public class UploadRestControllerTest {
         return "http://localhost:" + port + uri;
     }
 
+    @BeforeAll
+    private static void beforeAll(@Autowired DbRepositoryFixture dbFixture){
+        dbFixture.createAccountTest();
+    }
+
     @Test
     public void shouldUploadFile() {
 
@@ -44,8 +53,10 @@ public class UploadRestControllerTest {
         map.add("fileType", MediaType.APPLICATION_JSON_VALUE);
 
         final ResponseEntity <UploadResource> postResponse = restTemplate
-                .withBasicAuth(SpringBootJpaTestConfig.USER_TEST_ID.toUuid(), SpringBootJpaTestConfig.USER_PASSWORD)
+                .withBasicAuth(H2TestProfileJPAConfig.USERNAME_TEST, H2TestProfileJPAConfig.USER_PASSWORD)
                 .exchange(getURL(ApiRestMappings.PROTECTED_API + ApiRestMappings.UPLOADS + "/json"), HttpMethod.POST, new HttpEntity <>(map), UploadResource.class);
+
+        assertThat(postResponse.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
         assertThat(postResponse.getBody()).isNotNull();
 
 

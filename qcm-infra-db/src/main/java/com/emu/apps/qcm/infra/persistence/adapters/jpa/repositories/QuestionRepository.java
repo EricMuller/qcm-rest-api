@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -58,6 +59,10 @@ public interface QuestionRepository extends JpaRepository <QuestionEntity, Long>
             countQuery = "SELECT COUNT(distinct q.status ) from  QuestionEntity  q  ")
     Page <String> findAllStatusByCreatedBy( String principal,Pageable pageable);
 
-    void deleteByCreatedByEquals(String user);
+//    @Modifying
+//    @Query(" DELETE from QuestionEntity  q  where q in  ( select  qe from QuestionEntity qe where qe.createdBy.userName = :username)")
+//    void deleteByCreatedBy_UserNameEquals(@Param("username") String username);
 
+    @Modifying
+    void deleteByCreatedByEquals( String accountId);
 }

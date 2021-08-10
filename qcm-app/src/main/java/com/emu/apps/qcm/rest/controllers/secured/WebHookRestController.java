@@ -48,21 +48,21 @@ public class WebHookRestController {
             @Parameter(hidden = true)
             @PageableDefault(direction = DESC, sort = {"dateModification"}) Pageable pageable) {
 
-        return questionnaireResourceMapper.webhookToResources(webHookRepository.getWebHooks(pageable, new PrincipalId(getPrincipal())));
+        return questionnaireResourceMapper.webhookToResources(webHookRepository.getWebHooks(pageable,  PrincipalId.of(getPrincipal())));
     }
 
     @PostMapping
     @ResponseBody
     public WebHookResource saveWebHook(@RequestBody @Valid WebHookResource webHookResource) {
         var webhook = questionnaireResourceMapper.webhookToModel(webHookResource);
-        return questionnaireResourceMapper.webhookToResources(webHookRepository.saveWebHook(webhook, getPrincipal()));
+        return questionnaireResourceMapper.webhookToResources(webHookRepository.saveWebHook(webhook, getPrincipal().getName()));
     }
 
     @PutMapping(value = "/{uuid}")
     @ResponseBody
     public WebHookResource updateWebHook(@PathVariable("uuid") String uuid, @RequestBody @Valid WebHookResource webHookResource) {
         var webhook = questionnaireResourceMapper.webhookToModel(webHookResource);
-        return questionnaireResourceMapper.webhookToResources(webHookRepository.saveWebHook(webhook, getPrincipal()));
+        return questionnaireResourceMapper.webhookToResources(webHookRepository.saveWebHook(webhook, getPrincipal().getName()));
     }
 
     @GetMapping(value = "/{uuid}")

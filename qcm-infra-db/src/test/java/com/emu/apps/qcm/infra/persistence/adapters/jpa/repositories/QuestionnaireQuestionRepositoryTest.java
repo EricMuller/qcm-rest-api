@@ -54,10 +54,9 @@ public class QuestionnaireQuestionRepositoryTest {
     @Test
     public void findQuestionsByQuestionnaireUuId() {
 
-        final String principal = getClass().getSimpleName() + "." + UUID.randomUUID();
+        final String principal =  UUID.randomUUID().toString();
         dbFixture.emptyDatabase(principal);
 
-        //dbFixture.emptyDatabase();
         dbFixture.createAndSaveUserWithEmail(principal);
 
         QuestionnaireEntity questionnaire = dbFixture.createOneQuestionnaireWithTwoQuestionTags(principal);
@@ -76,7 +75,7 @@ public class QuestionnaireQuestionRepositoryTest {
     @Test
     public void findQuestionsByQuestionnaireIds() {
 
-        final String principal = getClass().getSimpleName() + "." + UUID.randomUUID();
+        final String principal =  UUID.randomUUID().toString();
         dbFixture.emptyDatabase(principal);
 
 

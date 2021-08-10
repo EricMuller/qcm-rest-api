@@ -28,11 +28,11 @@
 
 package com.emu.apps.qcm.infra.persistence.adapters.mappers;
 
+import com.emu.apps.qcm.domain.mappers.QuestionIdMapper;
 import com.emu.apps.qcm.domain.model.question.Question;
 import com.emu.apps.qcm.domain.model.question.QuestionWithTagsOnly;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.projections.QuestionResponseProjection;
-import com.emu.apps.qcm.domain.mappers.QuestionIdMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -46,8 +46,13 @@ import java.util.List;
         unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface QuestionEntityMapper {
 
+
     @Mapping(target = "tags", ignore = true)
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "dateCreation", ignore = true)
+    @Mapping(target = "createdBy", ignore = true)
+    @Mapping(target = "dateModification", ignore = true)
+    @Mapping(target = "lastModifiedBy", ignore = true)
     QuestionEntity dtoToModel(Question question);
 
     @Mapping(target = "tags", ignore = true)

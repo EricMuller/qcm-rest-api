@@ -32,14 +32,17 @@ spring:
                 provider:
                     keycloak:
                         issuer-uri: https://keycloak.webmarks.net/auth/realms/qcm
+                        # issuer-uri: http://localhost:8080/auth/realms/qcm
                 registration:
                     keycloak:
                         client-id: qcm-rest-api
                         client-secret: 4eab5725-f8c1-4758-80c4-7ec8ac484bcd
+                        # client-secret: 2fb5059d-098a-4641-b2f3-85d2a3f8548e
 
             resourceserver:
                 jwt:
                     issuer-uri: https://keycloak.webmarks.net/auth/realms/qcm
+                    # issuer-uri: http://localhost:8080/auth/realms/qcm
 
 
 #server:

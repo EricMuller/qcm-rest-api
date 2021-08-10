@@ -14,7 +14,7 @@ import org.mapstruct.ReportingPolicy;
         unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface AccountEntityMapper {
 
-    @Mapping(target = "id", source = "uuid")
+    @Mapping(target = "id", source = "id")
     Account modelToDto(AccountEntity accountEntity);
 
 
