@@ -45,7 +45,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
         scanBasePackages = {"com.emu.apps.qcm", "com.emu.apps.shared"})
 @EnableScheduling
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
-public abstract class RestApplication {
+public class RestApplication {
 
     public static void main(String[] args) {
 

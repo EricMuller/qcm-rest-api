@@ -6,7 +6,6 @@ import com.emu.apps.qcm.domain.model.questionnaire.Questionnaire;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireId;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireTag;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireEntity;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -75,7 +74,7 @@ class QuestionnaireEntityMapperTest {
         questionnaireEntity.setDateModification(now);
         questionnaireEntity.setLastModifiedBy("me");
 
-        questionnaireMapper.dtoToModel(questionnaireEntity, questionnaire);
+        questionnaireMapper.dtoToModel(questionnaire, questionnaireEntity);
 
         Assertions.assertNotNull(questionnaireEntity.getUuid());
         Assertions.assertNotNull(questionnaireEntity.getTags().isEmpty());

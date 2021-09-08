@@ -17,7 +17,7 @@ import com.emu.apps.qcm.rest.controllers.secured.resources.QuestionnaireResource
 import com.emu.apps.qcm.rest.controllers.secured.command.QuestionnaireQuestionUpdate;
 import com.emu.apps.qcm.rest.controllers.secured.openui.QuestionnaireView;
 import com.emu.apps.shared.annotations.Timer;
-import com.emu.apps.shared.exceptions.EntityNotFoundException;
+import com.emu.apps.shared.exceptions.I18nedNotFoundException;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -43,7 +43,7 @@ import static com.emu.apps.qcm.application.reporting.template.FileFormat.getFile
 import static com.emu.apps.qcm.application.reporting.template.ReportTemplate.TEMPLATE_QUESTIONNAIRE;
 import static com.emu.apps.qcm.rest.config.cache.CacheName.Names.QUESTIONNAIRE;
 import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.*;
-import static com.emu.apps.shared.exceptions.MessageSupport.UNKNOWN_UUID_QUESTIONNAIRE;
+import static com.emu.apps.shared.exceptions.I18nedMessageSupport.UNKNOWN_UUID_QUESTIONNAIRE;
 import static com.emu.apps.shared.security.AuthentificationContextHolder.getPrincipal;
 import static java.util.Locale.getDefault;
 import static java.util.Objects.isNull;
@@ -92,7 +92,7 @@ public class QuestionnaireRestController {
     public EntityModel <QuestionnaireResource> getQuestionnaireById(@PathVariable("uuid") String uuid) {
 
         return EntityModel.of(questionnaireResourceMapper.questionnaireToResources(questionnaireCatalog.getQuestionnaireById(new QuestionnaireId(uuid))
-                .orElseThrow(() -> new EntityNotFoundException(uuid, UNKNOWN_UUID_QUESTIONNAIRE))))
+                .orElseThrow(() -> new I18nedNotFoundException(UNKNOWN_UUID_QUESTIONNAIRE, uuid))))
                 .add(linkTo(QuestionnaireRestController.class).slash(uuid).withSelfRel())
                 .add(linkTo(methodOn(QuestionnaireRestController.class).getExportByQuestionnaireUuid(uuid)).withRel("export"));
     }

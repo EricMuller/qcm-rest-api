@@ -25,7 +25,7 @@ import java.util.UUID;
 @SpringBootTest(classes = SpringBootJpaTestConfig.class)
 @ActiveProfiles(value = "test")
 @ContextConfiguration(initializers = {QuestionnaireQuestionRepositoryTest.Initializer.class})
-public class QuestionnaireQuestionRepositoryTest {
+class QuestionnaireQuestionRepositoryTest {
 
     @RegisterExtension
     static BaeldungPostgresqlExtension postgresqlContainer = BaeldungPostgresqlExtension.getInstance();
@@ -52,14 +52,14 @@ public class QuestionnaireQuestionRepositoryTest {
 
 
     @Test
-    public void findQuestionsByQuestionnaireUuId() {
+    void findQuestionsByQuestionnaireUuId() {
 
-        final String principal =  UUID.randomUUID().toString();
-        dbFixture.emptyDatabase(principal);
+        final UUID uuidAcount = UUID.randomUUID();
+        dbFixture.emptyDatabase(uuidAcount.toString());
 
-        dbFixture.createAndSaveUserWithEmail(principal);
+        dbFixture.createAndSaveUserWithEmail(uuidAcount, "email@free");
 
-        QuestionnaireEntity questionnaire = dbFixture.createOneQuestionnaireWithTwoQuestionTags(principal);
+        QuestionnaireEntity questionnaire = dbFixture.createOneQuestionnaireWithTwoQuestionTags(uuidAcount.toString());
 
         Iterable <QuestionResponseProjection> questions = questionnaireQuestionRepository.findQuestionsByQuestionnaireUuiId(questionnaire.getUuid());
         Assertions.assertThat(questions).isNotEmpty();
@@ -73,9 +73,9 @@ public class QuestionnaireQuestionRepositoryTest {
     }
 
     @Test
-    public void findQuestionsByQuestionnaireIds() {
+    void findQuestionsByQuestionnaireIds() {
 
-        final String principal =  UUID.randomUUID().toString();
+        final String principal = UUID.randomUUID().toString();
         dbFixture.emptyDatabase(principal);
 
 

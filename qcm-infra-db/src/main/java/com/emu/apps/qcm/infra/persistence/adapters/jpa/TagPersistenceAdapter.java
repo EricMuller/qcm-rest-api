@@ -63,17 +63,17 @@ public class TagPersistenceAdapter implements TagPersistencePort {
 
     @Override
     public Tag save(Tag tag) {
-        TagEntity tagEntity = tagMapper.dtoToModel(tag);
-        return tagMapper.modelToDto(tagRepository.save(tagEntity));
+        TagEntity tagEntity = tagMapper.modelToEntity(tag);
+        return tagMapper.entityToModel(tagRepository.save(tagEntity));
     }
 
     @Override
     public Tag findById(Long id) {
-        return tagMapper.modelToDto(tagRepository.findById(id).orElse(null));
+        return tagMapper.entityToModel(tagRepository.findById(id).orElse(null));
     }
 
     public Tag findByUuid(String id) {
-        return tagMapper.modelToDto(tagRepository.findByUuid(UUID.fromString(id)).orElse(null));
+        return tagMapper.entityToModel(tagRepository.findByUuid(UUID.fromString(id)).orElse(null));
     }
 
     @Override
@@ -82,12 +82,12 @@ public class TagPersistenceAdapter implements TagPersistencePort {
         if (isNull(tagEntity)) {
             tagEntity = tagRepository.save(new TagEntity(libelle, true));
         }
-        return tagMapper.modelToDto(tagEntity);
+        return tagMapper.entityToModel(tagEntity);
     }
 
     @Override
     public Iterable <Tag> findAll() {
-        return tagMapper.modelsToDtos(tagRepository.findAll());
+        return tagMapper.entitiesToModels(tagRepository.findAll());
     }
 
     @Override
@@ -97,7 +97,7 @@ public class TagPersistenceAdapter implements TagPersistencePort {
                 .setPrincipal(principal)
                 .setLetter(firstLetter.isPresent() ? firstLetter.get() : null);
 
-        return tagMapper.pageToDto(tagRepository.findAll(tagSpecificationBuilder.build(), pageable));
+        return tagMapper.pageToModel(tagRepository.findAll(tagSpecificationBuilder.build(), pageable));
     }
 
 }

@@ -8,8 +8,7 @@ import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireQuestion;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireRepository;
 import com.emu.apps.shared.application.ApplicationService;
 import com.emu.apps.shared.events.EventBus;
-import com.emu.apps.shared.exceptions.EntityNotFoundException;
-import com.emu.apps.shared.exceptions.MessageSupport;
+import com.emu.apps.shared.exceptions.I18nedNotFoundException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 import static com.emu.apps.qcm.application.events.AppEvents.QCM_CREATED;
+import static com.emu.apps.shared.exceptions.I18nedMessageSupport.UNKNOWN_UUID_QUESTIONNAIRE;
 import static java.util.Map.of;
 
 @Service
@@ -37,7 +37,7 @@ public class QuestionnaireCatalog implements ApplicationService {
     public QuestionnaireQuestion addQuestion(QuestionnaireId questionnaireId, QuestionId questionId, Optional <Integer> position, PrincipalId principal) {
 
         var questionnaire = questionnaireRepository.getQuestionnaireById(questionnaireId)
-                .orElseThrow(() -> new EntityNotFoundException(questionId.toUuid(), MessageSupport.UNKNOWN_UUID_QUESTIONNAIRE));
+                .orElseThrow(() -> new I18nedNotFoundException(UNKNOWN_UUID_QUESTIONNAIRE, questionId.toUuid()));
 
 
         return questionnaireRepository.addQuestion(questionnaire.getId(), questionId, position, principal);

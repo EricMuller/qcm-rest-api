@@ -37,7 +37,6 @@ import com.emu.apps.qcm.domain.model.question.Question;
 import com.emu.apps.qcm.domain.model.question.Response;
 import com.emu.apps.qcm.domain.model.questionnaire.Questionnaire;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireQuestion;
-
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
@@ -53,14 +52,6 @@ public interface ExportMapper {
     Export modelToExportDto(Questionnaire questionnaire, Iterable <QuestionnaireQuestion> questions, String name);
 
     QuestionnaireExport modelToQuestionnaireExportDto(Questionnaire questionnaire);
-
-//    @Mapping(source = "tag.libelle", target = "libelle")
-//    QuestionnaireTagExport entityToQuestionnaireTagExportDto(QuestionnaireTagEntity questionnaireTagEntity);
-//
-//    CategoryExport entityToCategoryExportDto(CategoryEntity categoryEntity);
-//
-//    @Mapping(source = "tag.libelle", target = "libelle")
-//    QuestionTagExport entityToQuestionnaireTagExportDto(QuestionTagEntity questionTagEntity);
 
     ResponseExport entityToResponseExportDto(Response response);
 

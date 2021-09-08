@@ -8,11 +8,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest(classes = SpringBootJpaTestConfig.class)
 @ActiveProfiles(value = "test")
-public class TestContext {
+class TestContext {
 
     @Test
     @Transactional
-    public void TestContext()  {
+    void TestContext() {
 
         // test loading test context
     }

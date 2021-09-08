@@ -28,8 +28,6 @@
 
 package com.emu.apps.qcm.rest.controllers;
 
-import com.emu.apps.qcm.rest.controllers.publicized.hal.ApiAssembler;
-
 public final class ApiRestMappings {
 
     public static final String PROTECTED_API = "/qcm/protected/api/v1";
@@ -60,7 +58,7 @@ public final class ApiRestMappings {
 
     public static final String COMMAND = "/command";
 
-    private ApiRestMappings(ApiAssembler apiAssembler) {
+    private ApiRestMappings() {
         //nop
     }
 

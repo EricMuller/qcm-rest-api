@@ -12,9 +12,9 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
-public abstract class DomainId<ID extends DomainObjectId> implements IdentifiableDomainObject <ID> {
+public abstract class DomainId<T extends DomainObjectId> implements IdentifiableDomainObject <T> {
 
-    private ID id;
+    private T id;
 
     private Long version;
 
@@ -26,7 +26,7 @@ public abstract class DomainId<ID extends DomainObjectId> implements Identifiabl
 
     private ZonedDateTime dateModification;
 
-    protected DomainId(@NonNull ID id) {
+    protected DomainId(@NonNull T id) {
         this.id = Objects.requireNonNull(id, "id must not be null");
     }
 

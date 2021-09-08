@@ -28,20 +28,19 @@
 
 package com.emu.apps.qcm.infra.persistence.adapters.jpa;
 
-import com.emu.apps.qcm.domain.model.user.Account;
+import com.emu.apps.qcm.domain.model.account.Account;
 import com.emu.apps.qcm.infra.persistence.UserPersistencePort;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.AccountEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.AccountRepository;
-
 import com.emu.apps.qcm.infra.persistence.adapters.mappers.AccountEntityMapper;
-import com.emu.apps.shared.exceptions.EntityNotFoundException;
+import com.emu.apps.shared.exceptions.I18nedNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
-import static com.emu.apps.shared.exceptions.MessageSupport.UNKNOWN_UUID_USER;
+import static com.emu.apps.shared.exceptions.I18nedMessageSupport.UNKNOWN_UUID_USER;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
@@ -65,29 +64,40 @@ public class UserPersistenceAdapter implements UserPersistencePort {
     @Override
     public Account save(Account account) {
         AccountEntity accountEntity;
+
+        accountEntity = accountEntityMapper.modelToEntity(account);
+
+        accountEntity = nonNull(accountEntity) ? accountRepository.save(accountEntity) : null;
+
+        return accountEntityMapper.entityToModel(accountEntity);
+    }
+
+    @Override
+    public Account update(Account account) {
+        AccountEntity accountEntity;
         if (isNull(account.getId()) || isNull(account.getId().toUuid())) {
-            accountEntity = accountEntityMapper.dtoToModel(account);
+            throw new I18nedNotFoundException(UNKNOWN_UUID_USER, "");
         } else {
-            accountEntity = accountRepository.findById(UUID.fromString(account.getId().toUuid()))
-                    .orElseThrow(() -> new EntityNotFoundException(account.getId().toUuid(), UNKNOWN_UUID_USER));
-            accountEntityMapper.dtoToModel(accountEntity, account);
+            accountEntity = accountRepository.findByUuid(UUID.fromString(account.getId().toUuid()))
+                    .orElseThrow(() -> new I18nedNotFoundException(UNKNOWN_UUID_USER, account.getId().toUuid()));
+            accountEntityMapper.modelToEntity(account, accountEntity);
         }
         accountEntity = nonNull(accountEntity) ? accountRepository.save(accountEntity) : null;
 
-        return accountEntityMapper.modelToDto(accountEntity);
+        return accountEntityMapper.entityToModel(accountEntity);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Account findByEmailEquals(String email) {
-        return accountEntityMapper.modelToDto(accountRepository.findByEmailEquals(email).orElse(null));
+        return accountEntityMapper.entityToModel(accountRepository.findByEmailEquals(email).orElse(null));
     }
 
     @Override
     @Transactional(readOnly = true)
     public Account findById(String id) {
-        return accountEntityMapper.modelToDto(accountRepository.findById(UUID.fromString(id))
-                .orElseThrow(() -> new EntityNotFoundException(id, UNKNOWN_UUID_USER))
+        return accountEntityMapper.entityToModel(accountRepository.findById(UUID.fromString(id))
+                .orElseThrow(() -> new I18nedNotFoundException(UNKNOWN_UUID_USER, id))
         );
     }
 

@@ -89,4 +89,8 @@ public class QuestionWithTagsOnlyResource {
     @JsonView({QuestionView.Find.class})
     private Set <TagResource> tags;
 
+    @JsonProperty("owner")
+    @JsonView({QuestionView.Find.class})
+    private OwnerResource owner;
+
 }

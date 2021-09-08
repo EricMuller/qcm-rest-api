@@ -16,11 +16,13 @@ public interface QuestionPersistencePort {
 
     void deleteByUuid(String uuid);
 
+    Question updateQuestion(Question questionDto, String principal);
+
     Question saveQuestion(Question questionDto, String principal);
 
     Page <QuestionWithTagsOnly> findAllByPage(String[] questionnaireIds, String[] tagIds, Pageable pageable, String principal);
 
-    Iterable <Tag> findAllTagByPage(Pageable pageable, String principal);
+    Page <Tag> findAllTagByPage(Pageable pageable, String principal);
 
     Iterable <String> findAllStatusByPage(String principal, Pageable pageable);
 

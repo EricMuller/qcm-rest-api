@@ -27,7 +27,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 @SpringBootTest(classes = {SpringBootJpaTestConfig.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("classpath:application-test.properties")
 @ActiveProfiles(value = "webmvc")
-public class QuestionnaireRestControllerTest {
+class QuestionnaireRestControllerTest {
 
     private static final String QUESTIONNAIRES_URI = ApiRestMappings.PROTECTED_API + ApiRestMappings.QUESTIONNAIRES;
 
@@ -55,13 +55,13 @@ public class QuestionnaireRestControllerTest {
     }
 
     @BeforeAll
-    private static void beforeAll(@Autowired DbRepositoryFixture dbFixture){
+    private static void beforeAll(@Autowired DbRepositoryFixture dbFixture) {
         dbFixture.createAccountTest();
     }
 
     @Test
     @Transactional
-    public void getQuestionnaireByIdShouldReturnQuestionnaire() {
+    void getQuestionnaireByIdShouldReturnQuestionnaire() {
 
         // create a new question
         final ResponseEntity <QuestionnaireResource> postResponse = restTemplate
@@ -86,7 +86,7 @@ public class QuestionnaireRestControllerTest {
 
     @Test
     @Transactional
-    public void putQuestionnaireByIdShouldReturnSameQuestionnaire() {
+    void putQuestionnaireByIdShouldReturnSameQuestionnaire() {
 
         // create a new question
         final ResponseEntity <QuestionnaireResource> postResponse = restTemplate

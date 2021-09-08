@@ -1,13 +1,16 @@
 package com.emu.apps.qcm.rest.config;
 
-import com.emu.apps.shared.exceptions.EntityNotFoundException;
 import com.emu.apps.qcm.rest.exceptions.ExceptionMessage;
 import com.emu.apps.qcm.rest.exceptions.FieldErrorMessage;
-import com.emu.apps.qcm.rest.exceptions.UserAuthenticationException;
+import com.emu.apps.shared.exceptions.I18nedBadRequestException;
 import com.emu.apps.qcm.rest.exceptions.builders.ExceptionMessageBuilder;
+import com.emu.apps.shared.exceptions.I18nedForbiddenRequestException;
+import com.emu.apps.shared.exceptions.I18nedNotFoundException;
+import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -26,10 +29,14 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import javax.validation.ConstraintViolationException;
 import java.lang.reflect.InvocationTargetException;
-import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
+import static java.time.ZonedDateTime.now;
+import static java.util.Locale.forLanguageTag;
+import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.springframework.context.i18n.LocaleContextHolder.getLocale;
 import static org.springframework.http.HttpStatus.*;
 
 @ControllerAdvice
@@ -37,20 +44,78 @@ import static org.springframework.http.HttpStatus.*;
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     private static final Logger LOG = LoggerFactory.getLogger(RestExceptionHandler.class);
 
-    @ExceptionHandler({EntityNotFoundException.class})
-    @ResponseBody
-    public ResponseEntity <Object> handleEntityNotFoundException(Exception e) {
+    @Getter
+    private final MessageSource messageSource;
 
-        LOG.error("EntityNotFoundException caught: {}", e.getMessage());
+    public RestExceptionHandler(MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
+
+
+    @ExceptionHandler({I18nedNotFoundException.class})
+    @ResponseBody
+    public ResponseEntity <Object> handleNotFoundException(I18nedNotFoundException e, WebRequest request) {
+
+        String locale = request.getHeader(HttpHeaders.ACCEPT_LANGUAGE);
+
+        Locale currentLocale = isBlank(locale) ? getLocale() : forLanguageTag(locale);
+
+        String localizedMessage = messageSource.getMessage(e.getCodeMessage(), e.getArgs(), currentLocale);
+
+        LOG.error("EntityNotFoundException caught: {}", localizedMessage);
 
         ExceptionMessage exceptionMessage = new ExceptionMessageBuilder()
                 .setStatus(NOT_FOUND.value())
                 .setException(NOT_FOUND.getReasonPhrase())
                 .setError(e.getClass().getName())
-                .setTimestamp(ZonedDateTime.now())
-                .setMessage(e.getMessage()).createExceptionMessage();
+                .setTimestamp(now())
+                .setMessage(localizedMessage).createExceptionMessage();
 
         return response(exceptionMessage, NOT_FOUND);
+    }
+
+    @ExceptionHandler({I18nedBadRequestException.class})
+    @ResponseBody
+    public ResponseEntity <Object> handleBadRequestException(I18nedBadRequestException e, WebRequest request) {
+
+        String locale = request.getHeader(HttpHeaders.ACCEPT_LANGUAGE);
+
+        Locale currentLocale = isBlank(locale) ? getLocale() : forLanguageTag(locale);
+
+        String localizedMessage = messageSource.getMessage(e.getCodeMessage(), e.getArgs(), currentLocale);
+
+        LOG.error("I18nedBadRequestException caught: {}", localizedMessage);
+
+        ExceptionMessage exceptionMessage = new ExceptionMessageBuilder()
+                .setStatus(BAD_REQUEST.value())
+                .setException(BAD_REQUEST.getReasonPhrase())
+                .setError(e.getClass().getName())
+                .setTimestamp(now())
+                .setMessage(localizedMessage).createExceptionMessage();
+
+        return response(exceptionMessage, BAD_REQUEST);
+    }
+
+    @ExceptionHandler({I18nedForbiddenRequestException.class})
+    @ResponseBody
+    public ResponseEntity <Object> handleForbiddenRequestException(I18nedBadRequestException e, WebRequest request) {
+
+        String locale = request.getHeader(HttpHeaders.ACCEPT_LANGUAGE);
+
+        Locale currentLocale = isBlank(locale) ? getLocale() : forLanguageTag(locale);
+
+        String localizedMessage = messageSource.getMessage(e.getCodeMessage(), e.getArgs(), currentLocale);
+
+        LOG.error("I18nedBadRequestException caught: {}", localizedMessage);
+
+        ExceptionMessage exceptionMessage = new ExceptionMessageBuilder()
+                .setStatus(FORBIDDEN.value())
+                .setException(FORBIDDEN.getReasonPhrase())
+                .setError(e.getClass().getName())
+                .setTimestamp(now())
+                .setMessage(localizedMessage).createExceptionMessage();
+
+        return response(exceptionMessage, FORBIDDEN);
     }
 
 
@@ -70,7 +135,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 .setStatus(INTERNAL_SERVER_ERROR.value())
                 .setException(INTERNAL_SERVER_ERROR.getReasonPhrase())
                 .setError(e.getClass().getName())
-                .setTimestamp(ZonedDateTime.now())
+                .setTimestamp(now())
                 .setMessage(e.getMessage()).createExceptionMessage();
 
         return response(exceptionMessage, INTERNAL_SERVER_ERROR);
@@ -95,7 +160,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 .setStatus(BAD_REQUEST.value())
                 .setError(BAD_REQUEST.getReasonPhrase())
                 .setException(t.getClass().getName())
-                .setTimestamp(ZonedDateTime.now())
+                .setTimestamp(now())
                 .setMessage(t.getMessage()).createExceptionMessage();
 
         return response(exceptionMessage, BAD_REQUEST);
@@ -123,7 +188,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 .setError(CONFLICT.getReasonPhrase())
                 .setException(ex.getClass().getName())
                 .setMessage(ex.getMessage())
-                .setTimestamp(ZonedDateTime.now()).createExceptionMessage();
+                .setTimestamp(now()).createExceptionMessage();
 
         return response(response, CONFLICT);
     }
@@ -159,29 +224,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 .setStatus(BAD_REQUEST.value())
                 .setError(BAD_REQUEST.getReasonPhrase())
                 .setException(ex.getClass().getName())
-                .setTimestamp(ZonedDateTime.now())
+                .setTimestamp(now())
                 .setMessage(ex.getMessage())
                 .setErrors(fieldErrors).createExceptionMessage();
 
         return response(response, BAD_REQUEST);
 
-    }
-
-
-    @ExceptionHandler({UserAuthenticationException.class})
-    @ResponseBody
-    public ResponseEntity <Object> handleAuthenticationException(Exception e) {
-
-        LOG.error("AnyException caught: ", e);
-
-        ExceptionMessage exceptionMessage = new ExceptionMessageBuilder()
-                .setStatus(FORBIDDEN.value())
-                .setException(FORBIDDEN.getReasonPhrase())
-                .setError(e.getClass().getName())
-                .setTimestamp(ZonedDateTime.now())
-                .setMessage(e.getMessage()).createExceptionMessage();
-
-        return response(exceptionMessage, FORBIDDEN);
     }
 
     /**
@@ -200,7 +248,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 .setStatus(BAD_REQUEST.value())
                 .setException(BAD_REQUEST.getReasonPhrase())
                 .setError(e.getClass().getName())
-                .setTimestamp(ZonedDateTime.now())
+                .setTimestamp(now())
                 .setMessage(e.getMessage()).createExceptionMessage();
 
         return response(exceptionMessage, BAD_REQUEST);

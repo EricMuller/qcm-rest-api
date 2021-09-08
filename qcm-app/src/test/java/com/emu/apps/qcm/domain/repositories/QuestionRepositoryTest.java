@@ -11,7 +11,7 @@ import com.emu.apps.qcm.domain.model.question.QuestionWithTagsOnly;
 import com.emu.apps.qcm.domain.model.question.Response;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireId;
 import com.emu.apps.qcm.domain.model.tag.TagId;
-import com.emu.apps.qcm.domain.model.user.Account;
+import com.emu.apps.qcm.domain.model.account.Account;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category.Type;
 import org.junit.jupiter.api.Assertions;
@@ -87,7 +87,7 @@ class QuestionRepositoryTest {
 
 
         getQuestion.setQuestionText("why2?");
-        Question updateQuestion = questionRepository.saveQuestion(getQuestion, principalId);
+        Question updateQuestion = questionRepository.updateQuestion(getQuestion, principalId);
 
 
         Assertions.assertNotNull(updateQuestion);

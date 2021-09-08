@@ -33,7 +33,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 import static com.emu.apps.qcm.domain.model.Status.DRAFT;
 import static com.emu.apps.qcm.domain.model.imports.ImportStatus.DONE;
@@ -54,9 +53,9 @@ public class ImportService {
 
     public static final String IMPORT = "import";
 
-    public static String TYPE_QUESTION = "QUESTION";
+    public static final String TYPE_QUESTION = "QUESTION";
 
-    public static String TYPE_QUESTIONNAIRE = "QUESTIONNAIRE";
+    public static final String TYPE_QUESTIONNAIRE = "QUESTIONNAIRE";
 
     private final QuestionnaireRepository questionnaireRepository;
 
@@ -78,7 +77,7 @@ public class ImportService {
         this.categoryRepository = categoryRepository;
     }
 
-
+    @Transactional
     public Upload importFile(UploadId uploadId, PrincipalId principal) throws IOException {
 
         var upload = uploadRepository.getUploadByUuid(uploadId);
@@ -225,8 +224,8 @@ public class ImportService {
     }
 
 
-    @Transactional
-    public ImportStatus importQuestionnaire(String name, ImportFileQuestion[] fileQuestions, PrincipalId principal) {
+
+    private ImportStatus importQuestionnaire(String name, ImportFileQuestion[] fileQuestions, PrincipalId principal) {
 
         if (ArrayUtils.isNotEmpty(fileQuestions)) {
             try {
@@ -243,12 +242,12 @@ public class ImportService {
 
                 Questionnaire createdQuestionnaire = questionnaireRepository.saveQuestionnaire(questionnaire, principal);
 
-                var QuestionCategory = new Category();
-                QuestionCategory.setLibelle(IMPORT);
-                QuestionCategory.setType(TYPE_QUESTION);
-                QuestionCategory.setUserId(principal.toUuid());
+                var questionCategory = new Category();
+                questionCategory.setLibelle(IMPORT);
+                questionCategory.setType(TYPE_QUESTION);
+                questionCategory.setUserId(principal.toUuid());
 
-                final var category = categoryRepository.saveCategory(QuestionCategory, principal);
+                final var category = categoryRepository.saveCategory(questionCategory, principal);
 
                 var questions = stream(fileQuestions)
                         .filter(fileQuestion -> isNotEmpty(fileQuestion.getCategorie()))

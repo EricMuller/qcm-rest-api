@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class MessageSupport {
+public final class I18nedMessageSupport {
 
     public static final String UNKNOWN_UUID_QUESTIONNAIRE = "questionnaire.uuid.unknown";
 
@@ -14,14 +14,15 @@ public final class MessageSupport {
 
     public static final String UNKNOWN_UUID_USER = "user.uuid.unknown";
 
-    public static final String INVALID_UUID_USER = "user.uuid.invalid";
+    public static final String INVALID_EMAIL_USER = "user.email.invalid";
 
     public static final String INVALID_UUID_QUESTION = "question.uuid.invalid";
 
     public static final String INVALID_UUID_QUESTIONNAIRE = "questionnaire.uuid.invalid";
 
-    public static final String EXISTS_UUID_USER = "user.uuid.exists";
+    public static final String EXISTING_UUID_ACCOUNT = "user.uuid.exists";
 
     public static final String UNKNOWN_UUID_WEBHOOK = "webhook.uuid.unknown";
+
 
 }

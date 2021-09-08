@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.rest.controllers.publicized;
 
-import com.emu.apps.qcm.domain.model.user.Account;
-import com.emu.apps.qcm.domain.model.user.AccountRepository;
+import com.emu.apps.qcm.domain.model.account.Account;
+import com.emu.apps.qcm.domain.model.account.AccountRepository;
 import com.emu.apps.qcm.rest.controllers.secured.resources.AccountResource;
 import com.emu.apps.qcm.rest.mappers.QuestionnaireResourceMapper;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -43,12 +43,12 @@ public class AccountRestPublicController {
     @ResponseBody
     public EntityModel <AccountResource> getAuthentifiedUser(Principal principal) {
         String email = getEmailOrName(principal);
-        Account account = accountRepository.userByEmail(email);
+        Account account = accountRepository.getAccountByEmail(email);
         if (isNull(account)) {
             account = new Account();
             account.setEmail(getEmailOrName(principal));
         }
-        return EntityModel.of(questionnaireResourceMapper.userToResources(account));
+        return EntityModel.of(questionnaireResourceMapper.accountToResources(account));
     }
 
 }

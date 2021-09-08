@@ -28,14 +28,13 @@
 
 package com.emu.apps.shared.exceptions;
 
-// @ResponseStatus(value= HttpStatus.NOT_FOUND, reason="No such Resource")
-public class EntityNotFoundException extends RunTimeMessageException {
+public class I18nedNotFoundException extends I18nedRunTimeMessageException {
 
-    public EntityNotFoundException(String message) {
+    public I18nedNotFoundException(String message) {
         super(null, message);
     }
 
-    public EntityNotFoundException(String uuid, String message) {
-        super(uuid, message);
+    public I18nedNotFoundException(String message, String uuid) {
+        super(message, uuid);
     }
 }

@@ -1,12 +1,11 @@
 package com.emu.apps.qcm.infra.persistence.adapters.mappers;
 
+import com.emu.apps.qcm.domain.mappers.AccountIdMapperImpl;
 import com.emu.apps.qcm.domain.mappers.CategoryIdMapperImpl;
 import com.emu.apps.qcm.domain.mappers.QuestionIdMapperImpl;
-import com.emu.apps.qcm.domain.model.question.Question;
 import com.emu.apps.qcm.domain.model.question.QuestionWithTagsOnly;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.AccountEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionEntity;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -20,7 +19,8 @@ import java.util.UUID;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {QuestionEntityMapperImpl.class, CategoryEntityMapperImpl.class, UuidMapperImpl.class
-        , QuestionTagEntityMapperImpl.class, ResponseEntityMapperImpl.class, QuestionIdMapperImpl.class, CategoryIdMapperImpl.class})
+        , QuestionTagEntityMapperImpl.class, ResponseEntityMapperImpl.class, QuestionIdMapperImpl.class, CategoryIdMapperImpl.class,
+        AccountIdMapperImpl.class, AccountEntityMapperImpl.class})
 @Tag("MapstructTest")
 class QuestionEntityMapperTest {
 
@@ -34,22 +34,29 @@ class QuestionEntityMapperTest {
     @Test
     void entityToModel() {
 
-        QuestionEntity questionEntity = new QuestionEntity(UUID.randomUUID());
 
-        AccountEntity accountEntity = new AccountEntity(UUID.randomUUID());
+        var questionEntity = new QuestionEntity(UUID.randomUUID());
+
+        var accountEntity = new AccountEntity(UUID.randomUUID());
         accountEntity.setUserName(USER_NAME);
-        questionEntity.setCreatedBy(accountEntity.getId().toString());
-        questionEntity.setLastModifiedBy(accountEntity.getId().toString());
+
+        questionEntity.setOwner(accountEntity);
+        questionEntity.setCreatedBy(accountEntity.getUuid().toString());
+        questionEntity.setLastModifiedBy(accountEntity.getUuid().toString());
 
         questionEntity.setQuestionText(QUESTION_TEXT);
 
-        Question question = questionMapper.entityToQuestion(questionEntity);
+        var question = questionMapper.entityToQuestion(questionEntity);
 
         Assertions.assertNotNull(question);
 
         Assertions.assertEquals(QUESTION_TEXT, question.getQuestionText());
-        Assertions.assertEquals(accountEntity.getId().toString(), question.getCreatedBy());
-        Assertions.assertEquals(accountEntity.getId().toString(), question.getLastModifiedBy());
+        Assertions.assertEquals(accountEntity.getUuid().toString(), question.getCreatedBy());
+        Assertions.assertEquals(accountEntity.getUuid().toString(), question.getLastModifiedBy());
+
+        Assertions.assertNotNull(question.getOwner());
+        Assertions.assertNotNull(USER_NAME, question.getOwner().getUserName());
+
     }
 
     @Test
@@ -59,8 +66,8 @@ class QuestionEntityMapperTest {
 
         AccountEntity accountEntity = new AccountEntity(UUID.randomUUID());
         accountEntity.setUserName(USER_NAME);
-        questionEntity.setCreatedBy(accountEntity.getId().toString());
-        questionEntity.setLastModifiedBy(accountEntity.getId().toString());
+        questionEntity.setCreatedBy(accountEntity.getUuid().toString());
+        questionEntity.setLastModifiedBy(accountEntity.getUuid().toString());
 
         questionEntity.setQuestionText(QUESTION_TEXT);
 
@@ -69,8 +76,8 @@ class QuestionEntityMapperTest {
         Assertions.assertNotNull(questionWithTagsOnly);
 
         Assertions.assertEquals(QUESTION_TEXT, questionWithTagsOnly.getQuestionText());
-        Assertions.assertEquals(accountEntity.getId().toString(), questionWithTagsOnly.getCreatedBy());
-        Assertions.assertEquals(accountEntity.getId().toString(), questionWithTagsOnly.getLastModifiedBy());
+        Assertions.assertEquals(accountEntity.getUuid().toString(), questionWithTagsOnly.getCreatedBy());
+        Assertions.assertEquals(accountEntity.getUuid().toString(), questionWithTagsOnly.getLastModifiedBy());
     }
 
 }

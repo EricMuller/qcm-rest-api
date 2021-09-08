@@ -10,9 +10,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
@@ -44,7 +41,7 @@ public abstract class AuditableEntity<U extends Serializable> extends Identifiab
     private ZonedDateTime dateModification;
 
 
-    public AuditableEntity() {
+    protected AuditableEntity() {
     }
 
     public AuditableEntity(UUID uuid) {
@@ -83,7 +80,7 @@ public abstract class AuditableEntity<U extends Serializable> extends Identifiab
         this.lastModifiedBy = lastModifiedBy;
     }
 
-    public static abstract class BaseSpecification<T> {
+    public abstract static  class BaseSpecification<T> {
 
         private static final String WILDCARD = "%";
 

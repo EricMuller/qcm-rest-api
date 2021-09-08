@@ -7,8 +7,8 @@ import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireId;
 import com.emu.apps.qcm.domain.model.tag.Tag;
 import com.emu.apps.qcm.domain.model.tag.TagId;
 import com.emu.apps.qcm.infra.persistence.QuestionPersistencePort;
-import com.emu.apps.shared.exceptions.EntityNotFoundException;
-import com.emu.apps.shared.exceptions.MessageSupport;
+
+import com.emu.apps.shared.exceptions.I18nedNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,6 +19,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
+
+import static com.emu.apps.shared.exceptions.I18nedMessageSupport.UNKNOWN_UUID_QUESTION;
 
 
 /**
@@ -60,7 +62,7 @@ class QuestionRepositoryAdapter implements QuestionRepository {
 
     @Override
     public Question updateQuestion(Question question, PrincipalId principal) {
-        return questionPersistencePort.saveQuestion(question, principal.toUuid());
+        return questionPersistencePort.updateQuestion(question, principal.toUuid());
     }
 
     @Override
@@ -91,12 +93,12 @@ class QuestionRepositoryAdapter implements QuestionRepository {
     public void deleteQuestionById(QuestionId questionId) {
 
         var questionOptional = questionPersistencePort.findByUuid(questionId.toUuid())
-                .orElseThrow(() -> new EntityNotFoundException(questionId.toUuid(), MessageSupport.UNKNOWN_UUID_QUESTION));
+                .orElseThrow(() -> new I18nedNotFoundException(UNKNOWN_UUID_QUESTION, questionId.toUuid()));
 
         questionPersistencePort.deleteByUuid(questionOptional.getId().toUuid());
     }
 
-    public Iterable <Tag> findAllQuestionTagByPage(Pageable pageable, PrincipalId principal) {
+    public Page <Tag> findAllQuestionTagByPage(Pageable pageable, PrincipalId principal) {
         return questionPersistencePort.findAllTagByPage(pageable, principal.toUuid());
     }
 

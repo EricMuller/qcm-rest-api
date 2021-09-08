@@ -1,6 +1,7 @@
 package com.emu.apps.qcm.domain.model.question;
 
 
+import com.emu.apps.qcm.domain.model.account.Account;
 import com.emu.apps.qcm.domain.model.base.DomainId;
 import com.emu.apps.qcm.domain.model.category.Category;
 import lombok.Getter;
@@ -32,5 +33,7 @@ public class Question extends DomainId <QuestionId> {
     private String status;
 
     private String tip;
+
+    private Account owner;
 
 }

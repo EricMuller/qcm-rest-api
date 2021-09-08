@@ -137,7 +137,7 @@ class QuestionnaireRepositoryAdapter implements QuestionnaireRepository {
 
     @Override
     public void activateQuestionnaire(QuestionnaireId questionnaireId) {
-
+            // on progress
     }
 
 }

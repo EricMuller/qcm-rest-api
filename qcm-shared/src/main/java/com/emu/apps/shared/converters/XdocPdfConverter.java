@@ -48,7 +48,7 @@ public class XdocPdfConverter implements Converter {
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
         }
-        return null;
+        return new byte[0];
     }
 
 }

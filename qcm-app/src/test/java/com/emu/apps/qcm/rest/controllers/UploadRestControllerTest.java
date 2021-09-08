@@ -28,7 +28,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 @SpringBootTest(classes = {SpringBootJpaTestConfig.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("classpath:application-test.properties")
 @ActiveProfiles(value = "webmvc")
-public class UploadRestControllerTest {
+class UploadRestControllerTest {
 
     @LocalServerPort
     private int port;
@@ -40,12 +40,12 @@ public class UploadRestControllerTest {
     }
 
     @BeforeAll
-    private static void beforeAll(@Autowired DbRepositoryFixture dbFixture){
+    private static void beforeAll(@Autowired DbRepositoryFixture dbFixture) {
         dbFixture.createAccountTest();
     }
 
     @Test
-    public void shouldUploadFile() {
+    void shouldUploadFile() {
 
         ClassPathResource resource = new ClassPathResource("javaquestions2017.json");
         MultiValueMap <String, Object> map = new LinkedMultiValueMap <>();

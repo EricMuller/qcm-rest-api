@@ -15,11 +15,13 @@ import java.util.UUID;
 public interface AccountRepository extends PagingAndSortingRepository <AccountEntity, UUID>, JpaSpecificationExecutor <AccountEntity> {
 
     @QueryHints(@QueryHint(name = org.hibernate.annotations.QueryHints.CACHEABLE, value = "true"))
-    Optional<AccountEntity> findByEmailEquals(String libelle);
+    Optional <AccountEntity> findByEmailEquals(String libelle);
 
 
-    Optional<AccountEntity> findByUserNameEquals(String userName);
+    Optional <AccountEntity> findByUserNameEquals(String userName);
 
     void deleteByEmailEquals(String email);
+
+    Optional <AccountEntity> findByUuid(UUID id);
 
 }

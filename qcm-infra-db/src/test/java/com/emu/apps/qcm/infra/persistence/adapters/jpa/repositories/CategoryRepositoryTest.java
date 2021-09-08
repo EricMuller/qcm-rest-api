@@ -32,7 +32,7 @@ import static java.util.stream.StreamSupport.stream;
 @SpringBootTest(classes = SpringBootJpaTestConfig.class)
 @ActiveProfiles(value = "test")
 @ContextConfiguration(initializers = {CategoryRepositoryTest.Initializer.class})
-public class CategoryRepositoryTest {
+class CategoryRepositoryTest {
 
     @RegisterExtension
     static BaeldungPostgresqlExtension postgresqlContainer = BaeldungPostgresqlExtension.getInstance();
@@ -56,7 +56,7 @@ public class CategoryRepositoryTest {
 
     @Test
     @Transactional
-    public void findOrCreateByLibelle() {
+    void findOrCreateByLibelle() {
 
 
         final String principal = getClass().getSimpleName() + "." + UUID.randomUUID();

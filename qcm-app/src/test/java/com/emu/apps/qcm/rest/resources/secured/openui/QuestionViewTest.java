@@ -10,7 +10,7 @@ import java.io.IOException;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
-public class QuestionViewTest {
+class QuestionViewTest {
 
     private final ObjectMapper MAPPER = new ObjectMapper();
 

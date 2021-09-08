@@ -25,7 +25,7 @@ public interface QuestionRepository {
 
     void deleteQuestionById(QuestionId questionId);
 
-    Iterable <Tag> findAllQuestionTagByPage(Pageable pageable, PrincipalId principal);
+    Page <Tag> findAllQuestionTagByPage(Pageable pageable, PrincipalId principal);
 
     Iterable <String> findAllStatusByPage(Pageable pageable, PrincipalId principal);
 

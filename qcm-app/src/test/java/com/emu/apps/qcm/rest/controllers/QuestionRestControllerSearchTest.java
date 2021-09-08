@@ -30,7 +30,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 @SpringBootTest(classes = {SpringBootJpaTestConfig.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("classpath:application-test.properties")
 @ActiveProfiles(value = "webmvc")
-public class QuestionRestControllerSearchTest {
+ class QuestionRestControllerSearchTest {
     private static final String QUESTIONS_URI = ApiRestMappings.PROTECTED_API + ApiRestMappings.QUESTIONS;
 
     private static final String QUESTION1 = "Question 1";
@@ -69,7 +69,8 @@ public class QuestionRestControllerSearchTest {
 
     @Test
     @Transactional
-    public void getQuestionByIdShouldReturnQuestion() {
+
+    void getQuestionByIdShouldReturnQuestion() {
 
         // create a new question
         final ResponseEntity <QuestionResource> postResponse = restTemplate

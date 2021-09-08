@@ -18,6 +18,7 @@ import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.QuestionTagR
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.QuestionnaireQuestionRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.TagRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.mappers.QuestionEntityMapper;
+import com.emu.apps.qcm.infra.persistence.adapters.mappers.QuestionEntityUpdateMapper;
 import com.emu.apps.qcm.infra.persistence.adapters.mappers.QuestionnaireQuestionEntityMapper;
 import com.emu.apps.qcm.infra.persistence.adapters.mappers.TagEntityMapper;
 import com.emu.apps.qcm.infra.persistence.adapters.mappers.UuidMapper;
@@ -35,7 +36,6 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static java.util.Objects.nonNull;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 /**
  * Created by eric on 05/06/2017.
@@ -52,6 +52,8 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
 
     private final QuestionEntityMapper questionMapper;
 
+    private final QuestionEntityUpdateMapper questionUpdateMapper;
+
     private final TagRepository tagRepository;
 
     private final CategoryRepository categoryRepository;
@@ -67,13 +69,14 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
     @Autowired
     public QuestionPersistenceAdapter(QuestionRepository questionRepository, QuestionTagRepository questionTagRepository,
                                       QuestionnaireQuestionRepository questionnaireQuestionRepository,
-                                      QuestionEntityMapper questionMapper, TagRepository tagRepository,
+                                      QuestionEntityMapper questionMapper, QuestionEntityUpdateMapper questionUpdateMapper, TagRepository tagRepository,
                                       CategoryRepository categoryRepository, UuidMapper uuidMapper, TagEntityMapper tagMapper, QuestionnaireQuestionEntityMapper questionnaireQuestionMapper,
                                       AccountRepository accountRepository) {
         this.questionRepository = questionRepository;
         this.questionTagRepository = questionTagRepository;
         this.questionnaireQuestionRepository = questionnaireQuestionRepository;
         this.questionMapper = questionMapper;
+        this.questionUpdateMapper = questionUpdateMapper;
         this.tagRepository = tagRepository;
         this.categoryRepository = categoryRepository;
         this.uuidMapper = uuidMapper;
@@ -97,6 +100,32 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
     }
 
     @Override
+    public Question updateQuestion(Question question, @NotNull String principal) {
+
+        QuestionEntity questionEntity;
+        CategoryEntity categoryEntity = null;
+        UUID categoryUuid = uuidMapper.getUuid(question.getCategory());
+
+        if (nonNull(categoryUuid)) {
+            categoryEntity = categoryRepository.findByUuid(categoryUuid);
+        }
+
+        questionEntity = questionRepository.findByUuid(UUID.fromString(question.getId().toUuid())).orElse(null);
+        questionEntity = questionUpdateMapper.questionToEntity(question, questionEntity);
+        questionEntity.setResponses(questionUpdateMapper.responsesToEntities(question.getResponses(), questionEntity.getResponses()));
+
+
+        questionEntity.setCategory(categoryEntity);
+
+        questionEntity = questionRepository.save(questionEntity);
+
+        saveQuestionWithTags(questionEntity, question.getTags(), principal);
+
+        return questionMapper.entityToQuestion(questionEntity);
+
+    }
+
+    @Override
     public Question saveQuestion(Question question, @NotNull String principal) {
 
         QuestionEntity questionEntity;
@@ -107,16 +136,11 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
             categoryEntity = categoryRepository.findByUuid(categoryUuid);
         }
 
-        if (nonNull(question.getId()) && isNotBlank(question.getId().toUuid())) {
-            questionEntity = questionRepository.findByUuid(UUID.fromString(question.getId().toUuid())).orElse(null);
-            questionEntity = questionMapper.dtoToModel(questionEntity, question);
-        } else {
-            questionEntity = questionMapper.dtoToModel(question);
-        }
+        questionEntity = questionMapper.questionToEntity(question);
 
-        Optional <AccountEntity> accountEntity = accountRepository.findById(UUID.fromString(principal));
-        if(accountEntity.isPresent()) {
-            questionEntity.setAccount(accountEntity.get());
+        Optional <AccountEntity> accountEntity = accountRepository.findByUuid(UUID.fromString(principal));
+        if (accountEntity.isPresent()) {
+            questionEntity.setOwner(accountEntity.get());
         }
 
         questionEntity.setCategory(categoryEntity);
@@ -126,7 +150,6 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
         saveQuestionWithTags(questionEntity, question.getTags(), principal);
 
         return questionMapper.entityToQuestion(questionEntity);
-
     }
 
     @Override
@@ -144,9 +167,9 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
 
     @Override
     @Transactional(readOnly = true)
-    public Iterable <Tag> findAllTagByPage(Pageable pageable, String principal) {
+    public Page <Tag> findAllTagByPage(Pageable pageable, String principal) {
 
-        return tagMapper.pageToDto(questionTagRepository.findAllTagByPrincipal(principal, pageable));
+        return tagMapper.pageToModel(questionTagRepository.findAllTagByPrincipal(principal, pageable));
 
     }
 
@@ -154,7 +177,7 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
     @Transactional(readOnly = true)
     public Iterable <String> findAllStatusByPage(String principal, Pageable pageable) {
         return StreamSupport.stream(questionRepository.findAllStatusByCreatedBy(principal, pageable)
-                .spliterator(), false)
+                        .spliterator(), false)
                 .collect(Collectors.toList());
     }
 

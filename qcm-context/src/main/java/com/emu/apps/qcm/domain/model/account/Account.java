@@ -1,4 +1,4 @@
-package com.emu.apps.qcm.domain.model.user;
+package com.emu.apps.qcm.domain.model.account;
 
 import com.emu.apps.qcm.domain.model.base.DomainId;
 import lombok.AllArgsConstructor;

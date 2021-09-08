@@ -29,27 +29,28 @@
 package com.emu.apps.qcm.infra.persistence.adapters.mappers;
 
 
+import com.emu.apps.qcm.domain.mappers.TagIdMapper;
 import com.emu.apps.qcm.domain.model.tag.Tag;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.TagEntity;
-import com.emu.apps.qcm.domain.mappers.TagIdMapper;
+import com.emu.apps.qcm.infra.persistence.adapters.mappers.custom.IgnoreEntityId;
+import com.emu.apps.qcm.infra.persistence.adapters.mappers.custom.ModelId;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 import org.springframework.data.domain.Page;
 
 @Mapper(componentModel = "spring", uses = {UuidMapper.class, TagIdMapper.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface TagEntityMapper {
 
-    @Mapping(target = "id", source = "uuid")
-    Tag modelToDto(TagEntity tag);
+    @ModelId
+    Tag entityToModel(TagEntity tag);
 
-    @Mapping(target = "id", ignore = true)
-    TagEntity dtoToModel(Tag tag);
+    @IgnoreEntityId
+    TagEntity modelToEntity(Tag tag);
 
-    Iterable <Tag> modelsToDtos(Iterable <TagEntity> tags);
+    Iterable <Tag> entitiesToModels(Iterable <TagEntity> tags);
 
-    default Page <Tag> pageToDto(Page <TagEntity> page) {
-        return page.map(this::modelToDto);
+    default Page <Tag> pageToModel(Page <TagEntity> page) {
+        return page.map(this::entityToModel);
     }
 
 }

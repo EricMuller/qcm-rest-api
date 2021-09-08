@@ -1,8 +1,6 @@
 package com.emu.apps.qcm.domain.model.webhook;
 
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
-import com.emu.apps.qcm.domain.model.webhook.WebHook;
-import com.emu.apps.qcm.domain.model.webhook.WebhookId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -14,5 +12,5 @@ public interface WebHookRepository {
 
     WebHook getWebHookByUuid(WebhookId webhookId);
 
-    WebHook saveWebHook(WebHook webHook, String user);
+    WebHook saveWebHook(WebHook webHook, PrincipalId principal);
 }

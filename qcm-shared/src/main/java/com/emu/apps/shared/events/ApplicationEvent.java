@@ -16,7 +16,7 @@ public abstract class ApplicationEvent {
         return EMPTY;
     }
 
-    public ApplicationEvent(Map <String, String> payload) {
+    protected ApplicationEvent(Map <String, String> payload) {
         this.payload = payload;
     }
 }

@@ -17,7 +17,7 @@ import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireQuestion;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireTag;
 import com.emu.apps.qcm.domain.model.tag.Tag;
 import com.emu.apps.qcm.domain.model.upload.Upload;
-import com.emu.apps.qcm.domain.model.user.Account;
+import com.emu.apps.qcm.domain.model.account.Account;
 import com.emu.apps.qcm.domain.model.webhook.WebHook;
 import com.emu.apps.qcm.rest.controllers.secured.resources.*;
 import org.mapstruct.Mapper;
@@ -31,7 +31,7 @@ import org.springframework.data.domain.Page;
         unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface QuestionnaireResourceMapper {
 
-    @Mapping(target = "uuid", source = "id")
+    @ResourceId
     QuestionnaireResource questionnaireToResources(Questionnaire questionnaire);
 
     Questionnaire questionnaireToModel(QuestionnaireResource questionnaireResource);
@@ -42,10 +42,10 @@ public interface QuestionnaireResourceMapper {
 
     QuestionnaireTag questionnaireTagToModel(TagResource tagResource);
 
-    @Mapping(target = "uuid", source = "id")
+    @ResourceId
     CategoryResource categoryToResources(Category category);
 
-    @Mapping(target = "id", source = "uuid")
+    @ModelId
     Category categoryToModel(CategoryResource categoryResource);
 
     @Mapping(target = "uuid", source = "questionnaireQuestion.id")
@@ -56,10 +56,13 @@ public interface QuestionnaireResourceMapper {
 
     Question questionToModel(String id, QuestionResource questionResource);
 
-    @Mapping(target = "uuid", source = "id")
+    @ResourceId
     QuestionResource questionToResources(Question question);
 
     Response responseToModel(ResponseResource responseResource);
+
+    @ResourceId
+    OwnerResource accountToOwner(Account account);
 
     ResponseResource responseToResources(Response response);
 
@@ -67,10 +70,10 @@ public interface QuestionnaireResourceMapper {
 
     QuestionTag questionTagToModel(TagResource tagResource);
 
-    @Mapping(target = "uuid", source = "id")
+    @ResourceId
     QuestionWithTagsOnlyResource questionTagsToResources(QuestionWithTagsOnly questionWithTagsOnly);
 
-    @Mapping(target = "uuid", source = "id")
+    @ResourceId
     TagResource tagToResources(Tag tag);
 
     Tag tagToModel(String id, TagResource tagResource);
@@ -83,12 +86,13 @@ public interface QuestionnaireResourceMapper {
 
     Upload uploadToModel(UploadResource uploadResource);
 
-    @Mapping(target = "uuid", source = "id")
-    AccountResource userToResources(Account account);
+    @ResourceId
+    AccountResource accountToResources(Account account);
 
-    Account userToModel(AccountResource accountResource);
+    @ModelId
+    Account accountToModel(AccountResource accountResource);
 
-    @Mapping(target = "uuid", source = "id")
+    @ResourceId
     WebHookResource webhookToResources(WebHook webHook);
 
     WebHook webhookToModel(WebHookResource webHookResource);
@@ -104,6 +108,7 @@ public interface QuestionnaireResourceMapper {
         return page.map(this::webhookToResources);
     }
 
+
     default Page <UploadResource> uploadToResources(Page <Upload> page) {
         return page.map(this::uploadToResources);
     }
@@ -112,6 +117,10 @@ public interface QuestionnaireResourceMapper {
         return page.map(this::tagToResources);
     }
 
+
+    default  Page <TagResource> pageTagsToResources(Page <Tag> page){
+        return page.map(this::tagToResources);
+    }
 
     default Page <QuestionWithTagsOnlyResource> pageQuestionTagsToResources(Page <QuestionWithTagsOnly> page) {
         return page.map(this::questionTagsToResources);

@@ -1,18 +1,18 @@
 package com.emu.tests;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
+
 /*
 -Duser.timezone="Africa/Djibouti"
  */
-public class CalendarTest {
+class CalendarTest {
 
     @BeforeAll
-    static void  name() {
+    static void name() {
         TimeZone.setDefault(TimeZone.getTimeZone("US/Eastern"));
     }
 
@@ -28,14 +28,14 @@ public class CalendarTest {
 
     }
 
-    private Calendar createCalendar(TimeZone timeZone){
+    private Calendar createCalendar(TimeZone timeZone) {
         final GregorianCalendar calendar = new GregorianCalendar(timeZone);
 
         calendar.set(Calendar.YEAR, 2021);
         calendar.set(Calendar.MONTH, 4);
         calendar.set(Calendar.DAY_OF_MONTH, 21);
-        calendar.set(Calendar.HOUR_OF_DAY,0);
-        calendar.set(Calendar.MINUTE,0);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
 
         System.out.println("-------------------");

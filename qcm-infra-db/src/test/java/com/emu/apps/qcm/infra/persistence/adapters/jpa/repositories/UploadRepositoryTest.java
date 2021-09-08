@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @SpringBootTest(classes = SpringBootJpaTestConfig.class)
 @ActiveProfiles(value = "test")
 @ContextConfiguration(initializers = {UploadRepositoryTest.Initializer.class})
-public class UploadRepositoryTest {
+class UploadRepositoryTest {
 
     @RegisterExtension
     static BaeldungPostgresqlExtension postgresqlContainer = BaeldungPostgresqlExtension.getInstance();
@@ -52,7 +52,7 @@ public class UploadRepositoryTest {
 
     @Test
     @Transactional
-    public void findOneTest() {
+    void findOneTest() {
 
         UploadEntity newUpload = dbFixture.createUpload();
         assertNotNull(newUpload.getId());
@@ -67,7 +67,7 @@ public class UploadRepositoryTest {
 
     @Test
     @Transactional
-    public void findAllTest() {
+    void findAllTest() {
 
         UploadEntity newUpload = dbFixture.createUpload();
         assertNotNull(newUpload.getId());

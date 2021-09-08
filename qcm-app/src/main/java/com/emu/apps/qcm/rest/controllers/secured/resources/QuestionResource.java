@@ -82,4 +82,8 @@ public class QuestionResource  {
     @JsonView({Find.class, Create.class, Update.class,})
     private String tip;
 
+    @JsonProperty("owner")
+    @JsonView({Find.class})
+    private OwnerResource owner;
+
 }

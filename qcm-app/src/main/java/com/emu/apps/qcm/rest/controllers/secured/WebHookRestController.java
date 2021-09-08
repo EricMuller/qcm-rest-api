@@ -55,14 +55,14 @@ public class WebHookRestController {
     @ResponseBody
     public WebHookResource saveWebHook(@RequestBody @Valid WebHookResource webHookResource) {
         var webhook = questionnaireResourceMapper.webhookToModel(webHookResource);
-        return questionnaireResourceMapper.webhookToResources(webHookRepository.saveWebHook(webhook, getPrincipal().getName()));
+        return questionnaireResourceMapper.webhookToResources(webHookRepository.saveWebHook(webhook, PrincipalId.of(getPrincipal())));
     }
 
     @PutMapping(value = "/{uuid}")
     @ResponseBody
     public WebHookResource updateWebHook(@PathVariable("uuid") String uuid, @RequestBody @Valid WebHookResource webHookResource) {
         var webhook = questionnaireResourceMapper.webhookToModel(webHookResource);
-        return questionnaireResourceMapper.webhookToResources(webHookRepository.saveWebHook(webhook, getPrincipal().getName()));
+        return questionnaireResourceMapper.webhookToResources(webHookRepository.saveWebHook(webhook, PrincipalId.of(getPrincipal())));
     }
 
     @GetMapping(value = "/{uuid}")

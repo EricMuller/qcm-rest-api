@@ -24,8 +24,8 @@ class WebHookRepositoryAdapter implements WebHookRepository {
     }
 
     @Override
-    public Page <WebHook> getWebHooks(Pageable pageable, PrincipalId principal) {
-        return this.webHookPersistencePort.findOneByUuid(pageable, principal.toUuid());
+    public Page <WebHook> getWebHooks(Pageable pageable, PrincipalId principalId) {
+        return this.webHookPersistencePort.findOneByUuid(pageable, principalId.toUuid());
     }
 
     @Override
@@ -39,7 +39,7 @@ class WebHookRepositoryAdapter implements WebHookRepository {
     }
 
     @Override
-    public WebHook saveWebHook(WebHook webHook, String user) {
-        return webHookPersistencePort.saveWebHook(webHook, user);
+    public WebHook saveWebHook(WebHook webHook, PrincipalId principalId) {
+        return webHookPersistencePort.saveWebHook(webHook, principalId.toUuid());
     }
 }

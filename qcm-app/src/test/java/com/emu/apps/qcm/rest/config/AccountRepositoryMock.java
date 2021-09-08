@@ -1,11 +1,8 @@
 package com.emu.apps.qcm.rest.config;
 
-import com.emu.apps.qcm.domain.model.user.Account;
-import com.emu.apps.qcm.domain.model.base.PrincipalId;
-import com.emu.apps.qcm.domain.model.user.AccountId;
-import com.emu.apps.qcm.domain.model.user.AccountRepository;
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Component;
+import com.emu.apps.qcm.domain.model.account.Account;
+import com.emu.apps.qcm.domain.model.account.AccountId;
+import com.emu.apps.qcm.domain.model.account.AccountRepository;
 
 import java.security.Principal;
 import java.util.HashMap;
@@ -25,17 +22,17 @@ public class AccountRepositoryMock implements AccountRepository {
     }
 
     @Override
-    public Account userByEmail(String email) {
+    public Account getAccountByEmail(String email) {
         return createUSer();
     }
 
     @Override
-    public Account updateUser(Account account) {
+    public Account updateAccount(Account account) {
         return createUSer();
     }
 
     @Override
-    public Account createUser(Account account) {
+    public Account createAccount(Account account) {
         return createUSer();
     }
 
@@ -43,7 +40,7 @@ public class AccountRepositoryMock implements AccountRepository {
         Account account = new Account();
         account.setUserName(USER_TEST_ID.toUuid());
         account.setEmail(USER_TEST_ID.toUuid());
-        account.setId(new AccountId(USER_TEST_ID.toUuid()));
+        account.setId(AccountId.of(USER_TEST_ID.toUuid()));
         return account;
     }
 

@@ -1,7 +1,6 @@
 package com.emu.apps.qcm.domain.mappers;
 
 import com.emu.apps.qcm.domain.model.category.CategoryId;
-import org.apache.commons.lang3.StringUtils;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 

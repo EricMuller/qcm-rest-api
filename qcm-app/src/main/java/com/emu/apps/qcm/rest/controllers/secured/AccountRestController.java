@@ -1,11 +1,12 @@
 package com.emu.apps.qcm.rest.controllers.secured;
 
-import com.emu.apps.qcm.domain.model.user.Account;
-import com.emu.apps.qcm.domain.model.user.AccountRepository;
+import com.emu.apps.qcm.domain.model.account.Account;
+import com.emu.apps.qcm.domain.model.account.AccountRepository;
 import com.emu.apps.qcm.rest.controllers.secured.openui.AccountView;
 import com.emu.apps.qcm.rest.controllers.secured.resources.AccountResource;
-import com.emu.apps.qcm.rest.exceptions.UserAuthenticationException;
+import com.emu.apps.shared.exceptions.I18nedBadRequestException;
 import com.emu.apps.qcm.rest.mappers.QuestionnaireResourceMapper;
+import com.emu.apps.shared.exceptions.I18nedForbiddenRequestException;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,8 +28,9 @@ import java.util.Map;
 
 import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.ACCOUNTS;
 import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.PROTECTED_API;
-import static com.emu.apps.shared.exceptions.MessageSupport.EXISTS_UUID_USER;
-import static com.emu.apps.shared.exceptions.MessageSupport.INVALID_UUID_USER;
+import static com.emu.apps.shared.exceptions.I18nedMessageSupport.EXISTING_UUID_ACCOUNT;
+import static com.emu.apps.shared.exceptions.I18nedMessageSupport.INVALID_EMAIL_USER;
+import static com.emu.apps.shared.security.PrincipalUtils.getAttribute;
 import static com.emu.apps.shared.security.PrincipalUtils.getEmailOrName;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -44,8 +46,8 @@ public class AccountRestController {
 
     private final QuestionnaireResourceMapper questionnaireResourceMapper;
 
-    public AccountRestController(AccountRepository userServicePort, QuestionnaireResourceMapper questionnaireResourceMapper) {
-        this.accountRepository = userServicePort;
+    public AccountRestController(AccountRepository accountRepository, QuestionnaireResourceMapper questionnaireResourceMapper) {
+        this.accountRepository = accountRepository;
         this.questionnaireResourceMapper = questionnaireResourceMapper;
     }
 
@@ -53,9 +55,14 @@ public class AccountRestController {
         return accountRepository.principal(principal);
     }
 
+    /**
+     * public String whoami(@AuthenticationPrincipal(expression="name") String name) {
+     * @param jwt
+     * @return
+     */
     @GetMapping("/token")
     public String token(@Parameter(hidden = true) @AuthenticationPrincipal Jwt jwt) {
-        //public String whoami(@AuthenticationPrincipal(expression="name") String name) {
+
         return jwt.getTokenValue();
     }
 
@@ -68,12 +75,13 @@ public class AccountRestController {
 
     public EntityModel <AccountResource> getAuthentifiedUser(Principal principal) {
         String email = getEmailOrName(principal);
-        Account account = accountRepository.userByEmail(email);
+        Account account = accountRepository.getAccountByEmail(email);
         if (isNull(account)) {
             account = new Account();
-            account.setEmail(getEmailOrName(principal));
+            account.setEmail(getAttribute(principal, "email"));
+            account.setUserName(getAttribute(principal, "preferred_username"));
         }
-        return EntityModel.of(questionnaireResourceMapper.userToResources(account));
+        return EntityModel.of(questionnaireResourceMapper.accountToResources(account));
     }
 
     //    @PostAuthorize("hasAuthority('PROFIL_CREATED')")
@@ -81,27 +89,27 @@ public class AccountRestController {
     @ResponseBody
     public EntityModel <AccountResource> updateAuthentifiedUser(@JsonView(AccountView.Update.class) @RequestBody AccountResource accountResource, Principal principal) {
 
-        var user = questionnaireResourceMapper.userToModel(accountResource);
+        var user = questionnaireResourceMapper.accountToModel(accountResource);
         String email = getEmailOrName(principal);
-        Account authentAccount = accountRepository.userByEmail(email);
+        Account authentAccount = accountRepository.getAccountByEmail(email);
         if (nonNull(authentAccount) && authentAccount.getEmail().equals(user.getEmail())) {
-            return EntityModel.of(questionnaireResourceMapper.userToResources(accountRepository.updateUser(user)));
+            return EntityModel.of(questionnaireResourceMapper.accountToResources(accountRepository.updateAccount(user)));
         } else {
-            throw new UserAuthenticationException(INVALID_UUID_USER);
+            throw new I18nedForbiddenRequestException(INVALID_EMAIL_USER);
         }
     }
 
     @PostMapping(value = "/me", produces = APPLICATION_JSON_VALUE)
     @ResponseBody
     public EntityModel <AccountResource> createAuthentifiedUser(@JsonView(AccountView.Create.class) @RequestBody AccountResource accountResource, Principal principal) {
-        var user = questionnaireResourceMapper.userToModel(accountResource);
+        var user = questionnaireResourceMapper.accountToModel(accountResource);
         String email = getEmailOrName(principal);
-        Account authentAccount = accountRepository.userByEmail(email);
+        Account authentAccount = accountRepository.getAccountByEmail(email);
         if (isNull(authentAccount)) {
             user.setEmail(email);
-            return EntityModel.of(questionnaireResourceMapper.userToResources(accountRepository.createUser(user)));
+            return EntityModel.of(questionnaireResourceMapper.accountToResources(accountRepository.createAccount(user)));
         } else {
-            throw new UserAuthenticationException(EXISTS_UUID_USER);
+            throw new I18nedBadRequestException(EXISTING_UUID_ACCOUNT, email);
         }
     }
 
@@ -109,9 +117,9 @@ public class AccountRestController {
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseBody
     public EntityModel <AccountResource> updateUser(@RequestBody AccountResource accountResource, Principal principal) {
-        var user = questionnaireResourceMapper.userToModel(accountResource);
+        var account = questionnaireResourceMapper.accountToModel(accountResource);
         // fixme: ???
-        return EntityModel.of(questionnaireResourceMapper.userToResources(accountRepository.updateUser(user)));
+        return EntityModel.of(questionnaireResourceMapper.accountToResources(accountRepository.updateAccount(account)));
     }
 
 }

@@ -30,7 +30,6 @@ package com.emu.apps.qcm.rest.config;
 
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -73,6 +72,7 @@ public class WebConfiguration implements WebMvcConfigurer {
 
     /**
      * load messages.properties
+     *
      * @param messageSource
      * @return
      */

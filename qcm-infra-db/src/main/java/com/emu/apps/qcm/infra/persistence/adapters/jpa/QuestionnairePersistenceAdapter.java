@@ -20,8 +20,7 @@ import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.TagRepositor
 import com.emu.apps.qcm.infra.persistence.adapters.mappers.QuestionnaireEntityMapper;
 import com.emu.apps.qcm.infra.persistence.adapters.mappers.QuestionnaireQuestionEntityMapper;
 import com.emu.apps.qcm.infra.persistence.adapters.mappers.UuidMapper;
-import com.emu.apps.shared.exceptions.EntityNotFoundException;
-import com.emu.apps.shared.exceptions.MessageSupport;
+import com.emu.apps.shared.exceptions.I18nedNotFoundException;
 import org.javers.core.Javers;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,6 +31,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.emu.apps.shared.exceptions.I18nedMessageSupport.*;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;
@@ -106,11 +106,11 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
         QuestionnaireEntity questionnaireEntity = null;
         if (nonNull(questionnaire.getId()) && isNotBlank(questionnaire.getId().toUuid())) {
             questionnaireEntity = questionnaireRepository.findByUuid(fromString(questionnaire.getId().toUuid()))
-                    .orElseThrow(() -> new EntityNotFoundException(questionnaire.getId().toUuid(), MessageSupport.UNKNOWN_UUID_QUESTIONNAIRE));
+                    .orElseThrow(() -> new I18nedNotFoundException(UNKNOWN_UUID_QUESTIONNAIRE, questionnaire.getId().toUuid()));
         }
 
         if (nonNull(questionnaireEntity)) {
-            questionnaireEntity = questionnaireMapper.dtoToModel(questionnaireEntity, questionnaire);
+            questionnaireEntity = questionnaireMapper.dtoToModel(questionnaire, questionnaireEntity);
             questionnaireEntity.setCategory(category);
         } else {
             questionnaireEntity = questionnaireMapper.dtoToModel(questionnaire);
@@ -177,21 +177,21 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
     @Override
     public QuestionnaireQuestion addQuestion(@NotNull String uuid, String questionUUid, Optional <Integer> positionOpt, String principal) {
 
-        if ( isNull(questionUUid)) {
-            throw new EntityNotFoundException(uuid, MessageSupport.INVALID_UUID_QUESTION);
+        if (isNull(questionUUid)) {
+            throw new I18nedNotFoundException(INVALID_UUID_QUESTION, uuid);
         }
 
-        if ( isNull(uuid)) {
-            throw new EntityNotFoundException(uuid, MessageSupport.INVALID_UUID_QUESTIONNAIRE);
+        if (isNull(uuid)) {
+            throw new I18nedNotFoundException(INVALID_UUID_QUESTIONNAIRE, uuid);
         }
 
         var questionnaireEntity = questionnaireRepository.findByUuid(fromString(uuid))
-                .orElseThrow(() -> new EntityNotFoundException(uuid, MessageSupport.UNKNOWN_UUID_QUESTIONNAIRE));
+                .orElseThrow(() -> new I18nedNotFoundException(UNKNOWN_UUID_QUESTIONNAIRE, uuid));
 
 
         Integer position = positionOpt.isEmpty() ? questionnaireEntity.getQuestionnaireQuestions().size() + 1 : positionOpt.get();
         var questionEntity = questionRepository.findByUuid(fromString(questionUUid))
-                .orElseThrow(() -> new EntityNotFoundException(questionUUid, MessageSupport.UNKNOWN_UUID_QUESTION));
+                .orElseThrow(() -> new I18nedNotFoundException(UNKNOWN_UUID_QUESTION, questionUUid));
 
         QuestionnaireQuestionEntity questionnaireQuestionEntity = questionnaireQuestionRepository
                 .save(new QuestionnaireQuestionEntity(questionnaireEntity, questionEntity, position));
@@ -218,7 +218,7 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
     public Questionnaire findOnePublishedByUuid(final String uuid) {
 
         var questionnaire = questionnaireRepository.findByUuid(fromString(uuid))
-                .orElseThrow(() -> new EntityNotFoundException(uuid, MessageSupport.UNKNOWN_UUID_QUESTIONNAIRE));
+                .orElseThrow(() -> new I18nedNotFoundException(UNKNOWN_UUID_QUESTIONNAIRE, uuid));
 
         return questionnaireMapper.modelToDto(questionnaire);
     }
@@ -266,7 +266,7 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
 
         QuestionnaireQuestionEntity questionnaireQuestionEntity =
                 questionnaireQuestionRepository.findByQuestionUuid(fromString(questionnaireUuid), fromString(questionUuid))
-                        .orElseThrow(() -> new EntityNotFoundException(questionUuid, MessageSupport.UNKNOWN_UUID_QUESTION));
+                        .orElseThrow(() -> new I18nedNotFoundException(UNKNOWN_UUID_QUESTION, questionUuid));
         questionnaireQuestionRepository.delete(questionnaireQuestionEntity);
     }
 
@@ -275,7 +275,7 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
     public QuestionnaireQuestion getQuestion(String questionnaireUuid, String questionUuid) {
         return questionnaireQuestionMapper.questionnaireQuestionEntityToDomain(
                 questionnaireQuestionRepository.findByQuestionUuid(fromString(questionnaireUuid), fromString(questionUuid))
-                        .orElseThrow(() -> new EntityNotFoundException(questionUuid, MessageSupport.UNKNOWN_UUID_QUESTION)));
+                        .orElseThrow(() -> new I18nedNotFoundException(UNKNOWN_UUID_QUESTION, questionUuid)));
 
     }
 

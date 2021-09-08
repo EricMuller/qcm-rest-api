@@ -3,17 +3,18 @@ package com.emu.apps.qcm.rest.controllers.secured;
 import com.emu.apps.qcm.application.QuestionCatalog;
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
 import com.emu.apps.qcm.domain.model.question.QuestionId;
+import com.emu.apps.qcm.rest.controllers.secured.command.QuestionStatus;
 import com.emu.apps.qcm.rest.controllers.secured.hal.QuestionWithTagsOnlyModelAssembler;
-import com.emu.apps.qcm.rest.mappers.QuestionnaireResourceMapper;
+import com.emu.apps.qcm.rest.controllers.secured.hal.TagModelAssembler;
+import com.emu.apps.qcm.rest.controllers.secured.openui.QuestionView;
 import com.emu.apps.qcm.rest.controllers.secured.resources.MessageResource;
 import com.emu.apps.qcm.rest.controllers.secured.resources.QuestionResource;
 import com.emu.apps.qcm.rest.controllers.secured.resources.QuestionWithTagsOnlyResource;
 import com.emu.apps.qcm.rest.controllers.secured.resources.TagResource;
-import com.emu.apps.qcm.rest.controllers.secured.command.QuestionStatus;
-import com.emu.apps.qcm.rest.controllers.secured.openui.QuestionView;
+import com.emu.apps.qcm.rest.mappers.QuestionnaireResourceMapper;
 import com.emu.apps.qcm.rest.validators.ValidUuid;
 import com.emu.apps.shared.annotations.Timer;
-import com.emu.apps.shared.exceptions.EntityNotFoundException;
+import com.emu.apps.shared.exceptions.I18nedNotFoundException;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -39,7 +40,7 @@ import java.io.IOException;
 import static com.emu.apps.qcm.rest.config.cache.CacheName.Names.QUESTION;
 import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.*;
 import static com.emu.apps.qcm.rest.controllers.secured.resources.MessageResource.ERROR;
-import static com.emu.apps.shared.exceptions.MessageSupport.UNKNOWN_UUID_QUESTION;
+import static com.emu.apps.shared.exceptions.I18nedMessageSupport.UNKNOWN_UUID_QUESTION;
 import static com.emu.apps.shared.security.AuthentificationContextHolder.getPrincipal;
 import static org.springframework.data.domain.Sort.Direction.DESC;
 import static org.springframework.hateoas.EntityModel.of;
@@ -64,12 +65,15 @@ public class QuestionRestController {
 
     private final QuestionWithTagsOnlyModelAssembler questionWithTagsOnlyModelAssembler;
 
+    private final TagModelAssembler tagModelAssembler;
+
     public QuestionRestController(QuestionCatalog questionCatalog, QuestionnaireResourceMapper questionnaireResourceMapper,
-                                  QuestionWithTagsOnlyModelAssembler questionWithTagsOnlyModelAssembler
-    ) {
+                                  QuestionWithTagsOnlyModelAssembler questionWithTagsOnlyModelAssembler,
+                                  TagModelAssembler tagModelAssembler) {
         this.questionCatalog = questionCatalog;
         this.questionnaireResourceMapper = questionnaireResourceMapper;
         this.questionWithTagsOnlyModelAssembler = questionWithTagsOnlyModelAssembler;
+        this.tagModelAssembler = tagModelAssembler;
     }
 
     @GetMapping
@@ -85,7 +89,9 @@ public class QuestionRestController {
                                                                                 @Parameter(hidden = true)
                                                                                 @PageableDefault(direction = DESC, sort = {"dateModification"}) Pageable pageable,
                                                                                 @Parameter(hidden = true)
-                                                                                        PagedResourcesAssembler <QuestionWithTagsOnlyResource> pagedResourcesAssembler) {
+                                                                                        PagedResourcesAssembler <QuestionWithTagsOnlyResource> pagedResourcesAssembler
+
+    ) {
         var page =
                 questionnaireResourceMapper.pageQuestionTagsToResources(
                         questionCatalog.getQuestions(tagUuid, questionnaireUuid, pageable, PrincipalId.of(getPrincipal())));
@@ -100,8 +106,15 @@ public class QuestionRestController {
     @GetMapping(value = TAGS)
     @Timer
     @PageableAsQueryParam
-    public Iterable <TagResource> getTags(@Parameter(hidden = true) Pageable pageable) {
-        return questionnaireResourceMapper.tagsToResources(questionCatalog.findAllQuestionTagByPage(pageable, PrincipalId.of(getPrincipal())));
+    public PagedModel <EntityModel <TagResource>> getTags(@Parameter(hidden = true) Pageable pageable, PagedResourcesAssembler <TagResource> pagedTagResourcesAssembler) {
+
+        var page = questionnaireResourceMapper.pageTagsToResources(questionCatalog.findAllQuestionTagByPage(pageable, PrincipalId.of(getPrincipal())));
+
+        Link selfLink = Link.of(ServletUriComponentsBuilder.fromCurrentRequest().build().toUriString());
+
+        return pagedTagResourcesAssembler.toModel(page, this.tagModelAssembler, selfLink);
+
+        //return questionnaireResourceMapper.tagsToResources(questionCatalog.findAllQuestionTagByPage(pageable, PrincipalId.of(getPrincipal())));
     }
 
     @GetMapping(value = STATUS)
@@ -118,7 +131,7 @@ public class QuestionRestController {
     @ResponseBody
     public EntityModel <QuestionResource> getQuestionByUuid(@ValidUuid @PathVariable("uuid") String uuid) {
         return of(questionnaireResourceMapper.questionToResources(questionCatalog.getQuestionById(new QuestionId(uuid))
-                .orElseThrow(() -> new EntityNotFoundException(uuid, UNKNOWN_UUID_QUESTION))));
+                .orElseThrow(() -> new I18nedNotFoundException(UNKNOWN_UUID_QUESTION, uuid))));
     }
 
     @PutMapping(value = "/{uuid}", produces = APPLICATION_JSON_VALUE)
@@ -152,7 +165,7 @@ public class QuestionRestController {
     public EntityModel <QuestionResource> patchQuestionByUuid(@PathVariable("uuid") String uuid, @RequestBody QuestionStatus questionStatus) {
 
         var question = questionCatalog.getQuestionById(new QuestionId(uuid))
-                .orElseThrow(() -> new EntityNotFoundException(uuid, UNKNOWN_UUID_QUESTION));
+                .orElseThrow(() -> new I18nedNotFoundException(UNKNOWN_UUID_QUESTION, uuid));
 
         question.setStatus(questionStatus.getStatus());
         return of(questionnaireResourceMapper.questionToResources(questionCatalog.saveQuestion(question, PrincipalId.of(getPrincipal()))));

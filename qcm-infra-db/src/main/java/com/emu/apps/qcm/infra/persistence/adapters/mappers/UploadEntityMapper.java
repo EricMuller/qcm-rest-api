@@ -39,13 +39,13 @@ import org.springframework.data.domain.Page;
         , unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UploadEntityMapper {
 
-    Upload modelToDto(UploadEntity upload);
+    Upload entityToModel(UploadEntity uploadEntity);
 
-    UploadEntity dtoToModel(Upload uploadDto);
+    UploadEntity modelToEntity(Upload upload);
 
-    UploadEntity dtoToModel(@MappingTarget UploadEntity upload, Upload uploadDto);
+    UploadEntity modelToEntity(@MappingTarget UploadEntity upload, Upload uploadDto);
 
-    default Page <Upload> pageToPageDto(Page <UploadEntity> page) {
-        return page.map(this::modelToDto);
+    default Page <Upload> pageToPageModel(Page <UploadEntity> page) {
+        return page.map(this::entityToModel);
     }
 }

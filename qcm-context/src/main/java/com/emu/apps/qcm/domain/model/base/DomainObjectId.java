@@ -22,7 +22,7 @@ public abstract class DomainObjectId implements ValueObject {
     /**
      * Creates a new, random instance of the given {@code idClass}.
      */
-    public static <ID extends DomainObjectId> ID randomId(Class <ID> idClass) {
+    public static <T extends DomainObjectId> T randomId(Class <T> idClass) {
         Objects.requireNonNull(idClass, "idClass must not be null");
         try {
             return idClass.getConstructor(String.class).newInstance(UUID.randomUUID().toString());

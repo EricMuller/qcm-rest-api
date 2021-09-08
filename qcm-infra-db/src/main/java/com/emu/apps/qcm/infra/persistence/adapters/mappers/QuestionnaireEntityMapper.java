@@ -29,11 +29,13 @@
 package com.emu.apps.qcm.infra.persistence.adapters.mappers;
 
 
+import com.emu.apps.qcm.domain.mappers.QuestionnaireIdMapper;
 import com.emu.apps.qcm.domain.model.questionnaire.Questionnaire;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireEntity;
-import com.emu.apps.qcm.domain.mappers.QuestionnaireIdMapper;
+import com.emu.apps.qcm.infra.persistence.adapters.mappers.custom.IgnoreTags;
+import com.emu.apps.qcm.infra.persistence.adapters.mappers.custom.IgnoreTechniqualData;
+import com.emu.apps.qcm.infra.persistence.adapters.mappers.custom.ModelId;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 import org.mapstruct.ReportingPolicy;
@@ -47,23 +49,17 @@ import java.util.Optional;
         unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface QuestionnaireEntityMapper {
 
-    //QuestionId toId(long id);
-    @Mapping(target = "id", source = "uuid")
+
+    @ModelId
     Questionnaire modelToDto(QuestionnaireEntity questionnaire);
 
-    @Mapping(target = "tags", ignore = true)
-    @Mapping(target = "uuid", ignore = true)
-    @Mapping(target = "id", ignore = true)
+    @IgnoreTags
+    @IgnoreTechniqualData
     QuestionnaireEntity dtoToModel(Questionnaire questionnaire);
 
-    @Mapping(target = "tags", ignore = true)
-    @Mapping(target = "dateCreation", ignore = true)
-    @Mapping(target = "createdBy", ignore = true)
-    @Mapping(target = "dateModification", ignore = true)
-    @Mapping(target = "lastModifiedBy", ignore = true)
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "uuid", ignore = true)
-    QuestionnaireEntity dtoToModel(@MappingTarget QuestionnaireEntity questionnaireEntity, Questionnaire questionnaire);
+    @IgnoreTags
+    @IgnoreTechniqualData
+    QuestionnaireEntity dtoToModel(Questionnaire questionnaire, @MappingTarget QuestionnaireEntity questionnaireEntity);
 
     default Page <Questionnaire> pageToDto(Page <QuestionnaireEntity> page) {
         return page.map(this::modelToDto);

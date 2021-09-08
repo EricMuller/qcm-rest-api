@@ -50,8 +50,5 @@ public class AccountResource {
     @JsonProperty("company")
     private String company;
 
-    public AccountResource(String email) {
-        this.email = email;
-    }
 
 }

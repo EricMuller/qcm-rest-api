@@ -24,11 +24,10 @@ class TagRepositoryAdapter implements TagRepository {
 
     private final TagPersistencePort tagPersistencePort;
 
-    private final QuestionPersistencePort questionPersistencePort;
 
-    public TagRepositoryAdapter(TagPersistencePort tagInfraService, QuestionPersistencePort questionPersistencePort) {
+    public TagRepositoryAdapter(TagPersistencePort tagInfraService) {
         this.tagPersistencePort = tagInfraService;
-        this.questionPersistencePort = questionPersistencePort;
+
     }
 
     @Override
@@ -36,7 +35,7 @@ class TagRepositoryAdapter implements TagRepository {
 
         var criterias = CriteriaUtils.toCriteria(search);
         Optional <String> firstLetter = CriteriaUtils.getAttribute("firstLetter", criterias);
-        Optional <String> used = CriteriaUtils.getAttribute("used", criterias);
+
 
         return tagPersistencePort.findAllByPage(firstLetter, pageable, principal.toUuid());
     }

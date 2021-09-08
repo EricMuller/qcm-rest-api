@@ -23,7 +23,8 @@ public class QuestionWithTagsOnlyModelAssembler implements SimpleRepresentationM
     public void addLinks(EntityModel <QuestionWithTagsOnlyResource> resource) {
 
         resource.add(
-                linkTo(methodOn(QuestionRestController.class).getQuestionByUuid(resource.getContent().getUuid())).withSelfRel());
+                linkTo(methodOn(QuestionRestController.class).getQuestionByUuid( (resource.getContent() != null ) ? resource.getContent().getUuid() :
+        "")).withSelfRel());
 
     }
 
@@ -36,6 +37,6 @@ public class QuestionWithTagsOnlyModelAssembler implements SimpleRepresentationM
     @Override
     public void addLinks(CollectionModel <EntityModel <QuestionWithTagsOnlyResource>> resources) {
 
-
+        // nope
     }
 }

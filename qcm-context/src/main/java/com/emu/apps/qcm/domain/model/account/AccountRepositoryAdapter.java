@@ -1,6 +1,5 @@
-package com.emu.apps.qcm.domain.model.user;
+package com.emu.apps.qcm.domain.model.account;
 
-import com.emu.apps.qcm.domain.model.base.PrincipalId;
 import com.emu.apps.qcm.infra.persistence.UserPersistencePort;
 import com.emu.apps.shared.security.PrincipalUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -46,7 +45,7 @@ class AccountRepositoryAdapter implements AccountRepository {
      * @return the current user
      */
     @Override
-    public Account userByEmail(String email) {
+    public Account getAccountByEmail(String email) {
         return userPersistencePort.findByEmailEquals(email);
     }
 
@@ -64,14 +63,14 @@ class AccountRepositoryAdapter implements AccountRepository {
      */
 
     @Override
-    public Account updateUser(@RequestBody Account account) {
+    public Account updateAccount(@RequestBody Account account) {
 
-        return userPersistencePort.save(account);
+        return userPersistencePort.update(account);
 
     }
 
     @Override
-    public Account createUser(@RequestBody Account account) {
+    public Account createAccount(@RequestBody Account account) {
 
 
         return userPersistencePort.save(account);

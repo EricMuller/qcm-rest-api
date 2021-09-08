@@ -1,6 +1,7 @@
 package com.emu.apps.qcm.domain.model.question;
 
 
+import com.emu.apps.qcm.domain.model.account.Account;
 import com.emu.apps.qcm.domain.model.base.DomainId;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,4 +21,5 @@ public class QuestionLight extends DomainId<QuestionId> {
 
     private String status;
 
+    private Account owner;
 }

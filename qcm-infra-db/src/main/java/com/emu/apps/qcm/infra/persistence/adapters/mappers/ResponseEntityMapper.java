@@ -28,13 +28,14 @@
 
 package com.emu.apps.qcm.infra.persistence.adapters.mappers;
 
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.ResponseEntity;
 import com.emu.apps.qcm.domain.model.question.Response;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.ResponseEntity;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring", uses = UuidMapper.class)
 public interface ResponseEntityMapper {
 
-    Response modelToDto(ResponseEntity response);
+    Response entityToModel(ResponseEntity responseEntity);
+
 
 }

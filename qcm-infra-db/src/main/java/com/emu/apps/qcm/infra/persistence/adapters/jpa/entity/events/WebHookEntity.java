@@ -32,7 +32,7 @@ public class WebHookEntity extends AuditableEntity <String> {
     private String secret;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    private AccountEntity user;
+    private AccountEntity owner;
 
     private Long defaultTimeOut;
 

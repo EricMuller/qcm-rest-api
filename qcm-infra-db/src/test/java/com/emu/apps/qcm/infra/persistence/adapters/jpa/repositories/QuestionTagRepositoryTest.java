@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(classes = SpringBootJpaTestConfig.class)
 @ActiveProfiles(value = "test")
 @ContextConfiguration(initializers = {QuestionTagRepositoryTest.Initializer.class})
-public class QuestionTagRepositoryTest {
+class QuestionTagRepositoryTest {
 
     @RegisterExtension
     static BaeldungPostgresqlExtension postgresqlContainer = BaeldungPostgresqlExtension.getInstance();
@@ -46,7 +46,7 @@ public class QuestionTagRepositoryTest {
 
 
     @Test
-    public void findByQuestionId() {
+    void findByQuestionId() {
 
         final String principal =  UUID.randomUUID().toString();
 
@@ -56,8 +56,7 @@ public class QuestionTagRepositoryTest {
 
         Iterable <TagEntity> tags = questionTagRepository.findByQuestionId(question.getId());
 
-        assertThat(tags).isNotNull();
-        assertThat(tags).isNotEmpty();
+        assertThat(tags).isNotNull().isNotEmpty();
         assertThat(tags.spliterator().estimateSize()).isEqualTo(2);
 
     }

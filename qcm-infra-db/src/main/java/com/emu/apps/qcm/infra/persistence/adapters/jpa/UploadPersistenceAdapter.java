@@ -65,7 +65,7 @@ public class UploadPersistenceAdapter implements UploadPersistencePort {
     @Override
     @Transactional(readOnly = true)
     public Optional<Upload> findByUuid(String uuid) {
-        return ofNullable(uploadMapper.modelToDto(uploadRepository.findByUuid(UUID.fromString(uuid)).orElse(null)));
+        return ofNullable(uploadMapper.entityToModel(uploadRepository.findByUuid(UUID.fromString(uuid)).orElse(null)));
     }
 
     @Override
@@ -79,12 +79,12 @@ public class UploadPersistenceAdapter implements UploadPersistencePort {
         UploadEntity uploadEntity;
         if (nonNull(upload.getUuid())) {
             uploadEntity = uploadRepository.findByUuid(UUID.fromString(upload.getUuid())).orElse(null);
-            uploadEntity = uploadMapper.dtoToModel(uploadEntity, upload);
+            uploadEntity = uploadMapper.modelToEntity(uploadEntity, upload);
         } else {
-            uploadEntity = uploadMapper.dtoToModel(upload);
+            uploadEntity = uploadMapper.modelToEntity(upload);
         }
 
-        return uploadMapper.modelToDto(uploadRepository.save(uploadEntity));
+        return uploadMapper.entityToModel(uploadRepository.save(uploadEntity));
     }
 
     @Override
@@ -94,7 +94,7 @@ public class UploadPersistenceAdapter implements UploadPersistencePort {
         var uploadSpecificationBuilder = new UploadEntity.SpecificationBuilder();
         uploadSpecificationBuilder.setPrincipal(principal);
 
-        return uploadMapper.pageToPageDto(uploadRepository.findAll(uploadSpecificationBuilder.build(), pageable));
+        return uploadMapper.pageToPageModel(uploadRepository.findAll(uploadSpecificationBuilder.build(), pageable));
     }
 
 }

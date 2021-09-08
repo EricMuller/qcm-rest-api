@@ -5,8 +5,8 @@ import com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestC
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireQuestionEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionEntity;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.ResponseEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionTagEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.ResponseEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.TagEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.fixtures.DbFixture;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.fixtures.Fixture;
@@ -36,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @SpringBootTest(classes = SpringBootJpaTestConfig.class)
 @ActiveProfiles(value = "test")
 @ContextConfiguration(initializers = {QuestionnaireRepositoryTest.Initializer.class})
-public class QuestionnaireRepositoryTest {
+class QuestionnaireRepositoryTest {
 
     @RegisterExtension
     static BaeldungPostgresqlExtension postgresqlContainer = BaeldungPostgresqlExtension.getInstance();
@@ -60,9 +60,9 @@ public class QuestionnaireRepositoryTest {
 
     @Test
     @Transactional
-    public void findById() {
+    void findById() {
 
-        final String principal =  UUID.randomUUID().toString();
+        final String principal = UUID.randomUUID().toString();
 
         dbFixture.emptyDatabase(principal);
 
@@ -83,7 +83,7 @@ public class QuestionnaireRepositoryTest {
 
         assertNotNull(questionnaireQuestion1);
         assertNotNull(questionnaireQuestion1.getQuestion());
-        assertEquals(Fixture.QUESTION_QUESTION_1,questionnaireQuestion1.getQuestion().getQuestionText());
+        assertEquals(Fixture.QUESTION_QUESTION_1, questionnaireQuestion1.getQuestion().getQuestionText());
 
 
         assertEquals(2, questionnaireQuestion1.getQuestion().getResponses().size());
@@ -103,9 +103,9 @@ public class QuestionnaireRepositoryTest {
     }
 
     @Test
-    public void findQuestionnaireById() {
+    void findQuestionnaireById() {
 
-        final String principal =  UUID.randomUUID().toString();
+        final String principal = UUID.randomUUID().toString();
 
         dbFixture.emptyDatabase(principal);
 
@@ -121,9 +121,9 @@ public class QuestionnaireRepositoryTest {
     }
 
     @Test
-    public void findAllWithSpecification() {
+    void findAllWithSpecification() {
 
-        final String principal =  UUID.randomUUID().toString();
+        final String principal = UUID.randomUUID().toString();
 
         dbFixture.emptyDatabase(principal);
 

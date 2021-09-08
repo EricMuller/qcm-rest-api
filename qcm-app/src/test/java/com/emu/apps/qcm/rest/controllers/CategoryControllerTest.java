@@ -3,9 +3,9 @@ package com.emu.apps.qcm.rest.controllers;
 
 import com.emu.apps.qcm.domain.model.category.Category;
 import com.emu.apps.qcm.domain.repositories.DbRepositoryFixture;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.fixtures.DbFixture;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category.Type;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.fixtures.DbFixture;
 import com.emu.apps.qcm.rest.controllers.secured.resources.CategoryResource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,7 +29,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 @SpringBootTest(classes = {SpringBootJpaTestConfig.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("classpath:application-test.properties")
 @ActiveProfiles(value = "webmvc")
-public class CategoryControllerTest {
+class CategoryControllerTest {
 
     private static final String CATEGORY_URI = ApiRestMappings.PROTECTED_API + ApiRestMappings.CATEGORIES;
 
@@ -51,7 +51,7 @@ public class CategoryControllerTest {
     }
 
     private Category createCategoryDto() {
-        
+
 
         Category category = new Category();
 
@@ -68,7 +68,7 @@ public class CategoryControllerTest {
     }
 
     @Test
-    public void postCategoryShouldBeOk() {
+    void postCategoryShouldBeOk() {
 
         // create a new category
         final ResponseEntity <CategoryResource> posteResponse = restTemplate
@@ -82,7 +82,7 @@ public class CategoryControllerTest {
     }
 
     @Test
-    public void getCategoryByIdShouldReturnCategory() {
+    void getCategoryByIdShouldReturnCategory() {
 
         // create a new category
         final ResponseEntity <CategoryResource> postResponse = restTemplate
@@ -111,7 +111,7 @@ public class CategoryControllerTest {
     }
 
     @Test
-    public void getCategoryShouldReturnCategory() {
+    void getCategoryShouldReturnCategory() {
 
         final ResponseEntity <CategoryResource> postResponse = restTemplate
                 .exchange(getURL(CATEGORY_URI), HttpMethod.POST,

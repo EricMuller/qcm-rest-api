@@ -32,7 +32,8 @@ public class ApiAssembler implements SimpleRepresentationModelAssembler <ApiReso
         resource.add(linkTo(methodOn(QuestionnairePublicRestController.class).getPublishedCategories()).withRel("categories"));
         resource.add(linkTo(methodOn(QuestionnairePublicRestController.class).getPublishedTags()).withRel("tags"));
 
-        var authorized = nonNull(resource.getContent().getPrincipal());
+
+        var authorized = nonNull(resource) && nonNull(resource.getContent()) && nonNull(resource.getContent().getPrincipal());
 
         if (authorized) {
             resource.add(linkTo(QuestionnaireRestController.class).withRel("my_questionnaires"));

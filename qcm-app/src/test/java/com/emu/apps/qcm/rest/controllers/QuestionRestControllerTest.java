@@ -29,13 +29,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.emu.apps.qcm.rest.config.RestHeaders.headers;
-import static com.google.common.collect.Sets.newHashSet;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
 @SpringBootTest(classes = {SpringBootJpaTestConfig.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("classpath:application-test.properties")
 @ActiveProfiles(value = "webmvc")
-public class QuestionRestControllerTest {
+class QuestionRestControllerTest {
 
     private static final String QUESTIONS_URI = ApiRestMappings.PROTECTED_API + ApiRestMappings.QUESTIONS;
 
@@ -60,7 +59,7 @@ public class QuestionRestControllerTest {
 
 
     @BeforeAll
-    private static void beforeAll(@Autowired DbRepositoryFixture dbFixture){
+    private static void beforeAll(@Autowired DbRepositoryFixture dbFixture) {
         dbFixture.createAccountTest();
     }
 
@@ -85,7 +84,7 @@ public class QuestionRestControllerTest {
     }
 
     @Test
-    public void postQuestionShouldCreateQuestionResponseAndTag() {
+    void postQuestionShouldCreateQuestionResponseAndTag() {
 
         // create a new question
         final ResponseEntity <QuestionResource> postResponse = restTemplate
@@ -109,7 +108,7 @@ public class QuestionRestControllerTest {
     }
 
     @Test
-    public void postQuestionShouldCreateQuestionResponsesAndTags() {
+    void postQuestionShouldCreateQuestionResponsesAndTags() {
 
         QuestionResource question = new QuestionResource();
         question.setQuestionText(QUESTION1);
@@ -149,7 +148,7 @@ public class QuestionRestControllerTest {
 
     @Test
     @Transactional
-    public void getQuestionByIdShouldReturnQuestion() {
+    void getQuestionByIdShouldReturnQuestion() {
 
         // create a new question
         final ResponseEntity <QuestionResource> postResponse = restTemplate
@@ -177,7 +176,7 @@ public class QuestionRestControllerTest {
 
     @Test
     @Transactional
-    public void putQuestionShouldReturnUpdatedQuestion() {
+    void putQuestionShouldReturnUpdatedQuestion() {
 
         final HttpHeaders httpHeaders = headers();
         // create a new question

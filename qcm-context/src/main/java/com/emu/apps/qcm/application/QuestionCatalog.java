@@ -30,7 +30,6 @@ public class QuestionCatalog implements ApplicationService {
 
     private final TagIdMapper tagIdMapper;
 
-
     private final EventBus eventBus;
 
     public QuestionCatalog(QuestionRepository questionRepository, QuestionnaireIdMapper questionnaireIdMapper, TagIdMapper tagIdMapper, @Qualifier("SimpleEventBus") EventBus eventBus) {
@@ -79,7 +78,7 @@ public class QuestionCatalog implements ApplicationService {
         questionRepository.deleteQuestionById(questionId);
     }
 
-    public Iterable <Tag> findAllQuestionTagByPage(Pageable pageable, PrincipalId principal) {
+    public Page <Tag> findAllQuestionTagByPage(Pageable pageable, PrincipalId principal) {
 
         return questionRepository.findAllQuestionTagByPage(pageable, principal);
     }

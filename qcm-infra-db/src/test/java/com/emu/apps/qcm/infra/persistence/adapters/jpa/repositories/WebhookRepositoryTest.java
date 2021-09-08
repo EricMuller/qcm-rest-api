@@ -54,21 +54,21 @@ public class WebhookRepositoryTest {
     @Transactional
     public void findAllByUser_UuidEqualsTest() {
 
-        final String principal = getClass().getSimpleName() + "." + UUID.randomUUID();
+        final UUID uuid = UUID.randomUUID();
 
-        AccountEntity user = dbFixture.createUser("user.test.fr", principal);
+        AccountEntity owner = dbFixture.createAccount("user.test.fr", uuid);
 
-        WebHookEntity webhook = dbFixture.createWebhook(user, principal);
+        WebHookEntity webhook = dbFixture.createWebhook(owner, uuid.toString());
 
         assertNotNull(webhook.getId());
 
-        Iterable <WebHookEntity> question = webHookRepository.findPageByUserIdEquals(user.getId());
+        Iterable <WebHookEntity> question = webHookRepository.findPageByOwnerUuidEquals(owner.getUuid());
 
         WebHookEntity webhook1 = StreamSupport.stream(question.spliterator(), false).findFirst().orElse(null);
 
         Assertions.assertNotNull(webhook1);
 
-        assertEquals("user.test.fr", webhook1.getUser().getEmail());
+        assertEquals("user.test.fr", webhook1.getOwner().getEmail());
 
     }
 
@@ -76,21 +76,21 @@ public class WebhookRepositoryTest {
     @Transactional
     public void findPagByUser_UuidEqualsTest() {
 
-        final String principal = getClass().getSimpleName() + "." + UUID.randomUUID();
+        final UUID uuid = UUID.randomUUID();
 
-        AccountEntity user = dbFixture.createUser("user.test.fr", principal);
+        AccountEntity owner = dbFixture.createAccount("user.test.fr", uuid);
 
-        WebHookEntity webhook = dbFixture.createWebhook(user, principal);
+        WebHookEntity webhook = dbFixture.createWebhook(owner, uuid.toString());
 
         assertNotNull(webhook.getId());
 
-        Page <WebHookEntity> question = webHookRepository.findPageByUserIdEquals(user.getId(), PageRequest.of(0, 10));
+        Page <WebHookEntity> question = webHookRepository.findPageByOwnerUuidEquals(owner.getUuid(), PageRequest.of(0, 10));
 
         WebHookEntity webhook1 = StreamSupport.stream(question.spliterator(), false).findFirst().orElse(null);
 
         Assertions.assertNotNull(webhook1);
 
-        assertEquals("user.test.fr", webhook1.getUser().getEmail());
+        assertEquals("user.test.fr", webhook1.getOwner().getEmail());
 
     }
 
@@ -98,11 +98,11 @@ public class WebhookRepositoryTest {
     @Transactional
     public void findAllByUuidTest() {
 
-        final String principal = getClass().getSimpleName() + "." + UUID.randomUUID();
+        final UUID uuid = UUID.randomUUID();
 
-        AccountEntity user = dbFixture.createUser("user.test.fr", principal);
+        AccountEntity owner = dbFixture.createAccount("user.test.fr", uuid);
 
-        WebHookEntity webhook = dbFixture.createWebhook(user, principal);
+        WebHookEntity webhook = dbFixture.createWebhook(owner, uuid.toString());
 
         assertNotNull(webhook.getId());
 
@@ -110,7 +110,7 @@ public class WebhookRepositoryTest {
 
         Assertions.assertNotNull(webhook1);
 
-        assertEquals("user.test.fr", webhook1.getUser().getEmail());
+        assertEquals("user.test.fr", webhook1.getOwner().getEmail());
 
     }
 

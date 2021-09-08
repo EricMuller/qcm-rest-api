@@ -1,9 +1,7 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.common;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -27,12 +25,12 @@ public abstract class AuditableAccountEntity<U extends Serializable> extends Ide
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "CREATED_BY", updatable = false, nullable = false)
-   // @CreatedBy
+    // @CreatedBy
     protected U createdBy;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "MODIFIED_BY")
-   // @LastModifiedBy
+    // @LastModifiedBy
     private U lastModifiedBy;
 
     @SuppressWarnings("squid:S3437")
@@ -45,7 +43,7 @@ public abstract class AuditableAccountEntity<U extends Serializable> extends Ide
     @LastModifiedDate
     private ZonedDateTime dateModification;
 
-    public AuditableAccountEntity() {
+    protected AuditableAccountEntity() {
     }
 
     public AuditableAccountEntity(UUID uuid) {
