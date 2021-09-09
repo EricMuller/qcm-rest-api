@@ -71,7 +71,7 @@ public interface QuestionnaireResourceMapper {
     QuestionTag questionTagToModel(TagResource tagResource);
 
     @ResourceId
-    QuestionWithTagsOnlyResource questionTagsToResources(QuestionWithTagsOnly questionWithTagsOnly);
+    SearchQuestionResource questionTagsToResources(QuestionWithTagsOnly questionWithTagsOnly);
 
     @ResourceId
     TagResource tagToResources(Tag tag);
@@ -102,7 +102,7 @@ public interface QuestionnaireResourceMapper {
 
     Iterable <CategoryResource> categoriesToResources(Iterable <Category> categories);
 
-    Iterable <QuestionWithTagsOnlyResource> questionTagsToResources(Page <QuestionWithTagsOnly> page);
+    Iterable <SearchQuestionResource> questionTagsToResources(Page <QuestionWithTagsOnly> page);
 
     default Page <WebHookResource> webhookToResources(Page <WebHook> page) {
         return page.map(this::webhookToResources);
@@ -122,7 +122,7 @@ public interface QuestionnaireResourceMapper {
         return page.map(this::tagToResources);
     }
 
-    default Page <QuestionWithTagsOnlyResource> pageQuestionTagsToResources(Page <QuestionWithTagsOnly> page) {
+    default Page <SearchQuestionResource> pageQuestionTagsToResources(Page <QuestionWithTagsOnly> page) {
         return page.map(this::questionTagsToResources);
     }
 

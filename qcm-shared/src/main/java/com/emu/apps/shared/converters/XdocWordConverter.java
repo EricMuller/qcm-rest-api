@@ -38,5 +38,4 @@ public class XdocWordConverter implements Converter {
         return new byte[0];
     }
 
-
 }

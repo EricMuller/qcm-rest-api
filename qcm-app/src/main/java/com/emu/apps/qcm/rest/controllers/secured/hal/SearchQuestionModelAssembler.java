@@ -1,19 +1,17 @@
 package com.emu.apps.qcm.rest.controllers.secured.hal;
 
 import com.emu.apps.qcm.rest.controllers.secured.QuestionRestController;
-import com.emu.apps.qcm.rest.controllers.secured.TagRestController;
-import com.emu.apps.qcm.rest.controllers.secured.resources.TagResource;
+import com.emu.apps.qcm.rest.controllers.secured.resources.SearchQuestionResource;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.SimpleRepresentationModelAssembler;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
-public class TagModelAssembler implements SimpleRepresentationModelAssembler <TagResource> {
+public class SearchQuestionModelAssembler implements SimpleRepresentationModelAssembler <SearchQuestionResource> {
 
 
     /**
@@ -21,14 +19,12 @@ public class TagModelAssembler implements SimpleRepresentationModelAssembler <Ta
      *
      * @param resource
      */
-
-
     @Override
-    public void addLinks(EntityModel <TagResource> resource) {
+    public void addLinks(EntityModel <SearchQuestionResource> resource) {
 
         resource.add(
-                linkTo(methodOn(TagRestController.class).getTagByUuid( (resource.getContent() != null ) ? resource.getContent().getUuid() :
-                        "")).withSelfRel());
+                linkTo(methodOn(QuestionRestController.class).getQuestionByUuid( (resource.getContent() != null ) ? resource.getContent().getUuid() :
+        "")).withSelfRel());
 
     }
 
@@ -39,8 +35,8 @@ public class TagModelAssembler implements SimpleRepresentationModelAssembler <Ta
      */
 
     @Override
-    public void addLinks(CollectionModel <EntityModel <TagResource>> resources) {
+    public void addLinks(CollectionModel <EntityModel <SearchQuestionResource>> resources) {
 
-
+        // nope
     }
 }

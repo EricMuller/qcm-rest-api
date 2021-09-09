@@ -65,13 +65,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         LOG.error("EntityNotFoundException caught: {}", localizedMessage);
 
         ExceptionMessage exceptionMessage = new ExceptionMessageBuilder()
-                .setStatus(NOT_FOUND.value())
-                .setException(NOT_FOUND.getReasonPhrase())
+                .setStatus(BAD_REQUEST.value())
+                .setException(BAD_REQUEST.getReasonPhrase())
                 .setError(e.getClass().getName())
                 .setTimestamp(now())
                 .setMessage(localizedMessage).createExceptionMessage();
 
-        return response(exceptionMessage, NOT_FOUND);
+        return response(exceptionMessage, BAD_REQUEST);
     }
 
     @ExceptionHandler({I18nedBadRequestException.class})

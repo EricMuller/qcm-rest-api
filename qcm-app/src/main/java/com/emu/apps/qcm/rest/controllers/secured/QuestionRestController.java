@@ -4,12 +4,13 @@ import com.emu.apps.qcm.application.QuestionCatalog;
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
 import com.emu.apps.qcm.domain.model.question.QuestionId;
 import com.emu.apps.qcm.rest.controllers.secured.command.QuestionStatus;
-import com.emu.apps.qcm.rest.controllers.secured.hal.QuestionWithTagsOnlyModelAssembler;
+import com.emu.apps.qcm.rest.controllers.secured.hal.QuestionModelAssembler;
+import com.emu.apps.qcm.rest.controllers.secured.hal.SearchQuestionModelAssembler;
 import com.emu.apps.qcm.rest.controllers.secured.hal.TagModelAssembler;
 import com.emu.apps.qcm.rest.controllers.secured.openui.QuestionView;
 import com.emu.apps.qcm.rest.controllers.secured.resources.MessageResource;
 import com.emu.apps.qcm.rest.controllers.secured.resources.QuestionResource;
-import com.emu.apps.qcm.rest.controllers.secured.resources.QuestionWithTagsOnlyResource;
+import com.emu.apps.qcm.rest.controllers.secured.resources.SearchQuestionResource;
 import com.emu.apps.qcm.rest.controllers.secured.resources.TagResource;
 import com.emu.apps.qcm.rest.mappers.QuestionnaireResourceMapper;
 import com.emu.apps.qcm.rest.validators.ValidUuid;
@@ -17,7 +18,13 @@ import com.emu.apps.shared.annotations.Timer;
 import com.emu.apps.shared.exceptions.I18nedNotFoundException;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -27,12 +34,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.Link;
+import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.io.IOException;
@@ -63,72 +69,77 @@ public class QuestionRestController {
 
     private final QuestionnaireResourceMapper questionnaireResourceMapper;
 
-    private final QuestionWithTagsOnlyModelAssembler questionWithTagsOnlyModelAssembler;
+    private final SearchQuestionModelAssembler searchQuestionModelAssembler;
+
+    private final QuestionModelAssembler questionModelAssembler;
 
     private final TagModelAssembler tagModelAssembler;
 
     public QuestionRestController(QuestionCatalog questionCatalog, QuestionnaireResourceMapper questionnaireResourceMapper,
-                                  QuestionWithTagsOnlyModelAssembler questionWithTagsOnlyModelAssembler,
-                                  TagModelAssembler tagModelAssembler) {
+                                  SearchQuestionModelAssembler searchQuestionModelAssembler,
+                                  QuestionModelAssembler questionModelAssembler, TagModelAssembler tagModelAssembler) {
         this.questionCatalog = questionCatalog;
         this.questionnaireResourceMapper = questionnaireResourceMapper;
-        this.questionWithTagsOnlyModelAssembler = questionWithTagsOnlyModelAssembler;
+        this.searchQuestionModelAssembler = searchQuestionModelAssembler;
+        this.questionModelAssembler = questionModelAssembler;
         this.tagModelAssembler = tagModelAssembler;
     }
 
-    @GetMapping
+    @GetMapping(produces = APPLICATION_JSON_VALUE)
     @Timer
     @PageableAsQueryParam
-//    @Operation(summary = "questions List    ", description = "", tags = {"yourObject"})
-//    @ApiResponses(value = {
-//            @ApiResponse(responseCode = "201", description = "Object created",content = @Content(schema = @Schema( name = "QuestionWithTagsOnlyPagedModel",implementation = QuestionWithTagsOnlyPagedModel.class))),
-//            @ApiResponse(responseCode = "400", description = "Invalid input"),
-//            @ApiResponse(responseCode = "409", description = "Object already exists") })
-    public PagedModel <EntityModel <QuestionWithTagsOnlyResource>> getQuestions(@RequestParam(value = "tag_uuid", required = false) String[] tagUuid,
-                                                                                @RequestParam(value = "questionnaire_uuid", required = false) String[] questionnaireUuid,
-                                                                                @Parameter(hidden = true)
-                                                                                @PageableDefault(direction = DESC, sort = {"dateModification"}) Pageable pageable,
-                                                                                @Parameter(hidden = true)
-                                                                                        PagedResourcesAssembler <QuestionWithTagsOnlyResource> pagedResourcesAssembler
-
-    ) {
+    @Operation(summary = "Search Quesion", description = "", tags = {"yourObject"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "List Questions",
+                    content = @Content(array = @ArraySchema(schema = @Schema(name = "SearchQuestionResources", implementation = SearchQuestionResource.class)))
+            ),
+            @ApiResponse(responseCode = "400", description = "Invalid input")})
+    public PagedModel <EntityModel <SearchQuestionResource>> getQuestions(@RequestParam(value = "tag_uuid", required = false) String[] tagUuid,
+                                                                          @RequestParam(value = "questionnaire_uuid", required = false) String[] questionnaireUuid,
+                                                                          @Parameter(hidden = true) @PageableDefault(direction = DESC, sort = {"dateModification"}) Pageable pageable,
+                                                                          @Parameter(hidden = true) PagedResourcesAssembler <SearchQuestionResource> pagedResourcesAssembler) {
         var page =
                 questionnaireResourceMapper.pageQuestionTagsToResources(
                         questionCatalog.getQuestions(tagUuid, questionnaireUuid, pageable, PrincipalId.of(getPrincipal())));
-        Link selfLink = Link.of(ServletUriComponentsBuilder.fromCurrentRequest().build().toUriString());
 
-        return pagedResourcesAssembler.toModel(page, this.questionWithTagsOnlyModelAssembler, selfLink);
+        return pagedResourcesAssembler.toModel(page, this.searchQuestionModelAssembler);
     }
 
     // %$£! de generics
-//    class QuestionWithTagsOnlyPagedModel extends PagedModel<EntityModel<QuestionWithTagsOnlyResource>>{}
-
-    @GetMapping(value = TAGS)
+    // class QuestionWithTagsOnlyPagedModel extends PagedModel<EntityModel<QuestionWithTagsOnlyResource>>{}
+    @GetMapping(value = TAGS, produces = {APPLICATION_JSON_VALUE})
     @Timer
     @PageableAsQueryParam
-    public PagedModel <EntityModel <TagResource>> getTags(@Parameter(hidden = true) Pageable pageable, PagedResourcesAssembler <TagResource> pagedTagResourcesAssembler) {
-
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "List Tags",
+                    content = @Content(array = @ArraySchema(schema = @Schema(name = "TagResources", implementation = TagResource.class)))
+            ),
+            @ApiResponse(responseCode = "400", description = "Invalid input")})
+    public PagedModel <EntityModel <TagResource>> getTags(@Parameter(hidden = true) Pageable pageable,
+                                                          @Parameter(hidden = true) PagedResourcesAssembler <TagResource> pagedTagResourcesAssembler) {
         var page = questionnaireResourceMapper.pageTagsToResources(questionCatalog.findAllQuestionTagByPage(pageable, PrincipalId.of(getPrincipal())));
 
-        Link selfLink = Link.of(ServletUriComponentsBuilder.fromCurrentRequest().build().toUriString());
-
-        return pagedTagResourcesAssembler.toModel(page, this.tagModelAssembler, selfLink);
-
-        //return questionnaireResourceMapper.tagsToResources(questionCatalog.findAllQuestionTagByPage(pageable, PrincipalId.of(getPrincipal())));
+        return pagedTagResourcesAssembler.toModel(page, this.tagModelAssembler);
     }
 
-    @GetMapping(value = STATUS)
+    @GetMapping(value = STATUS, produces = {APPLICATION_JSON_VALUE})
     @Timer
     @PageableAsQueryParam
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "List Tags",
+                    content = @Content(array = @ArraySchema(schema = @Schema(name = "TagResources", implementation = String.class)))
+            )})
     public Iterable <String> getStatus(@Parameter(hidden = true) Pageable pageable) {
         return questionCatalog.findAllStatusByPage(pageable, PrincipalId.of(getPrincipal()));
     }
-
 
     @GetMapping(value = "/{uuid}")
     @Timer
     @Cacheable(cacheNames = QUESTION, key = "#uuid")
     @ResponseBody
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Object updated", content = @Content(schema = @Schema(name = "QuestionResource", implementation = QuestionResource.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid input")})
     public EntityModel <QuestionResource> getQuestionByUuid(@ValidUuid @PathVariable("uuid") String uuid) {
         return of(questionnaireResourceMapper.questionToResources(questionCatalog.getQuestionById(new QuestionId(uuid))
                 .orElseThrow(() -> new I18nedNotFoundException(UNKNOWN_UUID_QUESTION, uuid))));
@@ -137,6 +148,9 @@ public class QuestionRestController {
     @PutMapping(value = "/{uuid}", produces = APPLICATION_JSON_VALUE)
     @CachePut(cacheNames = QUESTION, condition = "#questionResource != null", key = "#uuid")
     @ResponseBody
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Object updated", content = @Content(schema = @Schema(name = "QuestionResource", implementation = QuestionResource.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid input")})
     public EntityModel <QuestionResource> updateQuestion(@ValidUuid @PathVariable("uuid") String uuid,
                                                          @JsonView(QuestionView.Update.class) @RequestBody @Valid QuestionResource questionResource) {
         var question = questionnaireResourceMapper.questionToModel(uuid, questionResource);
@@ -145,23 +159,36 @@ public class QuestionRestController {
 
     @PostMapping(produces = APPLICATION_JSON_VALUE)
     @ResponseBody
-    public EntityModel <QuestionResource> createQuestion(@JsonView(QuestionView.Create.class) @RequestBody @Valid QuestionResource questionResource) {
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Object created", content = @Content(schema = @Schema(name = "QuestionResource", implementation = QuestionResource.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid input")})
+    public ResponseEntity <EntityModel <QuestionResource>> createQuestion(@JsonView(QuestionView.Create.class) @RequestBody @Valid QuestionResource questionResource) {
         var question = questionnaireResourceMapper.questionToModel(questionResource);
-        return of(questionnaireResourceMapper.questionToResources(questionCatalog.saveQuestion(question, PrincipalId.of(getPrincipal()))));
+        var entityModel = of(questionnaireResourceMapper.questionToResources(questionCatalog.saveQuestion(question, PrincipalId.of(getPrincipal()))));
+
+        questionModelAssembler.addLinks(entityModel);
+
+        return ResponseEntity
+                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(entityModel);
     }
 
     @DeleteMapping(value = "/{uuid}")
     @ResponseBody
     @CacheEvict(cacheNames = QUESTION, condition = "#uuid != null", key = "#uuid")
+
     public ResponseEntity <Void> deleteQuestionByUuid(@PathVariable("uuid") String uuid) {
         questionCatalog.deleteQuestionById(new QuestionId(uuid));
         return noContent().build();
     }
 
 
-    @PatchMapping(value = "/{uuid}")
+    @PatchMapping(value = "/{uuid}", produces = APPLICATION_JSON_VALUE)
     @ResponseBody
     @CacheEvict(cacheNames = QUESTION, condition = "#uuid != null", key = "#uuid")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Object patch", content = @Content(schema = @Schema(name = "QuestionResource", implementation = QuestionResource.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid input")})
     public EntityModel <QuestionResource> patchQuestionByUuid(@PathVariable("uuid") String uuid, @RequestBody QuestionStatus questionStatus) {
 
         var question = questionCatalog.getQuestionById(new QuestionId(uuid))

@@ -76,7 +76,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
         final ResponseEntity <QuestionResource> postResponse = restTemplate
                 .exchange(getURL(QUESTIONS_URI), HttpMethod.POST, new HttpEntity <>(createQuestion(), headers()), QuestionResource.class);
 
-        assertThat(postResponse.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
+        assertThat(postResponse.getStatusCode()).isEqualByComparingTo(HttpStatus.CREATED);
         assertThat(postResponse.getBody()).isNotNull();
 
         // get the question

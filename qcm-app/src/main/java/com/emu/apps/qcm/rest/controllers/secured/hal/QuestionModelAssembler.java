@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.rest.controllers.secured.hal;
 
 import com.emu.apps.qcm.rest.controllers.secured.QuestionRestController;
-import com.emu.apps.qcm.rest.controllers.secured.resources.QuestionWithTagsOnlyResource;
+import com.emu.apps.qcm.rest.controllers.secured.resources.QuestionResource;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.SimpleRepresentationModelAssembler;
@@ -11,7 +11,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
-public class QuestionWithTagsOnlyModelAssembler implements SimpleRepresentationModelAssembler <QuestionWithTagsOnlyResource> {
+public class QuestionModelAssembler implements SimpleRepresentationModelAssembler <QuestionResource> {
 
 
     /**
@@ -20,7 +20,7 @@ public class QuestionWithTagsOnlyModelAssembler implements SimpleRepresentationM
      * @param resource
      */
     @Override
-    public void addLinks(EntityModel <QuestionWithTagsOnlyResource> resource) {
+    public void addLinks(EntityModel <QuestionResource> resource) {
 
         resource.add(
                 linkTo(methodOn(QuestionRestController.class).getQuestionByUuid( (resource.getContent() != null ) ? resource.getContent().getUuid() :
@@ -35,7 +35,7 @@ public class QuestionWithTagsOnlyModelAssembler implements SimpleRepresentationM
      */
 
     @Override
-    public void addLinks(CollectionModel <EntityModel <QuestionWithTagsOnlyResource>> resources) {
+    public void addLinks(CollectionModel <EntityModel <QuestionResource>> resources) {
 
         // nope
     }

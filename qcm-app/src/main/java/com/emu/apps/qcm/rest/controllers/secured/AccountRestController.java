@@ -2,6 +2,7 @@ package com.emu.apps.qcm.rest.controllers.secured;
 
 import com.emu.apps.qcm.domain.model.account.Account;
 import com.emu.apps.qcm.domain.model.account.AccountRepository;
+import com.emu.apps.qcm.rest.controllers.secured.hal.AccountModelAssembler;
 import com.emu.apps.qcm.rest.controllers.secured.openui.AccountView;
 import com.emu.apps.qcm.rest.controllers.secured.resources.AccountResource;
 import com.emu.apps.shared.exceptions.I18nedBadRequestException;
@@ -9,9 +10,15 @@ import com.emu.apps.qcm.rest.mappers.QuestionnaireResourceMapper;
 import com.emu.apps.shared.exceptions.I18nedForbiddenRequestException;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.context.annotation.Profile;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -46,9 +53,12 @@ public class AccountRestController {
 
     private final QuestionnaireResourceMapper questionnaireResourceMapper;
 
-    public AccountRestController(AccountRepository accountRepository, QuestionnaireResourceMapper questionnaireResourceMapper) {
+    private final AccountModelAssembler accountModelAssembler;
+
+    public AccountRestController(AccountRepository accountRepository, QuestionnaireResourceMapper questionnaireResourceMapper, AccountModelAssembler accountModelAssembler) {
         this.accountRepository = accountRepository;
         this.questionnaireResourceMapper = questionnaireResourceMapper;
+        this.accountModelAssembler = accountModelAssembler;
     }
 
     public Map <String, String> principal(Principal principal) {
@@ -72,7 +82,9 @@ public class AccountRestController {
      */
     @GetMapping(value = "/me", produces = APPLICATION_JSON_VALUE)
     @ResponseBody
-
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Object", content = @Content(schema = @Schema(name = "AccountResource", implementation = AccountResource.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid input")})
     public EntityModel <AccountResource> getAuthentifiedUser(Principal principal) {
         String email = getEmailOrName(principal);
         Account account = accountRepository.getAccountByEmail(email);
@@ -87,6 +99,9 @@ public class AccountRestController {
     //    @PostAuthorize("hasAuthority('PROFIL_CREATED')")
     @PutMapping(value = "/me", produces = APPLICATION_JSON_VALUE)
     @ResponseBody
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Object updated", content = @Content(schema = @Schema(name = "AccountResource", implementation = AccountResource.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid input")})
     public EntityModel <AccountResource> updateAuthentifiedUser(@JsonView(AccountView.Update.class) @RequestBody AccountResource accountResource, Principal principal) {
 
         var user = questionnaireResourceMapper.accountToModel(accountResource);
@@ -101,13 +116,21 @@ public class AccountRestController {
 
     @PostMapping(value = "/me", produces = APPLICATION_JSON_VALUE)
     @ResponseBody
-    public EntityModel <AccountResource> createAuthentifiedUser(@JsonView(AccountView.Create.class) @RequestBody AccountResource accountResource, Principal principal) {
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Object created", content = @Content(schema = @Schema(name = "AccountResource", implementation = AccountResource.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid input")})
+    public ResponseEntity<EntityModel <AccountResource>> createAuthentifiedUser(@JsonView(AccountView.Create.class) @RequestBody AccountResource accountResource, Principal principal) {
         var user = questionnaireResourceMapper.accountToModel(accountResource);
         String email = getEmailOrName(principal);
         Account authentAccount = accountRepository.getAccountByEmail(email);
         if (isNull(authentAccount)) {
             user.setEmail(email);
-            return EntityModel.of(questionnaireResourceMapper.accountToResources(accountRepository.createAccount(user)));
+            var entityModel = EntityModel.of(questionnaireResourceMapper.accountToResources(accountRepository.createAccount(user)));
+            this.accountModelAssembler.addLinks(entityModel);
+            return ResponseEntity
+                    .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                    .body(entityModel);
+
         } else {
             throw new I18nedBadRequestException(EXISTING_UUID_ACCOUNT, email);
         }
@@ -116,6 +139,9 @@ public class AccountRestController {
     @PostMapping(produces = APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseBody
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Object updated", content = @Content(schema = @Schema(name = "AccountResource", implementation = AccountResource.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid input")})
     public EntityModel <AccountResource> updateUser(@RequestBody AccountResource accountResource, Principal principal) {
         var account = questionnaireResourceMapper.accountToModel(accountResource);
         // fixme: ???

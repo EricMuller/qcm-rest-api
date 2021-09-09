@@ -1,19 +1,19 @@
 package com.emu.apps.qcm.rest.controllers.secured.hal;
 
+import com.emu.apps.qcm.rest.controllers.secured.AccountRestController;
 import com.emu.apps.qcm.rest.controllers.secured.QuestionRestController;
-import com.emu.apps.qcm.rest.controllers.secured.TagRestController;
-import com.emu.apps.qcm.rest.controllers.secured.resources.TagResource;
+import com.emu.apps.qcm.rest.controllers.secured.resources.AccountResource;
+import com.emu.apps.qcm.rest.controllers.secured.resources.QuestionResource;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.SimpleRepresentationModelAssembler;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
-public class TagModelAssembler implements SimpleRepresentationModelAssembler <TagResource> {
+public class AccountModelAssembler implements SimpleRepresentationModelAssembler <AccountResource> {
 
 
     /**
@@ -21,14 +21,11 @@ public class TagModelAssembler implements SimpleRepresentationModelAssembler <Ta
      *
      * @param resource
      */
-
-
     @Override
-    public void addLinks(EntityModel <TagResource> resource) {
+    public void addLinks(EntityModel <AccountResource> resource) {
 
         resource.add(
-                linkTo(methodOn(TagRestController.class).getTagByUuid( (resource.getContent() != null ) ? resource.getContent().getUuid() :
-                        "")).withSelfRel());
+                linkTo(methodOn(AccountRestController.class).getAuthentifiedUser(null)).withSelfRel());
 
     }
 
@@ -39,8 +36,8 @@ public class TagModelAssembler implements SimpleRepresentationModelAssembler <Ta
      */
 
     @Override
-    public void addLinks(CollectionModel <EntityModel <TagResource>> resources) {
+    public void addLinks(CollectionModel <EntityModel <AccountResource>> resources) {
 
-
+        // nope
     }
 }

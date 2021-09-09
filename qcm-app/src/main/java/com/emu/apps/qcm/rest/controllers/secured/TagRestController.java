@@ -4,10 +4,15 @@ package com.emu.apps.qcm.rest.controllers.secured;
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
 import com.emu.apps.qcm.domain.model.tag.TagId;
 import com.emu.apps.qcm.domain.model.tag.TagRepository;
+import com.emu.apps.qcm.rest.controllers.secured.resources.QuestionnaireResource;
 import com.emu.apps.qcm.rest.mappers.QuestionnaireResourceMapper;
 import com.emu.apps.qcm.rest.controllers.secured.resources.TagResource;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
@@ -67,12 +72,18 @@ public class TagRestController {
 
     @GetMapping(value = "{uuid}")
     @ResponseBody
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Object", content = @Content(schema = @Schema(name = "TagResource", implementation = TagResource.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid input")})
     public EntityModel <TagResource> getTagByUuid(@PathVariable("uuid") String uuid) {
         return EntityModel.of(questionnaireResourceMapper.tagToResources(tagRepository.getTagById(new TagId(uuid))));
     }
 
     @PostMapping
     @ResponseBody
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Object created", content = @Content(schema = @Schema(name = "TagResource", implementation = TagResource.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid input")})
     public EntityModel <TagResource> createTag(@JsonView(TagResource.Create.class) @RequestBody TagResource tagResource) {
         var tag = questionnaireResourceMapper.tagToModel(tagResource);
         return EntityModel.of(questionnaireResourceMapper.tagToResources(tagRepository.saveTag(tag)));
@@ -80,6 +91,9 @@ public class TagRestController {
 
     @PutMapping(value = "{uuid}")
     @ResponseBody
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Object updated", content = @Content(schema = @Schema(name = "TagResource", implementation = TagResource.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid input")})
     public TagResource updateTag(@PathVariable("uuid") String uuid,
                                  @JsonView(TagResource.Update.class) @RequestBody TagResource tagResource) {
         var tag = questionnaireResourceMapper.tagToModel(uuid, tagResource);

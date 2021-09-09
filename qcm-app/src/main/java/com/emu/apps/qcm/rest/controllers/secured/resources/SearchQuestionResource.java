@@ -46,8 +46,8 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-@JsonRootName(value = "QuestionWithTagsOnly")
-public class QuestionWithTagsOnlyResource {
+@JsonRootName(value = "SearchQuestionResource")
+public class SearchQuestionResource {
 
     @JsonProperty("uuid")
     @JsonView({QuestionView.Find.class})

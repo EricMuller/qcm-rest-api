@@ -92,7 +92,7 @@ class QuestionRestControllerTest {
                         new HttpEntity <>(createQuestionResources(),
                                 headers()), QuestionResource.class);
 
-        assertThat(postResponse.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
+        assertThat(postResponse.getStatusCode()).isEqualByComparingTo(HttpStatus.CREATED);
         assertThat(postResponse.getBody().getUuid()).isNotNull();
         assertThat(postResponse.getBody().getResponses()).isNotNull().isNotEmpty();
 
@@ -136,7 +136,7 @@ class QuestionRestControllerTest {
         final ResponseEntity <QuestionResource> postResponse = restTemplate
                 .exchange(getURL(QUESTIONS_URI), HttpMethod.POST, new HttpEntity <>(question, headers()), QuestionResource.class);
 
-        assertThat(postResponse.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
+        assertThat(postResponse.getStatusCode()).isEqualByComparingTo(HttpStatus.CREATED);
         assertThat(postResponse.getBody().getUuid()).isNotNull();
 
         assertThat(postResponse.getBody().getResponses()).isNotNull().hasSize(2);
