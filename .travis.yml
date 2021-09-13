@@ -14,7 +14,11 @@ addons:
 script:
   - mvn clean verify sonar:sonar -Dsonar.login=$SONAR_API_KEY -Dmaven-surefire-plugin.reuseForks=false
 
-
+branches:
+  only:
+    - master
+  except:
+    -  - /^feature.*$/
 
 deploy:
   provider: heroku
