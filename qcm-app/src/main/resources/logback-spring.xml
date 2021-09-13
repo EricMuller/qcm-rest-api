@@ -60,6 +60,24 @@
         </rollingPolicy>
     </appender>
 
+    <appender name="NgxLogger"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOGS}/NgxLogger.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
+        </encoder>
+
+        <rollingPolicy  class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily and when the file reaches 10 MegaBytes -->
+            <fileNamePattern>${LOGS}/archived/NgxLogger-%d{yyyy-MM-dd}.%i.log
+            </fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+    </appender>
+
     <!-- LOG everything at INFO level -->
     <root level="warn">
         <appender-ref ref="RollingFile"/>
@@ -102,6 +120,11 @@
 
     <logger name="com.emu.apps.qcm.infra.persistence.cache" level="info" additivity="false">
         <appender-ref ref="RollingFile"/>
+        <appender-ref ref="Console"/>
+    </logger>
+
+    <logger name="com.emu.apps.qcm.rest.controllers.publicized.NgxLoggerRestController" level="info" additivity="false">
+        <appender-ref ref="NgxLogger"/>
         <appender-ref ref="Console"/>
     </logger>
 

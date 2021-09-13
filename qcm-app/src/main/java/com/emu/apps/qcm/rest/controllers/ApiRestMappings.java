@@ -56,7 +56,11 @@ public final class ApiRestMappings {
 
     public static final String IMPORTS = "/imports";
 
+    public static final String LOGS = "/logs";
+
     public static final String COMMAND = "/command";
+
+
 
     private ApiRestMappings() {
         //nop

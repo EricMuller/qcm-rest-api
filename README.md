@@ -57,6 +57,14 @@ qcm-rest-api uses a number of open source projects to work properly:
 * [SwaggerHub](https://app.swaggerhub.com/apis-docs/ericmuller/qcm-rest-api/2-oas3) - Collaborative platform where you can define your APIs using the OpenAPI Specification
 
 
+### Essential prerequisite
+
+qcm-rest-api requires Postgres 10.2
+
+```sh
+docker run --name qcm-postgres -p 5433:5432 -e POSTGRES_PASSWORD=postgres -d postgres:10.12
+```
+
 ### Installation
 
 qcm-rest-api requires [MAVEN](https://maven.apache.org/) v3.3+ to run.
