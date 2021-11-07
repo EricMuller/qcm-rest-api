@@ -36,7 +36,7 @@ spring:
                 registration:
                     keycloak:
                         client-id: qcm-rest-api
-                        client-secret: 4eab5725-f8c1-4758-80c4-7ec8ac484bcd
+                        client-secret: c6e0e6ca-b0bb-4254-9b31-849fb99e4866
                         # client-secret: 2fb5059d-098a-4641-b2f3-85d2a3f8548e
 
             resourceserver:

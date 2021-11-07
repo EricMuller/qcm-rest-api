@@ -1,15 +1,15 @@
 # Qcm Api  [![License](http://img.shields.io/:license-mit-blue.svg)](https://opensource.org/licenses/mit-license.php)
  
 
-qcm-rest-api is a sample QCM Rest API.
+**qcm-rest-api is a sample QCM Rest API.**
 
 You can also:
   
-  - Create some Questions.
-  - Create some Questionnaires. 
-  - Create some Categories.
-  - Export as WORD,PDF
-  - Import Questionnaires from file(s)
+  - [ ]  Create some Questions.
+  - [ ] Create some Questionnaires. 
+  - [ ] Create some Categories.
+  - [ ] Export as WORD,PDF
+  - [ ] Import Questionnaires from file(s)
 
 ### Quality Gate
 ![Java CI with M](https://github.com/EricMuller/qcm-rest-api/workflows/Java%20CI%20with%20Maven/badge.svg) [![Travis Status](https://travis-ci.com/EricMuller/qcm-rest-api.svg?branch=master)](https://travis-ci.com/EricMuller/qcm-rest-api)
@@ -61,9 +61,9 @@ qcm-rest-api uses a number of open source projects to work properly:
 
 qcm-rest-api requires Postgres 10.2
 
-```sh
-docker run --name qcm-postgres -p 5433:5432 -e POSTGRES_PASSWORD=postgres -d postgres:10.12
-```
+
+> docker run --name qcm-postgres -p 5433:5432 -e POSTGRES_PASSWORD=postgres -d postgres:10.12
+
 
 ### Installation
 
@@ -79,35 +79,35 @@ $ maven spring-boot:run
 
 Verify the deployment by navigating to your server address in your preferred browser.
 
-```sh
-http://127.0.0.1:8080/swagger-ui.html#/
-```
+
+> http://127.0.0.1:8080/swagger-ui.html#/
+
 ###Docker
 
 
 1. keycloak
 
-docker run --name qcm-keycloak -p 8082:8082 -e KEYCLOAK_USER=admin -e KEYCLOAK_PASSWORD=admin quay.io/keycloak/keycloak:13.0.0
+> docker run --name qcm-keycloak -p 8082:8082 -e KEYCLOAK_USER=admin -e KEYCLOAK_PASSWORD=admin quay.io/keycloak/keycloak:13.0.0
+
 
 2. postgres
 
-docker run --name qcm-postgres -p 5433:5432 -e POSTGRES_PASSWORD=postgres -d postgres:10.12
+> docker run --name qcm-postgres -p 5433:5432 -e POSTGRES_PASSWORD=postgres -d postgres:10.12
 
 ###Maven
 
-maven clean install -Dmaven.test.skip=false
+> maven clean install -Dmaven.test.skip=false
 
-maven verify sonar:sonar
+> maven verify sonar:sonar
 
 
 ### Deployment
 
 <a href="https://qcm-rest-api.herokuapp.com/swagger-ui.html#" target="_blank">![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)</a>
 
-```sh
-$ curl https://qcm-rest-api.herokuapp.com/ ...
 
-```
+> $ curl https://qcm-rest-api.herokuapp.com/ ...
+
 
 ### Todos
 

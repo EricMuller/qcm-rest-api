@@ -42,7 +42,7 @@ public interface QuestionnaireRepository extends JpaRepository <QuestionnaireEnt
     Optional <QuestionnaireEntity> findByUuid(@NotNull UUID uuid);
 
     @EntityGraph(value = "Questionnaire.questionnaire")
-    Optional <QuestionnaireEntity> getById(Long id);
+    Optional <QuestionnaireEntity> getWithQuestionsById(Long id);
 
     @Override
     @NotNull

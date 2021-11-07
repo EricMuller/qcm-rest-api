@@ -15,7 +15,7 @@
     <parent>
         <groupId>com.emu.apps.starter</groupId>
         <artifactId>spring-boot-starter-bom</artifactId>
-        <version>2.3.0-jdk11-SNAPSHOT</version>
+        <version>2.5.0-jdk11-SNAPSHOT</version>
     </parent>
 
     <scm>
