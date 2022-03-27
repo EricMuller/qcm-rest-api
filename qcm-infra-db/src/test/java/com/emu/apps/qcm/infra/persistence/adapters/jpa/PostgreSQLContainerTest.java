@@ -11,12 +11,14 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+
+
 @Testcontainers
 @ContextConfiguration(initializers = {PostgreSQLContainerTest.Initializer.class})
 public class PostgreSQLContainerTest {
 
     @Container
-    static private final PostgreSQLContainer postgresqlContainer = (PostgreSQLContainer) new PostgreSQLContainer()
+    static private final PostgreSQLContainer postgresqlContainer =  new PostgreSQLContainer("9.6.12")
             .withDatabaseName("postgres")
             .withUsername("test")
             .withPassword("test");

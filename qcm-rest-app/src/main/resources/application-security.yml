@@ -1,7 +1,23 @@
 
-
+#---
 spring:
+  config:
+    activate:
+      on-profile: security
+
   security:
+    user:
+      password: admin
+      name: admin
+
+  boot:
+    admin:
+      url: http://localhost:9080
+      password: ${security.user.password}
+      username: ${security.user.name}
+      client:
+        enabled: false
+
     oauth2:
       client:
         provider:
@@ -15,3 +31,17 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: ${KEYCLOAK_ISSUER_URI}
+
+
+springdoc:
+  swagger-ui:
+    doc-expansion: none
+    oauth:
+      client-id: swagger
+      client-secret: E5U8ES9pSYqsCxdzPlHQXAhTb8ZMFXMv
+
+
+openapi:
+  keycloak:
+    auth-server-url: ${KEYCLOAK_AUTH_URI}
+    realm: ${KEYCLOAK_REALM}

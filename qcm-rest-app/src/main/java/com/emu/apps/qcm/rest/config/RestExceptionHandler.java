@@ -40,7 +40,6 @@ import static org.springframework.context.i18n.LocaleContextHolder.getLocale;
 import static org.springframework.http.HttpStatus.*;
 
 @ControllerAdvice
-@Profile("webmvc")
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     private static final Logger LOG = LoggerFactory.getLogger(RestExceptionHandler.class);
 

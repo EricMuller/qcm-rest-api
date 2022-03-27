@@ -31,9 +31,6 @@ package com.emu.apps.qcm.rest;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.reactive.ReactiveSecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.reactive.WebFluxAutoConfiguration;
@@ -54,7 +51,6 @@ public class RestApplication {
 
         new SpringApplicationBuilder()
                 .sources(RestApplication.class)
-                .profiles("webmvc")
                 .build()
                 .run();
     }

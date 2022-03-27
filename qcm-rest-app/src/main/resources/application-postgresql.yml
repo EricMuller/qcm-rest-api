@@ -1,7 +1,8 @@
----
-
+#---
 spring:
-    profiles: postgresql
+    config:
+        activate:
+            on-profile: postgresql
     jpa:
         open-in-view: false
         database-platform: org.hibernate.dialect.PostgreSQLDialect
@@ -78,6 +79,7 @@ spring:
             maximumPoolSize: 5
             minimum-idle: 0
             initialization-fail-timeout: -1
+
     sql:
         init:
             continue-on-error: true

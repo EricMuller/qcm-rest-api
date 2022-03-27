@@ -21,7 +21,6 @@ import static java.util.Objects.isNull;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@Profile("webmvc")
 @RequestMapping(PUBLICIZED_API + ACCOUNTS)
 @Tag(name = "Account")
 public class AccountRestPublicController {

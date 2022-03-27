@@ -12,11 +12,9 @@ import static com.emu.apps.qcm.rest.controllers.secured.RestMappings.PUBLIC_API;
 
 
 @RestController
-@Profile("webmvc")
 @RequestMapping(value = PUBLIC_API + COMMAND, produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Command")
 public class ActionRestController {
-
 
     @ResponseBody
     @GetMapping()

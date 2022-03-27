@@ -25,7 +25,7 @@ import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
-@Profile("webmvc")
+@Profile({"!test"})
 class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final Filter accountFilter;

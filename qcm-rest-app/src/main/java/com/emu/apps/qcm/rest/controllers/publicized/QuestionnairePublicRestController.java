@@ -25,7 +25,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 
 @RestController
-@Profile("webmvc")
 @Tag(name = "Questionnaires")
 @RequestMapping(value = PUBLICIZED_API+ QUESTIONNAIRES, produces = APPLICATION_JSON_VALUE)
 public class QuestionnairePublicRestController {

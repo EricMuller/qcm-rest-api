@@ -65,10 +65,8 @@ public class SpringBootJpaTestConfig {
 
     public static final PrincipalId USER_TEST_ID = new PrincipalId(UUID.randomUUID().toString());
 
-    public static final String USER_PASSWORD = "password";
-
     @Bean
-    DateTimeProvider dateTimeProvider(DateTimeService dateTimeService) {
+    DateTimeProvider dateTimeProvider() {
         return new AuditingDateTimeProvider();
     }
 

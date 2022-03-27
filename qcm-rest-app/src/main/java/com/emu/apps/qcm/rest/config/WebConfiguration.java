@@ -43,7 +43,6 @@ import javax.annotation.PostConstruct;
 
 
 @Configuration
-@Profile("webmvc")
 public class WebConfiguration implements WebMvcConfigurer {
 
     private ObjectMapper objectMapper;

@@ -10,7 +10,7 @@ info:
 
 logging:
     file:
-        path: logs
+        path: logs #used by logback config !
 
 management:
     health:
@@ -36,9 +36,11 @@ openapi:
         realm: ${KEYCLOAK_REALM}
 
 spring:
+    jpa:
+        open-in-view: false
 
     config:
-        use-legacy-processing: true
+        use-legacy-processing: false
 
     devtools:
         restart:
@@ -50,6 +52,7 @@ spring:
 
     h2:
         console:
+            path: /h2-console
             enabled: false
 
     main:
@@ -61,6 +64,7 @@ spring:
             period: 31536000
             cachecontrol:
                 max-age: 31536000
+
     #    chain:
     #      html-application-cache: true
     #      enabled: true

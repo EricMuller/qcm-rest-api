@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 
 import java.util.Arrays;
@@ -29,6 +30,7 @@ import static org.apache.commons.collections4.IterableUtils.size;
 
 @SpringBootTest(classes = {SpringBootJpaTestConfig.class})
 @TestPropertySource("classpath:application-test.properties")
+@ActiveProfiles("test")
 class QuestionRepositoryTest {
 
     @Autowired

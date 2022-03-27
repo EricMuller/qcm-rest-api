@@ -25,7 +25,7 @@ import java.util.Arrays;
 import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.*;
 
 @Configuration
-@Profile({"!test && webmvc"})
+@Profile({"!test"})
 public class OpenApi3Config {
 
     private BuildProperties buildProperties;
