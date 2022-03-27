@@ -2,19 +2,25 @@ package com.emu.apps.qcm.rest.controllers;
 
 
 import com.emu.apps.qcm.domain.repositories.DbRepositoryFixture;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.BaeldungPostgresqlExtension;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig;
 import com.emu.apps.qcm.rest.controllers.secured.resources.QuestionnaireResource;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.context.ApplicationContextInitializer;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -27,7 +33,22 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 @SpringBootTest(classes = {SpringBootJpaTestConfig.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("classpath:application-test.properties")
 @ActiveProfiles(value = "test")
+@ContextConfiguration(initializers = {QuestionnaireRestControllerTest.Initializer.class})
 class QuestionnaireRestControllerTest {
+
+    @RegisterExtension
+    static BaeldungPostgresqlExtension postgresqlContainer = BaeldungPostgresqlExtension.getInstance();
+
+    static class Initializer
+            implements ApplicationContextInitializer <ConfigurableApplicationContext> {
+        public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
+            TestPropertyValues.of(
+                    "spring.datasource.url=" + postgresqlContainer.getJdbcUrl(),
+                    "spring.datasource.username=" + postgresqlContainer.getUsername(),
+                    "spring.datasource.password=" + postgresqlContainer.getPassword()
+            ).applyTo(configurableApplicationContext.getEnvironment());
+        }
+    }
 
     private static final String QUESTIONNAIRES_URI = ApiRestMappings.PROTECTED_API + ApiRestMappings.QUESTIONNAIRES;
 

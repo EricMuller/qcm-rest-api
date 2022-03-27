@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -30,11 +32,13 @@ public class CategoryPersistenceAdpater implements CategoryPersistencePort {
 
     private final CategoryEntityMapper categoryMapper;
 
+    @PersistenceContext
+    private EntityManager em;
+
     public CategoryPersistenceAdpater(CategoryRepository categoryRepository, CategoryEntityMapper categoryMapper) {
         this.categoryRepository = categoryRepository;
         this.categoryMapper = categoryMapper;
     }
-
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)

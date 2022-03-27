@@ -84,6 +84,7 @@
     </pluginRepositories>
 
     <properties>
+
         <sonar.host.url>http://localhost:9000</sonar.host.url>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -102,6 +103,8 @@
             ${project.basedir}/../jacoco-report/target/site/jacoco-aggregate/jacoco.xml
         </sonar.coverage.jacoco.xmlReportPaths>
         <maven-surefire-plugin.reuseForks>true</maven-surefire-plugin.reuseForks>
+
+
 
     </properties>
 
