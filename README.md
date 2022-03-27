@@ -46,6 +46,7 @@ qcm-rest-api uses a number of open source projects to work properly:
 ### Continuous integration
 
 * [Maven] - the build system
+* [Docker] - Open platform for developing, shipping, and running applications [docker.com](https://www.docker.com/)
 * [Travis] - Test and Deploy with Confidence [travis-ci](https://travis-ci.com/EricMuller/qcm-rest-api)
 * [SonarQube] - SonarQube on [sonarcloud.io](https://sonarcloud.io/dashboard?id=com.emu.apps.qcm:qcm-rest-api) is an open-source platform for continuous inspection of code quality.
 * [Heroku] - Fully managed container-based cloud platform, with integrated data services. [heroku.com](https://www.heroku.com)
@@ -65,7 +66,7 @@ qcm-rest-api requires Postgres 10.2
 > docker run --name qcm-postgres -p 5433:5432 -e POSTGRES_PASSWORD=postgres -d postgres:10.12
 
 
-### Installation
+### Installation dev
 
 qcm-rest-api requires [MAVEN](https://maven.apache.org/) v3.3+ to run.
 
@@ -81,6 +82,16 @@ Verify the deployment by navigating to your server address in your preferred bro
 
 
 > http://127.0.0.1:8080/swagger-ui.html#/
+### build with Cloud Native Buildpacks
+
+mvn spring-boot:build-image -Dspring-boot.build-image.imageName=qcm/qcm-app:latest
+
+echo "$PASSWORD" | docker login --username ericmuller --password-stdin
+
+~~docker image push nexus.webmarks.net:5000/qcm/qcm-app:latest~~
+
+docker image push ericmuller/qcm-app:latest
+
 
 ###Docker
 
@@ -93,6 +104,13 @@ Verify the deployment by navigating to your server address in your preferred bro
 2. postgres
 
 > docker run --name qcm-postgres -p 5433:5432 -e POSTGRES_PASSWORD=postgres -d postgres:10.12
+
+> docker run --name qcm-db-postgres --hostname=qcm-db-srv --network=qcm-app-network -d -p 5432:5432 -e POSTGRES_PASSWORD=postgres  --restart unless-stopped postgres:10.12
+
+3. api
+
+> docker run  --name qcm-app-2.2.0-SNAPSHOT  --hostname=qcm-app-srv --network=qcm-app-network -d -p 8081:8081  docker.io/webmarks/qcm-app:2.2.0-SNAPSHOT
+
 
 ###Maven
 

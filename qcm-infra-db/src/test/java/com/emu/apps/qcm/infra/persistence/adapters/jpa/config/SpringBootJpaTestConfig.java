@@ -67,41 +67,11 @@ public class SpringBootJpaTestConfig {
 
     public static final String USER_PASSWORD = "password";
 
-//    @Bean
-//    public AuditorAware auditorAware() {
-//        String principal = AuthentificationContextHolder.getPrincipal();
-//        return () -> Objects.nonNull(principal) ? Optional.of(principal) : Optional.empty();
-//    }
-
     @Bean
     DateTimeProvider dateTimeProvider(DateTimeService dateTimeService) {
         return new AuditingDateTimeProvider();
     }
 
-
-    @Bean
-    public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
-        var propsConfig = new PropertySourcesPlaceholderConfigurer();
-        propsConfig.setLocation(new ClassPathResource("git.properties"));
-        propsConfig.setIgnoreResourceNotFound(true);
-        propsConfig.setIgnoreUnresolvablePlaceholders(true);
-        return propsConfig;
-    }
-
-    /*
-        @Bean
-        @Profile("test-old")
-        @ConfigurationProperties(prefix = "spring.datasource")
-        public DataSource dataSource() {
-            DriverManagerDataSource dataSource = new DriverManagerDataSource();
-            dataSource.setDriverClassName("org.h2.Driver");
-            dataSource.setUrl("jdbc:h2:mem:db;DB_CLOSE_DELAY=-1");
-            dataSource.setUsername("sa");
-            dataSource.setPassword("sa");
-
-            return dataSource;dataSource = {HikariDataSource@7155} "HikariDataSource (null)"
-        }
-    */
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(EntityManagerFactoryBuilder builder,
                                                                        DataSource dataSource) {

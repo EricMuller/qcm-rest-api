@@ -1,5 +1,13 @@
 version: "2.1"
 
+volumes:
+    postgres_data:
+        driver: local
+    pgadmin_data:
+        driver: local
+    qcm_data:
+        driver: local
+
 services:
     qcm-server:
         depends_on:
@@ -11,10 +19,13 @@ services:
         build:
             context: ../qcm-app
         mem_limit: 1024m
+        volumes:
+            - qcm_data:/var/lib/qcm
         ports:
             - "8080:8081"
         networks:
             - qcm-network
+        restart: unless-stopped
 
     qcm-db-server:
         container_name: qcm-postgres-10.12
@@ -23,10 +34,28 @@ services:
             POSTGRES_ROOT_PASSWORD: postgres
             POSTGRES_USER: postgres
             POSTGRES_PASSWORD: postgres
+        volumes:
+                - postgres_data:/var/lib/postgresql/data
         ports:
             - "5432:5432"
         networks:
             - qcm-network
+
+    pgadmin:
+        container_name: pgadmin_container
+        image: dpage/pgadmin4:6
+        environment:
+            PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+            PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+            PGADMIN_CONFIG_SERVER_MODE: 'False'
+        volumes:
+            - pgadmin_data:/var/lib/pgadmin
+
+        ports:
+            - "5050:80"
+        networks:
+            - qcm-network
+        restart: unless-stopped
 
 networks:
     qcm-network:

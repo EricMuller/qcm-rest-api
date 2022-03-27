@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.ArrayUtils;
 import org.hibernate.annotations.BatchSize;
-import org.javers.core.metamodel.annotation.TypeName;
+
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.*;
@@ -40,7 +40,6 @@ import static org.springframework.data.jpa.domain.Specification.where;
 @Getter
 @Setter
 @NoArgsConstructor
-@TypeName("QuestionnaireEntity")
 public class QuestionnaireEntity extends AuditableEntity <String> {
 
     @Id

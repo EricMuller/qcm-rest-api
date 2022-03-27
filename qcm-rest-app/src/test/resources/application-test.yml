@@ -1,0 +1,131 @@
+keycloak:
+  enabled: false
+
+endpoints:
+  metrics:
+    enabled: false
+#    filter:
+#      enabled: false
+
+management:
+  endpoints:
+    enabled-by-default: false
+
+spring:
+
+  security:
+    basic:
+      enabled: true
+
+  jmx:
+    enabled: false
+
+  main:
+    allow-bean-definition-overriding: true
+    lazy-initialization: true
+
+#  autoconfigure:
+#    exclude:
+#      - org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+#      - org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration
+
+  application:
+    name: qcm-service
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.xml
+
+  jpa:
+    # database-platform: org.hibernate.dialect.H2Dialect
+    generate-ddl: false
+    show-sql: false
+    hibernate:
+      ddl-auto: create-drop
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+
+    properties:
+      javax:
+        persistence:
+          sharedCache:
+            mode: ENABLE_SELECTIVE
+
+      hibernate:
+        generate_statistics: false
+        current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
+        hikari:
+          maximumPoolSize: 30
+        cache:
+          #required - turn on L2 cache.
+          use_second_level_cache: false
+          #optional - turn on query cache.
+          use_query_cache: false
+          region:
+            #required - classpath to cache region factory.
+            factory_class:  org.hibernate.cache.jcache.JCacheRegionFactory
+
+        javax:
+          cache:
+            provider: org.ehcache.jsr107.EhcacheCachingProvider
+            uri: classpath:ehcache.xml
+
+  cache:
+    jcache:
+      config: classpath:ehcache.xml
+
+
+
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+    hikari:
+      jdbc-url: jdbc:h2:mem:foo;mode=postgres;DB_CLOSE_ON_EXIT=FALSE
+      pool-name: qcm-hikari-pool
+      autoCommit: false
+      connection-test-query: SELECT 1
+      idleTimeout: 20000
+      minimum-idle: 1
+      maximumPoolSize: 5
+
+    qcm:
+      type: com.zaxxer.hikari.HikariDataSource
+      driverClassName: org.h2.Driver
+      username: sa
+      password:
+      hikari:
+        jdbc-url: jjdbc:h2:mem:foo;mode=postgres;DB_CLOSE_ON_EXIT=FALSE
+        pool-name: qcm-hikari-pool
+        autoCommit: false
+        connection-test-query: SELECT 1
+        idleTimeout: 20000
+        minimum-idle: 1
+        maximumPoolSize: 5
+
+    bookmarks:
+      type: com.zaxxer.hikari.HikariDataSource
+      driverClassName: org.h2.Driver
+      username: sa
+      password:
+      hikari:
+        jdbc-url: jdbc:h2:mem:foo;mode=postgres;DB_CLOSE_ON_EXIT=FALSE
+        pool-name: bookmark-hikari-pool
+        autoCommit: false
+        connection-test-query: SELECT 1
+        idleTimeout: 20000
+        minimum-idle: 1
+        maximumPoolSize: 5
+
+logging:
+  # file: logs/application-debug.LOGGER
+  level:
+    root: ERROR
+    org.springframework.web: ERROR
+    org.springframework.security: WARN
+    org.hibernate: WARN
+    org.hibernate.SQL: INFO
+    org.hibernate.type.descriptor.sql: WARN
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    com.emu.apps: WARN
+    org.keycloak.services: WARN
+    org.springframework.aop.interceptor.PerformanceMonitorInterceptor: WARN
+

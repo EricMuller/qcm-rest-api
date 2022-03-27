@@ -5,34 +5,36 @@ volumes:
       driver: local
 
 services:
-  postgres:
-      container_name: keycloak-postgres-10.12
+    keycloakdb:
+      container_name: keycloakdb-postgres-10.12
       volumes:
         - postgres_data:/var/lib/postgresql/data
       environment:
-        POSTGRES_DB: keycloak
-        POSTGRES_USER: keycloak
-        POSTGRES_PASSWORD: password
-      image: postgres:10.12
+        POSTGRES_DB: ${KEYCLOAK_DATABASE_NAME}
+        POSTGRES_USER: ${KEYCLOAK_DATABASE_USER}
+        POSTGRES_PASSWORD: ${KEYCLOAK_DATABASE_PASSWORD}
+      image: postgres:${POSTGRES_VERSION}
 
   keycloak:
       container_name: qcm-keycloak-10.0.2
       build: .
       environment:
-        DB_VENDOR: POSTGRES
-        DB_ADDR: postgres
-        DB_DATABASE: keycloak
-        DB_USER: keycloak
-        DB_SCHEMA: public
-        DB_PASSWORD: password
-        KEYCLOAK_USER: admin
-        KEYCLOAK_PASSWORD: admin
-        KCADM: kcadm.sh
-        HOST_FOR_KCADM: 127.0.0.1
+        KEYCLOAK_USER: ${KEYCLOAK_USER}
+        KEYCLOAK_PASSWORD: ${KEYCLOAK_PASSWORD}
+        DB_ADDR: ${KEYCLOAK_DATABASE_HOST}
+        DB_VENDOR: ${KEYCLOAK_DATABASE_VENDOR}
+        DB_DATABASE: ${KEYCLOAK_DATABASE_NAME}
+        DB_USER: ${KEYCLOAK_DATABASE_USER}
+        DB_PASSWORD: ${KEYCLOAK_DATABASE_PASSWORD}
+        # KCADM: kcadm.sh
+        # HOST_FOR_KCADM: 127.0.0.1
         # Uncomment the line below if you want to specify JDBC parameters. The parameter below is just an example, and it shouldn't be used in production without knowledge. It is highly recommended that you read the PostgreSQL JDBC driver documentation in order to use it.
         #JDBC_PARAMS: "ssl=true"
       ports:
-        - 8080:8080
+        - '8080:8080'
       depends_on:
-        - keycloak-postgres-10.12
-      image: ericmuller/qcm-keycloak-10.0.2
+        - keycloakdb-postgres-${POSTGRES_VERSION}
+      image: ericmuller/qcm-keycloak-postgresdb-${POSTGRES_VERSION}
+
+networks:
+    internal:

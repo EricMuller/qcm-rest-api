@@ -21,7 +21,6 @@ import com.emu.apps.qcm.infra.persistence.adapters.mappers.QuestionnaireEntityMa
 import com.emu.apps.qcm.infra.persistence.adapters.mappers.QuestionnaireQuestionEntityMapper;
 import com.emu.apps.qcm.infra.persistence.adapters.mappers.UuidMapper;
 import com.emu.apps.shared.exceptions.I18nedNotFoundException;
-import org.javers.core.Javers;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -60,13 +59,11 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
 
     private final QuestionnaireQuestionEntityMapper questionnaireQuestionMapper;
 
-    private final Javers javers;
-
     public QuestionnairePersistenceAdapter(QuestionnaireRepository questionnaireRepository, QuestionRepository questionRepository,
                                            QuestionnaireQuestionRepository questionnaireQuestionRepository,
                                            CategoryRepository categoryRepository, QuestionnaireEntityMapper questionnaireMapper,
                                            UuidMapper uuidMapper, TagRepository tagRepository,
-                                           QuestionnaireTagRepository questionnaireTagRepository, QuestionnaireQuestionEntityMapper questionnaireQuestionMapper, Javers javers) {
+                                           QuestionnaireTagRepository questionnaireTagRepository, QuestionnaireQuestionEntityMapper questionnaireQuestionMapper) {
         this.questionnaireRepository = questionnaireRepository;
         this.questionRepository = questionRepository;
         this.questionnaireQuestionRepository = questionnaireQuestionRepository;
@@ -76,7 +73,7 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
         this.tagRepository = tagRepository;
         this.questionnaireTagRepository = questionnaireTagRepository;
         this.questionnaireQuestionMapper = questionnaireQuestionMapper;
-        this.javers = javers;
+
     }
 
     @Override
@@ -196,7 +193,7 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
         QuestionnaireQuestionEntity questionnaireQuestionEntity = questionnaireQuestionRepository
                 .save(new QuestionnaireQuestionEntity(questionnaireEntity, questionEntity, position));
 
-        javers.commit(principal, questionnaireEntity);
+        // javers.commit(principal, questionnaireEntity);
 
         return questionnaireQuestionMapper.questionnaireQuestionEntityToDomain(questionnaireQuestionEntity);
     }

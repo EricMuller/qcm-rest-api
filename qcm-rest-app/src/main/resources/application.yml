@@ -1,0 +1,89 @@
+server:
+    port : 8000
+    http2:
+        enable: true
+
+maven.version: @project.version@
+
+info:
+    application-name: qcm-rest-app
+
+logging:
+    file:
+        path: logs
+
+management:
+    health:
+        test:
+            enabled: true
+
+    endpoint:
+        health:
+            show-details: always
+            show-components: always
+            group:
+                status:
+                    show-components: always
+                    include: db, ping, test
+    endpoints:
+        web:
+            exposure:
+                include: '*'
+
+openapi:
+    keycloak:
+        auth-server-url: ${KEYCLOAK_AUTH_URI}
+        realm: ${KEYCLOAK_REALM}
+
+spring:
+
+    config:
+        use-legacy-processing: true
+
+    devtools:
+        restart:
+            exclude: static/**,public/**
+
+    hateoas:
+
+        use-hal-as-default-json-media-type: false
+
+    h2:
+        console:
+            enabled: false
+
+    main:
+        lazy-initialization: false
+        allow-bean-definition-overriding: true
+
+    resources:
+        cache:
+            period: 31536000
+            cachecontrol:
+                max-age: 31536000
+    #    chain:
+    #      html-application-cache: true
+    #      enabled: true
+    #      strategy:
+    #        content:
+    #          enabled: true
+    #          paths: /webjars/swagger-ui/**.*
+
+
+
+#server:
+#  compression:
+#    enabled: true
+#    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+#    min-response-size: 1024
+#  http2:
+#    enabled: false
+#  servlet:
+#    context-path: /
+
+
+
+
+
+
+

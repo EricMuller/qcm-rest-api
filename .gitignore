@@ -57,3 +57,5 @@ pom.xml.tag
 # CVS Files
 CVS/
 logs/
+/tmp/
+/qcm-rest-app/tmp/

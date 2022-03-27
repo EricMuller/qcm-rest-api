@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+
+    <appender name="Console"
+              class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                %black(%d{ISO8601}) %highlight(%-5level) [%blue(%t)] %yellow(%C{1.}): %msg%n%throwable
+            </Pattern>
+        </layout>
+    </appender>
+
+    <appender name="AppFile"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/application.log</file>
+        <encoder
+                class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
+        </encoder>
+
+        <rollingPolicy
+                class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily and when the file reaches 10 MegaBytes -->
+            <fileNamePattern>${LOG_PATH}/archived/application-%d{yyyy-MM-dd}.%i.log
+            </fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="CacheFile"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/cache.log</file>
+        <encoder
+                class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
+        </encoder>
+
+        <rollingPolicy
+                class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/archived/cache-%d{yyyy-MM-dd}.%i.log
+            </fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="NgxLogger"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/ngx.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>%d %p [%t] %m%n</Pattern>
+        </encoder>
+
+        <rollingPolicy  class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily and when the file reaches 10 MegaBytes -->
+            <fileNamePattern>${LOG_PATH}/archived/ngx-%d{yyyy-MM-dd}.%i.log
+            </fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+    </appender>
+
+    <!-- LOG everything at INFO level -->
+    <root level="warn">
+        <appender-ref ref="AppFile"/>
+        <appender-ref ref="Console"/>
+    </root>
+
+    <logger name="com.emu.apps" level="warn" additivity="false">
+        <appender-ref ref="AppFile"/>
+        <appender-ref ref="Console"/>
+    </logger>
+
+    <logger name="org.springframework.boot" level="info" additivity="false">
+        <appender-ref ref="AppFile"/>
+        <appender-ref ref="Console"/>
+    </logger>
+
+    <logger name="org.springframework.security.web" level="warn" additivity="false">
+        <appender-ref ref="AppFile"/>
+        <appender-ref ref="Console"/>
+    </logger>
+
+    <logger name="org.springframework.aop.interceptor" level="info">
+        <appender-ref ref="Console"/>
+    </logger>
+
+    <logger name="org.springframework.security" level="info" additivity="false">
+        <appender-ref ref="AppFile"/>
+        <appender-ref ref="Console"/>
+    </logger>
+
+    <logger name="com.emu.apps.qcm.rest.config" level="info" additivity="false">
+        <appender-ref ref="AppFile"/>
+        <appender-ref ref="Console"/>
+    </logger>
+
+    <logger name="org.hibernate.stat" level="debug" additivity="false">
+        <appender-ref ref="AppFile"/>
+        <appender-ref ref="Console"/>
+    </logger>
+
+    <logger name="org.hibernate.engine.internal.StatisticalLoggingSessionEventListener" level="info" additivity="false">
+        <appender-ref ref="AppFile"/>
+        <appender-ref ref="Console"/>
+    </logger>
+
+    <logger name="com.emu.apps.qcm.infra.persistence.cache" level="info" additivity="false">
+        <appender-ref ref="AppFile"/>
+        <appender-ref ref="Console"/>
+    </logger>
+
+    <logger name="com.emu.apps.qcm.rest.controllers.publicized.NgxLoggerRestController" level="info" additivity="false">
+        <appender-ref ref="NgxLogger"/>
+        <appender-ref ref="Console"/>
+    </logger>
+
+    <logger name="com.emu.apps.qcm.rest.config.cache.CacheEventLogger" level="info" additivity="false">
+        <appender-ref ref="CacheFile"/>
+    </logger>
+
+</configuration>
