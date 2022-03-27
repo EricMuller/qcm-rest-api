@@ -33,7 +33,7 @@ public class QuestionnaireReaderAdapter implements QuestionnaireReaderPort {
         final List <Suggest> suggestions = new ArrayList <>();
         if (StringUtils.isNoneEmpty(queryText)) {
             suggestMapper.modelsToSuggestDtos(questionnaireRepository.findByTitleContaining(queryText)).forEach(suggestions::add);
-            // tagMapper.modelsToSugestDtos(tagService.findByLibelleContaining(queryText)).forEach(suggestions::add);
+            //todo: tagMapper.modelsToSugestDtos(tagService.findByLibelleContaining(queryText)).forEach(suggestions::add);
         }
         return suggestions;
     }

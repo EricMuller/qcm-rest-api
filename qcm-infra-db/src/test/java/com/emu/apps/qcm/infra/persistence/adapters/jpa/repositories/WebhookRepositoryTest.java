@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @SpringBootTest(classes = SpringBootJpaTestConfig.class)
 @ActiveProfiles(value = "test")
 @ContextConfiguration(initializers = {WebhookRepositoryTest.Initializer.class})
-public class WebhookRepositoryTest {
+class WebhookRepositoryTest {
 
     @RegisterExtension
     static BaeldungPostgresqlExtension postgresqlContainer = BaeldungPostgresqlExtension.getInstance();
@@ -52,7 +52,7 @@ public class WebhookRepositoryTest {
 
     @Test
     @Transactional
-    public void findAllByUser_UuidEqualsTest() {
+    void findAllByUser_UuidEqualsTest() {
 
         final UUID uuid = UUID.randomUUID();
 
@@ -74,7 +74,7 @@ public class WebhookRepositoryTest {
 
     @Test
     @Transactional
-    public void findPagByUser_UuidEqualsTest() {
+    void findPagByUser_UuidEqualsTest() {
 
         final UUID uuid = UUID.randomUUID();
 
@@ -96,7 +96,7 @@ public class WebhookRepositoryTest {
 
     @Test
     @Transactional
-    public void findAllByUuidTest() {
+    void findAllByUuidTest() {
 
         final UUID uuid = UUID.randomUUID();
 

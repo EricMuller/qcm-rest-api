@@ -55,7 +55,7 @@ class QuestionnaireEntityMapperTest {
 
         QuestionnaireEntity questionnaireEntity = questionnaireMapper.dtoToModel(questionnaire);
 
-        Assertions.assertNotNull(questionnaireEntity.getTags().isEmpty());
+        Assertions.assertNotNull(questionnaireEntity.getTags());
     }
 
     @Test
@@ -77,9 +77,9 @@ class QuestionnaireEntityMapperTest {
         questionnaireMapper.dtoToModel(questionnaire, questionnaireEntity);
 
         Assertions.assertNotNull(questionnaireEntity.getUuid());
-        Assertions.assertNotNull(questionnaireEntity.getTags().isEmpty());
-        Assertions.assertTrue(now.equals(questionnaireEntity.getDateModification()));
-        Assertions.assertTrue("me".equals(questionnaireEntity.getLastModifiedBy()));
+        Assertions.assertNotNull(questionnaireEntity.getTags());
+        Assertions.assertEquals(now, questionnaireEntity.getDateModification());
+        Assertions.assertEquals("me", questionnaireEntity.getLastModifiedBy());
 
     }
 
@@ -95,7 +95,7 @@ class QuestionnaireEntityMapperTest {
         Page <Questionnaire> questionnairePage = questionnaireMapper.pageToDto(entityPage);
 
         Assertions.assertNotNull(questionnairePage);
-        Assertions.assertTrue(questionnairePage.getTotalElements() == 1L);
+        Assertions.assertEquals(1L, questionnairePage.getTotalElements());
 
     }
 }

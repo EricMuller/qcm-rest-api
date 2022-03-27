@@ -25,12 +25,7 @@ public class SimpleEventBus implements EventBus {
 
     @Override
     public <E extends ApplicationEvent> void subscribe(String eventType, EventSubscriber subscriber) {
-        Set<EventSubscriber> eventSubscribers = subscribers.get(eventType);
-        if (eventSubscribers == null) {
-            eventSubscribers = new CopyOnWriteArraySet<>();
-            subscribers.put(eventType, eventSubscribers);
-        }
-        eventSubscribers.add(subscriber);
+        subscribers.computeIfAbsent(eventType, k -> new CopyOnWriteArraySet<>());
     }
 
     @Override

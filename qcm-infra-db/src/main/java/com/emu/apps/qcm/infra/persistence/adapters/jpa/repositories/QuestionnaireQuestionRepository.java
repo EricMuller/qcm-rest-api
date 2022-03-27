@@ -32,15 +32,6 @@ public interface QuestionnaireQuestionRepository extends JpaRepository <Question
             " FROM QuestionnaireQuestionEntity  qq " +
             " WHERE qq.questionnaire.uuid = :questionnaireUuid order by qq.position")
     Page <QuestionResponseProjection> findQuestionsByQuestionnaireUuiId(@Param("questionnaireUuid") UUID questionnaireUuid, Pageable pageable);
-
-//    @Query("SELECT distinct  (q.question.id as id, qq.question.uuid as uuid, qq.question.dateCreation as dateCreation,qq.question.version as version,qq.question.questionText as question ," +
-//            " qq.question.type as type,qq.position as position) , q , r as responses" +
-//            " FROM QuestionnaireQuestionEntity  qq " +
-//            " join qq.question q " +
-//            " left join q.responses  r " +
-//            " WHERE qq.questionnaire.uuid = :questionnaireUuid order by qq.position")
-//    Page <QuestionResponseProjection> findQuestionsAndResponsesByQuestionnaireUuiId(@Param("questionnaireUuid") UUID questionnaireUuid, Pageable pageable);
-
     /**
      * @param questionnaireIds
      * @param tagIds

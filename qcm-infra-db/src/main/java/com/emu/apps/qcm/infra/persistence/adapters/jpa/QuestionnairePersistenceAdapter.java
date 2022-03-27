@@ -123,12 +123,7 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
 
         return questionnaireMapper.modelToDto(questionnaireEntity);
     }
-//
-//    @Override
-//    @Transactional(readOnly = true)
-//    public Iterable <QuestionnaireProjection> findByTitleContaining(String title) {
-//        return questionnaireRepository.findByTitleContaining(title);
-//    }
+
 
     @Override
     @Transactional(readOnly = true)
@@ -193,22 +188,10 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
         QuestionnaireQuestionEntity questionnaireQuestionEntity = questionnaireQuestionRepository
                 .save(new QuestionnaireQuestionEntity(questionnaireEntity, questionEntity, position));
 
-        // javers.commit(principal, questionnaireEntity);
+        //todo: javers.commit(principal, questionnaireEntity);
 
         return questionnaireQuestionMapper.questionnaireQuestionEntityToDomain(questionnaireQuestionEntity);
     }
-
-
-//    @Override
-//    @Transactional(readOnly = true)
-//    public PublishedQuestionnaire findOnePublishedByUuid(final String uuid) {
-//
-//        var questionnaire = questionnaireRepository.findByUuid(UUID.fromString(uuid))
-//                .orElseThrow(() -> new EntityNotFoundException(uuid, MessageSupport.UNKNOWN_UUID_QUESTIONNAIRE));
-//
-//        return publishedMapper.questionnaireToPublishedQuestionnaireDto(questionnaire);
-//
-//    }
 
     @Override
     @Transactional(readOnly = true)
@@ -220,18 +203,6 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
         return questionnaireMapper.modelToDto(questionnaire);
     }
 
-//    @Override
-//    @Transactional(readOnly = true)
-//    public Page <PublishedQuestionnaire> findAllPublishedByPage(Pageable pageable) {
-//
-//        var specificationBuilder = new QuestionnaireEntity.SpecificationBuilder();
-//
-//        specificationBuilder.setPublished(Boolean.TRUE);
-//
-//        return publishedMapper.pageQuestionnaireToPublishedQuestionnaireDto(questionnaireRepository.findAll(specificationBuilder.build(), pageable));
-//
-//    }
-
     @Override
     @Transactional(readOnly = true)
     public Page <Questionnaire> findAllPublishedByPage(Pageable pageable) {
@@ -239,8 +210,6 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
         var specificationBuilder = new QuestionnaireEntity.SpecificationBuilder();
 
         specificationBuilder.setPublished(Boolean.TRUE);
-
-        // return publishedMapper.pageQuestionnaireToPublishedQuestionnaireDto(questionnaireRepository.findAll(specificationBuilder.build(), pageable));
 
         return questionnaireMapper.pageToDto(questionnaireRepository.findAll(specificationBuilder.build(), pageable));
     }

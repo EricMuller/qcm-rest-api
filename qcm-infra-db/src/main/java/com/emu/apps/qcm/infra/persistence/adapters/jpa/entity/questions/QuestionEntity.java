@@ -7,6 +7,7 @@ import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.AccountEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category.CategoryEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.common.AuditableEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireQuestionEntity;
+import com.emu.apps.shared.exceptions.TechnicalException;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -140,15 +141,18 @@ public class QuestionEntity extends AuditableEntity <String> {
         @Override
         public Specification <QuestionEntity> build() {
 
-            Specification <QuestionEntity> where =
-                    accountUuidIn(ownerAccountUuid)
-                            .and(questionnaireQuestionsUuidIn(questionnaireUuids))
-                            .and(questionnaireTagsUuidIn(tagUuids));
+            Specification accountSpecification =accountUuidIn(ownerAccountUuid);
+            if (Objects.nonNull(accountSpecification)) {
+                Specification <QuestionEntity> where =
+                        accountSpecification.and(questionnaireQuestionsUuidIn(questionnaireUuids))
+                                .and(questionnaireTagsUuidIn(tagUuids));
 
-            return (root, query, cb) -> {
-                query.distinct(true);
-                return where(where).toPredicate(root, query, cb);
-            };
+                return (root, query, cb) -> {
+                    query.distinct(true);
+                    return where(where).toPredicate(root, query, cb);
+                };
+            }
+            throw new TechnicalException("Account Mandatory");
         }
 
         private Specification <QuestionEntity> accountUuidIn(@Nullable UUID uuid) {

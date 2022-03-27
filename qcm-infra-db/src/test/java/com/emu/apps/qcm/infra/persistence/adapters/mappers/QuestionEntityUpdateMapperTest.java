@@ -99,7 +99,7 @@ class QuestionEntityUpdateMapperTest {
 
 
         Assertions.assertNotNull(responsesEntitiesUpdates);
-        Assertions.assertEquals(responsesEntitiesUpdates.size(), 1);
+        Assertions.assertEquals(1 ,responsesEntitiesUpdates.size());
 
 
         responsesEntitiesUpdates.stream()

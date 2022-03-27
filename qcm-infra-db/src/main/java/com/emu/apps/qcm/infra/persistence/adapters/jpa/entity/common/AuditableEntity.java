@@ -44,7 +44,7 @@ public abstract class AuditableEntity<U extends Serializable> extends Identifiab
     protected AuditableEntity() {
     }
 
-    public AuditableEntity(UUID uuid) {
+    protected AuditableEntity(UUID uuid) {
         super(uuid);
     }
 

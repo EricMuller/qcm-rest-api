@@ -46,7 +46,7 @@ public abstract class AuditableAccountEntity<U extends Serializable> extends Ide
     protected AuditableAccountEntity() {
     }
 
-    public AuditableAccountEntity(UUID uuid) {
+    protected AuditableAccountEntity(UUID uuid) {
         super(uuid);
     }
 
@@ -82,7 +82,7 @@ public abstract class AuditableAccountEntity<U extends Serializable> extends Ide
         this.lastModifiedBy = lastModifiedBy;
     }
 
-    public static abstract class BaseSpecification<T> {
+    public abstract static  class BaseSpecification<T> {
 
         private static final String WILDCARD = "%";
 

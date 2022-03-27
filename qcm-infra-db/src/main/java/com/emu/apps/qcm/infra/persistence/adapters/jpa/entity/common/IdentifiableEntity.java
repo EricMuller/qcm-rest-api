@@ -32,7 +32,7 @@ public abstract class IdentifiableEntity implements Serializable {
     protected IdentifiableEntity() {
     }
 
-    public IdentifiableEntity(UUID uuid) {
+    protected IdentifiableEntity(UUID uuid) {
         this.uuid = uuid;
     }
 

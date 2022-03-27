@@ -128,7 +128,7 @@ class QuestionRepositoryTest {
 
         assertThat(newQuestion).isNotNull();
         assertThat(newQuestion.getTags()).isNotEmpty();
-        assertThat(newQuestion.getTags().size()).isEqualTo(2);
+        assertThat(newQuestion.getTags()).hasSize(2);
 
         Optional <QuestionTagEntity> optional = newQuestion.getTags()
                 .stream()
@@ -154,7 +154,7 @@ class QuestionRepositoryTest {
 
         //tags
         assertThat(newQuestion.getTags()).isNotEmpty();
-        assertThat(newQuestion.getTags().size()).isEqualTo(2);
+        assertThat(newQuestion.getTags()).hasSize(2);
 
         Optional <QuestionTagEntity> optional = newQuestion.getTags()
                 .stream()
@@ -165,7 +165,7 @@ class QuestionRepositoryTest {
 
         // responses
         assertThat(newQuestion.getResponses()).isNotEmpty();
-        assertThat(newQuestion.getTags().size()).isEqualTo(2);
+        assertThat(newQuestion.getTags()).hasSize(2);
 
         ResponseEntity response = getFirst(newQuestion.getResponses(), null);
 
@@ -195,7 +195,7 @@ class QuestionRepositoryTest {
 
         Set <QuestionTagEntity> questionTags = first.getTags();
         assertThat(questionTags).isNotEmpty();
-        assertThat(questionTags.size()).isEqualTo(2);
+        assertThat(questionTags).hasSize(2);
 
         QuestionTagEntity questionTag = getFirst(questionTags, null);
 
@@ -216,7 +216,7 @@ class QuestionRepositoryTest {
         Page <String> page = questionRepository.findAllStatusByCreatedBy(Fixture.USER, null);
 
         assertThat(page).isNotNull();
-        assertThat(page.getNumberOfElements()).isNotNull().isEqualTo(1);
+        assertThat(page.getNumberOfElements()).isEqualTo(1);
 
     }
 
