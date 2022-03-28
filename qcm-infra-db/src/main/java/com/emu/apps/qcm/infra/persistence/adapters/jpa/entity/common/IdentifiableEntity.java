@@ -21,7 +21,6 @@ import static java.util.Objects.isNull;
 public abstract class IdentifiableEntity implements Serializable {
 
     @Column(name = "UUID", nullable = false, updatable = false)
-    @Type(type = "org.hibernate.type.UUIDCharType")
     @NaturalId
     protected UUID uuid;
 

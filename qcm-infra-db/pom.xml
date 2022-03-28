@@ -46,6 +46,12 @@
             <artifactId>mapstruct</artifactId>
         </dependency>
 
+        <!--   tools  -->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+        </dependency>
+
         <!--   hibernate  -->
         <dependency>
             <groupId>org.hibernate</groupId>
