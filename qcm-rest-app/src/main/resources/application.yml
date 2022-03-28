@@ -29,8 +29,14 @@ management:
         web:
             exposure:
                 include: '*'
+springdoc:
+    swagger-ui:
+        oauth2RedirectUrl:  ${OPENAPI_SERVER_URI}/swagger-ui/oauth2-redirect.html
+
 
 openapi:
+    server:
+        url: ${OPENAPI_SERVER_URI}
     keycloak:
         auth-server-url: ${KEYCLOAK_AUTH_URI}
         realm: ${KEYCLOAK_REALM}

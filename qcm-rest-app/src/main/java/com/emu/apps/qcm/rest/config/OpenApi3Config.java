@@ -1,5 +1,6 @@
 package com.emu.apps.qcm.rest.config;
 
+
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
@@ -11,6 +12,7 @@ import io.swagger.v3.oas.models.security.OAuthFlows;
 import io.swagger.v3.oas.models.security.Scopes;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
 import org.springdoc.core.GroupedOpenApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,25 +38,33 @@ public class OpenApi3Config {
 
     private String realm;
 
+    private String serverUri;
+
     @Autowired
     public OpenApi3Config(BuildProperties buildProperties, GitProperties gitProperties,
                           @Value("${openapi.keycloak.auth-server-url}") String authServer,
-                          @Value("${openapi.keycloak.realm}") String realm) {
+                          @Value("${openapi.keycloak.realm}") String realm,
+                          @Value("${openapi.server.url}") String serverUri
+    ) {
         this.buildProperties = buildProperties;
         this.gitProperties = gitProperties;
         this.authServer = authServer;
         this.realm = realm;
+        this.serverUri =serverUri;
     }
 
     @Bean
     public OpenAPI openAPI() {
         var authUrl = String.format("%s/realms/%s/protocol/openid-connect", this.authServer, this.realm);
         return new OpenAPI()
+                .addServersItem(new Server().url(serverUri))
                 .components(new Components()
                         .addSecuritySchemes("keycloack_openid", new SecurityScheme()
                                 .type(SecurityScheme.Type.OAUTH2)
                                 .description("Oauth2 flow")
+
                                 .flows(new OAuthFlows()
+
                                         .authorizationCode(new OAuthFlow()
                                                 .authorizationUrl(authUrl + "/auth")
                                                 .refreshUrl(authUrl + "/token")
