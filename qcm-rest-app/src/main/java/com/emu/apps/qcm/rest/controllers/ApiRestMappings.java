@@ -58,7 +58,7 @@ public final class ApiRestMappings {
 
     public static final String IMPORTS = "/imports";
 
-
+    public static final String QUERY = "/query";
 
     public static final String COMMAND = "/command";
 

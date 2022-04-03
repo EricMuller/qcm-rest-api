@@ -122,11 +122,11 @@ public class OpenApi3Config {
     }
 
     @Bean
-    GroupedOpenApi settingsApis() {
+    GroupedOpenApi technicalApis() {
         return GroupedOpenApi.builder()
                 .group("Technical")
-                .pathsToMatch(PROTECTED_API + WEBHOOKS + "/**"
-                        , LOGS + "/**")
+                .pathsToMatch(PROTECTED_API + WEBHOOKS + "/**",
+                        PROTECTED_API + QUERY + "/**" , LOGS + "/**")
                 .build();
     }
 

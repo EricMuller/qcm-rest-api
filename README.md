@@ -62,8 +62,7 @@ qcm-rest-api uses a number of open source projects to work properly:
 
 qcm-rest-api requires Postgres 10.2
 
-
-> docker run --name qcm-postgres -p 5433:5432 -e POSTGRES_PASSWORD=postgres -d postgres:10.12
+> docker run --name qcm-postgres --restart unless-stopped -p 5433:5432 -e POSTGRES_PASSWORD=postgres -d postgres:10.12 
 
 
 ### Installation dev
@@ -103,7 +102,7 @@ docker image push ericmuller/qcm-app:latest
 
 2. postgres
 
-> docker run --name qcm-postgres -p 5433:5432 -e POSTGRES_PASSWORD=postgres -d postgres:10.12
+> docker run --name qcm-postgres-5433 -p 5433:5432 -e POSTGRES_PASSWORD=postgres -d postgres:10.12
 
 > docker run --name qcm-db-postgres --hostname=qcm-db-srv --network=qcm-app-network -d -p 5432:5432 -e POSTGRES_PASSWORD=postgres  --restart unless-stopped postgres:10.12
 

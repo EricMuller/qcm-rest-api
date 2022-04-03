@@ -26,7 +26,7 @@ import static com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category.Ca
  */
 @Service
 
-public class CategoryPersistenceAdpater implements CategoryPersistencePort {
+public class CategoryPersistenceAdapter implements CategoryPersistencePort {
 
     private final CategoryRepository categoryRepository;
 
@@ -35,7 +35,7 @@ public class CategoryPersistenceAdpater implements CategoryPersistencePort {
     @PersistenceContext
     private EntityManager em;
 
-    public CategoryPersistenceAdpater(CategoryRepository categoryRepository, CategoryEntityMapper categoryMapper) {
+    public CategoryPersistenceAdapter(CategoryRepository categoryRepository, CategoryEntityMapper categoryMapper) {
         this.categoryRepository = categoryRepository;
         this.categoryMapper = categoryMapper;
     }

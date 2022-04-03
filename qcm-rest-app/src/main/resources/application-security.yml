@@ -6,17 +6,16 @@ spring:
       on-profile: security
 
   boot:
-    admin:
-      url: http://localhost:9080
-      password: ${security.user.password}
-      username: ${security.user.name}
-      client:
-        enabled: false
+#    admin:
+#      url: http://localhost:9080
+#      password: ${security.user.password}
+#      username: ${security.user.name}
+
 
   security:
     user:
-      password: admin
       name: admin
+#      password: admin
 
     oauth2:
       client:

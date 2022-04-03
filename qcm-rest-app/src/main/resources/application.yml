@@ -1,4 +1,12 @@
+
 server:
+    max-http-header-size: 8KB
+    connection-timeout: 5s
+    tomcat:
+        max-http-post-size: 2MB
+        max-swallow-size=: 2MB #request body bytes
+        threads:
+            max: 200
     port : 8000
     http2:
         enable: true
@@ -12,27 +20,21 @@ logging:
     file:
         path: logs #used by logback config !
 
-management:
-    health:
-        test:
-            enabled: true
 
-    endpoint:
-        health:
-            show-details: always
-            show-components: always
-            group:
-                status:
-                    show-components: always
-                    include: db, ping, test
+management:
+    security:
+        enabled: true
     endpoints:
         web:
             exposure:
-                include: '*'
+                include: "*"
+    endpoint:
+        health:
+            show-details: always
+
 springdoc:
     swagger-ui:
         oauth2RedirectUrl:  ${OPENAPI_SERVER_URI}/swagger-ui/oauth2-redirect.html
-
 
 openapi:
     server:
@@ -42,6 +44,26 @@ openapi:
         realm: ${KEYCLOAK_REALM}
 
 spring:
+
+    application:
+        name: qcm-rest-app
+
+    boot:
+        admin:
+            client:
+                url: ${SPRING_BOOT_ADMIN_CLIENT_URI}
+                username: ${SPRING_BOOT_ADMIN_CLIENT_USER}
+                password: ${SPRING_BOOT_ADMIN_CLIENT_PASSWORD}
+                instance:
+                    metadata:
+                        user:
+                            name: ${spring.security.user.name}
+                            password: ${spring.security.user.password}
+                    management-base-url: ${SPRING_BOOT_ADMIN_CLIENT_MANAGEMENT_BASE_URL}
+                    service-base-url: ${spring.boot.admin.client.instance.management-base-url}
+                auto-deregistration: true
+                # period: 20s
+
     jpa:
         open-in-view: false
 
@@ -53,7 +75,6 @@ spring:
             exclude: static/**,public/**
 
     hateoas:
-
         use-hal-as-default-json-media-type: false
 
     h2:

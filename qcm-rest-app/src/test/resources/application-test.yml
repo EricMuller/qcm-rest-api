@@ -2,6 +2,11 @@
 
 spring:
 
+  boot:
+    admin:
+      client:
+        enabled: false
+
   security:
     basic:
       enabled: true

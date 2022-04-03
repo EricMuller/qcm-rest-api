@@ -69,7 +69,7 @@
     </appender>
 
     <!-- LOG everything at INFO level -->
-    <root level="warn">
+    <root level="WARN">
         <appender-ref ref="AppFile"/>
         <appender-ref ref="Console"/>
     </root>
@@ -126,5 +126,11 @@
     <logger name="com.emu.apps.qcm.rest.config.cache.CacheEventLogger" level="info" additivity="false">
         <appender-ref ref="CacheFile"/>
     </logger>
+
+    <logger name="logging.level.de.codecentric.boot.admin" level="debug" additivity="false">
+        <appender-ref ref="Console"/>
+        <appender-ref ref="AppFile"/>
+    </logger>
+
 
 </configuration>

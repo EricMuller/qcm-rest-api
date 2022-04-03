@@ -41,8 +41,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 
-@SpringBootApplication(exclude = {WebFluxAutoConfiguration.class, ReactiveSecurityAutoConfiguration.class},
-        scanBasePackages = {"com.emu.apps.qcm", "com.emu.apps.shared"})
+@SpringBootApplication(scanBasePackages = {"com.emu.apps.qcm", "com.emu.apps.shared"})
 @EnableScheduling
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 public class RestApplication {
