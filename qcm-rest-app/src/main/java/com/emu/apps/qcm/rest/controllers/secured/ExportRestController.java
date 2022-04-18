@@ -7,9 +7,9 @@ import com.emu.apps.qcm.application.reporting.template.FileFormat;
 import com.emu.apps.qcm.application.reporting.template.TemplateReportServices;
 import com.emu.apps.qcm.rest.controllers.ApiRestMappings;
 import com.emu.apps.shared.annotations.Timer;
+import io.micrometer.core.annotation.Timed;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +32,7 @@ import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM_VALUE;
 @RestController
 @RequestMapping(value = ApiRestMappings.PROTECTED_API + ApiRestMappings.EXPORTS)
 @Tag(name = "Export")
+@Timed("exports")
 public class ExportRestController {
 
     private final ExportService exportService;
@@ -47,6 +48,7 @@ public class ExportRestController {
     @Timer
     @GetMapping(value = "/{uuid}", produces = APPLICATION_JSON_VALUE)
     @ResponseBody
+    @Timed(value = "exports.getExportByQuestionnaireUuid", longTask = true)
     public Export getExportByQuestionnaireUuid(@PathVariable("uuid") String id) {
         return exportService.getbyQuestionnaireUuid(id);
     }
@@ -55,6 +57,7 @@ public class ExportRestController {
     @Timer
     @GetMapping(value = "/{uuid}/{type-report}", produces = APPLICATION_OCTET_STREAM_VALUE)
     @SuppressWarnings("squid:S2583")
+    @Timed(value = "exports.getReportByQuestionnaireUuid", longTask = true)
     public ResponseEntity <Resource> getReportByQuestionnaireUuid(@PathVariable("uuid") String uuid, @PathVariable("type-report") String type) {
 
         if (Objects.isNull(type)) {

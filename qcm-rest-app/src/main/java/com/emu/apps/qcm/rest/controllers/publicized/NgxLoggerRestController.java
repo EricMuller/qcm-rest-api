@@ -22,7 +22,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequestMapping(LOGS)
-@Tag(name = "logs")
+@Tag(name = "ngx-logger")
 @Slf4j
 public class NgxLoggerRestController {
 

@@ -20,6 +20,8 @@ public enum CacheName {
 
         public static final String QUESTIONNAIRE = "QUESTIONNAIRE";
 
+        public static final String QUESTIONNAIRE_LIST_PUBLIC = "QUESTIONNAIRE";
+
         private Names() {
             //nop
         }

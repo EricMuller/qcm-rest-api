@@ -43,7 +43,8 @@ spring:
                 generate_statistics: false
                 current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
                 hikari:
-                    maximumPoolSize: 5
+                    minimumIdle: 5
+                    maximumPoolSize: 50
                 cache:
                     #required - turn on L2 cache.
                     use_second_level_cache: true
@@ -73,11 +74,11 @@ spring:
             pool-name: qcm-hikari-pool
             autoCommit: false
             connection-test-query: SELECT 1
-            connection-timeout: 1000 #1s
+            connection-timeout: 10000 #10s
             idle-timeout: 300000 #5m
             max-lifetime: 600000 #10m
-            maximumPoolSize: 5
-            minimum-idle: 0
+            maximumPoolSize: 50
+            minimum-idle: 5
             initialization-fail-timeout: -1
 
     sql:

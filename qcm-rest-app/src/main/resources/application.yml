@@ -1,8 +1,9 @@
 
+
 server:
     max-http-header-size: 8KB
-    connection-timeout: 5s
     tomcat:
+        connection-timeout: 60s
         max-http-post-size: 2MB
         max-swallow-size=: 2MB #request body bytes
         threads:
@@ -17,9 +18,13 @@ info:
     application-name: qcm-rest-app
 
 logging:
+    #path: /tmp #used by logback config !
     file:
-        path: logs #used by logback config !
+        path: /tmp
 
+endpoints:
+    logfile:
+        sensitive: false
 
 management:
     security:

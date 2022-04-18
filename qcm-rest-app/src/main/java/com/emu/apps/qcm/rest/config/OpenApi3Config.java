@@ -99,7 +99,7 @@ public class OpenApi3Config {
     @Bean
     GroupedOpenApi qcmHateosApis() {
         return GroupedOpenApi.builder()
-                .group("Public")
+                .group("Public api")
                 .pathsToMatch(PUBLICIZED_API + "/**")
                 .build();
     }
@@ -107,7 +107,7 @@ public class OpenApi3Config {
     @Bean
     GroupedOpenApi qcmApis() {
         return GroupedOpenApi.builder()
-                .group("Application")
+                .group("Private api")
                 .pathsToMatch(PROTECTED_API + "/"
                         , PROTECTED_API + ACCOUNTS + "/**"
                         , PROTECTED_API + QUESTIONNAIRES + "/**"
@@ -124,7 +124,7 @@ public class OpenApi3Config {
     @Bean
     GroupedOpenApi technicalApis() {
         return GroupedOpenApi.builder()
-                .group("Technical")
+                .group("Technical api")
                 .pathsToMatch(PROTECTED_API + WEBHOOKS + "/**",
                         PROTECTED_API + QUERY + "/**" , LOGS + "/**")
                 .build();

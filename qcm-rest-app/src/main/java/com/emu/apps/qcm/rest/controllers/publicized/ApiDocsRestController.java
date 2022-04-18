@@ -13,7 +13,7 @@ import static com.emu.apps.shared.security.AuthentificationContextHolder.getPrin
 
 @RestController
 @RequestMapping(PUBLICIZED_API)
-@Tag(name = "Docs")
+@Tag(name = "Public")
 public class ApiDocsRestController {
 
     private final ApiAssembler apiAssembler;

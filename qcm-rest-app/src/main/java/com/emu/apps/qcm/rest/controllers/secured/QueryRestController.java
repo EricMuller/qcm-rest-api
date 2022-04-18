@@ -5,7 +5,9 @@ import com.emu.apps.qcm.infra.query.adapters.jdbc.dto.Results;
 import com.emu.apps.qcm.rest.controllers.secured.resources.MessageResource;
 import com.emu.apps.shared.annotations.Timer;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import io.micrometer.core.annotation.Timed;
 import io.swagger.v3.oas.annotations.Operation;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.websocket.server.PathParam;
 import java.io.IOException;
 
 import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.PROTECTED_API;
@@ -28,11 +29,12 @@ import static org.springframework.http.ResponseEntity.badRequest;
 @RequestMapping(value = PROTECTED_API + QUERY, produces = {APPLICATION_JSON_VALUE})
 @io.swagger.v3.oas.annotations.tags.Tag(name = "Query")
 @Validated
+@Timed("query")
 public class QueryRestController {
 
     private QueryPort queryPort;
 
-    public QueryRestController(QueryPort queryPort) {
+    public QueryRestController(@Qualifier("jdbcQueryDynaPort") QueryPort queryPort) {
         this.queryPort = queryPort;
     }
 

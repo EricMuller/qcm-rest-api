@@ -5,17 +5,17 @@ import com.emu.apps.qcm.domain.model.account.AccountRepository;
 import com.emu.apps.qcm.rest.controllers.secured.hal.AccountModelAssembler;
 import com.emu.apps.qcm.rest.controllers.secured.openui.AccountView;
 import com.emu.apps.qcm.rest.controllers.secured.resources.AccountResource;
-import com.emu.apps.shared.exceptions.I18nedBadRequestException;
 import com.emu.apps.qcm.rest.mappers.QuestionnaireResourceMapper;
+import com.emu.apps.shared.exceptions.I18nedBadRequestException;
 import com.emu.apps.shared.exceptions.I18nedForbiddenRequestException;
 import com.fasterxml.jackson.annotation.JsonView;
+import io.micrometer.core.annotation.Timed;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.context.annotation.Profile;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
@@ -46,6 +46,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 @RequestMapping(PROTECTED_API + ACCOUNTS)
 @Tag(name = "Account")
+@Timed("accounts")
 public class AccountRestController {
 
     private final AccountRepository accountRepository;
@@ -66,10 +67,12 @@ public class AccountRestController {
 
     /**
      * public String whoami(@AuthenticationPrincipal(expression="name") String name) {
+     *
      * @param jwt
      * @return
      */
     @GetMapping("/token")
+    @Timed("accounts.token")
     public String token(@Parameter(hidden = true) @AuthenticationPrincipal Jwt jwt) {
 
         return jwt.getTokenValue();
@@ -84,6 +87,7 @@ public class AccountRestController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Object", content = @Content(schema = @Schema(name = "AccountResource", implementation = AccountResource.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input")})
+    @Timed("accounts.getAuthentifiedUser")
     public EntityModel <AccountResource> getAuthentifiedUser(Principal principal) {
         String email = getEmailOrName(principal);
         Account account = accountRepository.getAccountByEmail(email);
@@ -101,6 +105,7 @@ public class AccountRestController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Object updated", content = @Content(schema = @Schema(name = "AccountResource", implementation = AccountResource.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input")})
+    @Timed("accounts.updateAuthentifiedUser")
     public EntityModel <AccountResource> updateAuthentifiedUser(@JsonView(AccountView.Update.class) @RequestBody AccountResource accountResource, Principal principal) {
 
         var user = questionnaireResourceMapper.accountToModel(accountResource);
@@ -118,7 +123,8 @@ public class AccountRestController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Object created", content = @Content(schema = @Schema(name = "AccountResource", implementation = AccountResource.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input")})
-    public ResponseEntity<EntityModel <AccountResource>> createAuthentifiedUser(@JsonView(AccountView.Create.class) @RequestBody AccountResource accountResource, Principal principal) {
+    @Timed("accounts.createAuthentifiedUser")
+    public ResponseEntity <EntityModel <AccountResource>> createAuthentifiedUser(@JsonView(AccountView.Create.class) @RequestBody AccountResource accountResource, Principal principal) {
         var user = questionnaireResourceMapper.accountToModel(accountResource);
         String email = getEmailOrName(principal);
         Account authentAccount = accountRepository.getAccountByEmail(email);
@@ -141,6 +147,7 @@ public class AccountRestController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Object updated", content = @Content(schema = @Schema(name = "AccountResource", implementation = AccountResource.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input")})
+    @Timed("accounts.updateUser")
     public EntityModel <AccountResource> updateUser(@RequestBody AccountResource accountResource, Principal principal) {
         var account = questionnaireResourceMapper.accountToModel(accountResource);
         // fixme: ???

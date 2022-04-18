@@ -2,19 +2,19 @@ package com.emu.apps.qcm.rest.controllers.secured;
 
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
 import com.emu.apps.qcm.domain.model.category.CategoryRepository;
-import com.emu.apps.qcm.rest.mappers.QuestionnaireResourceMapper;
+import com.emu.apps.qcm.rest.controllers.secured.openui.CategoryView;
 import com.emu.apps.qcm.rest.controllers.secured.resources.CategoryResource;
 import com.emu.apps.qcm.rest.controllers.secured.resources.MessageResource;
-import com.emu.apps.qcm.rest.controllers.secured.openui.CategoryView;
+import com.emu.apps.qcm.rest.mappers.QuestionnaireResourceMapper;
 import com.emu.apps.shared.exceptions.FunctionnalException;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import io.micrometer.core.annotation.Timed;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,6 +41,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 @RequestMapping(value = PROTECTED_API + CATEGORIES, produces = APPLICATION_JSON_VALUE)
 @Tag(name = "Category")
+@Timed("categories")
 public class CategoryRestController {
 
     private final CategoryRepository categoryRepository;
@@ -54,6 +55,7 @@ public class CategoryRestController {
 
     @GetMapping(value = "/{uuid}", produces = APPLICATION_JSON_VALUE)
     @ResponseBody
+    @Timed("categories.getCategoryByUuid")
     public CategoryResource getCategoryByUuid(@PathVariable("uuid") String uuid) {
         return questionnaireResourceMapper.categoryToResources(categoryRepository.getCategoryByUuid(uuid));
     }
@@ -62,6 +64,7 @@ public class CategoryRestController {
     @ResponseBody
     @ApiResponse(responseCode = "200", description = "successful operation",
             content = @Content(array = @ArraySchema(schema = @Schema(implementation = CategoryResource.class))))
+    @Timed("categories.getCategoriesByType")
     public Iterable <CategoryResource> getCategoriesByType(@RequestParam("type") String typeCategory) throws FunctionnalException {
 
         return questionnaireResourceMapper.categoriesToResources(
@@ -70,6 +73,7 @@ public class CategoryRestController {
 
     @PostMapping
     @ResponseBody
+    @Timed("categories.saveCategory")
     public CategoryResource saveCategory(
             @JsonView(CategoryView.Create.class) @RequestBody CategoryResource categoryResource) {
         var category = questionnaireResourceMapper.categoryToModel(categoryResource);

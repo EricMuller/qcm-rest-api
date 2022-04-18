@@ -7,13 +7,13 @@ import com.emu.apps.qcm.domain.model.tag.TagRepository;
 import com.emu.apps.qcm.rest.controllers.secured.resources.TagResource;
 import com.emu.apps.qcm.rest.mappers.QuestionnaireResourceMapper;
 import com.fasterxml.jackson.annotation.JsonView;
+import io.micrometer.core.annotation.Timed;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
-import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -44,6 +44,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 @RequestMapping(value = PROTECTED_API + TAGS, produces = APPLICATION_JSON_VALUE)
 @io.swagger.v3.oas.annotations.tags.Tag(name = "Tag")
+@Timed("tags")
 public class TagRestController {
 
     private final TagRepository tagRepository;
@@ -58,6 +59,7 @@ public class TagRestController {
     @GetMapping
     @ResponseBody
     @PageableAsQueryParam
+    @Timed(value = "tags.getTags", longTask = true)
     public PageTag getTags(@RequestParam(value = "search", required = false) String search,
                            @Parameter(hidden = true)
                            @PageableDefault(direction = DESC, sort = {"dateModification"}, size = 100) Pageable pageable) throws IOException {
@@ -73,6 +75,7 @@ public class TagRestController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Object", content = @Content(schema = @Schema(name = "TagResource", implementation = TagResource.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input")})
+    @Timed(value = "tags.getTagByUuid")
     public EntityModel <TagResource> getTagByUuid(@PathVariable("uuid") String uuid) {
         return EntityModel.of(questionnaireResourceMapper.tagToResources(tagRepository.getTagById(new TagId(uuid))));
     }
@@ -82,6 +85,7 @@ public class TagRestController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Object created", content = @Content(schema = @Schema(name = "TagResource", implementation = TagResource.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input")})
+    @Timed(value = "tags.createTag")
     public EntityModel <TagResource> createTag(@JsonView(TagResource.Create.class) @RequestBody TagResource tagResource) {
         var tag = questionnaireResourceMapper.tagToModel(tagResource);
         return EntityModel.of(questionnaireResourceMapper.tagToResources(tagRepository.saveTag(tag)));
@@ -92,6 +96,7 @@ public class TagRestController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Object updated", content = @Content(schema = @Schema(name = "TagResource", implementation = TagResource.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input")})
+    @Timed(value = "tags.updateTag")
     public TagResource updateTag(@PathVariable("uuid") String uuid,
                                  @JsonView(TagResource.Update.class) @RequestBody TagResource tagResource) {
         var tag = questionnaireResourceMapper.tagToModel(uuid, tagResource);

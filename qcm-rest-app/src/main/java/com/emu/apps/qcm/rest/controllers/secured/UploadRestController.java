@@ -4,10 +4,10 @@ import com.emu.apps.qcm.domain.model.base.PrincipalId;
 import com.emu.apps.qcm.domain.model.upload.UploadId;
 import com.emu.apps.qcm.domain.model.upload.UploadRepository;
 import com.emu.apps.qcm.rest.controllers.secured.hal.UploadModelAssembler;
-import com.emu.apps.qcm.rest.controllers.secured.resources.TagResource;
 import com.emu.apps.qcm.rest.controllers.secured.resources.UploadResource;
 import com.emu.apps.qcm.rest.mappers.QuestionnaireResourceMapper;
 import com.emu.apps.shared.annotations.Timer;
+import io.micrometer.core.annotation.Timed;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -16,7 +16,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
-import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -47,6 +46,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 @RequestMapping(value = PROTECTED_API + UPLOADS, produces = APPLICATION_JSON_VALUE)
 @Tag(name = "Upload")
+@Timed("uploads")
 public class UploadRestController {
 
     private final UploadRepository uploadRepository;
@@ -66,6 +66,7 @@ public class UploadRestController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Object created", content = @Content(schema = @Schema(name = "UploadResource", implementation = UploadResource.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input")})
+    @Timed("uploads.uploadFileByType")
     public UploadResource uploadFileByType(@PathVariable("fileType") String fileType,
                                            @RequestParam("file") MultipartFile multipartFile,
                                            @RequestParam(value = "async", required = false) Boolean async) throws IOException {
@@ -80,6 +81,7 @@ public class UploadRestController {
             @ApiResponse(responseCode = "200", description = "List upload",
                     content = @Content(array = @ArraySchema(schema = @Schema(name = "UploadResource", implementation = UploadResource.class)))
             )})
+    @Timed(value = "uploads.getUploads", longTask = true)
     public PagedModel <EntityModel <UploadResource>> getUploads(@Parameter(hidden = true)
                                                                 @PageableDefault(direction = DESC, sort = {"dateModification"}) Pageable pageable,
                                                                 @Parameter(hidden = true) PagedResourcesAssembler <UploadResource> pagedResourcesAssembler) {
@@ -95,6 +97,7 @@ public class UploadRestController {
     @DeleteMapping(value = "/{uuid}")
     @ResponseBody
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    @Timed(value = "uploads.deleteUploadByUuid")
     public void deleteUploadByUuid(@PathVariable("uuid") String uuid) {
         uploadRepository.deleteUploadByUuid(new UploadId(uuid));
     }
@@ -104,6 +107,7 @@ public class UploadRestController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Object", content = @Content(schema = @Schema(name = "UploadResource", implementation = UploadResource.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input")})
+    @Timed(value = "uploads.getUploadByUuid")
     public UploadResource getUploadByUuid(@PathVariable("uuid") String uuid) {
         return questionnaireResourceMapper.uploadToResources(uploadRepository.getUploadByUuid(new UploadId(uuid)));
     }

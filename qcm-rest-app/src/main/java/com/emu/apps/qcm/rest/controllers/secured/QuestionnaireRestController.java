@@ -12,13 +12,13 @@ import com.emu.apps.qcm.rest.controllers.secured.command.QuestionnaireQuestionUp
 import com.emu.apps.qcm.rest.controllers.secured.hal.QuestionnaireModelAssembler;
 import com.emu.apps.qcm.rest.controllers.secured.hal.QuestionnaireQuestionModelAssembler;
 import com.emu.apps.qcm.rest.controllers.secured.openui.QuestionnaireView;
-import com.emu.apps.qcm.rest.controllers.secured.resources.QuestionResource;
 import com.emu.apps.qcm.rest.controllers.secured.resources.QuestionnaireQuestionResource;
 import com.emu.apps.qcm.rest.controllers.secured.resources.QuestionnaireResource;
 import com.emu.apps.qcm.rest.mappers.QuestionnaireResourceMapper;
 import com.emu.apps.shared.annotations.Timer;
 import com.emu.apps.shared.exceptions.I18nedNotFoundException;
 import com.fasterxml.jackson.annotation.JsonView;
+import io.micrometer.core.annotation.Timed;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -31,7 +31,6 @@ import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Pageable;
@@ -67,6 +66,7 @@ import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM_VALUE;
 @RequestMapping(value = PROTECTED_API + QUESTIONNAIRES, produces = APPLICATION_JSON_VALUE)
 @Tag(name = "Questionnaire")
 @Slf4j
+@Timed("questionnaires")
 public class QuestionnaireRestController {
 
     private final QuestionnaireCatalog questionnaireCatalog;
@@ -97,6 +97,7 @@ public class QuestionnaireRestController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Object", content = @Content(schema = @Schema(name = "QuestionnaireResource", implementation = QuestionnaireResource.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input")})
+    @Timed(value = "questionnaires.getQuestionnaireById")
     public EntityModel <QuestionnaireResource> getQuestionnaireById(@PathVariable("uuid") String uuid) {
 
         return EntityModel.of(questionnaireResourceMapper.questionnaireToResources(questionnaireCatalog.getQuestionnaireById(new QuestionnaireId(uuid))
@@ -108,6 +109,7 @@ public class QuestionnaireRestController {
     @DeleteMapping(value = "/{uuid}")
     @CacheEvict(cacheNames = QUESTIONNAIRE, key = "#uuid")
     @ResponseBody
+    @Timed(value = "questionnaires.deleteQuestionnaireById")
     public ResponseEntity <QuestionnaireResource> deleteQuestionnaireById(@PathVariable("uuid") String uuid) {
         questionnaireCatalog.deleteQuestionnaireById(new QuestionnaireId(uuid));
         return new ResponseEntity <>(NO_CONTENT);
@@ -120,6 +122,7 @@ public class QuestionnaireRestController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Object updated", content = @Content(schema = @Schema(name = "QuestionnaireResource", implementation = QuestionnaireResource.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input")})
+    @Timed(value = "questionnaires.updateQuestionnaire")
     public EntityModel <QuestionnaireResource> updateQuestionnaire(@PathVariable("uuid") String uuid,
                                                                    @JsonView(QuestionnaireView.Update.class) @RequestBody QuestionnaireResource questionnaireResource) {
         var questionnaire = questionnaireResourceMapper.questionnaireToModel(uuid, questionnaireResource);
@@ -132,6 +135,7 @@ public class QuestionnaireRestController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Object created", content = @Content(schema = @Schema(name = "QuestionnaireResource", implementation = QuestionnaireResource.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input")})
+    @Timed(value = "questionnaires.createQuestionnaire")
     public ResponseEntity <EntityModel <QuestionnaireResource>> createQuestionnaire(@JsonView(QuestionnaireView.Create.class) @RequestBody QuestionnaireResource questionnaireResource) {
         var questionnaire = questionnaireResourceMapper.questionnaireToModel(questionnaireResource);
 
@@ -154,6 +158,7 @@ public class QuestionnaireRestController {
                     content = @Content(array = @ArraySchema(schema = @Schema(name = "QuestionnaireQuestionResource", implementation = QuestionnaireQuestionResource.class)))
             ),
             @ApiResponse(responseCode = "400", description = "Invalid input")})
+    @Timed(value = "questionnaires.getQuestionsByQuestionnaireId", longTask = true)
     public PagedModel <EntityModel <QuestionnaireQuestionResource>> getQuestionsByQuestionnaireId(@PathVariable("uuid") String uuid,
                                                                                                   @Parameter(hidden = true) @PageableDefault(direction = ASC, sort = {"position"}) Pageable pageable,
                                                                                                   @Parameter(hidden = true) PagedResourcesAssembler <QuestionnaireQuestionResource> pagedResourcesAssembler) {
@@ -171,6 +176,7 @@ public class QuestionnaireRestController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Object", content = @Content(schema = @Schema(name = "QuestionnaireQuestionResource", implementation = QuestionnaireQuestionResource.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input")})
+    @Timed(value = "questionnaires.getQuestionnaireQuestionById")
     public QuestionnaireQuestionResource getQuestionnaireQuestionById(@PathVariable("uuid") String uuid, @PathVariable("q_uuid") String questionUuid) {
         return questionnaireResourceMapper.questionnaireQuestionToResources(questionnaireCatalog.getQuestion(new QuestionnaireId(uuid), new QuestionId(questionUuid)), uuid);
     }
@@ -184,6 +190,7 @@ public class QuestionnaireRestController {
                     content = @Content(array = @ArraySchema(schema = @Schema(name = "QuestionnaireResource", implementation = QuestionnaireResource.class)))
             ),
             @ApiResponse(responseCode = "400", description = "Invalid input")})
+    @Timed(value = "questionnaires.getQuestionnaires", longTask = true)
     public PagedModel <EntityModel <QuestionnaireResource>> getQuestionnaires(@RequestParam(value = "tag_uuid", required = false) String[] tagUuid,
                                                                               @Parameter(hidden = true) @PageableDefault(direction = DESC, sort = {"dateModification"}) Pageable pageable,
                                                                               @Parameter(hidden = true) PagedResourcesAssembler <QuestionnaireResource> pagedResourcesAssembler) {
@@ -197,6 +204,7 @@ public class QuestionnaireRestController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Object updated", content = @Content(schema = @Schema(name = "QuestionnaireQuestionResource", implementation = QuestionnaireQuestionResource.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input")})
+    @Timed(value = "questionnaires.addQuestionByQuestionnaireId")
     public EntityModel <QuestionnaireQuestionResource> addQuestionByQuestionnaireId(@PathVariable("uuid") String uuid, @RequestBody QuestionnaireQuestionUpdate questionnaireQuestionUpdate) {
 
         var questionnaireQuestion = questionnaireCatalog.addQuestion(new QuestionnaireId(uuid)
@@ -211,6 +219,7 @@ public class QuestionnaireRestController {
 
     @DeleteMapping(value = "/{uuid}/questions/{question_uuid}")
     @ResponseBody
+    @Timed(value = "questionnaires.deleteQuestionByQuestionnaireId")
     public ResponseEntity <Void> deleteQuestionByQuestionnaireId(@PathVariable("uuid") String uuid, @PathVariable("question_uuid") String questionUuid) {
         questionnaireCatalog.deleteQuestion(new QuestionnaireId(uuid), new QuestionId(questionUuid));
         return new ResponseEntity <>(NO_CONTENT);
@@ -219,6 +228,7 @@ public class QuestionnaireRestController {
     @Timer
     @GetMapping(value = "/{uuid}" + EXPORTS, produces = APPLICATION_JSON_VALUE)
     @ResponseBody
+    @Timed(value = "questionnaires.getExportByQuestionnaireUuid", longTask = true)
     public Export getExportByQuestionnaireUuid(@PathVariable("uuid") String uuid) {
         return exportService.getbyQuestionnaireUuid(uuid);
     }
@@ -226,6 +236,7 @@ public class QuestionnaireRestController {
     @Timer
     @GetMapping(value = "/{uuid}" + EXPORTS + "/{type-report}", produces = APPLICATION_OCTET_STREAM_VALUE)
     @SuppressWarnings("squid:S2583")
+    @Timed(value = "questionnaires.getReportByQuestionnaireUuid", longTask = true)
     public ResponseEntity <Resource> getReportByQuestionnaireUuid(@PathVariable("uuid") String uuid, @PathVariable("type-report") String type) {
 
         if (isNull(type)) {

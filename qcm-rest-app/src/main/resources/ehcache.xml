@@ -88,6 +88,22 @@
         </listeners>
     </cache>
 
+    <cache alias="QUESTIONNAIRE_LIST_PUBLIC" uses-template="simple">
+        <listeners>
+            <listener>
+                <class>com.emu.apps.qcm.rest.config.cache.CacheEventLogger</class>
+                <event-firing-mode>ASYNCHRONOUS</event-firing-mode>
+                <event-ordering-mode>UNORDERED</event-ordering-mode>
+                <events-to-fire-on>CREATED</events-to-fire-on>
+                <events-to-fire-on>UPDATED</events-to-fire-on>
+                <events-to-fire-on>EXPIRED</events-to-fire-on>
+                <events-to-fire-on>REMOVED</events-to-fire-on>
+                <events-to-fire-on>EVICTED</events-to-fire-on>
+            </listener>
+        </listeners>
+    </cache>
+
+
 
     <!--    <cache alias="employeeCache">-->
     <!--        <key-type>java.lang.Long</key-type>-->

@@ -18,6 +18,7 @@ import com.emu.apps.shared.annotations.Timer;
 import com.emu.apps.shared.exceptions.I18nedNotFoundException;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import io.micrometer.core.annotation.Timed;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -29,7 +30,6 @@ import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -62,6 +62,7 @@ import static org.springframework.http.ResponseEntity.noContent;
 @RequestMapping(value = PROTECTED_API + QUESTIONS, produces = {APPLICATION_JSON_VALUE, HAL_JSON_VALUE})
 @io.swagger.v3.oas.annotations.tags.Tag(name = "Question")
 @Validated
+@Timed("questions")
 public class QuestionRestController {
 
     private final QuestionCatalog questionCatalog;
@@ -93,6 +94,7 @@ public class QuestionRestController {
                     content = @Content(array = @ArraySchema(schema = @Schema(name = "SearchQuestionResources", implementation = SearchQuestionResource.class)))
             ),
             @ApiResponse(responseCode = "400", description = "Invalid input")})
+    @Timed(value = "questions.getQuestions", longTask = true)
     public PagedModel <EntityModel <SearchQuestionResource>> getQuestions(@RequestParam(value = "tag_uuid", required = false) String[] tagUuid,
                                                                           @RequestParam(value = "questionnaire_uuid", required = false) String[] questionnaireUuid,
                                                                           @Parameter(hidden = true) @PageableDefault(direction = DESC, sort = {"dateModification"}) Pageable pageable,
@@ -114,6 +116,7 @@ public class QuestionRestController {
                     content = @Content(array = @ArraySchema(schema = @Schema(name = "TagResources", implementation = TagResource.class)))
             ),
             @ApiResponse(responseCode = "400", description = "Invalid input")})
+    @Timed(value = "questions.getTags", longTask = true)
     public PagedModel <EntityModel <TagResource>> getTags(@Parameter(hidden = true) Pageable pageable,
                                                           @Parameter(hidden = true) PagedResourcesAssembler <TagResource> pagedTagResourcesAssembler) {
         var page = questionnaireResourceMapper.pageTagsToResources(questionCatalog.findAllQuestionTagByPage(pageable, PrincipalId.of(getPrincipal())));
@@ -128,6 +131,7 @@ public class QuestionRestController {
             @ApiResponse(responseCode = "200", description = "List Tags",
                     content = @Content(array = @ArraySchema(schema = @Schema(name = "TagResources", implementation = String.class)))
             )})
+    @Timed(value = "questions.getStatus", longTask = true)
     public Iterable <String> getStatus(@Parameter(hidden = true) Pageable pageable) {
         return questionCatalog.findAllStatusByPage(pageable, PrincipalId.of(getPrincipal()));
     }
@@ -139,6 +143,7 @@ public class QuestionRestController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Object updated", content = @Content(schema = @Schema(name = "QuestionResource", implementation = QuestionResource.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input")})
+    @Timed(value = "questions.getQuestionByUuid")
     public EntityModel <QuestionResource> getQuestionByUuid(@ValidUuid @PathVariable("uuid") String uuid) {
         return of(questionnaireResourceMapper.questionToResources(questionCatalog.getQuestionById(new QuestionId(uuid))
                 .orElseThrow(() -> new I18nedNotFoundException(UNKNOWN_UUID_QUESTION, uuid))));
@@ -150,6 +155,7 @@ public class QuestionRestController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Object updated", content = @Content(schema = @Schema(name = "QuestionResource", implementation = QuestionResource.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input")})
+    @Timed(value = "questions.updateQuestion", longTask = true)
     public EntityModel <QuestionResource> updateQuestion(@ValidUuid @PathVariable("uuid") String uuid,
                                                          @JsonView(QuestionView.Update.class) @RequestBody @Valid QuestionResource questionResource) {
         var question = questionnaireResourceMapper.questionToModel(uuid, questionResource);
@@ -161,6 +167,7 @@ public class QuestionRestController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Object created", content = @Content(schema = @Schema(name = "QuestionResource", implementation = QuestionResource.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input")})
+    @Timed(value = "questions.createQuestion")
     public ResponseEntity <EntityModel <QuestionResource>> createQuestion(@JsonView(QuestionView.Create.class) @RequestBody @Valid QuestionResource questionResource) {
         var question = questionnaireResourceMapper.questionToModel(questionResource);
         var entityModel = of(questionnaireResourceMapper.questionToResources(questionCatalog.saveQuestion(question, PrincipalId.of(getPrincipal()))));
@@ -175,7 +182,7 @@ public class QuestionRestController {
     @DeleteMapping(value = "/{uuid}")
     @ResponseBody
     @CacheEvict(cacheNames = QUESTION, condition = "#uuid != null", key = "#uuid")
-
+    @Timed(value = "questions.deleteQuestionByUuid")
     public ResponseEntity <Void> deleteQuestionByUuid(@PathVariable("uuid") String uuid) {
         questionCatalog.deleteQuestionById(new QuestionId(uuid));
         return noContent().build();
@@ -188,6 +195,7 @@ public class QuestionRestController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Object patch", content = @Content(schema = @Schema(name = "QuestionResource", implementation = QuestionResource.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input")})
+    @Timed(value = "questions.patchQuestionByUuid")
     public EntityModel <QuestionResource> patchQuestionByUuid(@PathVariable("uuid") String uuid, @RequestBody QuestionStatus questionStatus) {
 
         var question = questionCatalog.getQuestionById(new QuestionId(uuid))
