@@ -91,16 +91,23 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
     }
 
 
-    @Override
-    public Questionnaire saveQuestionnaire(final Questionnaire questionnaire, String principal) {
+    private CategoryEntity getCategory(final Questionnaire questionnaire){
 
         CategoryEntity category = null;
         UUID uuid = uuidMapper.getUuid(questionnaire.getCategory());
         if (nonNull(uuid)) {
             category = categoryRepository.findByUuid(uuid);
         }
+        return category;
+    }
+
+    @Override
+    public Questionnaire updateQuestionnaire(final Questionnaire questionnaire, String principal) {
+
+        CategoryEntity category = getCategory(questionnaire);
 
         QuestionnaireEntity questionnaireEntity = null;
+
         if (nonNull(questionnaire.getId()) && isNotBlank(questionnaire.getId().toUuid())) {
             questionnaireEntity = questionnaireRepository.findByUuid(fromString(questionnaire.getId().toUuid()))
                     .orElseThrow(() -> new I18nedNotFoundException(UNKNOWN_UUID_QUESTIONNAIRE, questionnaire.getId().toUuid()));
@@ -112,14 +119,30 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
         } else {
             questionnaireEntity = questionnaireMapper.dtoToModel(questionnaire);
             questionnaireEntity.setCategory(category);
-            // flush for datemodification issue with javers
+            // flush for date_modification issue with javers
             questionnaireEntity = questionnaireRepository.saveAndFlush(questionnaireEntity);
         }
 
         saveQuestionnaireTags(questionnaireEntity, questionnaire.getTags(), principal);
 
-        //fixme: performance issue avec javers
-        // javers.commit(principal, questionnaireEntity);
+       return questionnaireMapper.modelToDto(questionnaireEntity);
+    }
+
+
+
+    @Override
+    public Questionnaire saveQuestionnaire(final Questionnaire questionnaire, String principal) {
+
+        CategoryEntity category = getCategory(questionnaire);
+
+        var questionnaireEntity = questionnaireMapper.dtoToModel(questionnaire);
+        questionnaireEntity.setCategory(category);
+
+        questionnaireEntity = questionnaireRepository.saveAndFlush(questionnaireEntity); // flush for datemodification issue with javers
+
+        saveQuestionnaireTags(questionnaireEntity, questionnaire.getTags(), principal);
+
+        // javers.commit(principal, questionnaireEntity); //fixme: performance issue avec javers
 
         return questionnaireMapper.modelToDto(questionnaireEntity);
     }

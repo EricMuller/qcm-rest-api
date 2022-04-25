@@ -66,7 +66,7 @@ class QuestionnaireRepositoryAdapter implements QuestionnaireRepository {
      */
     @Override
     public Questionnaire updateQuestionnaire(Questionnaire questionnaire, PrincipalId principal) {
-        return questionnairePersistencePort.saveQuestionnaire(questionnaire, principal.toUuid());
+        return questionnairePersistencePort.updateQuestionnaire(questionnaire, principal.toUuid());
     }
 
     /**

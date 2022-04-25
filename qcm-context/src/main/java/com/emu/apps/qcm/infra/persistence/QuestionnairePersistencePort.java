@@ -18,6 +18,8 @@ public interface QuestionnairePersistencePort {
 
     Questionnaire saveQuestionnaire(Questionnaire questionnaireDto, String principal);
 
+    Questionnaire updateQuestionnaire(final Questionnaire questionnaire, String principal);
+
     QuestionnaireQuestion addQuestion(String uuid, String questionUuid, Optional <Integer> position, String principal);
 
     Page <Questionnaire> findAllPublishedByPage(Pageable pageable);
