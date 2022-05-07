@@ -26,48 +26,15 @@
  *
  */
 
-package com.emu.apps.qcm.rest.controllers;
+package com.emu.apps.qcm.rest.controllers.management;
 
-public final class ApiRestMappings {
+public final class RestMappings {
 
-    public static final String MANAGEMENT_API = "/api/v1/qcm/protected";
+    public static final String PUBLIC_API = "/qcm/api/v1";
 
-    public static final String PUBLIC_API = "/api/v1/qcm/public";
+    public static final String COMMAND =  "/command";
 
-    public static final String ACTUATOR_API = "/actuator";
-
-    public static final String LOGS = "/api/logs";
-
-    public static final String QUESTIONNAIRES = "/questionnaires";
-
-    public static final String CATEGORIES = "/categories";
-
-    public static final String QUESTIONS = "/questions";
-
-    public static final String SUGGEST = "/suggest";
-
-    public static final String TAGS = "/tags";
-
-    public static final String STATUS = "/status";
-
-    public static final String UPLOADS = "/uploads";
-
-    public static final String WEBHOOKS = "/webhooks";
-
-    public static final String ACCOUNTS = "/accounts";
-
-    public static final String EXPORTS = "/exports";
-
-    public static final String IMPORTS = "/imports";
-
-    public static final String QUERY = "/query";
-
-    public static final String COMMAND = "/command";
-
-
-
-    private ApiRestMappings() {
+    private RestMappings() {
         //nop
     }
-
 }

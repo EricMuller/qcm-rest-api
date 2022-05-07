@@ -118,7 +118,7 @@
         <appender-ref ref="Console"/>
     </logger>
 
-    <logger name="com.emu.apps.qcm.rest.controllers.publicized.NgxLoggerRestController" level="info" additivity="false">
+    <logger name="com.emu.apps.qcm.rest.controllers.unrestrained.NgxLoggerRestController" level="info" additivity="false">
         <appender-ref ref="NgxLogger"/>
         <appender-ref ref="Console"/>
     </logger>

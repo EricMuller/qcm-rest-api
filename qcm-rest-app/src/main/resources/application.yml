@@ -38,6 +38,9 @@ management:
             show-details: always
 
 springdoc:
+    show-actuator: true
+    show:
+        actuator: true
     swagger-ui:
         oauth2RedirectUrl:  ${OPENAPI_SERVER_URI}/swagger-ui/oauth2-redirect.html
 

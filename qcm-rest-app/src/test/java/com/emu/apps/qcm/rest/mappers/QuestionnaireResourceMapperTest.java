@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.rest.mappers;
 
 import com.emu.apps.qcm.domain.mappers.*;
-import com.emu.apps.qcm.rest.controllers.secured.resources.AccountResource;
+import com.emu.apps.qcm.rest.controllers.management.resources.AccountResource;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
