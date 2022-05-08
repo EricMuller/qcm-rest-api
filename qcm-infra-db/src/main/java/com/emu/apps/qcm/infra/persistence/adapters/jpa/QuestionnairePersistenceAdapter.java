@@ -6,12 +6,12 @@ import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireQuestion;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireTag;
 import com.emu.apps.qcm.infra.persistence.QuestionnairePersistencePort;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.builders.QuestionnaireTagBuilder;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category.CategoryEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.mptt.MpttCategoryEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireQuestionEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireTagEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.TagEntity;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.CategoryRepository;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.MpttCategoryRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.QuestionRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.QuestionnaireQuestionRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.QuestionnaireRepository;
@@ -47,7 +47,7 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
 
     private final QuestionnaireQuestionRepository questionnaireQuestionRepository;
 
-    private final CategoryRepository categoryRepository;
+    private final MpttCategoryRepository mpttCategoryRepository;
 
     private final QuestionnaireEntityMapper questionnaireMapper;
 
@@ -61,13 +61,13 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
 
     public QuestionnairePersistenceAdapter(QuestionnaireRepository questionnaireRepository, QuestionRepository questionRepository,
                                            QuestionnaireQuestionRepository questionnaireQuestionRepository,
-                                           CategoryRepository categoryRepository, QuestionnaireEntityMapper questionnaireMapper,
+                                           MpttCategoryRepository mpttCategoryRepository, QuestionnaireEntityMapper questionnaireMapper,
                                            UuidMapper uuidMapper, TagRepository tagRepository,
                                            QuestionnaireTagRepository questionnaireTagRepository, QuestionnaireQuestionEntityMapper questionnaireQuestionMapper) {
         this.questionnaireRepository = questionnaireRepository;
         this.questionRepository = questionRepository;
         this.questionnaireQuestionRepository = questionnaireQuestionRepository;
-        this.categoryRepository = categoryRepository;
+        this.mpttCategoryRepository = mpttCategoryRepository;
         this.questionnaireMapper = questionnaireMapper;
         this.uuidMapper = uuidMapper;
         this.tagRepository = tagRepository;
@@ -91,12 +91,12 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
     }
 
 
-    private CategoryEntity getCategory(final Questionnaire questionnaire){
+    private MpttCategoryEntity getCategory(final Questionnaire questionnaire){
 
-        CategoryEntity category = null;
-        UUID uuid = uuidMapper.getUuid(questionnaire.getCategory());
+        MpttCategoryEntity category = null;
+        UUID uuid = uuidMapper.getUuid(questionnaire.getMpttCategory());
         if (nonNull(uuid)) {
-            category = categoryRepository.findByUuid(uuid);
+            category = mpttCategoryRepository.findByUuid(uuid);
         }
         return category;
     }
@@ -104,7 +104,7 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
     @Override
     public Questionnaire updateQuestionnaire(final Questionnaire questionnaire, String principal) {
 
-        CategoryEntity category = getCategory(questionnaire);
+        MpttCategoryEntity category = getCategory(questionnaire);
 
         QuestionnaireEntity questionnaireEntity = null;
 
@@ -133,7 +133,7 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
     @Override
     public Questionnaire saveQuestionnaire(final Questionnaire questionnaire, String principal) {
 
-        CategoryEntity category = getCategory(questionnaire);
+        MpttCategoryEntity category = getCategory(questionnaire);
 
         var questionnaireEntity = questionnaireMapper.dtoToModel(questionnaire);
         questionnaireEntity.setCategory(category);

@@ -8,7 +8,7 @@ import java.io.IOException;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
- class CategoryViewTest {
+ class MpttCategoryViewTest {
 
     private final ObjectMapper MAPPER = new ObjectMapper();
 

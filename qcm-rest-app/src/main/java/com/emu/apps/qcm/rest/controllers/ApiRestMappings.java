@@ -30,7 +30,7 @@ package com.emu.apps.qcm.rest.controllers;
 
 public final class ApiRestMappings {
 
-    public static final String MANAGEMENT_API = "/api/v1/qcm/protected";
+    public static final String MANAGEMENT_API = "/api/v1/qcm/management";
 
     public static final String PUBLIC_API = "/api/v1/qcm/public";
 

@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires;
 
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category.CategoryEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.mptt.MpttCategoryEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.common.AuditableEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.converters.BooleanTFConverter;
 import lombok.Getter;
@@ -72,7 +72,7 @@ public class QuestionnaireEntity extends AuditableEntity <String> {
     private Set <QuestionnaireQuestionEntity> questionnaireQuestions = new HashSet <>();
 
     @ManyToOne(fetch = FetchType.EAGER)
-    private CategoryEntity category;
+    private MpttCategoryEntity category;
 
     @OneToMany(mappedBy = "questionnaire", cascade = CascadeType.ALL, orphanRemoval = true)
     @BatchSize(size = 20)

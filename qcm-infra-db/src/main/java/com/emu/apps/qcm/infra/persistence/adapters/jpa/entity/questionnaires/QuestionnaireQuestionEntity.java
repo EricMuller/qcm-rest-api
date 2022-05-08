@@ -21,7 +21,7 @@ import java.util.Objects;
                // @NamedSubgraph(name = "responses", attributeNodes =@NamedAttributeNode(value = "questionTags", subgraph = "tags")),
                 @NamedSubgraph(name = "QuestionnaireQuestion.question",
                         attributeNodes = {
-                       @NamedAttributeNode("category"),
+                       @NamedAttributeNode("mpttCategory"),
 
                         }
                 )

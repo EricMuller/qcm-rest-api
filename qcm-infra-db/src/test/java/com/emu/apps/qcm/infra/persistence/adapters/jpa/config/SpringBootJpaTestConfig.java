@@ -77,7 +77,7 @@ public class SpringBootJpaTestConfig {
                 .dataSource(dataSource)
                 .packages("com.emu.apps.qcm.infra.persistence.adapters.jpa.entity")
                 .persistenceUnit("qcm")
-                .properties(singletonMap("hibernate.hbm2ddl.auto", "update"))
+                //.properties(singletonMap("hibernate.hbm2ddl.auto", "update"))
                 .build();
     }
 

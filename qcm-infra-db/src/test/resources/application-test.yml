@@ -33,21 +33,21 @@ spring:
     liquibase:
         change-log: classpath:/db/changelog/db.changelog-master.xml
 
-logging:
-    # file: logs/application-debug.LOGGER
-    level:
-        root: ERROR
-        org.springframework: DEBUG
-        org.springframework.web: ERROR
-        org.springframework.security: WARN
-        org.hibernate: WARN
-        org.hibernate.SQL: WARN
-        org.hibernate.type.descriptor.sql: WARN
-        org.hibernate.type.descriptor.sql.BasicBinder: TRACE
-        com.emu.apps: WARN
-        org.keycloak.services: WARN
-        org.springframework.aop.interceptor.PerformanceMonitorInterceptor: WARN
-        com.emu.apps.qcm.spi.persistence.adapters.jpa: INFO
+#logging:
+#    # file: logs/application-debug.LOGGER
+#    level:
+#        root: ERROR
+#        org.springframework: WARN
+#        org.springframework.web: ERROR
+#        org.springframework.security: WARN
+#        org.hibernate: WARN
+#        org.hibernate.SQL: WARN
+#        org.hibernate.type.descriptor.sql: WARN
+#        org.hibernate.type.descriptor.sql.BasicBinder: WARN #TRACE
+#        com.emu.apps: WARN
+#        org.keycloak.services: WARN
+#        org.springframework.aop.interceptor.PerformanceMonitorInterceptor: WARN
+#        com.emu.apps.qcm.spi.persistence.adapters.jpa: INFO
 
 
 management:

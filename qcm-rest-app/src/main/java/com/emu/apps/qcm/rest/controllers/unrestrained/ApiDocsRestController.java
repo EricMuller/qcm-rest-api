@@ -13,7 +13,7 @@ import static com.emu.apps.shared.security.AuthentificationContextHolder.getPrin
 
 @RestController
 @RequestMapping(PUBLIC_API)
-@Tag(name = "Public")
+@Tag(name = "_docs", description = "hypermedia and links")
 public class ApiDocsRestController {
 
     private final ApiAssembler apiAssembler;

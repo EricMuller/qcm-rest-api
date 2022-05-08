@@ -1,11 +1,11 @@
 package com.emu.apps.qcm.rest.controllers.management;
 
 
-import com.emu.apps.qcm.domain.model.category.Category;
+import com.emu.apps.qcm.domain.model.category.MpttCategory;
 import com.emu.apps.qcm.domain.repositories.DbRepositoryFixture;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.BaeldungPostgresqlExtension;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category.Type;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.mptt.MpttType;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.fixtures.DbFixture;
 import com.emu.apps.qcm.rest.controllers.ApiRestMappings;
 import com.emu.apps.qcm.rest.controllers.management.resources.CategoryResource;
@@ -36,8 +36,8 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 @SpringBootTest(classes = {SpringBootJpaTestConfig.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("classpath:application-test.properties")
 @ActiveProfiles(value = "test")
-@ContextConfiguration(initializers = {CategoryControllerTest.Initializer.class})
-class CategoryControllerTest {
+@ContextConfiguration(initializers = {MpttCategoryControllerTest.Initializer.class})
+class MpttCategoryControllerTest {
 
     @RegisterExtension
     static BaeldungPostgresqlExtension postgresqlContainer = BaeldungPostgresqlExtension.getInstance();
@@ -73,15 +73,15 @@ class CategoryControllerTest {
         return "http://localhost:" + port + uri;
     }
 
-    private Category createCategoryDto() {
+    private MpttCategory createCategoryDto() {
 
 
-        Category category = new Category();
+        MpttCategory mpttCategory = new MpttCategory();
 
-        category.setType(Type.QUESTION.name());
-        category.setLibelle(LIBELLE);
+        mpttCategory.setType(MpttType.QUESTION.name());
+        mpttCategory.setLibelle(LIBELLE);
 
-        return category;
+        return mpttCategory;
     }
 
     @BeforeEach
@@ -128,7 +128,7 @@ class CategoryControllerTest {
         assertThat(getResponse.getBody()).isNotNull();
 
         assertThat(getResponse.getBody().getUuid()).isNotNull().isEqualTo(uuid);
-        assertThat(getResponse.getBody().getType()).isNotNull().isEqualTo(Type.QUESTION.name());
+        assertThat(getResponse.getBody().getType()).isNotNull().isEqualTo(MpttType.QUESTION.name());
         assertThat(getResponse.getBody().getLibelle()).isNotNull().isEqualTo(LIBELLE);
 
     }
@@ -144,7 +144,7 @@ class CategoryControllerTest {
         String uuid = postResponse.getBody().getUuid();
 
         URI uriQuestion = UriComponentsBuilder.fromHttpUrl(getURL(CATEGORY_URI))
-                .queryParam("type", Type.QUESTION.name()).build().toUri();
+                .queryParam("type", MpttType.QUESTION.name()).build().toUri();
 
         final ResponseEntity <CategoryResource[]> getResponse = restTemplate
                 .exchange(uriQuestion, HttpMethod.GET, new HttpEntity <>(headers()), CategoryResource[].class);
@@ -154,11 +154,11 @@ class CategoryControllerTest {
         CategoryResource category = getResponse.getBody()[0];
 
         assertThat(category.getUuid()).isNotNull().isEqualTo(uuid);
-        assertThat(category.getType()).isNotNull().isEqualTo(Type.QUESTION.name());
+        assertThat(category.getType()).isNotNull().isEqualTo(MpttType.QUESTION.name());
         assertThat(category.getLibelle()).isNotNull().isEqualTo(LIBELLE);
 
         URI uriQuestionnaire = UriComponentsBuilder.fromHttpUrl(getURL(CATEGORY_URI))
-                .queryParam("type", Type.QUESTIONNAIRE.name()).build().toUri();
+                .queryParam("type", MpttType.QUESTIONNAIRE.name()).build().toUri();
 
         final ResponseEntity <CategoryResource[]> getResponse2 = restTemplate
                 .exchange(uriQuestionnaire, HttpMethod.GET, new HttpEntity <>(headers()), CategoryResource[].class);

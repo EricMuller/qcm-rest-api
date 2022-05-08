@@ -7,7 +7,7 @@ import com.emu.apps.qcm.domain.mappers.QuestionnaireIdMapper;
 import com.emu.apps.qcm.domain.mappers.TagIdMapper;
 import com.emu.apps.qcm.domain.mappers.WebhookIdMapper;
 import com.emu.apps.qcm.domain.model.Status;
-import com.emu.apps.qcm.domain.model.category.Category;
+import com.emu.apps.qcm.domain.model.category.MpttCategory;
 import com.emu.apps.qcm.domain.model.question.Question;
 import com.emu.apps.qcm.domain.model.question.QuestionTag;
 import com.emu.apps.qcm.domain.model.question.QuestionWithTagsOnly;
@@ -43,10 +43,10 @@ public interface QuestionnaireResourceMapper {
     QuestionnaireTag questionnaireTagToModel(TagResource tagResource);
 
     @ResourceId
-    CategoryResource categoryToResources(Category category);
+    CategoryResource categoryToResources(MpttCategory mpttCategory);
 
     @ModelId
-    Category categoryToModel(CategoryResource categoryResource);
+    MpttCategory categoryToModel(CategoryResource categoryResource);
 
     @Mapping(target = "uuid", source = "questionnaireQuestion.id")
     @Mapping(target = "questionnaireUuid", source = "questionnaireUuid")
@@ -100,7 +100,7 @@ public interface QuestionnaireResourceMapper {
     WebHook webhookToModel(String id, WebHookResource webHookResource);
 
 
-    Iterable <CategoryResource> categoriesToResources(Iterable <Category> categories);
+    Iterable <CategoryResource> categoriesToResources(Iterable <MpttCategory> categories);
 
     Iterable <SearchQuestionResource> questionTagsToResources(Page <QuestionWithTagsOnly> page);
 

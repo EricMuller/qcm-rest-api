@@ -55,7 +55,7 @@ public interface QuestionnaireQuestionEntityMapper {
     @Mapping(source = "question.dateModification", target = "dateModification")
     @Mapping(source = "question.type", target = "type")
     @Mapping(source = "question.questionText", target = "question")
-    @Mapping(source = "question.category", target = "category")
+    @Mapping(source = "question.mpttCategory", target = "mpttCategory")
     @Mapping(source = "question.responses", target = "responses")
     @Mapping(source = "question.tags", target = "questionTags")
     @Mapping(source = "question.tip", target = "tip")

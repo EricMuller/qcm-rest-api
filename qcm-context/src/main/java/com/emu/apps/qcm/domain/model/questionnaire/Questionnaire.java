@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.domain.model.questionnaire;
 
 import com.emu.apps.qcm.domain.model.Status;
-import com.emu.apps.qcm.domain.model.category.Category;
+import com.emu.apps.qcm.domain.model.category.MpttCategory;
 import com.emu.apps.qcm.domain.model.base.DomainId;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,7 +20,7 @@ public class Questionnaire extends DomainId <QuestionnaireId> {
 
     private String description;
 
-    private Category category;
+    private MpttCategory mpttCategory;
 
     private Set <QuestionnaireTag> tags;
 

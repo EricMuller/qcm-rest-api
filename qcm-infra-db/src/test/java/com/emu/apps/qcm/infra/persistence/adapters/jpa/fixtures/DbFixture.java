@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa.fixtures;
 
 
-import com.emu.apps.qcm.infra.persistence.CategoryPersistencePort;
+import com.emu.apps.qcm.infra.persistence.MpptCategoryPersistencePort;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.builders.QuestionnaireTagBuilder;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.AccountEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.events.WebHookEntity;
@@ -29,8 +29,8 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.emu.apps.qcm.domain.model.question.TypeQuestion.FREE_TEXT;
-import static com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category.Type.QUESTION;
-import static com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category.Type.QUESTIONNAIRE;
+import static com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.mptt.MpttType.QUESTION;
+import static com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.mptt.MpttType.QUESTIONNAIRE;
 import static java.util.UUID.fromString;
 
 
@@ -59,7 +59,7 @@ public class DbFixture extends Fixture {
     private QuestionnaireQuestionRepository questionnaireQuestionRepository;
 
     @Autowired
-    private CategoryRepository categoryRepository;
+    private MpttCategoryRepository mpttCategoryRepository;
 
     @Autowired
     private ResponseRepository responseCrudRepository;
@@ -74,7 +74,7 @@ public class DbFixture extends Fixture {
     private WebHookRepository webHookRepository;
 
     @Autowired
-    private CategoryPersistencePort categoryPersistencePort;
+    private MpptCategoryPersistencePort mpptCategoryPersistencePort;
 
     @Autowired
     private AccountRepository accountRepository;
@@ -100,7 +100,7 @@ public class DbFixture extends Fixture {
         tagRepository.deleteAll();
         questionnaireRepository.deleteAll();
         entityManager.flush();
-        categoryRepository.deleteAll();
+        mpttCategoryRepository.deleteAll();
         accountRepository.deleteAll();
         // addUserTest(USER);
     }
@@ -116,7 +116,7 @@ public class DbFixture extends Fixture {
         tagRepository.deleteByCreatedByEquals(userId);
         questionnaireRepository.deleteByCreatedByEquals(userId);
 
-        categoryRepository.deleteAllByUser(userId);
+        mpttCategoryRepository.deleteAllByUser(userId);
         accountRepository.deleteByEmailEquals(userId);
         entityManager.flush();
         // addUserTest(USER);
@@ -150,13 +150,13 @@ public class DbFixture extends Fixture {
 
             var accountEntity = getAccountByUserName(accountUuid);
 
-            var questionnaireCategory = categoryPersistencePort.findOrCreateByLibelle(accountUuid, QUESTIONNAIRE.name(), CATEGORIE_LIBELLE);
+            var questionnaireCategory = mpptCategoryPersistencePort.findOrCreateByLibelle(accountUuid, QUESTIONNAIRE.name(), CATEGORIE_LIBELLE);
 
-            var questionCategory = categoryPersistencePort.findOrCreateByLibelle(accountUuid, QUESTION.name(), CATEGORIE_LIBELLE);
+            var questionCategory = mpptCategoryPersistencePort.findOrCreateByLibelle(accountUuid, QUESTION.name(), CATEGORIE_LIBELLE);
 
-            var questionnaireCategoryEntity = categoryRepository.findByUuid(fromString(questionnaireCategory.getId().toUuid()));
+            var questionnaireCategoryEntity = mpttCategoryRepository.findByUuid(fromString(questionnaireCategory.getId().toUuid()));
 
-            var questionCategoryEntity = categoryRepository.findByUuid(fromString(questionCategory.getId().toUuid()));
+            var questionCategoryEntity = mpttCategoryRepository.findByUuid(fromString(questionCategory.getId().toUuid()));
 
             //questionnaire
             var questionnaireEntity = new QuestionnaireEntity();
@@ -186,7 +186,7 @@ public class DbFixture extends Fixture {
             questionEntity1.setQuestionText(QUESTION_QUESTION_1);
             questionEntity1.setType(FREE_TEXT);
             questionEntity1.setCreatedBy(accountUuid);
-            questionEntity1.setCategory(questionCategoryEntity);
+            questionEntity1.setMpttCategory(questionCategoryEntity);
             questionEntity1.setOwner(accountEntity);
 
             // question.setQuestionnaire(questionnaire);
@@ -199,7 +199,7 @@ public class DbFixture extends Fixture {
             var questionEntity2 = new QuestionEntity();
             questionEntity2.setQuestionText(QUESTION_QUESTION_2);
             questionEntity2.setType(FREE_TEXT);
-            questionEntity2.setCategory(questionCategoryEntity);
+            questionEntity2.setMpttCategory(questionCategoryEntity);
             questionEntity2.setCreatedBy(accountUuid);
             questionEntity2.setOwner(accountEntity);
             questionEntity2 = questionRepository.save(questionEntity2);

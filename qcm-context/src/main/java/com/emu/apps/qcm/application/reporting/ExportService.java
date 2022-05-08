@@ -39,7 +39,7 @@ public class ExportService {
 
     String generateName(Questionnaire questionnaire) {
 
-        return (Objects.nonNull(questionnaire.getCategory()) ? questionnaire.getCategory().getLibelle() : "")
+        return (Objects.nonNull(questionnaire.getMpttCategory()) ? questionnaire.getMpttCategory().getLibelle() : "")
                 + "-" + questionnaire.getTitle() + "-" + questionnaire.getStatus() + "-" + questionnaire.getVersion();
 
     }

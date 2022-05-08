@@ -33,7 +33,8 @@ spring:
     generate-ddl: false
     show-sql: false
     hibernate:
-      ddl-auto: create-drop
+      #ddl-auto: create-drop
+      ddl-auto: none
       dialect: org.hibernate.dialect.PostgreSQLDialect
 
     properties:
@@ -111,12 +112,13 @@ logging:
   # file: logs/application-debug.LOGGER
   level:
     root: ERROR
+    org.testcontainers: ERROR
     org.springframework.web: ERROR
     org.springframework.security: WARN
     org.hibernate: WARN
     org.hibernate.SQL: INFO
     org.hibernate.type.descriptor.sql: WARN
-    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.hibernate.type.descriptor.sql.BasicBinder: WARN
     com.emu.apps: WARN
     org.keycloak.services: WARN
     org.springframework.aop.interceptor.PerformanceMonitorInterceptor: WARN

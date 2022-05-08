@@ -4,8 +4,8 @@ import com.emu.apps.qcm.application.reporting.dtos.Export;
 import com.emu.apps.qcm.application.reporting.dtos.QuestionExport;
 import com.emu.apps.qcm.domain.model.Status;
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
-import com.emu.apps.qcm.domain.model.category.Category;
-import com.emu.apps.qcm.domain.model.category.CategoryRepository;
+import com.emu.apps.qcm.domain.model.category.MpttCategory;
+import com.emu.apps.qcm.domain.model.category.MpttCategoryRepository;
 import com.emu.apps.qcm.domain.model.imports.ImportStatus;
 import com.emu.apps.qcm.domain.model.question.Question;
 import com.emu.apps.qcm.domain.model.question.QuestionRepository;
@@ -65,16 +65,16 @@ public class ImportService {
 
     private final UploadRepository uploadRepository;
 
-    private final CategoryRepository categoryRepository;
+    private final MpttCategoryRepository mpttCategoryRepository;
 
 
     public ImportService(QuestionnaireRepository questionnaireService, QuestionRepository questionService,
-                         TagRepository tagRepository, UploadRepository uploadRepository, CategoryRepository categoryRepository) {
+                         TagRepository tagRepository, UploadRepository uploadRepository, MpttCategoryRepository mpttCategoryRepository) {
         this.questionnaireRepository = questionnaireService;
         this.questionRepository = questionService;
         this.tagRepository = tagRepository;
         this.uploadRepository = uploadRepository;
-        this.categoryRepository = categoryRepository;
+        this.mpttCategoryRepository = mpttCategoryRepository;
     }
 
     @Transactional
@@ -102,7 +102,7 @@ public class ImportService {
 
     }
 
-    private Question mapToQuestion(QuestionExport questionExport, Category category) {
+    private Question mapToQuestion(QuestionExport questionExport, MpttCategory mpttCategory) {
 
         var question = new Question();
 
@@ -110,7 +110,7 @@ public class ImportService {
         question.setType(questionExport.getType());
         question.setStatus(questionExport.getStatus());
 
-        question.setCategory(category);
+        question.setMpttCategory(mpttCategory);
 
         var responses = new ArrayList <Response>();
         for (var responseExport : questionExport.getResponses()) {
@@ -136,7 +136,7 @@ public class ImportService {
     }
 
 
-    private Question mapToQuestion(ImportFileQuestion importFileQuestion, Category category) {
+    private Question mapToQuestion(ImportFileQuestion importFileQuestion, MpttCategory mpttCategory) {
 
         var question = new Question();
 
@@ -144,7 +144,7 @@ public class ImportService {
         question.setType(FREE_TEXT.name());
         question.setStatus(DRAFT.name());
 
-        question.setCategory(category);
+        question.setMpttCategory(mpttCategory);
 
         Response response = new Response();
         response.setResponseText(importFileQuestion.getResponse());
@@ -188,12 +188,12 @@ public class ImportService {
 
         // categorie
         if (Objects.nonNull(export.getQuestionnaire().getCategory())) {
-            Category category = new Category();
-            category.setLibelle(export.getQuestionnaire().getCategory().getLibelle());
-            category.setType(TYPE_QUESTIONNAIRE);
-            category.setUserId(principal.toUuid());
-            category = categoryRepository.saveCategory(category, principal);
-            questionnaire.setCategory(category);
+            MpttCategory mpttCategory = new MpttCategory();
+            mpttCategory.setLibelle(export.getQuestionnaire().getCategory().getLibelle());
+            mpttCategory.setType(TYPE_QUESTIONNAIRE);
+            mpttCategory.setUserId(principal.toUuid());
+            mpttCategory = mpttCategoryRepository.saveCategory(mpttCategory, principal);
+            questionnaire.setMpttCategory(mpttCategory);
         }
 
         Questionnaire newQuestionnaire = questionnaireRepository.saveQuestionnaire(questionnaire, principal);
@@ -203,16 +203,16 @@ public class ImportService {
                 .stream()
                 .map(questionExport ->
                 {
-                    Category category = null;
+                    MpttCategory mpttCategory = null;
                     if (Objects.nonNull(questionExport.getCategory())) {
-                        category = new Category();
-                        category.setLibelle(questionExport.getCategory().getLibelle());
-                        category.setType(TYPE_QUESTION);
-                        category.setUserId(principal.toUuid());
-                        category = categoryRepository.saveCategory(category, principal);
+                        mpttCategory = new MpttCategory();
+                        mpttCategory.setLibelle(questionExport.getCategory().getLibelle());
+                        mpttCategory.setType(TYPE_QUESTION);
+                        mpttCategory.setUserId(principal.toUuid());
+                        mpttCategory = mpttCategoryRepository.saveCategory(mpttCategory, principal);
                     }
 
-                    return mapToQuestion(questionExport, category);
+                    return mapToQuestion(questionExport, mpttCategory);
                 })
                 .collect(toList());
 
@@ -242,12 +242,12 @@ public class ImportService {
 
                 Questionnaire createdQuestionnaire = questionnaireRepository.saveQuestionnaire(questionnaire, principal);
 
-                var questionCategory = new Category();
+                var questionCategory = new MpttCategory();
                 questionCategory.setLibelle(IMPORT);
                 questionCategory.setType(TYPE_QUESTION);
                 questionCategory.setUserId(principal.toUuid());
 
-                final var category = categoryRepository.saveCategory(questionCategory, principal);
+                final var category = mpttCategoryRepository.saveCategory(questionCategory, principal);
 
                 var questions = stream(fileQuestions)
                         .filter(fileQuestion -> isNotEmpty(fileQuestion.getCategorie()))

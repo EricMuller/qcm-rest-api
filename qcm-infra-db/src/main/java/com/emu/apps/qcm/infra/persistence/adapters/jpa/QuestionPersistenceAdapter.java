@@ -8,11 +8,11 @@ import com.emu.apps.qcm.domain.model.tag.Tag;
 import com.emu.apps.qcm.infra.persistence.QuestionPersistencePort;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.builders.QuestionTagBuilder;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.AccountEntity;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category.CategoryEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.mptt.MpttCategoryEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.TagEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.AccountRepository;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.CategoryRepository;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.MpttCategoryRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.QuestionRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.QuestionTagRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.QuestionnaireQuestionRepository;
@@ -56,7 +56,7 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
 
     private final TagRepository tagRepository;
 
-    private final CategoryRepository categoryRepository;
+    private final MpttCategoryRepository mpttCategoryRepository;
 
     private final UuidMapper uuidMapper;
 
@@ -70,7 +70,7 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
     public QuestionPersistenceAdapter(QuestionRepository questionRepository, QuestionTagRepository questionTagRepository,
                                       QuestionnaireQuestionRepository questionnaireQuestionRepository,
                                       QuestionEntityMapper questionMapper, QuestionEntityUpdateMapper questionUpdateMapper, TagRepository tagRepository,
-                                      CategoryRepository categoryRepository, UuidMapper uuidMapper, TagEntityMapper tagMapper, QuestionnaireQuestionEntityMapper questionnaireQuestionMapper,
+                                      MpttCategoryRepository mpttCategoryRepository, UuidMapper uuidMapper, TagEntityMapper tagMapper, QuestionnaireQuestionEntityMapper questionnaireQuestionMapper,
                                       AccountRepository accountRepository) {
         this.questionRepository = questionRepository;
         this.questionTagRepository = questionTagRepository;
@@ -78,7 +78,7 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
         this.questionMapper = questionMapper;
         this.questionUpdateMapper = questionUpdateMapper;
         this.tagRepository = tagRepository;
-        this.categoryRepository = categoryRepository;
+        this.mpttCategoryRepository = mpttCategoryRepository;
         this.uuidMapper = uuidMapper;
         this.tagMapper = tagMapper;
         this.questionnaireQuestionMapper = questionnaireQuestionMapper;
@@ -103,11 +103,11 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
     public Question updateQuestion(Question question, @NotNull String principal) {
 
         QuestionEntity questionEntity;
-        CategoryEntity categoryEntity = null;
-        UUID categoryUuid = uuidMapper.getUuid(question.getCategory());
+        MpttCategoryEntity mpttCategoryEntity = null;
+        UUID categoryUuid = uuidMapper.getUuid(question.getMpttCategory());
 
         if (nonNull(categoryUuid)) {
-            categoryEntity = categoryRepository.findByUuid(categoryUuid);
+            mpttCategoryEntity = mpttCategoryRepository.findByUuid(categoryUuid);
         }
 
         questionEntity = questionRepository.findByUuid(UUID.fromString(question.getId().toUuid())).orElse(null);
@@ -115,7 +115,7 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
         questionEntity.setResponses(questionUpdateMapper.responsesToEntities(question.getResponses(), questionEntity.getResponses()));
 
 
-        questionEntity.setCategory(categoryEntity);
+        questionEntity.setMpttCategory(mpttCategoryEntity);
 
         questionEntity = questionRepository.save(questionEntity);
 
@@ -129,11 +129,11 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
     public Question saveQuestion(Question question, @NotNull String principal) {
 
         QuestionEntity questionEntity;
-        CategoryEntity categoryEntity = null;
-        UUID categoryUuid = uuidMapper.getUuid(question.getCategory());
+        MpttCategoryEntity mpttCategoryEntity = null;
+        UUID categoryUuid = uuidMapper.getUuid(question.getMpttCategory());
 
         if (nonNull(categoryUuid)) {
-            categoryEntity = categoryRepository.findByUuid(categoryUuid);
+            mpttCategoryEntity = mpttCategoryRepository.findByUuid(categoryUuid);
         }
 
         questionEntity = questionMapper.questionToEntity(question);
@@ -143,7 +143,7 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
             questionEntity.setOwner(accountEntity.get());
         }
 
-        questionEntity.setCategory(categoryEntity);
+        questionEntity.setMpttCategory(mpttCategoryEntity);
 
         questionEntity = questionRepository.save(questionEntity);
 

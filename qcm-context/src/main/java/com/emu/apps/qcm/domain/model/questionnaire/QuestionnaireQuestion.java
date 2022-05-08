@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.domain.model.questionnaire;
 
 
-import com.emu.apps.qcm.domain.model.category.Category;
+import com.emu.apps.qcm.domain.model.category.MpttCategory;
 import com.emu.apps.qcm.domain.model.base.DomainId;
 import com.emu.apps.qcm.domain.model.question.QuestionId;
 import com.emu.apps.qcm.domain.model.question.QuestionTag;
@@ -26,7 +26,7 @@ public class QuestionnaireQuestion extends DomainId<QuestionId> {
 
     private String type;
 
-    private Category category;
+    private MpttCategory mpttCategory;
 
     private List <Response> responses;
 

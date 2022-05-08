@@ -1,8 +1,8 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories;
 
 
-import com.emu.apps.qcm.domain.model.category.Category;
-import com.emu.apps.qcm.infra.persistence.CategoryPersistencePort;
+import com.emu.apps.qcm.domain.model.category.MpttCategory;
+import com.emu.apps.qcm.infra.persistence.MpptCategoryPersistencePort;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.BaeldungPostgresqlExtension;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.fixtures.DbFixture;
@@ -23,16 +23,16 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category.Type.QUESTION;
-import static com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category.Type.QUESTIONNAIRE;
+import static com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.mptt.MpttType.QUESTION;
+import static com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.mptt.MpttType.QUESTIONNAIRE;
 import static java.util.UUID.fromString;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.StreamSupport.stream;
 
 @SpringBootTest(classes = SpringBootJpaTestConfig.class)
 @ActiveProfiles(value = "test")
-@ContextConfiguration(initializers = {CategoryRepositoryTest.Initializer.class})
-class CategoryRepositoryTest {
+@ContextConfiguration(initializers = {MpttMpttMpttCategoryRepositoryTest.Initializer.class})
+class MpttMpttMpttCategoryRepositoryTest {
 
     @RegisterExtension
     static BaeldungPostgresqlExtension postgresqlContainer = BaeldungPostgresqlExtension.getInstance();
@@ -49,7 +49,7 @@ class CategoryRepositoryTest {
     }
 
     @Autowired
-    private CategoryPersistencePort categoryPersistencePort;
+    private MpptCategoryPersistencePort mpptCategoryPersistencePort;
 
     @Autowired
     private DbFixture dbFixture;
@@ -63,16 +63,16 @@ class CategoryRepositoryTest {
 
         dbFixture.emptyDatabase(principal);
 
-        Category categoryA = categoryPersistencePort.findOrCreateByLibelle(principal, QUESTIONNAIRE.name(), "InterviewsA");
-        Category categoryB = categoryPersistencePort.findOrCreateByLibelle(principal, QUESTIONNAIRE.name(), "InterviewsB");
-        Category categoryC = categoryPersistencePort.findOrCreateByLibelle(principal, QUESTIONNAIRE.name(), "InterviewsC");
+        MpttCategory categoryA = mpptCategoryPersistencePort.findOrCreateByLibelle(principal, QUESTIONNAIRE.name(), "InterviewsA");
+        MpttCategory categoryB = mpptCategoryPersistencePort.findOrCreateByLibelle(principal, QUESTIONNAIRE.name(), "InterviewsB");
+        MpttCategory categoryC = mpptCategoryPersistencePort.findOrCreateByLibelle(principal, QUESTIONNAIRE.name(), "InterviewsC");
 
-        Category categoryC2 = categoryPersistencePort.findOrCreateByLibelle(principal, QUESTION.name(), "InterviewsC");
+        MpttCategory categoryC2 = mpptCategoryPersistencePort.findOrCreateByLibelle(principal, QUESTION.name(), "InterviewsC");
 
-        Category categoryD = categoryPersistencePort.findOrCreateChildByLibelle(fromString(categoryC.getId().toUuid()), QUESTIONNAIRE.name(), "InterviewsD");
-        Category categoryE = categoryPersistencePort.findOrCreateChildByLibelle(fromString(categoryC.getId().toUuid()), QUESTIONNAIRE.name(), "InterviewsE");
-        Category categoryF = categoryPersistencePort.findOrCreateChildByLibelle(fromString(categoryC.getId().toUuid()), QUESTIONNAIRE.name(), "InterviewsF");
-        Category categoryG = categoryPersistencePort.findOrCreateChildByLibelle(fromString(categoryC.getId().toUuid()), QUESTIONNAIRE.name(), "InterviewsG");
+        MpttCategory categoryD = mpptCategoryPersistencePort.findOrCreateChildByLibelle(fromString(categoryC.getId().toUuid()), QUESTIONNAIRE.name(), "InterviewsD");
+        MpttCategory categoryE = mpptCategoryPersistencePort.findOrCreateChildByLibelle(fromString(categoryC.getId().toUuid()), QUESTIONNAIRE.name(), "InterviewsE");
+        MpttCategory categoryF = mpptCategoryPersistencePort.findOrCreateChildByLibelle(fromString(categoryC.getId().toUuid()), QUESTIONNAIRE.name(), "InterviewsF");
+        MpttCategory categoryG = mpptCategoryPersistencePort.findOrCreateChildByLibelle(fromString(categoryC.getId().toUuid()), QUESTIONNAIRE.name(), "InterviewsG");
 
 
         Assertions.assertNotNull(categoryA);
@@ -85,15 +85,15 @@ class CategoryRepositoryTest {
         Assertions.assertNotNull(categoryF);
         Assertions.assertNotNull(categoryG);
 
-        Iterable <Category> iterable = categoryPersistencePort.findCategories(principal, QUESTIONNAIRE.name());
+        Iterable <MpttCategory> iterable = mpptCategoryPersistencePort.findCategories(principal, QUESTIONNAIRE.name());
 
-        List <Category> categories = stream(iterable.spliterator(), false).collect(toList());
+        List <MpttCategory> categories = stream(iterable.spliterator(), false).collect(toList());
 
         Assertions.assertEquals(3, categories.size());
 
-        iterable = categoryPersistencePort.findChildrenCategories(fromString(categoryC.getId().toUuid()));
+        iterable = mpptCategoryPersistencePort.findChildrenCategories(fromString(categoryC.getId().toUuid()));
 
-        List <Category> categoriesC = stream(iterable.spliterator(), false).collect(toList());
+        List <MpttCategory> categoriesC = stream(iterable.spliterator(), false).collect(toList());
 
         Assertions.assertEquals(4, categoriesC.size());
 
@@ -107,7 +107,7 @@ class CategoryRepositoryTest {
 
         dbFixture.emptyDatabase(principal);
 
-        Iterable <Category> categories = categoryPersistencePort.findCategories(principal, QUESTION.name());
+        Iterable <MpttCategory> categories = mpptCategoryPersistencePort.findCategories(principal, QUESTION.name());
 
         Assertions.assertTrue(IterableUtils.isEmpty(categories));
 
@@ -120,16 +120,16 @@ class CategoryRepositoryTest {
 
         dbFixture.emptyDatabase(principal);
 
-        Category category = new Category();
-        category.setLibelle("CategoryBusinessPortTest.testSaveCategory");
-        category.setType(QUESTIONNAIRE.name());
-        category.setUserId(principal);
+        MpttCategory mpttCategory = new MpttCategory();
+        mpttCategory.setLibelle("CategoryBusinessPortTest.testSaveCategory");
+        mpttCategory.setType(QUESTIONNAIRE.name());
+        mpttCategory.setUserId(principal);
 
-        Category saveCategory = categoryPersistencePort.saveCategory(category);
+        MpttCategory saveMpttCategory = mpptCategoryPersistencePort.saveCategory(mpttCategory);
 
-        Assertions.assertNotNull(saveCategory);
-        Assertions.assertNotNull(saveCategory.getId().toUuid());
-        Assertions.assertEquals(principal, saveCategory.getUserId());
+        Assertions.assertNotNull(saveMpttCategory);
+        Assertions.assertNotNull(saveMpttCategory.getId().toUuid());
+        Assertions.assertEquals(principal, saveMpttCategory.getUserId());
 
     }
 
@@ -139,16 +139,16 @@ class CategoryRepositoryTest {
         final String principal = getClass().getSimpleName() + "." + UUID.randomUUID();
         dbFixture.emptyDatabase(principal);
 
-        Category category = new Category();
-        category.setLibelle("CategoryBusinessPortTest.testGetCategoryByUuid");
-        category.setType(QUESTIONNAIRE.name());
-        category.setUserId(principal);
+        MpttCategory mpttCategory = new MpttCategory();
+        mpttCategory.setLibelle("CategoryBusinessPortTest.testGetCategoryByUuid");
+        mpttCategory.setType(QUESTIONNAIRE.name());
+        mpttCategory.setUserId(principal);
 
-        category = categoryPersistencePort.saveCategory(category);
-        Assertions.assertNotNull(category);
-        Assertions.assertNotNull(category.getId().toUuid());
+        mpttCategory = mpptCategoryPersistencePort.saveCategory(mpttCategory);
+        Assertions.assertNotNull(mpttCategory);
+        Assertions.assertNotNull(mpttCategory.getId().toUuid());
 
-        Optional <Category> categoryByUuid = categoryPersistencePort.findByUuid(category.getId().toUuid());
+        Optional <MpttCategory> categoryByUuid = mpptCategoryPersistencePort.findByUuid(mpttCategory.getId().toUuid());
 
         Assertions.assertTrue(categoryByUuid.isPresent());
         Assertions.assertNotNull(categoryByUuid.get());

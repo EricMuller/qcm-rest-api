@@ -3,7 +3,7 @@ package com.emu.apps.qcm.domain.model.question;
 
 import com.emu.apps.qcm.domain.model.account.Account;
 import com.emu.apps.qcm.domain.model.base.DomainId;
-import com.emu.apps.qcm.domain.model.category.Category;
+import com.emu.apps.qcm.domain.model.category.MpttCategory;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,7 +24,7 @@ public class Question extends DomainId <QuestionId> {
 
     private String questionText;
 
-    private Category category;
+    private MpttCategory mpttCategory;
 
     private List <Response> responses;
 

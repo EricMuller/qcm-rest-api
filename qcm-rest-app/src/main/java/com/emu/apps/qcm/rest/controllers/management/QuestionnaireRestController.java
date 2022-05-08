@@ -6,19 +6,25 @@ import com.emu.apps.qcm.application.reporting.ExportService;
 import com.emu.apps.qcm.application.reporting.dtos.Export;
 import com.emu.apps.qcm.application.reporting.template.TemplateReportServices;
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
+import com.emu.apps.qcm.domain.model.category.MpttCategoryRepository;
+import com.emu.apps.qcm.domain.model.category.TypeCategory;
 import com.emu.apps.qcm.domain.model.question.QuestionId;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireId;
+import com.emu.apps.qcm.rest.config.cache.CacheName;
 import com.emu.apps.qcm.rest.controllers.management.command.QuestionnaireQuestionUpdate;
 import com.emu.apps.qcm.rest.controllers.management.hal.QuestionnaireModelAssembler;
 import com.emu.apps.qcm.rest.controllers.management.hal.QuestionnaireQuestionModelAssembler;
 import com.emu.apps.qcm.rest.controllers.management.openui.QuestionnaireView;
+import com.emu.apps.qcm.rest.controllers.management.resources.CategoryResource;
 import com.emu.apps.qcm.rest.controllers.management.resources.QuestionnaireQuestionResource;
 import com.emu.apps.qcm.rest.controllers.management.resources.QuestionnaireResource;
 import com.emu.apps.qcm.rest.mappers.QuestionnaireResourceMapper;
 import com.emu.apps.shared.annotations.Timer;
+import com.emu.apps.shared.exceptions.FunctionnalException;
 import com.emu.apps.shared.exceptions.I18nedNotFoundException;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.micrometer.core.annotation.Timed;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -46,7 +52,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import static com.emu.apps.qcm.application.reporting.template.FileFormat.getFileFormat;
 import static com.emu.apps.qcm.application.reporting.template.ReportTemplate.TEMPLATE_QUESTIONNAIRE;
-import static com.emu.apps.qcm.rest.config.cache.CacheName.Names.QUESTIONNAIRE;
+import static com.emu.apps.qcm.domain.model.category.TypeCategory.QUESTIONNAIRE;
 import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.*;
 import static com.emu.apps.shared.exceptions.I18nedMessageSupport.UNKNOWN_UUID_QUESTIONNAIRE;
 import static com.emu.apps.shared.security.AuthentificationContextHolder.getPrincipal;
@@ -81,18 +87,21 @@ public class QuestionnaireRestController {
 
     private final QuestionnaireQuestionModelAssembler questionnaireQuestionModelAssembler;
 
-    public QuestionnaireRestController(QuestionnaireCatalog questionnaireCatalog, QuestionnaireResourceMapper questionnaireResourceMapper, ExportService exportService, TemplateReportServices templateReportServices, QuestionnaireModelAssembler questionnaireModelAssembler, QuestionnaireQuestionModelAssembler questionnaireQuestionModelAssembler) {
+    private final MpttCategoryRepository mpttCategoryRepository;
+
+    public QuestionnaireRestController(QuestionnaireCatalog questionnaireCatalog, QuestionnaireResourceMapper questionnaireResourceMapper, ExportService exportService, TemplateReportServices templateReportServices, QuestionnaireModelAssembler questionnaireModelAssembler, QuestionnaireQuestionModelAssembler questionnaireQuestionModelAssembler, MpttCategoryRepository mpttCategoryRepository) {
         this.questionnaireCatalog = questionnaireCatalog;
         this.questionnaireResourceMapper = questionnaireResourceMapper;
         this.exportService = exportService;
         this.templateReportServices = templateReportServices;
         this.questionnaireModelAssembler = questionnaireModelAssembler;
         this.questionnaireQuestionModelAssembler = questionnaireQuestionModelAssembler;
+        this.mpttCategoryRepository = mpttCategoryRepository;
     }
 
     @GetMapping(value = "/{uuid}")
     @Timer
-    @Cacheable(cacheNames = QUESTIONNAIRE, key = "#uuid")
+    @Cacheable(cacheNames = CacheName.Names.QUESTIONNAIRE, key = "#uuid")
     @ResponseBody
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Object", content = @Content(schema = @Schema(name = "QuestionnaireResource", implementation = QuestionnaireResource.class))),
@@ -107,7 +116,7 @@ public class QuestionnaireRestController {
     }
 
     @DeleteMapping(value = "/{uuid}")
-    @CacheEvict(cacheNames = QUESTIONNAIRE, key = "#uuid")
+    @CacheEvict(cacheNames = CacheName.Names.QUESTIONNAIRE, key = "#uuid")
     @ResponseBody
     @Timed(value = "questionnaires.deleteQuestionnaireById")
     public ResponseEntity <QuestionnaireResource> deleteQuestionnaireById(@PathVariable("uuid") String uuid) {
@@ -116,7 +125,7 @@ public class QuestionnaireRestController {
     }
 
     @PutMapping(value = "/{uuid}")
-    @CachePut(cacheNames = QUESTIONNAIRE, condition = "#questionnaireResource != null", key = "#uuid")
+    @CachePut(cacheNames = CacheName.Names.QUESTIONNAIRE, condition = "#questionnaireResource != null", key = "#uuid")
     @Timer
     @ResponseBody
     @ApiResponses(value = {
@@ -224,6 +233,8 @@ public class QuestionnaireRestController {
         questionnaireCatalog.deleteQuestion(new QuestionnaireId(uuid), new QuestionId(questionUuid));
         return new ResponseEntity <>(NO_CONTENT);
     }
+
+
 
     @Timer
     @GetMapping(value = "/{uuid}" + EXPORTS, produces = APPLICATION_JSON_VALUE)

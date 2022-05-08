@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions;
 
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category.CategoryEntity;
-import java.util.UUID;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.mptt.MpttCategoryEntity;
+
 import java.time.ZonedDateTime;
 import org.junit.jupiter.api.Test;
 
@@ -40,9 +40,9 @@ class QuestionEntityTest {
 
 	@Test
 	void testCategory() {
-		CategoryEntity param = new CategoryEntity();
-		aQuestionEntity.setCategory(param);
-		Object result = aQuestionEntity.getCategory();
+		MpttCategoryEntity param = new MpttCategoryEntity();
+		aQuestionEntity.setMpttCategory(param);
+		Object result = aQuestionEntity.getMpttCategory();
 		assertEquals(param, result);
 	}
 

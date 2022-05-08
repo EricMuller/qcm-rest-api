@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.rest.controllers.management;
 
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
-import com.emu.apps.qcm.domain.model.category.CategoryRepository;
+import com.emu.apps.qcm.domain.model.category.MpttCategoryRepository;
 import com.emu.apps.qcm.rest.controllers.management.openui.CategoryView;
 import com.emu.apps.qcm.rest.controllers.management.resources.CategoryResource;
 import com.emu.apps.qcm.rest.controllers.management.resources.MessageResource;
@@ -10,6 +10,7 @@ import com.emu.apps.shared.exceptions.FunctionnalException;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.micrometer.core.annotation.Timed;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -28,8 +29,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
-import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.CATEGORIES;
-import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.MANAGEMENT_API;
+import static com.emu.apps.qcm.domain.model.category.TypeCategory.QUESTION;
+import static com.emu.apps.qcm.domain.model.category.TypeCategory.QUESTIONNAIRE;
+import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.*;
 import static com.emu.apps.shared.security.AuthentificationContextHolder.getPrincipal;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -44,12 +46,12 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Timed("categories")
 public class CategoryRestController {
 
-    private final CategoryRepository categoryRepository;
+    private final MpttCategoryRepository mpttCategoryRepository;
 
     private final QuestionnaireResourceMapper questionnaireResourceMapper;
 
-    public CategoryRestController(CategoryRepository categoryRepository, QuestionnaireResourceMapper questionnaireResourceMapper) {
-        this.categoryRepository = categoryRepository;
+    public CategoryRestController(MpttCategoryRepository mpttCategoryRepository, QuestionnaireResourceMapper questionnaireResourceMapper) {
+        this.mpttCategoryRepository = mpttCategoryRepository;
         this.questionnaireResourceMapper = questionnaireResourceMapper;
     }
 
@@ -57,7 +59,7 @@ public class CategoryRestController {
     @ResponseBody
     @Timed("categories.getCategoryByUuid")
     public CategoryResource getCategoryByUuid(@PathVariable("uuid") String uuid) {
-        return questionnaireResourceMapper.categoryToResources(categoryRepository.getCategoryByUuid(uuid));
+        return questionnaireResourceMapper.categoryToResources(mpttCategoryRepository.getCategoryByUuid(uuid));
     }
 
     @GetMapping
@@ -68,7 +70,7 @@ public class CategoryRestController {
     public Iterable <CategoryResource> getCategoriesByType(@RequestParam("type") String typeCategory) throws FunctionnalException {
 
         return questionnaireResourceMapper.categoriesToResources(
-                categoryRepository.getCategories(PrincipalId.of(getPrincipal()), typeCategory));
+                mpttCategoryRepository.getCategories(PrincipalId.of(getPrincipal()), typeCategory));
     }
 
     @PostMapping
@@ -78,12 +80,37 @@ public class CategoryRestController {
             @JsonView(CategoryView.Create.class) @RequestBody CategoryResource categoryResource) {
         var category = questionnaireResourceMapper.categoryToModel(categoryResource);
         return questionnaireResourceMapper.categoryToResources(
-                categoryRepository.saveCategory(category,  PrincipalId.of(getPrincipal())));
+                mpttCategoryRepository.saveCategory(category,  PrincipalId.of(getPrincipal())));
     }
 
     @ExceptionHandler({JsonProcessingException.class, IOException.class})
     public ResponseEntity <MessageResource> handleAllException(Exception e) {
         return new ResponseEntity <>(new MessageResource(MessageResource.ERROR, e.getMessage()), BAD_REQUEST);
+    }
+
+
+    @GetMapping(QUESTIONS)
+    @ResponseBody
+    @Operation(summary = "Get all Questions categories")
+    @ApiResponse(responseCode = "200", description = "successful operation",
+            content = @Content(array = @ArraySchema(schema = @Schema(implementation = CategoryResource.class))))
+    @Timed("questions.getCategories")
+    public Iterable <CategoryResource> getQuestionCategories() throws FunctionnalException {
+
+        return questionnaireResourceMapper.categoriesToResources(
+                mpttCategoryRepository.getCategories(PrincipalId.of(getPrincipal()), QUESTION.name()));
+    }
+
+    @GetMapping(QUESTIONNAIRES)
+    @ResponseBody
+    @Operation(summary = "Get all questionnaires categories")
+    @ApiResponse(responseCode = "200", description = "successful operation",
+            content = @Content(array = @ArraySchema(schema = @Schema(implementation = CategoryResource.class))))
+    @Timed("questions.getCategories")
+    public Iterable <CategoryResource> getQuestionnairesCategories() throws FunctionnalException {
+
+        return questionnaireResourceMapper.categoriesToResources(
+                mpttCategoryRepository.getCategories(PrincipalId.of(getPrincipal()), QUESTIONNAIRE.name()));
     }
 
 }

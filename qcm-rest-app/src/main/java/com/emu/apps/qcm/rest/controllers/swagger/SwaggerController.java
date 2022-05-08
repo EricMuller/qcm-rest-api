@@ -1,4 +1,4 @@
-package com.emu.apps.qcm.rest.controllers.unrestrained;
+package com.emu.apps.qcm.rest.controllers.swagger;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

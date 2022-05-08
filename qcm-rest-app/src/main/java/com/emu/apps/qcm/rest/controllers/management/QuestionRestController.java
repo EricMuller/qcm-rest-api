@@ -2,12 +2,16 @@ package com.emu.apps.qcm.rest.controllers.management;
 
 import com.emu.apps.qcm.application.QuestionCatalog;
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
+import com.emu.apps.qcm.domain.model.category.MpttCategoryRepository;
+import com.emu.apps.qcm.domain.model.category.TypeCategory;
 import com.emu.apps.qcm.domain.model.question.QuestionId;
+import com.emu.apps.qcm.rest.config.cache.CacheName;
 import com.emu.apps.qcm.rest.controllers.management.command.QuestionStatus;
 import com.emu.apps.qcm.rest.controllers.management.hal.QuestionModelAssembler;
 import com.emu.apps.qcm.rest.controllers.management.hal.SearchQuestionModelAssembler;
 import com.emu.apps.qcm.rest.controllers.management.hal.TagModelAssembler;
 import com.emu.apps.qcm.rest.controllers.management.openui.QuestionView;
+import com.emu.apps.qcm.rest.controllers.management.resources.CategoryResource;
 import com.emu.apps.qcm.rest.controllers.management.resources.MessageResource;
 import com.emu.apps.qcm.rest.controllers.management.resources.QuestionResource;
 import com.emu.apps.qcm.rest.controllers.management.resources.SearchQuestionResource;
@@ -15,6 +19,7 @@ import com.emu.apps.qcm.rest.controllers.management.resources.TagResource;
 import com.emu.apps.qcm.rest.mappers.QuestionnaireResourceMapper;
 import com.emu.apps.qcm.rest.validators.ValidUuid;
 import com.emu.apps.shared.annotations.Timer;
+import com.emu.apps.shared.exceptions.FunctionnalException;
 import com.emu.apps.shared.exceptions.I18nedNotFoundException;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -43,7 +48,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.io.IOException;
 
-import static com.emu.apps.qcm.rest.config.cache.CacheName.Names.QUESTION;
+import static com.emu.apps.qcm.domain.model.category.TypeCategory.QUESTION;
+import static com.emu.apps.qcm.domain.model.category.TypeCategory.QUESTIONNAIRE;
 import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.*;
 import static com.emu.apps.qcm.rest.controllers.management.resources.MessageResource.ERROR;
 import static com.emu.apps.shared.exceptions.I18nedMessageSupport.UNKNOWN_UUID_QUESTION;
@@ -75,14 +81,17 @@ public class QuestionRestController {
 
     private final TagModelAssembler tagModelAssembler;
 
+    private final MpttCategoryRepository mpttCategoryRepository;
+
     public QuestionRestController(QuestionCatalog questionCatalog, QuestionnaireResourceMapper questionnaireResourceMapper,
                                   SearchQuestionModelAssembler searchQuestionModelAssembler,
-                                  QuestionModelAssembler questionModelAssembler, TagModelAssembler tagModelAssembler) {
+                                  QuestionModelAssembler questionModelAssembler, TagModelAssembler tagModelAssembler, MpttCategoryRepository mpttCategoryRepository) {
         this.questionCatalog = questionCatalog;
         this.questionnaireResourceMapper = questionnaireResourceMapper;
         this.searchQuestionModelAssembler = searchQuestionModelAssembler;
         this.questionModelAssembler = questionModelAssembler;
         this.tagModelAssembler = tagModelAssembler;
+        this.mpttCategoryRepository = mpttCategoryRepository;
     }
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
@@ -138,7 +147,7 @@ public class QuestionRestController {
 
     @GetMapping(value = "/{uuid}")
     @Timer
-    @Cacheable(cacheNames = QUESTION, key = "#uuid")
+    @Cacheable(cacheNames = CacheName.Names.QUESTION, key = "#uuid")
     @ResponseBody
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Object updated", content = @Content(schema = @Schema(name = "QuestionResource", implementation = QuestionResource.class))),
@@ -150,7 +159,7 @@ public class QuestionRestController {
     }
 
     @PutMapping(value = "/{uuid}", produces = APPLICATION_JSON_VALUE)
-    @CachePut(cacheNames = QUESTION, condition = "#questionResource != null", key = "#uuid")
+    @CachePut(cacheNames = CacheName.Names.QUESTION, condition = "#questionResource != null", key = "#uuid")
     @ResponseBody
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Object updated", content = @Content(schema = @Schema(name = "QuestionResource", implementation = QuestionResource.class))),
@@ -181,7 +190,7 @@ public class QuestionRestController {
 
     @DeleteMapping(value = "/{uuid}")
     @ResponseBody
-    @CacheEvict(cacheNames = QUESTION, condition = "#uuid != null", key = "#uuid")
+    @CacheEvict(cacheNames = CacheName.Names.QUESTION, condition = "#uuid != null", key = "#uuid")
     @Timed(value = "questions.deleteQuestionByUuid")
     public ResponseEntity <Void> deleteQuestionByUuid(@PathVariable("uuid") String uuid) {
         questionCatalog.deleteQuestionById(new QuestionId(uuid));
@@ -191,7 +200,7 @@ public class QuestionRestController {
 
     @PatchMapping(value = "/{uuid}", produces = APPLICATION_JSON_VALUE)
     @ResponseBody
-    @CacheEvict(cacheNames = QUESTION, condition = "#uuid != null", key = "#uuid")
+    @CacheEvict(cacheNames = CacheName.Names.QUESTION, condition = "#uuid != null", key = "#uuid")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Object patch", content = @Content(schema = @Schema(name = "QuestionResource", implementation = QuestionResource.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input")})
@@ -209,6 +218,5 @@ public class QuestionRestController {
     public ResponseEntity <MessageResource> handleAllException(Exception e) {
         return badRequest().body(new MessageResource(ERROR, e.getMessage()));
     }
-
 
 }

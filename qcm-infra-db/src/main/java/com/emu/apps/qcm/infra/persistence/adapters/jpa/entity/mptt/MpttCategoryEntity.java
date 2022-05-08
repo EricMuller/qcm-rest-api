@@ -1,4 +1,4 @@
-package com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category;
+package com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.mptt;
 
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.common.AuditableEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.common.MpttHierarchicalEntity;
@@ -18,28 +18,30 @@ import static org.springframework.data.jpa.domain.Specification.where;
 
 @Entity
 @Table(name = "CATEGORY",
-        indexes = {@Index(name = "IDX_CTG_CREATE_BY_IDX", columnList = "type,created_by"),
-                @Index(name = "IDX_CTG_UUID_IDX", columnList = "uuid")})
+        indexes = {
+                @Index(name = "IDX_CTG_CREATE_BY_IDX", columnList = "type, created_by"),
+                @Index(name = "IDX_CTG_UUID_IDX", columnList = "uuid")
+})
 @NoArgsConstructor
 @Getter
 @Setter
 @NamedQueries(value = {
 
-        @NamedQuery(name = "deleteAll", query = "DELETE FROM CategoryEntity"),
+        @NamedQuery(name = "deleteAll", query = "DELETE FROM MpttCategoryEntity"),
 
-        @NamedQuery(name = "deleteAllByCreatedBy", query = "DELETE FROM CategoryEntity Where userId= :hierarchyId"),
+        @NamedQuery(name = "deleteAllByCreatedBy", query = "DELETE FROM MpttCategoryEntity Where userId= :hierarchyId"),
 
-        @NamedQuery(name = "findByUuid", query = "SELECT node FROM CategoryEntity node WHERE node.uuid = :uuid "),
+        @NamedQuery(name = "findByUuid", query = "SELECT node FROM MpttCategoryEntity node WHERE node.uuid = :uuid "),
         @NamedQuery(name = "findAncestors", query =
                 " SELECT node" +
-                        " FROM CategoryEntity node" +
+                        " FROM MpttCategoryEntity node" +
                         " WHERE :hierarchyId IS NOT NULL AND :hierarchyId = node.userId" +
                         " AND node.lft < :lft AND :rgt < node.rgt" +
                         " ORDER BY node.lft ASC"),
 
         @NamedQuery(name = "findSubtree", query =
                 " SELECT node" +
-                        " FROM CategoryEntity node" +
+                        " FROM MpttCategoryEntity node" +
                         " WHERE :hierarchyId IS NOT NULL AND :hierarchyId = node.userId" +
                         " AND node.lft > :lft  AND node.rgt <= :rgt " +
                         " AND :level  = node.level "
@@ -47,55 +49,55 @@ import static org.springframework.data.jpa.domain.Specification.where;
 
         @NamedQuery(name = "findEntitiesWithLeftGreaterThan", query =
                 " SELECT node" +
-                        " FROM CategoryEntity node" +
+                        " FROM MpttCategoryEntity node" +
                         " WHERE :hierarchyId IS NOT NULL AND node.userId = :hierarchyId  " +
                         " AND node.lft > :value  "),
 
         @NamedQuery(name = "findEntitiesWithLeftGreaterThanOrEqual", query =
                 " SELECT node" +
-                        " FROM CategoryEntity node" +
+                        " FROM MpttCategoryEntity node" +
                         " WHERE :hierarchyId IS NOT NULL AND node.userId = :hierarchyId  " +
                         " AND node.lft >= :value "),
 
         @NamedQuery(name = "findEntitiesWithRightGreaterThan", query =
                 " SELECT node" +
-                        " FROM CategoryEntity node" +
+                        " FROM MpttCategoryEntity node" +
                         " WHERE :hierarchyId IS NOT NULL AND node.userId = :hierarchyId  " +
                         " AND node.rgt > :value "),
 
         @NamedQuery(name = "findEntitiesWithRightGreaterThanOrEqual", query =
                 " SELECT node" +
-                        " FROM CategoryEntity node" +
+                        " FROM MpttCategoryEntity node" +
                         " WHERE :hierarchyId IS NOT NULL AND node.userId = :hierarchyId  " +
                         " AND node.rgt >= :value "),
 
         @NamedQuery(name = "findEntityByRightValue", query =
                 "SELECT node" +
-                        " FROM CategoryEntity node" +
+                        " FROM MpttCategoryEntity node" +
                         " WHERE :hierarchyId IS NOT NULL AND node.userId = :hierarchyId  " +
                         " AND node.rgt = :value"),
 
         @NamedQuery(name = "findHierarchyRoot", query =
                 "SELECT node" +
-                        " FROM CategoryEntity node" +
+                        " FROM MpttCategoryEntity node" +
                         " WHERE :hierarchyId IS NOT NULL AND node.userId = :hierarchyId  " +
                         " AND node.lft = 1"),
 
         @NamedQuery(name = "findChildren", query =
                 "SELECT child" +
-                        " FROM CategoryEntity child" +
+                        " FROM MpttCategoryEntity child" +
                         " WHERE :hierarchyId IS NOT NULL" +
                         " AND child.userId = :hierarchyId" +
                         " AND :lft < child.lft AND child.rgt < :rgt" +
                         " AND :lft =" +
                         " (SELECT MAX(ancestor.lft)" +
-                        "   FROM CategoryEntity ancestor" +
+                        "   FROM MpttCategoryEntity ancestor" +
                         "   WHERE ancestor.userId = child.userId" +
                         "   AND ancestor.lft < child.lft" +
                         "   AND child.rgt < ancestor.lft)" +
                         " ORDER BY child.lft ASC")
 })
-public class CategoryEntity extends AuditableEntity <String> implements MpttHierarchicalEntity <CategoryEntity> {
+public class MpttCategoryEntity extends AuditableEntity <String> implements MpttHierarchicalEntity <MpttCategoryEntity> {
 
     public static final String ROOT_NAME = "root";
 
@@ -109,7 +111,7 @@ public class CategoryEntity extends AuditableEntity <String> implements MpttHier
     protected String libelle;
 
     @Enumerated(EnumType.STRING)
-    private Type type;
+    private MpttType type;
 
     @Column(name = "USER_ID", nullable = false)
     private String userId;
@@ -123,12 +125,12 @@ public class CategoryEntity extends AuditableEntity <String> implements MpttHier
     @Column(name = "LEVEL", nullable = false)
     private Integer level;
 
-    public CategoryEntity(String libelle) {
+    public MpttCategoryEntity(String libelle) {
         this.libelle = libelle;
         this.setLevel(0);
     }
 
-    public CategoryEntity(Type type, String libelle) {
+    public MpttCategoryEntity(MpttType type, String libelle) {
         this.type = type;
         this.libelle = libelle;
     }
@@ -139,26 +141,26 @@ public class CategoryEntity extends AuditableEntity <String> implements MpttHier
 
         private String principal;
 
-        private Type type;
+        private MpttType mpttType;
 
         public CategorySpecificationBuilder <T> setPrincipal(String principal) {
             this.principal = principal;
             return this;
         }
 
-        public CategorySpecificationBuilder <T> setType(Type type) {
-            this.type = type;
+        public CategorySpecificationBuilder <T> setType(MpttType mpttType) {
+            this.mpttType = mpttType;
             return this;
         }
 
-        protected Specification <T> fieldEquals(String attribute, Type value) {
+        protected Specification <T> fieldEquals(String attribute, MpttType value) {
             return (root, query, cb) -> Objects.isNull(value) ? null : cb.equal(root.get(attribute), value);
         }
 
         @Override
         public Specification <T> build() {
             return (root, query, cb) -> where(
-                    fieldEquals(TYPE_FIELD_NAME, type)).and(fieldEquals(CREATED_BY, principal)
+                    fieldEquals(TYPE_FIELD_NAME, mpttType)).and(fieldEquals(CREATED_BY, principal)
             ).toPredicate(root, query, cb);
         }
     }

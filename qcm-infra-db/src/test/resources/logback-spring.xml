@@ -77,8 +77,11 @@
         <appender-ref ref="Console" />
     </logger>
 
-<!--    <logger name="org.flywaydb.core.internal.dbsupport.SqlScript" level="DEBUG">-->
-<!--        <appender-ref ref="Console" />-->
-<!--    </logger>-->
+    <logger name="org.flywaydb.core.internal.dbsupport.SqlScript" level="DEBUG">
+        <appender-ref ref="Console" />
+    </logger>
+    <logger name="org.flywaydb" level="DEBUG">
+        <appender-ref ref="Console" />
+    </logger>
 
 </configuration>

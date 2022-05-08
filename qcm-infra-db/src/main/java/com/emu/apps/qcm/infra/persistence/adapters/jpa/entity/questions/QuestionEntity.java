@@ -4,7 +4,7 @@ package com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions;
 import com.emu.apps.qcm.domain.model.question.TypeQuestion;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.converters.BooleanTFConverter;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.AccountEntity;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category.CategoryEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.mptt.MpttCategoryEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.common.AuditableEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireQuestionEntity;
 import com.emu.apps.shared.exceptions.TechnicalException;
@@ -18,7 +18,6 @@ import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.persistence.criteria.JoinType;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -39,7 +38,8 @@ import static org.springframework.data.jpa.domain.Specification.where;
         },
         subgraphs = @NamedSubgraph(name = "tags", attributeNodes = @NamedAttributeNode("tag")))
 @Table(name = "QUESTION",
-        indexes = {@Index(name = "IDX_QTO_CREATE_BY_IDX", columnList = "created_by"),
+        indexes = {
+                @Index(name = "IDX_QTO_CREATE_BY_IDX", columnList = "created_by"),
                 @Index(name = "IDX_QTO_UUID_IDX", columnList = "uuid")
         }
         , uniqueConstraints = {@UniqueConstraint(name = "UK_QTO_UUID", columnNames = {"uuid"})}
@@ -68,7 +68,8 @@ public class QuestionEntity extends AuditableEntity <String> {
     private TypeQuestion type;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    private CategoryEntity category;
+    @JoinColumn(name="category_id")
+    private MpttCategoryEntity mpttCategory;
 
     //    @Enumerated(EnumType.STRING)
     @Column(name = "STATUS")

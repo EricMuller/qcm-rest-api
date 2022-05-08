@@ -28,7 +28,7 @@
 
 package com.emu.apps.qcm.rest.mappers;
 
-import com.emu.apps.qcm.domain.model.category.Category;
+import com.emu.apps.qcm.domain.model.category.MpttCategory;
 import com.emu.apps.qcm.domain.model.question.QuestionId;
 import com.emu.apps.qcm.domain.model.question.QuestionTag;
 import com.emu.apps.qcm.domain.model.questionnaire.Questionnaire;
@@ -48,8 +48,8 @@ import java.util.Set;
 @Mapper(componentModel = "spring", uses = {UuidMapper.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface PublishedMapper {
 
-    default String categoryToString(Category category) {
-        return Objects.nonNull(category) ? category.getLibelle() : null;
+    default String categoryToString(MpttCategory mpttCategory) {
+        return Objects.nonNull(mpttCategory) ? mpttCategory.getLibelle() : null;
     }
 
     default String questionIdToString(QuestionId questionId) {
@@ -79,7 +79,7 @@ public interface PublishedMapper {
     @Mapping(source = "type", target = "type")
     @Mapping(source = "question", target = "questionText")
     @Mapping(source = "status", target = "status")
-    @Mapping(source = "category", target = "category")
+    @Mapping(source = "mpttCategory", target = "category")
     @Mapping(source = "responses", target = "responses")
 
     @Mapping(source = "tip", target = "tip")

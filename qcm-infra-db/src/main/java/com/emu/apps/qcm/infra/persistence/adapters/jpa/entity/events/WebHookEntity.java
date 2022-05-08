@@ -34,6 +34,7 @@ public class WebHookEntity extends AuditableEntity <String> {
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     private AccountEntity owner;
 
+    @Column(name = "DEFAULT_TIME_OUT")
     private Long defaultTimeOut;
 
 }

@@ -2,8 +2,8 @@ package com.emu.apps.qcm.domain.repositories;
 
 
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
-import com.emu.apps.qcm.domain.model.category.Category;
-import com.emu.apps.qcm.domain.model.category.CategoryRepository;
+import com.emu.apps.qcm.domain.model.category.MpttCategory;
+import com.emu.apps.qcm.domain.model.category.MpttCategoryRepository;
 import com.emu.apps.qcm.domain.model.question.Question;
 import com.emu.apps.qcm.domain.model.question.QuestionId;
 import com.emu.apps.qcm.domain.model.question.QuestionRepository;
@@ -14,7 +14,7 @@ import com.emu.apps.qcm.domain.model.tag.TagId;
 import com.emu.apps.qcm.domain.model.account.Account;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.BaeldungPostgresqlExtension;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category.Type;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.mptt.MpttType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -58,7 +58,7 @@ class QuestionRepositoryTest {
     private QuestionRepository questionRepository;
 
     @Autowired
-    private CategoryRepository categoryRepository;
+    private MpttCategoryRepository mpttCategoryRepository;
 
     @Autowired
     private DbRepositoryFixture dbFixture;
@@ -77,17 +77,17 @@ class QuestionRepositoryTest {
 
         Account account = dbFixture.createAccountTest();
 
-        Category category = new Category();
-        category.setType(Type.QUESTION.name());
-        category.setLibelle("QuestionBusinessPortTest.testSaveQuestion");
+        MpttCategory mpttCategory = new MpttCategory();
+        mpttCategory.setType(MpttType.QUESTION.name());
+        mpttCategory.setLibelle("QuestionBusinessPortTest.testSaveQuestion");
 
         final PrincipalId principalId = new PrincipalId(account.getId().toUuid());
 
-        category = categoryRepository.saveCategory(category, principalId);
+        mpttCategory = mpttCategoryRepository.saveCategory(mpttCategory, principalId);
 
         Question question = new Question();
         question.setQuestionText("why?");
-        question.setCategory(category);
+        question.setMpttCategory(mpttCategory);
 
         Response response = new Response();
         response.setResponseText("because");

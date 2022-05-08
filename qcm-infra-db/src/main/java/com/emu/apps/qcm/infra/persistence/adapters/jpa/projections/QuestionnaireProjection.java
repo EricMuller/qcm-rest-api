@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa.projections;
 
 
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.category.CategoryEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.mptt.MpttCategoryEntity;
 import org.hibernate.annotations.Immutable;
 
 import java.util.Date;
@@ -10,7 +10,7 @@ import java.util.UUID;
 @Immutable
 public interface QuestionnaireProjection {
 
-    CategoryEntity getCategory();
+    MpttCategoryEntity getCategory();
 
     Date getDateCreation();
 
