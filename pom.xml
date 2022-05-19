@@ -113,7 +113,7 @@
 
             <dependency>
                 <groupId>com.emu.apps.qcm</groupId>
-                <artifactId>qcm-app</artifactId>
+                <artifactId>qcm-rest-app</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

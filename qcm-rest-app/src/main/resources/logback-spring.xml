@@ -11,81 +11,81 @@
         </layout>
     </appender>
 
-    <appender name="AppFile"
-              class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_PATH}/application.log</file>
-        <encoder
-                class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
-        </encoder>
+<!--    <appender name="AppFile"-->
+<!--              class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+<!--        <file>${LOG_PATH}/application.log</file>-->
+<!--        <encoder-->
+<!--                class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">-->
+<!--            <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>-->
+<!--        </encoder>-->
 
-        <rollingPolicy
-                class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!-- rollover daily and when the file reaches 10 MegaBytes -->
-            <fileNamePattern>${LOG_PATH}/archived/application-%d{yyyy-MM-dd}.%i.log
-            </fileNamePattern>
-            <timeBasedFileNamingAndTriggeringPolicy
-                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>10MB</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
-        </rollingPolicy>
-    </appender>
+<!--        <rollingPolicy-->
+<!--                class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+<!--            &lt;!&ndash; rollover daily and when the file reaches 10 MegaBytes &ndash;&gt;-->
+<!--            <fileNamePattern>${LOG_PATH}/archived/application-%d{yyyy-MM-dd}.%i.log-->
+<!--            </fileNamePattern>-->
+<!--            <timeBasedFileNamingAndTriggeringPolicy-->
+<!--                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">-->
+<!--                <maxFileSize>10MB</maxFileSize>-->
+<!--            </timeBasedFileNamingAndTriggeringPolicy>-->
+<!--        </rollingPolicy>-->
+<!--    </appender>-->
 
-    <appender name="CacheFile"
-              class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_PATH}/cache.log</file>
-        <encoder
-                class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
-        </encoder>
+<!--    <appender name="CacheFile"-->
+<!--              class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+<!--        <file>${LOG_PATH}/cache.log</file>-->
+<!--        <encoder-->
+<!--                class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">-->
+<!--            <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>-->
+<!--        </encoder>-->
 
-        <rollingPolicy
-                class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_PATH}/archived/cache-%d{yyyy-MM-dd}.%i.log
-            </fileNamePattern>
-            <timeBasedFileNamingAndTriggeringPolicy
-                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>10MB</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
-        </rollingPolicy>
-    </appender>
+<!--        <rollingPolicy-->
+<!--                class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+<!--            <fileNamePattern>${LOG_PATH}/archived/cache-%d{yyyy-MM-dd}.%i.log-->
+<!--            </fileNamePattern>-->
+<!--            <timeBasedFileNamingAndTriggeringPolicy-->
+<!--                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">-->
+<!--                <maxFileSize>10MB</maxFileSize>-->
+<!--            </timeBasedFileNamingAndTriggeringPolicy>-->
+<!--        </rollingPolicy>-->
+<!--    </appender>-->
 
-    <appender name="NgxLogger"
-              class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_PATH}/ngx.log</file>
-        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <Pattern>%d %p [%t] %m%n</Pattern>
-        </encoder>
+<!--    <appender name="NgxLogger"-->
+<!--              class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+<!--        <file>${LOG_PATH}/ngx.log</file>-->
+<!--        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">-->
+<!--            <Pattern>%d %p [%t] %m%n</Pattern>-->
+<!--        </encoder>-->
 
-        <rollingPolicy  class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!-- rollover daily and when the file reaches 10 MegaBytes -->
-            <fileNamePattern>${LOG_PATH}/archived/ngx-%d{yyyy-MM-dd}.%i.log
-            </fileNamePattern>
-            <timeBasedFileNamingAndTriggeringPolicy
-                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>10MB</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
-        </rollingPolicy>
-    </appender>
+<!--        <rollingPolicy  class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+<!--            &lt;!&ndash; rollover daily and when the file reaches 10 MegaBytes &ndash;&gt;-->
+<!--            <fileNamePattern>${LOG_PATH}/archived/ngx-%d{yyyy-MM-dd}.%i.log-->
+<!--            </fileNamePattern>-->
+<!--            <timeBasedFileNamingAndTriggeringPolicy-->
+<!--                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">-->
+<!--                <maxFileSize>10MB</maxFileSize>-->
+<!--            </timeBasedFileNamingAndTriggeringPolicy>-->
+<!--        </rollingPolicy>-->
+<!--    </appender>-->
 
     <!-- LOG everything at INFO level -->
-    <root level="INFO">
-        <appender-ref ref="AppFile"/>
+    <root level="warn">
+<!--        <appender-ref ref="AppFile"/>-->
         <appender-ref ref="Console"/>
     </root>
 
     <logger name="com.emu.apps" level="warn" additivity="false">
-        <appender-ref ref="AppFile"/>
+<!--        <appender-ref ref="AppFile"/>-->
         <appender-ref ref="Console"/>
     </logger>
 
     <logger name="org.springframework.boot" level="info" additivity="false">
-        <appender-ref ref="AppFile"/>
+<!--        <appender-ref ref="AppFile"/>-->
         <appender-ref ref="Console"/>
     </logger>
 
     <logger name="org.springframework.security.web" level="warn" additivity="false">
-        <appender-ref ref="AppFile"/>
+<!--        <appender-ref ref="AppFile"/>-->
         <appender-ref ref="Console"/>
     </logger>
 
@@ -94,32 +94,32 @@
     </logger>
 
     <logger name="org.springframework.security" level="info" additivity="false">
-        <appender-ref ref="AppFile"/>
+<!--        <appender-ref ref="AppFile"/>-->
         <appender-ref ref="Console"/>
     </logger>
 
     <logger name="com.emu.apps.qcm.rest.config" level="info" additivity="false">
-        <appender-ref ref="AppFile"/>
+<!--        <appender-ref ref="AppFile"/>-->
         <appender-ref ref="Console"/>
     </logger>
 
     <logger name="org.hibernate.stat" level="debug" additivity="false">
-        <appender-ref ref="AppFile"/>
+<!--        <appender-ref ref="AppFile"/>-->
         <appender-ref ref="Console"/>
     </logger>
 
     <logger name="org.hibernate.engine.internal.StatisticalLoggingSessionEventListener" level="info" additivity="false">
-        <appender-ref ref="AppFile"/>
+<!--        <appender-ref ref="AppFile"/>-->
         <appender-ref ref="Console"/>
     </logger>
 
     <logger name="com.emu.apps.qcm.infra.persistence.cache" level="info" additivity="false">
-        <appender-ref ref="AppFile"/>
+<!--        <appender-ref ref="AppFile"/>-->
         <appender-ref ref="Console"/>
     </logger>
 
     <logger name="com.emu.apps.qcm.rest.controllers.unrestrained.NgxLoggerRestController" level="info" additivity="false">
-        <appender-ref ref="NgxLogger"/>
+<!--        <appender-ref ref="NgxLogger"/>-->
         <appender-ref ref="Console"/>
     </logger>
 
@@ -127,8 +127,8 @@
         <appender-ref ref="CacheFile"/>
     </logger>
 
-    <logger name="logging.level.de.codecentric.boot.admin" level="debug" additivity="false">
-        <appender-ref ref="Console"/>
+    <logger name="logging.level.de.codecentric.boot.admin" level="DEBUG" additivity="false">
+<!--        <appender-ref ref="Console"/>-->
         <appender-ref ref="AppFile"/>
     </logger>
 

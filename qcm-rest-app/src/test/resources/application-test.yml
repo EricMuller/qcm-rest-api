@@ -122,6 +122,8 @@ logging:
     com.emu.apps: WARN
     org.keycloak.services: WARN
     org.springframework.aop.interceptor.PerformanceMonitorInterceptor: WARN
+    com.github.dockerjava: WARN
+    fr.opensagres.xdocreport: WARN
 
 keycloak:
   enabled: false
