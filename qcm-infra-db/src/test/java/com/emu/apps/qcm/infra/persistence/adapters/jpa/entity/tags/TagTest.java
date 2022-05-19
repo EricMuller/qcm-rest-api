@@ -1,17 +1,18 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags;
 
-import java.util.UUID;
 import java.time.ZonedDateTime;
+
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.TagQuestionEntity;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class TagTest {
 
-	private final TagEntity aTag;
+	private final TagQuestionEntity aTag;
 
 	public TagTest() {
-		this.aTag = new TagEntity();
+		this.aTag = new TagQuestionEntity();
 	}
 	@Test
 	void testId() {

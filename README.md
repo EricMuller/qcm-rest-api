@@ -83,13 +83,13 @@ Verify the deployment by navigating to your server address in your preferred bro
 > http://127.0.0.1:8080/swagger-ui.html#/
 ### build with Cloud Native Buildpacks
 
-mvn spring-boot:build-image -Dspring-boot.build-image.imageName=qcm/qcm-app:latest
+mvn spring-boot:build-image -Dspring-boot.build-image.imageName=ericmuller/qcm-rest-app:latest
 
 echo "$PASSWORD" | docker login --username ericmuller --password-stdin
 
 ~~docker image push nexus.webmarks.net:5000/qcm/qcm-app:latest~~
 
-docker image push ericmuller/qcm-app:latest
+docker image push ericmuller/qcm-rest-app:latest
 
 
 ###Docker

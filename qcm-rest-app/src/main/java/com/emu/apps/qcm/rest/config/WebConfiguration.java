@@ -28,33 +28,24 @@
 
 package com.emu.apps.qcm.rest.config;
 
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import javax.annotation.PostConstruct;
-
 
 @Configuration
 public class WebConfiguration implements WebMvcConfigurer {
 
-    private ObjectMapper objectMapper;
+//    private final ObjectMapper objectMapper;
 
-    public WebConfiguration(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
+    public WebConfiguration() {
+//        this.objectMapper = objectMapper;
     }
 
-    @PostConstruct
-    public void configureObjectMapper() {
-        objectMapper.configure(MapperFeature.DEFAULT_VIEW_INCLUSION, true);
-    }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

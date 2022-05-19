@@ -69,7 +69,7 @@
     </appender>
 
     <!-- LOG everything at INFO level -->
-    <root level="WARN">
+    <root level="INFO">
         <appender-ref ref="AppFile"/>
         <appender-ref ref="Console"/>
     </root>

@@ -1,5 +1,6 @@
 package com.emu.apps.qcm.rest.controllers.management.resources;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
@@ -10,6 +11,8 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 import java.time.ZonedDateTime;
+
+import static com.emu.apps.qcm.rest.controllers.management.resources.Constants.ZONED_DATE_TIME_FORMAT;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Getter
@@ -29,6 +32,7 @@ public class WebHookResource {
     private ZonedDateTime dateCreation;
 
     @JsonProperty("dateModification")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = ZONED_DATE_TIME_FORMAT)
     private ZonedDateTime dateModification;
 
     @NotNull

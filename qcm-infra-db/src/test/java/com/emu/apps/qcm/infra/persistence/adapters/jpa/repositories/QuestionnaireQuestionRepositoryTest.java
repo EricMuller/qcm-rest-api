@@ -48,7 +48,7 @@ class QuestionnaireQuestionRepositoryTest {
     private QuestionnaireQuestionRepository questionnaireQuestionRepository;
 
     @Autowired
-    private TagRepository tagRepository;
+    private TagQuestionRepository tagQuestionRepository;
 
 
     @Test
@@ -82,7 +82,7 @@ class QuestionnaireQuestionRepositoryTest {
         QuestionnaireEntity questionnaire = dbFixture.createOneQuestionnaireWithTwoQuestionTags(principal);
 
         List <Long> longListTag = Lists.newArrayList();
-        tagRepository.findAll().forEach((tag) -> longListTag.add(tag.getId()));
+        tagQuestionRepository.findAll().forEach((tag) -> longListTag.add(tag.getId()));
 
         Assertions.assertThat(longListTag).isNotEmpty();
         List <Long> longList = Lists.newArrayList(questionnaire.getId());

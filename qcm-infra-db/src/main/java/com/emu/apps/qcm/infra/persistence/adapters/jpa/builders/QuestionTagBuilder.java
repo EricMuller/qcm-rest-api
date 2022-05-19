@@ -2,21 +2,21 @@ package com.emu.apps.qcm.infra.persistence.adapters.jpa.builders;
 
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionTagEntity;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.TagEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.TagQuestionEntity;
 
 
 public class QuestionTagBuilder {
 
     private QuestionEntity question;
 
-    private TagEntity tag;
+    private TagQuestionEntity tag;
 
     public QuestionTagBuilder setQuestion(QuestionEntity question) {
         this.question = question;
         return this;
     }
 
-    public QuestionTagBuilder setTag(TagEntity tag) {
+    public QuestionTagBuilder setTag(TagQuestionEntity tag) {
         this.tag = tag;
         return this;
     }

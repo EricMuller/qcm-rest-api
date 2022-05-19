@@ -4,6 +4,7 @@ package com.emu.apps.qcm.rest.controllers.management.resources;
 import com.emu.apps.qcm.rest.controllers.management.openui.QuestionView.Create;
 import com.emu.apps.qcm.rest.controllers.management.openui.QuestionView.Find;
 import com.emu.apps.qcm.rest.controllers.management.openui.QuestionView.Update;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
@@ -16,6 +17,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.ZonedDateTime;
 import java.util.List;
+
+import static com.emu.apps.qcm.rest.controllers.management.resources.Constants.ZONED_DATE_TIME_FORMAT;
 
 /**
  * Created by eric on 05/06/2017.
@@ -42,6 +45,7 @@ public class QuestionResource  {
 
     @JsonProperty("dateCreation")
     @JsonView({Find.class})
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = ZONED_DATE_TIME_FORMAT)
     private ZonedDateTime dateCreation;
 
     @JsonProperty("lastModified_By")
@@ -50,6 +54,7 @@ public class QuestionResource  {
 
     @JsonProperty("dateModification")
     @JsonView({Find.class})
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = ZONED_DATE_TIME_FORMAT)
     private ZonedDateTime dateModification;
 
     @JsonProperty("type")

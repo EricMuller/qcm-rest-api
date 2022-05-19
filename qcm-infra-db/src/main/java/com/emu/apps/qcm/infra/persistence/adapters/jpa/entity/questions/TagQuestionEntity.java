@@ -1,4 +1,4 @@
-package com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags;
+package com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions;
 
 
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.common.AuditableEntity;
@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.Column;
@@ -22,40 +21,35 @@ import static org.springframework.data.jpa.domain.Specification.where;
 
 @Entity
 @BatchSize(size = 20)
-@Table(name = "TAG",
-        indexes = {@Index(name = "IDX_TAG_LIBELLE_IDX", columnList = "libelle"),
-                @Index(name = "IDX_TAG_UUID_IDX", columnList = "uuid")}
+@Table(name = "TAG_QUESTION",
+        indexes = {@Index(name = "IDX_TAG_Q_LIBELLE_IDX", columnList = "libelle"),
+                @Index(name = "IDX_TAG_Q_UUID_IDX", columnList = "uuid")}
 )
 @Getter
 @Setter
 @NoArgsConstructor
 //@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
-public class TagEntity extends AuditableEntity <String> {
+public class TagQuestionEntity extends AuditableEntity <String> {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tag_generator")
-    @SequenceGenerator(name = "tag_generator", sequenceName = "tag_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tag_q_generator")
+    @SequenceGenerator(name = "tag_q_generator", sequenceName = "tag_q_seq", allocationSize = 1)
     @Column(name = "ID", updatable = false, nullable = false)
     private Long id;
 
     @Column(name = "LIBELLE")
     private String libelle;
 
-    @Column(name = "PUBLIQUE")
-    private boolean publique;
-
-    public TagEntity(String libelle, boolean publique) {
+    public TagQuestionEntity(String libelle) {
         this.libelle = libelle;
-        this.publique = publique;
     }
 
-    public TagEntity(String libelle, boolean publique, String principal) {
+    public TagQuestionEntity(String libelle, String principal) {
         this.libelle = libelle;
-        this.publique = publique;
         this.createdBy = principal;
     }
 
-    public static final class SpecificationBuilder extends BaseSpecification <TagEntity> {
+    public static final class SpecificationBuilder extends BaseSpecification <TagQuestionEntity> {
 
         private String letter;
 
@@ -76,7 +70,7 @@ public class TagEntity extends AuditableEntity <String> {
         }
 
         @Override
-        public Specification <TagEntity> build() {
+        public Specification <TagQuestionEntity> build() {
             return (root, query, cb) -> where(fieldStartWith(LIBELLE, letter))
                     .and(fieldEquals(CREATED_BY, principal)
                     ).toPredicate(root, query, cb);

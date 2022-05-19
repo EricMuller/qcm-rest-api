@@ -30,7 +30,7 @@ package com.emu.apps.qcm.infra.persistence.adapters.mappers;
 
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireTag;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireTagEntity;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.TagEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.TagQuestionEntity;
 import com.emu.apps.qcm.domain.mappers.TagIdMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -53,7 +53,7 @@ public interface QuestionnaireTagEntityMapper {
     @Mapping(source = "libelle", target = "tag.libelle")
     QuestionnaireTagEntity dtoToModel(QuestionnaireTag questionnaireTagDto);
 
-    Iterable <QuestionnaireTag> questionnaireTagToDtos(Iterable <TagEntity> tags);
+    Iterable <QuestionnaireTag> questionnaireTagToDtos(Iterable <TagQuestionEntity> tags);
 
 
 }

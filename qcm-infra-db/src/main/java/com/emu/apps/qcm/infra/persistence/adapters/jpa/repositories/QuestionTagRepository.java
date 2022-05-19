@@ -2,7 +2,7 @@ package com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories;
 
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionTagEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionTagId;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.TagEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.TagQuestionEntity;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,11 +17,11 @@ public interface QuestionTagRepository extends JpaRepository <QuestionTagEntity,
 
 
     @Query("SELECT qt.tag  from QuestionTagEntity  qt WHERE qt.id.questionId = :id ")
-    Iterable <TagEntity> findByQuestionId(@Param("id") Long questionId);
+    Iterable <TagQuestionEntity> findByQuestionId(@Param("id") Long questionId);
 
     @Query(value = "SELECT distinct qt.tag FROM QuestionTagEntity qt join qt.tag t where t.createdBy = :principal  ",
             countQuery = "SELECT count(distinct qt.tag) FROM QuestionTagEntity qt join qt.tag t where t.createdBy = :principal  ")
-    Page <TagEntity> findAllTagByPrincipal(@Param("principal") String principal, @NotNull Pageable pageable);
+    Page <TagQuestionEntity> findAllTagByPrincipal(@Param("principal") String principal, @NotNull Pageable pageable);
 
 
 

@@ -1,5 +1,6 @@
 package com.emu.apps.qcm.rest.controllers.management.resources;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
@@ -11,6 +12,8 @@ import org.springframework.hateoas.RepresentationModel;
 
 import java.time.ZonedDateTime;
 import java.util.Objects;
+
+import static com.emu.apps.qcm.rest.controllers.management.resources.Constants.ZONED_DATE_TIME_FORMAT;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Getter
@@ -24,6 +27,7 @@ public class UploadResource extends RepresentationModel <UploadResource> {
     private String uuid;
 
     @JsonProperty("dateCreation")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = ZONED_DATE_TIME_FORMAT)
     private ZonedDateTime dateCreation;
 
     @JsonProperty("contentType")

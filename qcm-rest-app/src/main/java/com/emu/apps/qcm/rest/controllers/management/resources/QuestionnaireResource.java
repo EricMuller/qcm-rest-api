@@ -3,6 +3,7 @@ package com.emu.apps.qcm.rest.controllers.management.resources;
 import com.emu.apps.qcm.rest.controllers.management.openui.QuestionnaireView.Create;
 import com.emu.apps.qcm.rest.controllers.management.openui.QuestionnaireView.Find;
 import com.emu.apps.qcm.rest.controllers.management.openui.QuestionnaireView.Update;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
@@ -15,13 +16,16 @@ import lombok.Setter;
 import java.time.ZonedDateTime;
 import java.util.Set;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+import static com.emu.apps.qcm.rest.controllers.management.resources.Constants.ZONED_DATE_TIME_FORMAT;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonRootName(value = "Questionnaire")
 public class QuestionnaireResource {
+
 
     @JsonProperty("uuid")
     @JsonView({Find.class, Update.class,})
@@ -37,6 +41,7 @@ public class QuestionnaireResource {
 
     @JsonProperty("dateCreation")
     @JsonView({Find.class})
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = ZONED_DATE_TIME_FORMAT)
     private ZonedDateTime dateCreation;
 
     @JsonProperty("lastModified_By")
@@ -45,6 +50,7 @@ public class QuestionnaireResource {
 
     @JsonProperty("dateModification")
     @JsonView({Find.class})
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = ZONED_DATE_TIME_FORMAT)
     private ZonedDateTime dateModification;
 
     @JsonProperty("title")

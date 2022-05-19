@@ -4,10 +4,10 @@ server:
     max-http-header-size: 8KB
     tomcat:
         connection-timeout: 60s
-        max-http-post-size: 2MB
-        max-swallow-size=: 2MB #request body bytes
+        max-swallow-size: 2MB #request body bytes
         threads:
             max: 200
+        max-http-form-post-size: 2MB
     port : 8000
     http2:
         enable: true
@@ -50,6 +50,7 @@ openapi:
     keycloak:
         auth-server-url: ${KEYCLOAK_AUTH_URI}
         realm: ${KEYCLOAK_REALM}
+
 
 spring:
 

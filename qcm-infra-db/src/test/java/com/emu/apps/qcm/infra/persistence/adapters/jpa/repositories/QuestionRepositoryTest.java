@@ -5,7 +5,7 @@ import com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestC
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.ResponseEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionTagEntity;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.TagEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.TagQuestionEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.fixtures.DbFixture;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.fixtures.Fixture;
 import com.emu.apps.shared.security.PrincipalUtils;
@@ -230,7 +230,7 @@ class QuestionRepositoryTest {
 
         dbFixture.createOneQuestionnaireWithTwoQuestionTags(userUuid);
 
-        TagEntity tag1 = dbFixture.findTagbyLibelle(QUESTION_TAG_LIBELLE_1,  userUuid);
+        TagQuestionEntity tag1 = dbFixture.findTagQuestionbyLibelle(QUESTION_TAG_LIBELLE_1,  userUuid);
         assertThat(tag1).isNotNull();
 
         Specification <QuestionEntity> specification = new QuestionEntity.SpecificationBuilder(PrincipalUtils.getEmailOrName((Principal) () -> userUuid))

@@ -17,6 +17,9 @@
     <name>Infrastructure Adapter</name>
     <description>Infrastrucure Database Adapter</description>
 
+    <properties>
+        <querydsl.version>5.0.0</querydsl.version>
+    </properties>
     <dependencies>
 
         <dependency>
@@ -97,12 +100,15 @@
         <dependency>
             <groupId>com.querydsl</groupId>
             <artifactId>querydsl-apt</artifactId>
+            <version>${querydsl.version}</version>
+            <classifier>jpa</classifier>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>com.querydsl</groupId>
             <artifactId>querydsl-jpa</artifactId>
+            <version>${querydsl.version}</version>
         </dependency>
 
 

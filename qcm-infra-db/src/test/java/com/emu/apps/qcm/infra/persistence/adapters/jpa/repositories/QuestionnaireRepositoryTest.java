@@ -4,10 +4,11 @@ import com.emu.apps.qcm.infra.persistence.adapters.jpa.BaeldungPostgresqlExtensi
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireQuestionEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.TagQuestionnaireEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionTagEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.ResponseEntity;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.TagEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.TagQuestionEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.fixtures.DbFixture;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.fixtures.Fixture;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.projections.QuestionnaireProjection;
@@ -129,7 +130,7 @@ class QuestionnaireRepositoryTest {
 
         dbFixture.createOneQuestionnaireWithTwoQuestionTags(principal);
 
-        TagEntity tag = dbFixture.findTagbyLibelle(dbFixture.QUESTIONNAIRE_TAG_LIBELLE_1, () -> principal);
+        TagQuestionnaireEntity tag = dbFixture.findTagQuestionnairebyLibelle(dbFixture.QUESTIONNAIRE_TAG_LIBELLE_1, () -> principal);
         Assertions.assertThat(tag).isNotNull();
 
         QuestionnaireEntity.SpecificationBuilder specificationBuilder = new QuestionnaireEntity.SpecificationBuilder();

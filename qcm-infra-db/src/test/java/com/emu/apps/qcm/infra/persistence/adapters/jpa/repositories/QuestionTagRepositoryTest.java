@@ -3,7 +3,7 @@ package com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.BaeldungPostgresqlExtension;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionEntity;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.TagEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.TagQuestionEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.fixtures.DbFixture;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -54,7 +54,7 @@ class QuestionTagRepositoryTest {
 
         QuestionEntity question = dbFixture.createQuestionsAndGetFirst(principal);
 
-        Iterable <TagEntity> tags = questionTagRepository.findByQuestionId(question.getId());
+        Iterable <TagQuestionEntity> tags = questionTagRepository.findByQuestionId(question.getId());
 
         assertThat(tags).isNotNull().isNotEmpty();
         assertThat(tags.spliterator().estimateSize()).isEqualTo(2);

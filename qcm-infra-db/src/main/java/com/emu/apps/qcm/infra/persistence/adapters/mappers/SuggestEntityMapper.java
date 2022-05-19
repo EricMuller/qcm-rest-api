@@ -29,7 +29,7 @@
 package com.emu.apps.qcm.infra.persistence.adapters.mappers;
 
 import com.emu.apps.qcm.domain.model.questionnaire.Suggest;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.TagEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.TagQuestionEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.projections.QuestionnaireProjection;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -41,9 +41,9 @@ public interface SuggestEntityMapper {
 
 
     @Mapping(target = "fieldName", constant = "TagId")
-    Suggest modelToSuggestDto(TagEntity tag);
+    Suggest modelToSuggestDto(TagQuestionEntity tag);
 
-    Iterable<Suggest> modelsToSugestDtos(Iterable<TagEntity> tags);
+    Iterable<Suggest> modelsToSugestDtos(Iterable<TagQuestionEntity> tags);
 
     @Mapping(source = "question.title", target = "libelle")
     @Mapping(target = "fieldName", constant = "questionnaireId")

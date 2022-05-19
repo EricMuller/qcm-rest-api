@@ -10,7 +10,8 @@ import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.Que
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.ResponseEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionTagEntity;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.TagEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.TagQuestionnaireEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.TagQuestionEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.upload.UploadEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.*;
 import com.emu.apps.shared.security.PrincipalUtils;
@@ -47,7 +48,10 @@ public class DbFixture extends Fixture {
     private QuestionRepository questionRepository;
 
     @Autowired
-    private TagRepository tagRepository;
+    private TagQuestionnaireRepository tagQuestionnaireRepository;
+
+    @Autowired
+    private TagQuestionRepository tagQuestionRepository;
 
     @Autowired
     private QuestionTagRepository questionTagRepository;
@@ -80,14 +84,25 @@ public class DbFixture extends Fixture {
     private AccountRepository accountRepository;
 
     @Transactional(readOnly = true)
-    public TagEntity findTagbyLibelle(String name, Principal principal) {
-        return tagRepository.findByLibelle(name, PrincipalUtils.getEmailOrName(principal));
+    public TagQuestionEntity findTagQuestionbyLibelle(String name, Principal principal) {
+        return tagQuestionRepository.findByLibelle(name, PrincipalUtils.getEmailOrName(principal));
     }
 
     @Transactional(readOnly = true)
-    public TagEntity findTagbyLibelle(String name, String principal) {
-        return tagRepository.findByLibelle(name, principal);
+    public TagQuestionEntity findTagQuestionbyLibelle(String name, String principal) {
+        return tagQuestionRepository.findByLibelle(name, principal);
     }
+
+    @Transactional(readOnly = true)
+    public TagQuestionnaireEntity findTagQuestionnairebyLibelle(String name, Principal principal) {
+        return tagQuestionnaireRepository.findByLibelle(name, PrincipalUtils.getEmailOrName(principal));
+    }
+
+    @Transactional(readOnly = true)
+    public TagQuestionnaireEntity findTagQuestionnairebyLibelle(String name, String principal) {
+        return tagQuestionnaireRepository.findByLibelle(name, principal);
+    }
+
 
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -97,7 +112,7 @@ public class DbFixture extends Fixture {
         questionnaireTagRepository.deleteAll();
         questionnaireQuestionRepository.deleteAll();
         questionRepository.deleteAll();
-        tagRepository.deleteAll();
+        tagQuestionRepository.deleteAll();
         questionnaireRepository.deleteAll();
         entityManager.flush();
         mpttCategoryRepository.deleteAll();
@@ -113,7 +128,7 @@ public class DbFixture extends Fixture {
         // questionnaireTagRepository.deleteAll();
         // questionnaireQuestionRepository.deleteAll();
         questionRepository.deleteByCreatedByEquals(userId);
-        tagRepository.deleteByCreatedByEquals(userId);
+        tagQuestionRepository.deleteByCreatedByEquals(userId);
         questionnaireRepository.deleteByCreatedByEquals(userId);
 
         mpttCategoryRepository.deleteAllByUser(userId);
@@ -205,23 +220,24 @@ public class DbFixture extends Fixture {
             questionEntity2 = questionRepository.save(questionEntity2);
 
             //questionTag
-            var tagEntity1 = tagRepository.save(new TagEntity(QUESTION_TAG_LIBELLE_1, false, accountUuid));
-            var tagEntity2 = tagRepository.save(new TagEntity(QUESTION_TAG_LIBELLE_2, false, accountUuid));
+            var tagQuestionEntity1 = tagQuestionRepository.save(new TagQuestionEntity(QUESTION_TAG_LIBELLE_1,  accountUuid));
+            var tagQuestionEntity2 = tagQuestionRepository.save(new TagQuestionEntity(QUESTION_TAG_LIBELLE_2,  accountUuid));
 
-            questionTagRepository.save(new QuestionTagEntity(questionEntity1, tagEntity1));
-            questionTagRepository.save(new QuestionTagEntity(questionEntity1, tagEntity2));
-            questionTagRepository.save(new QuestionTagEntity(questionEntity2, tagEntity1));
-            questionTagRepository.save(new QuestionTagEntity(questionEntity2, tagEntity2));
+            questionTagRepository.save(new QuestionTagEntity(questionEntity1, tagQuestionEntity1));
+            questionTagRepository.save(new QuestionTagEntity(questionEntity1, tagQuestionEntity2));
+            questionTagRepository.save(new QuestionTagEntity(questionEntity2, tagQuestionEntity1));
+            questionTagRepository.save(new QuestionTagEntity(questionEntity2, tagQuestionEntity2));
 
             questionnaireQuestionRepository.save(new QuestionnaireQuestionEntity(questionnaireEntity, questionEntity1, 1));
 
             questionnaireQuestionRepository.save(new QuestionnaireQuestionEntity(questionnaireEntity, questionEntity2, 2));
 
             //questionnaireTag
-            var tagEntity = tagRepository.save(new TagEntity(QUESTIONNAIRE_TAG_LIBELLE_1, false, accountUuid));
+            var tagQuestionnaireEntity = tagQuestionnaireRepository.save(new TagQuestionnaireEntity(QUESTIONNAIRE_TAG_LIBELLE_1,  accountUuid));
+
             questionnaireTagRepository.save(new QuestionnaireTagBuilder()
                     .setQuestionnaire(questionnaireEntity)
-                    .setTag(tagEntity)
+                    .setTag(tagQuestionnaireEntity)
                     .build());
 
             entityManager.flush();
@@ -304,9 +320,9 @@ public class DbFixture extends Fixture {
         questionRepository.save(question2);
 
         //questionTag
-        TagEntity tag1 = tagRepository.save(new TagEntity(QUESTION_TAG_LIBELLE_1, false, accountId));
-        TagEntity tag2 = tagRepository.save(new TagEntity(QUESTION_TAG_LIBELLE_2, false, accountId));
-        TagEntity tag3 = tagRepository.save(new TagEntity(QUESTION_TAG_LIBELLE_3, false, accountId));
+        TagQuestionEntity tag1 = tagQuestionRepository.save(new TagQuestionEntity(QUESTION_TAG_LIBELLE_1,  accountId));
+        TagQuestionEntity tag2 = tagQuestionRepository.save(new TagQuestionEntity(QUESTION_TAG_LIBELLE_2,  accountId));
+        TagQuestionEntity tag3 = tagQuestionRepository.save(new TagQuestionEntity(QUESTION_TAG_LIBELLE_3,  accountId));
 
 
         questionTagRepository.save(new QuestionTagEntity(question1, tag1));

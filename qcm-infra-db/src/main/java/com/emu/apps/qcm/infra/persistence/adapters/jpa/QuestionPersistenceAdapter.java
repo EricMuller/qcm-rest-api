@@ -10,13 +10,13 @@ import com.emu.apps.qcm.infra.persistence.adapters.jpa.builders.QuestionTagBuild
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.AccountEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.mptt.MpttCategoryEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionEntity;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.TagEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.TagQuestionEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.AccountRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.MpttCategoryRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.QuestionRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.QuestionTagRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.QuestionnaireQuestionRepository;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.TagRepository;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.TagQuestionRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.mappers.QuestionEntityMapper;
 import com.emu.apps.qcm.infra.persistence.adapters.mappers.QuestionEntityUpdateMapper;
 import com.emu.apps.qcm.infra.persistence.adapters.mappers.QuestionnaireQuestionEntityMapper;
@@ -54,7 +54,7 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
 
     private final QuestionEntityUpdateMapper questionUpdateMapper;
 
-    private final TagRepository tagRepository;
+    private final TagQuestionRepository tagQuestionRepository;
 
     private final MpttCategoryRepository mpttCategoryRepository;
 
@@ -69,7 +69,7 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
     @Autowired
     public QuestionPersistenceAdapter(QuestionRepository questionRepository, QuestionTagRepository questionTagRepository,
                                       QuestionnaireQuestionRepository questionnaireQuestionRepository,
-                                      QuestionEntityMapper questionMapper, QuestionEntityUpdateMapper questionUpdateMapper, TagRepository tagRepository,
+                                      QuestionEntityMapper questionMapper, QuestionEntityUpdateMapper questionUpdateMapper, TagQuestionRepository tagQuestionRepository,
                                       MpttCategoryRepository mpttCategoryRepository, UuidMapper uuidMapper, TagEntityMapper tagMapper, QuestionnaireQuestionEntityMapper questionnaireQuestionMapper,
                                       AccountRepository accountRepository) {
         this.questionRepository = questionRepository;
@@ -77,7 +77,7 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
         this.questionnaireQuestionRepository = questionnaireQuestionRepository;
         this.questionMapper = questionMapper;
         this.questionUpdateMapper = questionUpdateMapper;
-        this.tagRepository = tagRepository;
+        this.tagQuestionRepository = tagQuestionRepository;
         this.mpttCategoryRepository = mpttCategoryRepository;
         this.uuidMapper = uuidMapper;
         this.tagMapper = tagMapper;
@@ -189,11 +189,11 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
             if (nonNull(questionTags)) {
                 StreamSupport.stream(questionTags.spliterator(), false)
                         .forEach(questionTag -> {
-                            TagEntity tagEntity = findTag(questionTag, principal);
-                            if (nonNull(tagEntity)) {
+                            TagQuestionEntity tagQuestionEntity = findTag(questionTag, principal);
+                            if (nonNull(tagQuestionEntity)) {
                                 var newQuestionTag = new QuestionTagBuilder()
                                         .setQuestion(questionEntity)
-                                        .setTag(tagEntity)
+                                        .setTag(tagQuestionEntity)
                                         .build();
                                 questionEntity.getTags().add(questionTagRepository.save(newQuestionTag));
                             }
@@ -203,17 +203,17 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
         return questionEntity;
     }
 
-    private TagEntity findTag(QuestionTag questionTag, String principal) {
-        TagEntity tagEntity;
+    private TagQuestionEntity findTag(QuestionTag questionTag, String principal) {
+        TagQuestionEntity tagQuestionEntity;
         if (nonNull(questionTag.getUuid())) {
-            tagEntity = tagRepository.findByUuid(UUID.fromString(questionTag.getUuid())).orElse(null);
+            tagQuestionEntity = tagQuestionRepository.findByUuid(UUID.fromString(questionTag.getUuid())).orElse(null);
         } else {
-            tagEntity = tagRepository.findByLibelle(questionTag.getLibelle(), principal);
-            if (Objects.isNull(tagEntity)) {
-                tagEntity = tagRepository.save(new TagEntity(questionTag.getLibelle(), true));
+            tagQuestionEntity = tagQuestionRepository.findByLibelle(questionTag.getLibelle(), principal);
+            if (Objects.isNull(tagQuestionEntity)) {
+                tagQuestionEntity = tagQuestionRepository.save(new TagQuestionEntity(questionTag.getLibelle()));
             }
         }
-        return tagEntity;
+        return tagQuestionEntity;
     }
 
 

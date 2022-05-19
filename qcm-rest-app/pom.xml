@@ -16,7 +16,7 @@
     <description>Rest Api</description>
 
     <properties>
-        <springdoc.version>1.5.10</springdoc.version>
+<!--        <springdoc.version>1.5.10</springdoc.version>-->
     </properties>
 
     <dependencies>
@@ -199,11 +199,6 @@
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jsr310</artifactId>
         </dependency>
 
         <dependency>

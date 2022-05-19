@@ -5,6 +5,7 @@ import com.emu.apps.qcm.rest.controllers.management.openui.CategoryView;
 import com.emu.apps.qcm.rest.controllers.management.openui.CategoryView.Update;
 import com.emu.apps.qcm.rest.controllers.management.openui.QuestionnaireView;
 import com.emu.apps.qcm.rest.controllers.management.openui.QuestionView;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
@@ -15,6 +16,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.ZonedDateTime;
+
+import static com.emu.apps.qcm.rest.controllers.management.resources.Constants.ZONED_DATE_TIME_FORMAT;
 
 /**
  * Created by eric on 05/06/2017.
@@ -45,11 +48,13 @@ public class CategoryResource {
     @JsonProperty("dateCreation")
     @JsonView({CategoryView.Find.class,
             QuestionView.Find.class,})
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = ZONED_DATE_TIME_FORMAT)
     private ZonedDateTime dateCreation;
 
     @JsonProperty("dateModification")
     @JsonView({CategoryView.Find.class
             , QuestionView.Find.class})
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = ZONED_DATE_TIME_FORMAT)
     private ZonedDateTime dateModification;
 
     @JsonProperty("created_by")

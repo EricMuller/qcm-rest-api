@@ -10,13 +10,13 @@ import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.mptt.MpttCategoryE
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireQuestionEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireTagEntity;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.TagEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.TagQuestionnaireEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.MpttCategoryRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.QuestionRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.QuestionnaireQuestionRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.QuestionnaireRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.QuestionnaireTagRepository;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.TagRepository;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.TagQuestionnaireRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.mappers.QuestionnaireEntityMapper;
 import com.emu.apps.qcm.infra.persistence.adapters.mappers.QuestionnaireQuestionEntityMapper;
 import com.emu.apps.qcm.infra.persistence.adapters.mappers.UuidMapper;
@@ -53,7 +53,7 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
 
     private final UuidMapper uuidMapper;
 
-    private final TagRepository tagRepository;
+    private final TagQuestionnaireRepository tagQuestionnaireRepository;
 
     private final QuestionnaireTagRepository questionnaireTagRepository;
 
@@ -62,7 +62,7 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
     public QuestionnairePersistenceAdapter(QuestionnaireRepository questionnaireRepository, QuestionRepository questionRepository,
                                            QuestionnaireQuestionRepository questionnaireQuestionRepository,
                                            MpttCategoryRepository mpttCategoryRepository, QuestionnaireEntityMapper questionnaireMapper,
-                                           UuidMapper uuidMapper, TagRepository tagRepository,
+                                           UuidMapper uuidMapper, TagQuestionnaireRepository tagQuestionnaireRepository,
                                            QuestionnaireTagRepository questionnaireTagRepository, QuestionnaireQuestionEntityMapper questionnaireQuestionMapper) {
         this.questionnaireRepository = questionnaireRepository;
         this.questionRepository = questionRepository;
@@ -70,7 +70,7 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
         this.mpttCategoryRepository = mpttCategoryRepository;
         this.questionnaireMapper = questionnaireMapper;
         this.uuidMapper = uuidMapper;
-        this.tagRepository = tagRepository;
+        this.tagQuestionnaireRepository = tagQuestionnaireRepository;
         this.questionnaireTagRepository = questionnaireTagRepository;
         this.questionnaireQuestionMapper = questionnaireQuestionMapper;
 
@@ -166,14 +166,14 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
 
         if (nonNull(questionnaireTagDtos)) {
             for (QuestionnaireTag questionnaireTagDto : questionnaireTagDtos) {
-                TagEntity tag;
+                TagQuestionnaireEntity tag;
                 if (nonNull(questionnaireTagDto.getUuid())) {
-                    tag = tagRepository.findByUuid(fromString(questionnaireTagDto.getUuid()))
+                    tag = tagQuestionnaireRepository.findByUuid(fromString(questionnaireTagDto.getUuid()))
                             .orElse(null);
                 } else {
-                    tag = tagRepository.findByLibelle(questionnaireTagDto.getLibelle(), principal);
+                    tag = tagQuestionnaireRepository.findByLibelle(questionnaireTagDto.getLibelle(), principal);
                     if (isNull(tag)) {
-                        tag = tagRepository.save(new TagEntity(questionnaireTagDto.getLibelle(), true));
+                        tag = tagQuestionnaireRepository.save(new TagQuestionnaireEntity(questionnaireTagDto.getLibelle()));
                     }
                 }
                 if (tag != null) {

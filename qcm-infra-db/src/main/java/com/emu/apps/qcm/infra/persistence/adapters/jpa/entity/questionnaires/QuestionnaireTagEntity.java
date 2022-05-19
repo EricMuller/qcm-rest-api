@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires;
 
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.TagEntity;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,13 +25,13 @@ public class QuestionnaireTagEntity implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TAG_ID", insertable = false, updatable = false)
-    private TagEntity tag;
+    private TagQuestionnaireEntity tag;
 
     @Column(name = "DELETED")
     private boolean deleted;
 
 
-    public QuestionnaireTagEntity(QuestionnaireEntity questionnaire, TagEntity tag) {
+    public QuestionnaireTagEntity(QuestionnaireEntity questionnaire, TagQuestionnaireEntity tag) {
         this.id = new QuestionnaireTagId(questionnaire.getId(), tag.getId());
         this.tag = tag;
         this.questionnaire = questionnaire;

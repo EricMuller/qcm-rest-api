@@ -1,7 +1,6 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions;
 
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.common.AuditableEntity.BaseSpecification;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.TagEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -34,9 +33,9 @@ public class QuestionTagEntity implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TAG_ID", insertable = false, updatable = false)
-    private TagEntity tag;
+    private TagQuestionEntity tag;
 
-    public QuestionTagEntity(QuestionEntity question, TagEntity tag) {
+    public QuestionTagEntity(QuestionEntity question, TagQuestionEntity tag) {
         this.id = new QuestionTagId(question.getId(), tag.getId());
         this.tag = tag;
         this.question = question;

@@ -3,6 +3,7 @@ package com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireTagEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireTagId;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.TagQuestionnaireEntity;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,7 +33,7 @@ class QuestionnaireTagEntityTest {
 
 	@Test
 	void testTag() {
-		TagEntity param = new TagEntity();
+		TagQuestionnaireEntity param = new TagQuestionnaireEntity();
 		aQuestionnaireTagEntity.setTag(param);
 		Object result = aQuestionnaireTagEntity.getTag();
 		assertEquals(param, result);

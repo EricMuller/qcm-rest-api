@@ -30,8 +30,8 @@ package com.emu.apps.qcm.infra.persistence.adapters.jpa;
 
 import com.emu.apps.qcm.domain.model.tag.Tag;
 import com.emu.apps.qcm.infra.persistence.TagPersistencePort;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.tags.TagEntity;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.TagRepository;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.TagQuestionEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.TagQuestionRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.mappers.TagEntityMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -51,53 +51,53 @@ import static java.util.Objects.isNull;
 @Transactional
 public class TagPersistenceAdapter implements TagPersistencePort {
 
-    private final TagRepository tagRepository;
+    private final TagQuestionRepository tagQuestionRepository;
 
     private final TagEntityMapper tagMapper;
 
     @Autowired
-    public TagPersistenceAdapter(TagRepository tagRepository, TagEntityMapper tagMapper) {
-        this.tagRepository = tagRepository;
+    public TagPersistenceAdapter(TagQuestionRepository tagQuestionRepository, TagEntityMapper tagMapper) {
+        this.tagQuestionRepository = tagQuestionRepository;
         this.tagMapper = tagMapper;
     }
 
     @Override
     public Tag save(Tag tag) {
-        TagEntity tagEntity = tagMapper.modelToEntity(tag);
-        return tagMapper.entityToModel(tagRepository.save(tagEntity));
+        TagQuestionEntity tagQuestionEntity = tagMapper.modelToEntity(tag);
+        return tagMapper.entityToModel(tagQuestionRepository.save(tagQuestionEntity));
     }
 
     @Override
     public Tag findById(Long id) {
-        return tagMapper.entityToModel(tagRepository.findById(id).orElse(null));
+        return tagMapper.entityToModel(tagQuestionRepository.findById(id).orElse(null));
     }
 
     public Tag findByUuid(String id) {
-        return tagMapper.entityToModel(tagRepository.findByUuid(UUID.fromString(id)).orElse(null));
+        return tagMapper.entityToModel(tagQuestionRepository.findByUuid(UUID.fromString(id)).orElse(null));
     }
 
     @Override
     public Tag findOrCreateByLibelle(String libelle, String principal) {
-        var tagEntity = tagRepository.findByLibelle(libelle, principal);
+        var tagEntity = tagQuestionRepository.findByLibelle(libelle, principal);
         if (isNull(tagEntity)) {
-            tagEntity = tagRepository.save(new TagEntity(libelle, true));
+            tagEntity = tagQuestionRepository.save(new TagQuestionEntity(libelle));
         }
         return tagMapper.entityToModel(tagEntity);
     }
 
     @Override
     public Iterable <Tag> findAll() {
-        return tagMapper.entitiesToModels(tagRepository.findAll());
+        return tagMapper.entitiesToModels(tagQuestionRepository.findAll());
     }
 
     @Override
     public Page <Tag> findAllByPage(Optional <String> firstLetter, Pageable pageable, String principal) {
 
-        var tagSpecificationBuilder = new TagEntity.SpecificationBuilder()
+        var tagSpecificationBuilder = new TagQuestionEntity.SpecificationBuilder()
                 .setPrincipal(principal)
                 .setLetter(firstLetter.isPresent() ? firstLetter.get() : null);
 
-        return tagMapper.pageToModel(tagRepository.findAll(tagSpecificationBuilder.build(), pageable));
+        return tagMapper.pageToModel(tagQuestionRepository.findAll(tagSpecificationBuilder.build(), pageable));
     }
 
 }
