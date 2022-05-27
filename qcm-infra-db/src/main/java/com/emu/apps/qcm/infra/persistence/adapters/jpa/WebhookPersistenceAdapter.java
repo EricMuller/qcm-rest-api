@@ -7,7 +7,7 @@ import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.AccountEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.events.WebHookEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.AccountRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.WebHookRepository;
-import com.emu.apps.qcm.infra.persistence.adapters.mappers.WebHookEntityMapper;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.WebHookEntityMapper;
 import com.emu.apps.shared.exceptions.I18nedNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

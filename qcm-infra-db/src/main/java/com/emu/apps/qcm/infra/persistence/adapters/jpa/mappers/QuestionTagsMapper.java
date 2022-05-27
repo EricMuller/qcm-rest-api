@@ -26,32 +26,31 @@
  *
  */
 
-package com.emu.apps.qcm.infra.persistence.adapters.mappers;
+package com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers;
 
-import com.emu.apps.qcm.domain.model.question.QuestionTag;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionTagEntity;
+import com.emu.apps.qcm.domain.mappers.AccountIdMapper;
+import com.emu.apps.qcm.domain.mappers.QuestionIdMapper;
+import com.emu.apps.qcm.domain.model.question.QuestionWithTagsOnly;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.AccountEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.custom.ModelId;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.ReportingPolicy;
+import org.springframework.data.domain.Page;
 
-@Mapper(componentModel = "spring", uses = {CategoryEntityMapper.class,UuidMapper.class}
-        , unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface QuestionTagEntityMapper {
+@Mapper(componentModel = "spring", uses = {CategoryEntityMapper.class, QuestionTagEntityMapper.class, UuidMapper.class
+        , QuestionIdMapper.class, AccountIdMapper.class})
+public interface QuestionTagsMapper {
 
-    @Mapping(source = "tag.uuid", target = "uuid")
-    @Mapping(source = "tag.libelle", target = "libelle")
+    default String getAccString(AccountEntity accountEntity) {
+        return accountEntity.getUserName();
+    }
 
-    @Mapping(source = "tag.dateCreation", target = "dateCreation")
-    @Mapping(source = "tag.dateModification", target = "dateModification")
-    @Mapping(source = "tag.createdBy", target = "createdBy")
-    @Mapping(source = "tag.lastModifiedBy", target = "lastModifiedBy")
+    @ModelId
+    QuestionWithTagsOnly entityToModel(QuestionEntity questionEntity);
 
-    QuestionTag entityToModel(QuestionTagEntity questionTagEntity);
+    default Page <QuestionWithTagsOnly> pageQuestionResponseProjectionToDto(Page <QuestionEntity> page) {
+        return page.map(this::entityToModel);
+    }
 
-
-    @Mapping(source = "libelle", target = "tag.libelle")
-    QuestionTagEntity modelToEntity(QuestionTag questionTag);
-
-    Iterable <QuestionTagEntity> modelsToEntities(Iterable <QuestionTag> questionTags);
 
 }

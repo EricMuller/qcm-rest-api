@@ -26,40 +26,29 @@
  *
  */
 
-package com.emu.apps.qcm.infra.persistence.adapters.mappers;
+package com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers;
 
-import com.emu.apps.qcm.domain.model.webhook.WebHook;
-import com.emu.apps.qcm.domain.model.webhook.WebhookId;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.events.WebHookEntity;
-import com.emu.apps.qcm.infra.persistence.adapters.mappers.custom.IgnoreEntityId;
-import com.emu.apps.qcm.infra.persistence.adapters.mappers.custom.IgnoreOwner;
-import com.emu.apps.qcm.infra.persistence.adapters.mappers.custom.ModelId;
+import com.emu.apps.qcm.domain.model.category.MpttCategory;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.mptt.MpttCategoryEntity;
+import com.emu.apps.qcm.domain.mappers.CategoryIdMapper;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.custom.IgnoreEntityId;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.custom.ModelId;
 import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
-import org.springframework.data.domain.Page;
 
-import java.util.UUID;
-
-@Mapper(componentModel = "spring", uses = UuidMapper.class, unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface WebHookEntityMapper {
-
-    default WebhookId toId(UUID uuid) {
-        return new WebhookId(uuid.toString());
-    }
+@Mapper(componentModel = "spring",
+        uses = {UuidMapper.class, CategoryIdMapper.class},
+        unmappedTargetPolicy = ReportingPolicy.IGNORE)
+public interface CategoryEntityMapper {
 
     @ModelId
-    WebHook entityToModel(WebHookEntity webHookEntity);
+    MpttCategory modelToDto(MpttCategoryEntity category);
 
+    @Mapping(target = "uuid", ignore = true)
     @IgnoreEntityId
-    WebHookEntity modelToEntity(WebHook webHook);
+    MpttCategoryEntity dtoToModel(MpttCategory mpttCategory);
 
-    @IgnoreOwner
-    @IgnoreEntityId
-    WebHookEntity modelToEntity(@MappingTarget WebHookEntity webHookEntity, WebHook webHook);
-
-    default Page <WebHook> pageToPageDto(Page <WebHookEntity> page) {
-        return page.map(this::entityToModel);
-    }
+    Iterable <MpttCategory> modelsToDtos(Iterable <MpttCategoryEntity> categories);
 
 }

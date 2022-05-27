@@ -17,11 +17,11 @@ import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.QuestionRepo
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.QuestionTagRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.QuestionnaireQuestionRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.TagQuestionRepository;
-import com.emu.apps.qcm.infra.persistence.adapters.mappers.QuestionEntityMapper;
-import com.emu.apps.qcm.infra.persistence.adapters.mappers.QuestionEntityUpdateMapper;
-import com.emu.apps.qcm.infra.persistence.adapters.mappers.QuestionnaireQuestionEntityMapper;
-import com.emu.apps.qcm.infra.persistence.adapters.mappers.TagEntityMapper;
-import com.emu.apps.qcm.infra.persistence.adapters.mappers.UuidMapper;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.QuestionEntityMapper;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.QuestionEntityUpdateMapper;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.QuestionnaireQuestionEntityMapper;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.TagEntityMapper;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.UuidMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -26,14 +26,14 @@
  *
  */
 
-package com.emu.apps.qcm.infra.persistence.adapters.mappers;
+package com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers;
 
 
 import com.emu.apps.qcm.domain.mappers.TagIdMapper;
 import com.emu.apps.qcm.domain.model.tag.Tag;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.TagQuestionEntity;
-import com.emu.apps.qcm.infra.persistence.adapters.mappers.custom.IgnoreEntityId;
-import com.emu.apps.qcm.infra.persistence.adapters.mappers.custom.ModelId;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.custom.IgnoreEntityId;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.custom.ModelId;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import org.springframework.data.domain.Page;

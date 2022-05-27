@@ -26,18 +26,18 @@
  *
  */
 
-package com.emu.apps.qcm.infra.persistence.adapters.mappers;
+package com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers;
 
 import com.emu.apps.qcm.domain.mappers.AccountIdMapper;
 import com.emu.apps.qcm.domain.mappers.QuestionIdMapper;
 import com.emu.apps.qcm.domain.model.question.Question;
 import com.emu.apps.qcm.domain.model.question.QuestionWithTagsOnly;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.custom.IgnoreOwner;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.custom.IgnoreTags;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.custom.IgnoreTechniqualData;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.custom.ModelId;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.projections.QuestionResponseProjection;
-import com.emu.apps.qcm.infra.persistence.adapters.mappers.custom.IgnoreOwner;
-import com.emu.apps.qcm.infra.persistence.adapters.mappers.custom.IgnoreTags;
-import com.emu.apps.qcm.infra.persistence.adapters.mappers.custom.IgnoreTechniqualData;
-import com.emu.apps.qcm.infra.persistence.adapters.mappers.custom.ModelId;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import org.springframework.data.domain.Page;

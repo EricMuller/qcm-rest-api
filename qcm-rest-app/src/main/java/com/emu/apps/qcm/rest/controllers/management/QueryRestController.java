@@ -40,7 +40,7 @@ public class QueryRestController {
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     @Timer
-    @Operation(summary = "Query", description = "", tags = {"yourObject"})
+    @Operation(summary = "Query", description = "", tags = {"Query"})
     // @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List", content = @Content(array = @ArraySchema(schema = @Schema(name = "rows", implementation = Results.class)))), @ApiResponse(responseCode = "400", description = "Invalid input")})
     public Results getQuery(@RequestParam("id") String queryName) {
 
@@ -51,7 +51,7 @@ public class QueryRestController {
 
     @PostMapping(produces = APPLICATION_JSON_VALUE)
     @Timer
-    @Operation(summary = "Query", description = "", tags = {"yourObject"})
+    @Operation(summary = "Query", description = "", tags = {"Query"})
     // @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List", content = @Content(array = @ArraySchema(schema = @Schema(name = "rows", implementation = Results.class)))), @ApiResponse(responseCode = "400", description = "Invalid input")})
     public Results postQuery(@RequestParam("id") String queryName) {
 

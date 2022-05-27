@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.rest.mappers;
 
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireQuestion;
-import com.emu.apps.qcm.infra.persistence.adapters.mappers.UuidMapperImpl;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.UuidMapperImpl;
 import com.emu.apps.qcm.rest.controllers.unrestrained.resources.PushishedQuestionnaireQuestion;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
@@ -13,7 +13,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {PublishedMapperImpl.class,  UuidMapperImpl.class})
+@ContextConfiguration(classes = {PublishedMapperImpl.class, UuidMapperImpl.class})
 @Tag("MapstructTest")
 class PublishedMapperTest {
 
@@ -31,7 +31,7 @@ class PublishedMapperTest {
 
         Assertions.assertNotNull(pushishedQuestionnaireQuestionDto);
 
-        Assertions.assertEquals("Text",pushishedQuestionnaireQuestionDto.getQuestionText());
+        Assertions.assertEquals("Text", pushishedQuestionnaireQuestionDto.getQuestionText());
     }
 
 

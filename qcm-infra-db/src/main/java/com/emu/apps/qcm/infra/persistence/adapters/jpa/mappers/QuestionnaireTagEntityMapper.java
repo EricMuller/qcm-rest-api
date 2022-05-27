@@ -26,28 +26,34 @@
  *
  */
 
-package com.emu.apps.qcm.infra.persistence.adapters.mappers;
+package com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers;
 
-import com.emu.apps.qcm.domain.model.questionnaire.Suggest;
+import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireTag;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireTagEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.TagQuestionEntity;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.projections.QuestionnaireProjection;
+import com.emu.apps.qcm.domain.mappers.TagIdMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring"
+@Mapper(componentModel = "spring", uses = {CategoryEntityMapper.class, UuidMapper.class, TagIdMapper.class}
         , unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface SuggestEntityMapper {
+public interface QuestionnaireTagEntityMapper {
 
 
-    @Mapping(target = "fieldName", constant = "TagId")
-    Suggest modelToSuggestDto(TagQuestionEntity tag);
+    @Mapping(source = "tag.uuid", target = "uuid")
+    @Mapping(source = "tag.libelle", target = "libelle")
+    @Mapping(source = "tag.dateCreation", target = "dateCreation")
+    @Mapping(source = "tag.dateModification", target = "dateModification")
+    @Mapping(source = "tag.createdBy", target = "createdBy")
+    @Mapping(source = "tag.lastModifiedBy", target = "lastModifiedBy")
 
-    Iterable<Suggest> modelsToSugestDtos(Iterable<TagQuestionEntity> tags);
+    QuestionnaireTag modelToDto(QuestionnaireTagEntity questionnaireTag);
 
-    @Mapping(source = "question.title", target = "libelle")
-    @Mapping(target = "fieldName", constant = "questionnaireId")
-    Suggest modelToSuggestDto(QuestionnaireProjection question);
+    @Mapping(source = "libelle", target = "tag.libelle")
+    QuestionnaireTagEntity dtoToModel(QuestionnaireTag questionnaireTagDto);
 
-    Iterable<Suggest> modelsToSuggestDtos(Iterable<QuestionnaireProjection> questionnaireProjections);
+    Iterable <QuestionnaireTag> questionnaireTagToDtos(Iterable <TagQuestionEntity> tags);
+
+
 }

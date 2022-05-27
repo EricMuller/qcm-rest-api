@@ -17,9 +17,9 @@ import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.Questionnair
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.QuestionnaireRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.QuestionnaireTagRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.TagQuestionnaireRepository;
-import com.emu.apps.qcm.infra.persistence.adapters.mappers.QuestionnaireEntityMapper;
-import com.emu.apps.qcm.infra.persistence.adapters.mappers.QuestionnaireQuestionEntityMapper;
-import com.emu.apps.qcm.infra.persistence.adapters.mappers.UuidMapper;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.QuestionnaireEntityMapper;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.QuestionnaireQuestionEntityMapper;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.UuidMapper;
 import com.emu.apps.shared.exceptions.I18nedNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

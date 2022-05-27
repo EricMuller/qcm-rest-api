@@ -32,7 +32,7 @@ import com.emu.apps.qcm.domain.model.account.Account;
 import com.emu.apps.qcm.infra.persistence.UserPersistencePort;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.AccountEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.AccountRepository;
-import com.emu.apps.qcm.infra.persistence.adapters.mappers.AccountEntityMapper;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.AccountEntityMapper;
 import com.emu.apps.shared.exceptions.I18nedNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

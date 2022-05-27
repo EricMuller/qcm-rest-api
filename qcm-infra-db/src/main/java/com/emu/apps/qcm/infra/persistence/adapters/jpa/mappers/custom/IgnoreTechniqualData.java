@@ -1,4 +1,4 @@
-package com.emu.apps.qcm.infra.persistence.adapters.mappers.custom;
+package com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.custom;
 
 import org.mapstruct.Mapping;
 

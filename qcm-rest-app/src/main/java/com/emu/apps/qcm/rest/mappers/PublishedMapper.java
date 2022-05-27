@@ -34,7 +34,7 @@ import com.emu.apps.qcm.domain.model.question.QuestionTag;
 import com.emu.apps.qcm.domain.model.questionnaire.Questionnaire;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireQuestion;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireTag;
-import com.emu.apps.qcm.infra.persistence.adapters.mappers.UuidMapper;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.UuidMapper;
 import com.emu.apps.qcm.rest.controllers.unrestrained.resources.PublishedQuestionnaire;
 import com.emu.apps.qcm.rest.controllers.unrestrained.resources.PushishedQuestionnaireQuestion;
 import org.mapstruct.Mapper;

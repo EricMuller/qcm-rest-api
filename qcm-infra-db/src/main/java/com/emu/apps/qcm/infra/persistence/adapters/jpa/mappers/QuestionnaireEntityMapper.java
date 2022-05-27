@@ -26,15 +26,15 @@
  *
  */
 
-package com.emu.apps.qcm.infra.persistence.adapters.mappers;
+package com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers;
 
 
 import com.emu.apps.qcm.domain.mappers.QuestionnaireIdMapper;
 import com.emu.apps.qcm.domain.model.questionnaire.Questionnaire;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireEntity;
-import com.emu.apps.qcm.infra.persistence.adapters.mappers.custom.IgnoreTags;
-import com.emu.apps.qcm.infra.persistence.adapters.mappers.custom.IgnoreTechniqualData;
-import com.emu.apps.qcm.infra.persistence.adapters.mappers.custom.ModelId;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.custom.IgnoreTags;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.custom.IgnoreTechniqualData;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.custom.ModelId;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;

@@ -32,7 +32,7 @@ import com.emu.apps.qcm.domain.model.upload.Upload;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.upload.UploadEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.UploadRepository;
 import com.emu.apps.qcm.infra.persistence.UploadPersistencePort;
-import com.emu.apps.qcm.infra.persistence.adapters.mappers.UploadEntityMapper;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.UploadEntityMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

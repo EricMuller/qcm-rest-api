@@ -1,4 +1,4 @@
-package com.emu.apps.qcm.infra.persistence.adapters.mappers;
+package com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers;
 
 import com.emu.apps.qcm.domain.mappers.AccountIdMapperImpl;
 import com.emu.apps.qcm.domain.mappers.CategoryIdMapperImpl;

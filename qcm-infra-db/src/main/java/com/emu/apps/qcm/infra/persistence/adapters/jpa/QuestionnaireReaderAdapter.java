@@ -4,7 +4,7 @@ package com.emu.apps.qcm.infra.persistence.adapters.jpa;
 import com.emu.apps.qcm.domain.model.questionnaire.Suggest;
 import com.emu.apps.qcm.infra.persistence.QuestionnaireReaderPort;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.QuestionnaireRepository;
-import com.emu.apps.qcm.infra.persistence.adapters.mappers.SuggestEntityMapper;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.SuggestEntityMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

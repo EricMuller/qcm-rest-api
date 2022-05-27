@@ -26,34 +26,26 @@
  *
  */
 
-package com.emu.apps.qcm.infra.persistence.adapters.mappers;
+package com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers;
 
-import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireTag;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireTagEntity;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.TagQuestionEntity;
-import com.emu.apps.qcm.domain.mappers.TagIdMapper;
+import com.emu.apps.qcm.domain.model.upload.Upload;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.upload.UploadEntity;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
+import org.springframework.data.domain.Page;
 
-@Mapper(componentModel = "spring", uses = {CategoryEntityMapper.class, UuidMapper.class, TagIdMapper.class}
+@Mapper(componentModel = "spring", uses = UuidMapper.class
         , unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface QuestionnaireTagEntityMapper {
+public interface UploadEntityMapper {
 
+    Upload entityToModel(UploadEntity uploadEntity);
 
-    @Mapping(source = "tag.uuid", target = "uuid")
-    @Mapping(source = "tag.libelle", target = "libelle")
-    @Mapping(source = "tag.dateCreation", target = "dateCreation")
-    @Mapping(source = "tag.dateModification", target = "dateModification")
-    @Mapping(source = "tag.createdBy", target = "createdBy")
-    @Mapping(source = "tag.lastModifiedBy", target = "lastModifiedBy")
+    UploadEntity modelToEntity(Upload upload);
 
-    QuestionnaireTag modelToDto(QuestionnaireTagEntity questionnaireTag);
+    UploadEntity modelToEntity(@MappingTarget UploadEntity upload, Upload uploadDto);
 
-    @Mapping(source = "libelle", target = "tag.libelle")
-    QuestionnaireTagEntity dtoToModel(QuestionnaireTag questionnaireTagDto);
-
-    Iterable <QuestionnaireTag> questionnaireTagToDtos(Iterable <TagQuestionEntity> tags);
-
-
+    default Page <Upload> pageToPageModel(Page <UploadEntity> page) {
+        return page.map(this::entityToModel);
+    }
 }

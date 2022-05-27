@@ -7,7 +7,7 @@ import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.mptt.MpttCategoryE
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.mptt.MpttType;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.MpttCategoryRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.mptt.MpttExceptions;
-import com.emu.apps.qcm.infra.persistence.adapters.mappers.CategoryEntityMapper;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.CategoryEntityMapper;
 import com.emu.apps.shared.exceptions.TechnicalException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;

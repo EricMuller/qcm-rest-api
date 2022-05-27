@@ -97,7 +97,7 @@ public class QuestionRestController {
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     @Timer
     @PageableAsQueryParam
-    @Operation(summary = "Search Question", description = "", tags = {"yourObject"})
+    @Operation(summary = "Search Question", description = "", tags = {"Question"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List Questions",
                     content = @Content(array = @ArraySchema(schema = @Schema(name = "SearchQuestionResources", implementation = SearchQuestionResource.class)))

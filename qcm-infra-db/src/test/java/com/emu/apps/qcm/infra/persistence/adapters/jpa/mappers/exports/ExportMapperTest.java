@@ -1,9 +1,4 @@
-package com.emu.apps.qcm.infra.persistence.adapters.mappers.exports;
-
-
-import com.emu.apps.qcm.infra.persistence.adapters.mappers.CategoryEntityMapperImpl;
-import com.emu.apps.qcm.infra.persistence.adapters.mappers.QuestionnaireTagEntityMapperImpl;
-import com.emu.apps.qcm.infra.persistence.adapters.mappers.UuidMapperImpl;
+package com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.exports;
 
 
 //@ExtendWith(SpringExtension.class)

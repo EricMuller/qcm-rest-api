@@ -26,31 +26,28 @@
  *
  */
 
-package com.emu.apps.qcm.infra.persistence.adapters.mappers;
+package com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers;
 
-import com.emu.apps.qcm.domain.mappers.AccountIdMapper;
-import com.emu.apps.qcm.domain.mappers.QuestionIdMapper;
-import com.emu.apps.qcm.domain.model.question.QuestionWithTagsOnly;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.AccountEntity;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionEntity;
-import com.emu.apps.qcm.infra.persistence.adapters.mappers.custom.ModelId;
+import com.emu.apps.qcm.domain.model.questionnaire.Suggest;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.TagQuestionEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.projections.QuestionnaireProjection;
 import org.mapstruct.Mapper;
-import org.springframework.data.domain.Page;
+import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring", uses = {CategoryEntityMapper.class, QuestionTagEntityMapper.class, UuidMapper.class
-        , QuestionIdMapper.class, AccountIdMapper.class})
-public interface QuestionTagsMapper {
-
-    default String getAccString(AccountEntity accountEntity) {
-        return accountEntity.getUserName();
-    }
-
-    @ModelId
-    QuestionWithTagsOnly entityToModel(QuestionEntity questionEntity);
-
-    default Page <QuestionWithTagsOnly> pageQuestionResponseProjectionToDto(Page <QuestionEntity> page) {
-        return page.map(this::entityToModel);
-    }
+@Mapper(componentModel = "spring"
+        , unmappedTargetPolicy = ReportingPolicy.IGNORE)
+public interface SuggestEntityMapper {
 
 
+    @Mapping(target = "fieldName", constant = "TagId")
+    Suggest modelToSuggestDto(TagQuestionEntity tag);
+
+    Iterable<Suggest> modelsToSugestDtos(Iterable<TagQuestionEntity> tags);
+
+    @Mapping(source = "question.title", target = "libelle")
+    @Mapping(target = "fieldName", constant = "questionnaireId")
+    Suggest modelToSuggestDto(QuestionnaireProjection question);
+
+    Iterable<Suggest> modelsToSuggestDtos(Iterable<QuestionnaireProjection> questionnaireProjections);
 }
