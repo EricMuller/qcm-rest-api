@@ -16,9 +16,7 @@ import javax.persistence.*;
 public class ResponseEntity extends AuditableEntity <String> {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "response_generator")
-    @SequenceGenerator(name = "response_generator", sequenceName = "response_seq", allocationSize = 1)
-    @Column(name = "ID", updatable = false, nullable = false)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
     @SuppressWarnings("squid:S1700")

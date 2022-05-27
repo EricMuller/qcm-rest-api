@@ -33,9 +33,7 @@ import static java.util.Objects.isNull;
 public class AccountEntity extends IdentifiableEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "account_generator")
-    @SequenceGenerator(name = "account_generator", sequenceName = "account_seq", allocationSize = 1)
-    @Column(name = "ID", updatable = false, nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NonNull

@@ -14,7 +14,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import static org.springframework.data.jpa.domain.Specification.where;
@@ -32,9 +31,7 @@ import static org.springframework.data.jpa.domain.Specification.where;
 public class TagQuestionEntity extends AuditableEntity <String> {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tag_q_generator")
-    @SequenceGenerator(name = "tag_q_generator", sequenceName = "tag_q_seq", allocationSize = 1)
-    @Column(name = "ID", updatable = false, nullable = false)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "LIBELLE")

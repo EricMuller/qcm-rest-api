@@ -18,9 +18,7 @@ import javax.persistence.*;
 public class WebHookEntity extends AuditableEntity <String> {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "webhook_generator")
-    @SequenceGenerator(name = "webhook_generator", sequenceName = "webhook_seq", allocationSize = 1)
-    @Column(name = "id", updatable = false, nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String url;

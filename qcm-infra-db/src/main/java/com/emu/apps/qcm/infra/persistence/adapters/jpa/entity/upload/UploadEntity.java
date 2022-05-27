@@ -31,9 +31,7 @@ import static org.springframework.data.jpa.domain.Specification.where;
 public class UploadEntity extends AuditableEntity <String> {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "upload_generator")
-    @SequenceGenerator(name = "upload_generator", sequenceName = "upload_seq", allocationSize = 1)
-    @Column(name = "id", updatable = false, nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "FILE_NAME")

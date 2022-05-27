@@ -50,9 +50,7 @@ import static org.springframework.data.jpa.domain.Specification.where;
 public class QuestionEntity extends AuditableEntity <String> {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "question_generator")
-    @SequenceGenerator(name = "question_generator", sequenceName = "question_seq", allocationSize = 1)
-    @Column(name = "ID", updatable = false, nullable = false)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
     @Convert(converter = BooleanTFConverter.class)

@@ -102,9 +102,7 @@ public class MpttCategoryEntity extends AuditableEntity <String> implements Mptt
     public static final String ROOT_NAME = "root";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "category_generator")
-    @SequenceGenerator(name = "category_generator", sequenceName = "category_seq", allocationSize = 1)
-    @Column(name = "ID", updatable = false, nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "LIBELLE")

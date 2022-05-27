@@ -180,7 +180,7 @@ public class OpenApi3Config {
     @Bean
     GroupedOpenApi qcmApis() {
         return GroupedOpenApi.builder()
-                .group("Qcm api")
+                .group("Qcm")
                 .pathsToMatch(PUBLIC_API + "/**" )
                 .addOpenApiCustomiser(qcmApiCustomizer())
                 .build();
@@ -189,7 +189,7 @@ public class OpenApi3Config {
     @Bean
     GroupedOpenApi actuatorApis() {
         return GroupedOpenApi.builder()
-                .group("Actuator api")
+                .group("Actuator")
                 .pathsToMatch(ACTUATOR_API + "/**")
                 .addOpenApiCustomiser(actuatorApiCustomizer())
                 .build();
@@ -198,7 +198,7 @@ public class OpenApi3Config {
     @Bean
     GroupedOpenApi managementApis() {
         return GroupedOpenApi.builder()
-                .group("Management api")
+                .group("Management")
                 .pathsToMatch(MANAGEMENT_API + "/"
                         , MANAGEMENT_API + ACCOUNTS + "/**"
                         , MANAGEMENT_API + QUESTIONNAIRES + "/**"
@@ -217,7 +217,7 @@ public class OpenApi3Config {
     GroupedOpenApi technicalApis() {
         return GroupedOpenApi.builder()
                 .addOpenApiCustomiser(technicalApiCustomizer())
-                .group("Technical api")
+                .group("Technical")
                 .pathsToMatch(MANAGEMENT_API + WEBHOOKS + "/**",
                         MANAGEMENT_API + QUERY + "/**", LOGS + "/**")
                 .build();

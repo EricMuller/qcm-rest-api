@@ -160,20 +160,20 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
     }
 
 
-    private QuestionnaireEntity saveQuestionnaireTags(QuestionnaireEntity questionnaireEntity, Iterable <QuestionnaireTag> questionnaireTagDtos, String principal) {
+    private QuestionnaireEntity saveQuestionnaireTags(QuestionnaireEntity questionnaireEntity, Iterable <QuestionnaireTag> questionnaireTags, String principal) {
 
         questionnaireEntity.getTags().clear();
 
-        if (nonNull(questionnaireTagDtos)) {
-            for (QuestionnaireTag questionnaireTagDto : questionnaireTagDtos) {
+        if (nonNull(questionnaireTags)) {
+            for (QuestionnaireTag questionnaireTag : questionnaireTags) {
                 TagQuestionnaireEntity tag;
-                if (nonNull(questionnaireTagDto.getUuid())) {
-                    tag = tagQuestionnaireRepository.findByUuid(fromString(questionnaireTagDto.getUuid()))
+                if (nonNull(questionnaireTag.getUuid())) {
+                    tag = tagQuestionnaireRepository.findByUuid(fromString(questionnaireTag.getUuid()))
                             .orElse(null);
                 } else {
-                    tag = tagQuestionnaireRepository.findByLibelle(questionnaireTagDto.getLibelle(), principal);
+                    tag = tagQuestionnaireRepository.findByLibelle(questionnaireTag.getLibelle(), principal);
                     if (isNull(tag)) {
-                        tag = tagQuestionnaireRepository.save(new TagQuestionnaireEntity(questionnaireTagDto.getLibelle()));
+                        tag = tagQuestionnaireRepository.save(new TagQuestionnaireEntity(questionnaireTag.getLibelle()));
                     }
                 }
                 if (tag != null) {
