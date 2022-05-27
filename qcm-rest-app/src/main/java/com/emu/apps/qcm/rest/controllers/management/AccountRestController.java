@@ -5,7 +5,7 @@ import com.emu.apps.qcm.domain.model.account.AccountRepository;
 import com.emu.apps.qcm.rest.controllers.management.hal.AccountModelAssembler;
 import com.emu.apps.qcm.rest.controllers.management.openui.AccountView;
 import com.emu.apps.qcm.rest.controllers.management.resources.AccountResource;
-import com.emu.apps.qcm.rest.mappers.QuestionnaireResourceMapper;
+import com.emu.apps.qcm.rest.mappers.QcmResourceMapper;
 import com.emu.apps.shared.exceptions.I18nedBadRequestException;
 import com.emu.apps.shared.exceptions.I18nedForbiddenRequestException;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -51,13 +51,13 @@ public class AccountRestController {
 
     private final AccountRepository accountRepository;
 
-    private final QuestionnaireResourceMapper questionnaireResourceMapper;
+    private final QcmResourceMapper qcmResourceMapper;
 
     private final AccountModelAssembler accountModelAssembler;
 
-    public AccountRestController(AccountRepository accountRepository, QuestionnaireResourceMapper questionnaireResourceMapper, AccountModelAssembler accountModelAssembler) {
+    public AccountRestController(AccountRepository accountRepository, QcmResourceMapper qcmResourceMapper, AccountModelAssembler accountModelAssembler) {
         this.accountRepository = accountRepository;
-        this.questionnaireResourceMapper = questionnaireResourceMapper;
+        this.qcmResourceMapper = qcmResourceMapper;
         this.accountModelAssembler = accountModelAssembler;
     }
 
@@ -96,11 +96,11 @@ public class AccountRestController {
             account.setEmail(getAttribute(principal, "email"));
             account.setUserName(getAttribute(principal, "preferred_username"));
         }
-        return EntityModel.of(questionnaireResourceMapper.accountToResources(account));
+        return EntityModel.of(qcmResourceMapper.accountToAccountResource(account));
     }
 
     //    @PostAuthorize("hasAuthority('PROFIL_CREATED')")
-    @PutMapping(value = "/me", produces = APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/me", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     @ResponseBody
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Object updated", content = @Content(schema = @Schema(name = "AccountResource", implementation = AccountResource.class))),
@@ -108,11 +108,11 @@ public class AccountRestController {
     @Timed("accounts.updateAuthentifiedUser")
     public EntityModel <AccountResource> updateAuthentifiedUser(@JsonView(AccountView.Update.class) @RequestBody AccountResource accountResource, Principal principal) {
 
-        var user = questionnaireResourceMapper.accountToModel(accountResource);
+        var user = qcmResourceMapper.accountResourceToModel(accountResource);
         String email = getEmailOrName(principal);
         Account authentAccount = accountRepository.getAccountByEmail(email);
         if (nonNull(authentAccount) && authentAccount.getEmail().equals(user.getEmail())) {
-            return EntityModel.of(questionnaireResourceMapper.accountToResources(accountRepository.updateAccount(user)));
+            return EntityModel.of(qcmResourceMapper.accountToAccountResource(accountRepository.updateAccount(user)));
         } else {
             throw new I18nedForbiddenRequestException(INVALID_EMAIL_USER);
         }
@@ -125,12 +125,12 @@ public class AccountRestController {
             @ApiResponse(responseCode = "400", description = "Invalid input")})
     @Timed("accounts.createAuthentifiedUser")
     public ResponseEntity <EntityModel <AccountResource>> createAuthentifiedUser(@JsonView(AccountView.Create.class) @RequestBody AccountResource accountResource, Principal principal) {
-        var user = questionnaireResourceMapper.accountToModel(accountResource);
+        var user = qcmResourceMapper.accountResourceToModel(accountResource);
         String email = getEmailOrName(principal);
         Account authentAccount = accountRepository.getAccountByEmail(email);
         if (isNull(authentAccount)) {
             user.setEmail(email);
-            var entityModel = EntityModel.of(questionnaireResourceMapper.accountToResources(accountRepository.createAccount(user)));
+            var entityModel = EntityModel.of(qcmResourceMapper.accountToAccountResource(accountRepository.createAccount(user)));
             this.accountModelAssembler.addLinks(entityModel);
             return ResponseEntity
                     .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
@@ -149,9 +149,9 @@ public class AccountRestController {
             @ApiResponse(responseCode = "400", description = "Invalid input")})
     @Timed("accounts.updateUser")
     public EntityModel <AccountResource> updateUser(@RequestBody AccountResource accountResource, Principal principal) {
-        var account = questionnaireResourceMapper.accountToModel(accountResource);
+        var account = qcmResourceMapper.accountResourceToModel(accountResource);
         // fixme: ???
-        return EntityModel.of(questionnaireResourceMapper.accountToResources(accountRepository.updateAccount(account)));
+        return EntityModel.of(qcmResourceMapper.accountToAccountResource(accountRepository.updateAccount(account)));
     }
 
 }

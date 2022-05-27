@@ -4,7 +4,7 @@ import com.emu.apps.qcm.application.importation.ImportService;
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
 import com.emu.apps.qcm.domain.model.upload.UploadId;
 import com.emu.apps.qcm.rest.controllers.management.resources.UploadResource;
-import com.emu.apps.qcm.rest.mappers.QuestionnaireResourceMapper;
+import com.emu.apps.qcm.rest.mappers.QcmResourceMapper;
 import io.micrometer.core.annotation.Timed;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,18 +28,18 @@ public class ImportRestController {
 
     private final ImportService importService;
 
-    private final QuestionnaireResourceMapper questionnaireResourceMapper;
+    private final QcmResourceMapper qcmResourceMapper;
 
-    public ImportRestController(ImportService importService, QuestionnaireResourceMapper questionnaireResourceMapper) {
+    public ImportRestController(ImportService importService, QcmResourceMapper qcmResourceMapper) {
         this.importService = importService;
-        this.questionnaireResourceMapper = questionnaireResourceMapper;
+        this.qcmResourceMapper = qcmResourceMapper;
     }
 
     @ResponseBody
     @GetMapping(value = "/{uuid}")
     @Timed(value = "imports.importFileByUploadUuid", longTask = true)
     public UploadResource importFileByUploadUuid(@PathVariable("uuid") String uploadUuid) throws IOException {
-        return questionnaireResourceMapper.uploadToResources(importService.importFile(new UploadId(uploadUuid), PrincipalId.of(getPrincipal())));
+        return qcmResourceMapper.uploadToUploadResources(importService.importFile(new UploadId(uploadUuid), PrincipalId.of(getPrincipal())));
     }
 
 }

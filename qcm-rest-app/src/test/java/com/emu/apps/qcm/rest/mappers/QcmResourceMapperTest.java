@@ -14,15 +14,15 @@ import java.util.UUID;
 
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {QuestionnaireResourceMapperImpl.class, QuestionIdMapperImpl.class,
+@ContextConfiguration(classes = {QcmResourceMapperImpl.class, QuestionIdMapperImpl.class,
         QuestionnaireIdMapperImpl.class, AccountIdMapperImpl.class, CategoryIdMapperImpl.class,
         WebhookIdMapperImpl.class, TagIdMapperImpl.class})
 @Tag("MapstructTest")
-class QuestionnaireResourceMapperTest {
+class QcmResourceMapperTest {
 
 
     @Autowired
-    private QuestionnaireResourceMapper questionnaireResourceMapper;
+    private QcmResourceMapper qcmResourceMapper;
 
     @Test
     void testAccountToModel() {
@@ -31,7 +31,7 @@ class QuestionnaireResourceMapperTest {
         var resource = new AccountResource();
         resource.setUuid(uuid);
 
-        var account = questionnaireResourceMapper.accountToModel(resource);
+        var account = qcmResourceMapper.accountResourceToModel(resource);
 
         Assertions.assertNotNull(account);
 

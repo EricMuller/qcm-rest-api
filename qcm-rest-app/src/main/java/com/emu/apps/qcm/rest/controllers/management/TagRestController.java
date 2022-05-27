@@ -5,7 +5,7 @@ import com.emu.apps.qcm.domain.model.base.PrincipalId;
 import com.emu.apps.qcm.domain.model.tag.TagId;
 import com.emu.apps.qcm.domain.model.tag.TagRepository;
 import com.emu.apps.qcm.rest.controllers.management.resources.TagResource;
-import com.emu.apps.qcm.rest.mappers.QuestionnaireResourceMapper;
+import com.emu.apps.qcm.rest.mappers.QcmResourceMapper;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.micrometer.core.annotation.Timed;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -49,11 +49,11 @@ public class TagRestController {
 
     private final TagRepository tagRepository;
 
-    private final QuestionnaireResourceMapper questionnaireResourceMapper;
+    private final QcmResourceMapper qcmResourceMapper;
 
-    public TagRestController(TagRepository tagRepository, QuestionnaireResourceMapper questionnaireResourceMapper) {
+    public TagRestController(TagRepository tagRepository, QcmResourceMapper qcmResourceMapper) {
         this.tagRepository = tagRepository;
-        this.questionnaireResourceMapper = questionnaireResourceMapper;
+        this.qcmResourceMapper = qcmResourceMapper;
     }
 
     @GetMapping
@@ -65,7 +65,7 @@ public class TagRestController {
                            @PageableDefault(direction = DESC, sort = {"dateModification"}, size = 100) Pageable pageable) throws IOException {
 
         Page <TagResource> tagResourcesPage =
-                questionnaireResourceMapper.tagToResources(tagRepository.getTags(search, pageable, PrincipalId.of(getPrincipal())));
+                qcmResourceMapper.tagToTagResources(tagRepository.getTags(search, pageable, PrincipalId.of(getPrincipal())));
 
         return new PageTag(tagResourcesPage.getContent(), pageable, tagResourcesPage.getContent().size());
     }
@@ -77,7 +77,7 @@ public class TagRestController {
             @ApiResponse(responseCode = "400", description = "Invalid input")})
     @Timed(value = "tags.getTagByUuid")
     public EntityModel <TagResource> getTagByUuid(@PathVariable("uuid") String uuid) {
-        return EntityModel.of(questionnaireResourceMapper.tagToResources(tagRepository.getTagById(new TagId(uuid))));
+        return EntityModel.of(qcmResourceMapper.tagToTagResources(tagRepository.getTagById(new TagId(uuid))));
     }
 
     @PostMapping
@@ -87,8 +87,8 @@ public class TagRestController {
             @ApiResponse(responseCode = "400", description = "Invalid input")})
     @Timed(value = "tags.createTag")
     public EntityModel <TagResource> createTag(@JsonView(TagResource.Create.class) @RequestBody TagResource tagResource) {
-        var tag = questionnaireResourceMapper.tagToModel(tagResource);
-        return EntityModel.of(questionnaireResourceMapper.tagToResources(tagRepository.saveTag(tag)));
+        var tag = qcmResourceMapper.tagResourceToModel(tagResource);
+        return EntityModel.of(qcmResourceMapper.tagToTagResources(tagRepository.saveTag(tag)));
     }
 
     @PutMapping(value = "{uuid}")
@@ -99,8 +99,8 @@ public class TagRestController {
     @Timed(value = "tags.updateTag")
     public TagResource updateTag(@PathVariable("uuid") String uuid,
                                  @JsonView(TagResource.Update.class) @RequestBody TagResource tagResource) {
-        var tag = questionnaireResourceMapper.tagToModel(uuid, tagResource);
-        return questionnaireResourceMapper.tagToResources(tagRepository.saveTag(tag));
+        var tag = qcmResourceMapper.tagResourceToModel(uuid, tagResource);
+        return qcmResourceMapper.tagToTagResources(tagRepository.saveTag(tag));
     }
 
     /**

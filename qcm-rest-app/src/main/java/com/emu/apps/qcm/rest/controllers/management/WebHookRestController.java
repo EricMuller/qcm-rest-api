@@ -3,7 +3,7 @@ package com.emu.apps.qcm.rest.controllers.management;
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
 import com.emu.apps.qcm.domain.model.webhook.WebHookRepository;
 import com.emu.apps.qcm.domain.model.webhook.WebhookId;
-import com.emu.apps.qcm.rest.mappers.QuestionnaireResourceMapper;
+import com.emu.apps.qcm.rest.mappers.QcmResourceMapper;
 import com.emu.apps.qcm.rest.controllers.management.resources.WebHookResource;
 import com.emu.apps.shared.annotations.Timer;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -32,11 +32,11 @@ public class WebHookRestController {
 
     private final WebHookRepository webHookRepository;
 
-    private final QuestionnaireResourceMapper questionnaireResourceMapper;
+    private final QcmResourceMapper qcmResourceMapper;
 
-    public WebHookRestController(WebHookRepository webHookServicePort, QuestionnaireResourceMapper questionnaireResourceMapper) {
+    public WebHookRestController(WebHookRepository webHookServicePort, QcmResourceMapper qcmResourceMapper) {
         this.webHookRepository = webHookServicePort;
-        this.questionnaireResourceMapper = questionnaireResourceMapper;
+        this.qcmResourceMapper = qcmResourceMapper;
     }
 
     @GetMapping
@@ -46,27 +46,27 @@ public class WebHookRestController {
             @Parameter(hidden = true)
             @PageableDefault(direction = DESC, sort = {"dateModification"}) Pageable pageable) {
 
-        return questionnaireResourceMapper.webhookToResources(webHookRepository.getWebHooks(pageable,  PrincipalId.of(getPrincipal())));
+        return qcmResourceMapper.webhookToWebhookResources(webHookRepository.getWebHooks(pageable,  PrincipalId.of(getPrincipal())));
     }
 
     @PostMapping
     @ResponseBody
     public WebHookResource saveWebHook(@RequestBody @Valid WebHookResource webHookResource) {
-        var webhook = questionnaireResourceMapper.webhookToModel(webHookResource);
-        return questionnaireResourceMapper.webhookToResources(webHookRepository.saveWebHook(webhook, PrincipalId.of(getPrincipal())));
+        var webhook = qcmResourceMapper.webhookResourceToModel(webHookResource);
+        return qcmResourceMapper.webhookToWebhookResources(webHookRepository.saveWebHook(webhook, PrincipalId.of(getPrincipal())));
     }
 
     @PutMapping(value = "/{uuid}")
     @ResponseBody
     public WebHookResource updateWebHook(@PathVariable("uuid") String uuid, @RequestBody @Valid WebHookResource webHookResource) {
-        var webhook = questionnaireResourceMapper.webhookToModel(webHookResource);
-        return questionnaireResourceMapper.webhookToResources(webHookRepository.saveWebHook(webhook, PrincipalId.of(getPrincipal())));
+        var webhook = qcmResourceMapper.webhookResourceToModel(webHookResource);
+        return qcmResourceMapper.webhookToWebhookResources(webHookRepository.saveWebHook(webhook, PrincipalId.of(getPrincipal())));
     }
 
     @GetMapping(value = "/{uuid}")
     @ResponseBody
     public WebHookResource getWebHookByUuid(@PathVariable("uuid") String uuid) {
-        return questionnaireResourceMapper.webhookToResources(webHookRepository.getWebHookByUuid(new WebhookId(uuid)));
+        return qcmResourceMapper.webhookToWebhookResources(webHookRepository.getWebHookByUuid(new WebhookId(uuid)));
     }
 
     @DeleteMapping(value = "/{uuid}")

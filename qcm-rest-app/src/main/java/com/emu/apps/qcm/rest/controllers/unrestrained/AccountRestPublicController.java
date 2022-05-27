@@ -3,7 +3,7 @@ package com.emu.apps.qcm.rest.controllers.unrestrained;
 import com.emu.apps.qcm.domain.model.account.Account;
 import com.emu.apps.qcm.domain.model.account.AccountRepository;
 import com.emu.apps.qcm.rest.controllers.management.resources.AccountResource;
-import com.emu.apps.qcm.rest.mappers.QuestionnaireResourceMapper;
+import com.emu.apps.qcm.rest.mappers.QcmResourceMapper;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,11 +26,11 @@ public class AccountRestPublicController {
 
     private final AccountRepository accountRepository;
 
-    private final QuestionnaireResourceMapper questionnaireResourceMapper;
+    private final QcmResourceMapper qcmResourceMapper;
 
-    public AccountRestPublicController(AccountRepository userServicePort, QuestionnaireResourceMapper questionnaireResourceMapper) {
+    public AccountRestPublicController(AccountRepository userServicePort, QcmResourceMapper qcmResourceMapper) {
         this.accountRepository = userServicePort;
-        this.questionnaireResourceMapper = questionnaireResourceMapper;
+        this.qcmResourceMapper = qcmResourceMapper;
     }
 
     /**
@@ -46,7 +46,7 @@ public class AccountRestPublicController {
             account = new Account();
             account.setEmail(getEmailOrName(principal));
         }
-        return EntityModel.of(questionnaireResourceMapper.accountToResources(account));
+        return EntityModel.of(qcmResourceMapper.accountToAccountResource(account));
     }
 
 }

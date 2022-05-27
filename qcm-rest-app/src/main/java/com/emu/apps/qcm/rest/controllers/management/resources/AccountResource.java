@@ -37,6 +37,7 @@ public class AccountResource {
     private ZonedDateTime dateModification;
 
     @JsonProperty("email")
+    @JsonView({Update.class})
     private String email;
 
     @JsonView({Public.class, Update.class})

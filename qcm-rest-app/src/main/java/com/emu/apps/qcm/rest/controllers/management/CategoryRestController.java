@@ -5,7 +5,7 @@ import com.emu.apps.qcm.domain.model.category.MpttCategoryRepository;
 import com.emu.apps.qcm.rest.controllers.management.openui.CategoryView;
 import com.emu.apps.qcm.rest.controllers.management.resources.CategoryResource;
 import com.emu.apps.qcm.rest.controllers.management.resources.MessageResource;
-import com.emu.apps.qcm.rest.mappers.QuestionnaireResourceMapper;
+import com.emu.apps.qcm.rest.mappers.QcmResourceMapper;
 import com.emu.apps.shared.exceptions.FunctionnalException;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -48,18 +48,18 @@ public class CategoryRestController {
 
     private final MpttCategoryRepository mpttCategoryRepository;
 
-    private final QuestionnaireResourceMapper questionnaireResourceMapper;
+    private final QcmResourceMapper qcmResourceMapper;
 
-    public CategoryRestController(MpttCategoryRepository mpttCategoryRepository, QuestionnaireResourceMapper questionnaireResourceMapper) {
+    public CategoryRestController(MpttCategoryRepository mpttCategoryRepository, QcmResourceMapper qcmResourceMapper) {
         this.mpttCategoryRepository = mpttCategoryRepository;
-        this.questionnaireResourceMapper = questionnaireResourceMapper;
+        this.qcmResourceMapper = qcmResourceMapper;
     }
 
     @GetMapping(value = "/{uuid}", produces = APPLICATION_JSON_VALUE)
     @ResponseBody
     @Timed("categories.getCategoryByUuid")
     public CategoryResource getCategoryByUuid(@PathVariable("uuid") String uuid) {
-        return questionnaireResourceMapper.categoryToResources(mpttCategoryRepository.getCategoryByUuid(uuid));
+        return qcmResourceMapper.categoryToResources(mpttCategoryRepository.getCategoryByUuid(uuid));
     }
 
     @GetMapping
@@ -69,7 +69,7 @@ public class CategoryRestController {
     @Timed("categories.getCategoriesByType")
     public Iterable <CategoryResource> getCategoriesByType(@RequestParam("type") String typeCategory) throws FunctionnalException {
 
-        return questionnaireResourceMapper.categoriesToResources(
+        return qcmResourceMapper.categoriesToCategoryResources(
                 mpttCategoryRepository.getCategories(PrincipalId.of(getPrincipal()), typeCategory));
     }
 
@@ -78,8 +78,8 @@ public class CategoryRestController {
     @Timed("categories.saveCategory")
     public CategoryResource saveCategory(
             @JsonView(CategoryView.Create.class) @RequestBody CategoryResource categoryResource) {
-        var category = questionnaireResourceMapper.categoryToModel(categoryResource);
-        return questionnaireResourceMapper.categoryToResources(
+        var category = qcmResourceMapper.categoryResourceToModel(categoryResource);
+        return qcmResourceMapper.categoryToResources(
                 mpttCategoryRepository.saveCategory(category,  PrincipalId.of(getPrincipal())));
     }
 
@@ -97,7 +97,7 @@ public class CategoryRestController {
     @Timed("questions.getCategories")
     public Iterable <CategoryResource> getQuestionCategories() throws FunctionnalException {
 
-        return questionnaireResourceMapper.categoriesToResources(
+        return qcmResourceMapper.categoriesToCategoryResources(
                 mpttCategoryRepository.getCategories(PrincipalId.of(getPrincipal()), QUESTION.name()));
     }
 
@@ -109,7 +109,7 @@ public class CategoryRestController {
     @Timed("questions.getCategories")
     public Iterable <CategoryResource> getQuestionnairesCategories() throws FunctionnalException {
 
-        return questionnaireResourceMapper.categoriesToResources(
+        return qcmResourceMapper.categoriesToCategoryResources(
                 mpttCategoryRepository.getCategories(PrincipalId.of(getPrincipal()), QUESTIONNAIRE.name()));
     }
 

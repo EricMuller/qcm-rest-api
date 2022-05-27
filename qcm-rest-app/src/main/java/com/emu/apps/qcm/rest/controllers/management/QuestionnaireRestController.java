@@ -7,7 +7,6 @@ import com.emu.apps.qcm.application.reporting.dtos.Export;
 import com.emu.apps.qcm.application.reporting.template.TemplateReportServices;
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
 import com.emu.apps.qcm.domain.model.category.MpttCategoryRepository;
-import com.emu.apps.qcm.domain.model.category.TypeCategory;
 import com.emu.apps.qcm.domain.model.question.QuestionId;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireId;
 import com.emu.apps.qcm.rest.config.cache.CacheName;
@@ -15,16 +14,13 @@ import com.emu.apps.qcm.rest.controllers.management.command.QuestionnaireQuestio
 import com.emu.apps.qcm.rest.controllers.management.hal.QuestionnaireModelAssembler;
 import com.emu.apps.qcm.rest.controllers.management.hal.QuestionnaireQuestionModelAssembler;
 import com.emu.apps.qcm.rest.controllers.management.openui.QuestionnaireView;
-import com.emu.apps.qcm.rest.controllers.management.resources.CategoryResource;
 import com.emu.apps.qcm.rest.controllers.management.resources.QuestionnaireQuestionResource;
 import com.emu.apps.qcm.rest.controllers.management.resources.QuestionnaireResource;
-import com.emu.apps.qcm.rest.mappers.QuestionnaireResourceMapper;
+import com.emu.apps.qcm.rest.mappers.QcmResourceMapper;
 import com.emu.apps.shared.annotations.Timer;
-import com.emu.apps.shared.exceptions.FunctionnalException;
 import com.emu.apps.shared.exceptions.I18nedNotFoundException;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.micrometer.core.annotation.Timed;
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -52,7 +48,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import static com.emu.apps.qcm.application.reporting.template.FileFormat.getFileFormat;
 import static com.emu.apps.qcm.application.reporting.template.ReportTemplate.TEMPLATE_QUESTIONNAIRE;
-import static com.emu.apps.qcm.domain.model.category.TypeCategory.QUESTIONNAIRE;
 import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.*;
 import static com.emu.apps.shared.exceptions.I18nedMessageSupport.UNKNOWN_UUID_QUESTIONNAIRE;
 import static com.emu.apps.shared.security.AuthentificationContextHolder.getPrincipal;
@@ -77,7 +72,7 @@ public class QuestionnaireRestController {
 
     private final QuestionnaireCatalog questionnaireCatalog;
 
-    private final QuestionnaireResourceMapper questionnaireResourceMapper;
+    private final QcmResourceMapper qcmResourceMapper;
 
     private final ExportService exportService;
 
@@ -89,9 +84,9 @@ public class QuestionnaireRestController {
 
     private final MpttCategoryRepository mpttCategoryRepository;
 
-    public QuestionnaireRestController(QuestionnaireCatalog questionnaireCatalog, QuestionnaireResourceMapper questionnaireResourceMapper, ExportService exportService, TemplateReportServices templateReportServices, QuestionnaireModelAssembler questionnaireModelAssembler, QuestionnaireQuestionModelAssembler questionnaireQuestionModelAssembler, MpttCategoryRepository mpttCategoryRepository) {
+    public QuestionnaireRestController(QuestionnaireCatalog questionnaireCatalog, QcmResourceMapper qcmResourceMapper, ExportService exportService, TemplateReportServices templateReportServices, QuestionnaireModelAssembler questionnaireModelAssembler, QuestionnaireQuestionModelAssembler questionnaireQuestionModelAssembler, MpttCategoryRepository mpttCategoryRepository) {
         this.questionnaireCatalog = questionnaireCatalog;
-        this.questionnaireResourceMapper = questionnaireResourceMapper;
+        this.qcmResourceMapper = qcmResourceMapper;
         this.exportService = exportService;
         this.templateReportServices = templateReportServices;
         this.questionnaireModelAssembler = questionnaireModelAssembler;
@@ -109,7 +104,7 @@ public class QuestionnaireRestController {
     @Timed(value = "questionnaires.getQuestionnaireById")
     public EntityModel <QuestionnaireResource> getQuestionnaireById(@PathVariable("uuid") String uuid) {
 
-        return EntityModel.of(questionnaireResourceMapper.questionnaireToResources(questionnaireCatalog.getQuestionnaireById(new QuestionnaireId(uuid))
+        return EntityModel.of(qcmResourceMapper.questionnaireToQuestionnaireResources(questionnaireCatalog.getQuestionnaireById(new QuestionnaireId(uuid))
                         .orElseThrow(() -> new I18nedNotFoundException(UNKNOWN_UUID_QUESTIONNAIRE, uuid))))
                 .add(linkTo(QuestionnaireRestController.class).slash(uuid).withSelfRel())
                 .add(linkTo(methodOn(QuestionnaireRestController.class).getExportByQuestionnaireUuid(uuid)).withRel("export"));
@@ -134,8 +129,8 @@ public class QuestionnaireRestController {
     @Timed(value = "questionnaires.updateQuestionnaire")
     public EntityModel <QuestionnaireResource> updateQuestionnaire(@PathVariable("uuid") String uuid,
                                                                    @JsonView(QuestionnaireView.Update.class) @RequestBody QuestionnaireResource questionnaireResource) {
-        var questionnaire = questionnaireResourceMapper.questionnaireToModel(uuid, questionnaireResource);
-        return EntityModel.of(questionnaireResourceMapper.questionnaireToResources(questionnaireCatalog.updateQuestionnaire(questionnaire, PrincipalId.of(getPrincipal()))))
+        var questionnaire = qcmResourceMapper.questionnaireResourceToModel(uuid, questionnaireResource);
+        return EntityModel.of(qcmResourceMapper.questionnaireToQuestionnaireResources(questionnaireCatalog.updateQuestionnaire(questionnaire, PrincipalId.of(getPrincipal()))))
                 .add(linkTo(QuestionnaireRestController.class).slash(uuid).withSelfRel());
     }
 
@@ -146,9 +141,9 @@ public class QuestionnaireRestController {
             @ApiResponse(responseCode = "400", description = "Invalid input")})
     @Timed(value = "questionnaires.createQuestionnaire")
     public ResponseEntity <EntityModel <QuestionnaireResource>> createQuestionnaire(@JsonView(QuestionnaireView.Create.class) @RequestBody QuestionnaireResource questionnaireResource) {
-        var questionnaire = questionnaireResourceMapper.questionnaireToModel(questionnaireResource);
+        var questionnaire = qcmResourceMapper.questionnaireResourceToModel(questionnaireResource);
 
-        var entityModel = EntityModel.of(questionnaireResourceMapper.questionnaireToResources(questionnaireCatalog.saveQuestionnaire(questionnaire, PrincipalId.of(getPrincipal()))));
+        var entityModel = EntityModel.of(qcmResourceMapper.questionnaireToQuestionnaireResources(questionnaireCatalog.saveQuestionnaire(questionnaire, PrincipalId.of(getPrincipal()))));
 
         questionnaireModelAssembler.addLinks(entityModel);
 
@@ -172,7 +167,7 @@ public class QuestionnaireRestController {
                                                                                                   @Parameter(hidden = true) @PageableDefault(direction = ASC, sort = {"position"}) Pageable pageable,
                                                                                                   @Parameter(hidden = true) PagedResourcesAssembler <QuestionnaireQuestionResource> pagedResourcesAssembler) {
         var page =
-                questionnaireResourceMapper.questionnaireQuestionToResources(questionnaireCatalog.getQuestionsByQuestionnaireId(new QuestionnaireId(uuid), pageable), uuid);
+                qcmResourceMapper.questionnaireQuestionToResources(questionnaireCatalog.getQuestionsByQuestionnaireId(new QuestionnaireId(uuid), pageable), uuid);
 
         var selfLink = Link.of(ServletUriComponentsBuilder.fromCurrentRequest().build().toUriString());
 
@@ -187,7 +182,7 @@ public class QuestionnaireRestController {
             @ApiResponse(responseCode = "400", description = "Invalid input")})
     @Timed(value = "questionnaires.getQuestionnaireQuestionById")
     public QuestionnaireQuestionResource getQuestionnaireQuestionById(@PathVariable("uuid") String uuid, @PathVariable("q_uuid") String questionUuid) {
-        return questionnaireResourceMapper.questionnaireQuestionToResources(questionnaireCatalog.getQuestion(new QuestionnaireId(uuid), new QuestionId(questionUuid)), uuid);
+        return qcmResourceMapper.questionnaireQuestionToResources(questionnaireCatalog.getQuestion(new QuestionnaireId(uuid), new QuestionId(questionUuid)), uuid);
     }
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
@@ -203,7 +198,7 @@ public class QuestionnaireRestController {
     public PagedModel <EntityModel <QuestionnaireResource>> getQuestionnaires(@RequestParam(value = "tag_uuid", required = false) String[] tagUuid,
                                                                               @Parameter(hidden = true) @PageableDefault(direction = DESC, sort = {"dateModification"}) Pageable pageable,
                                                                               @Parameter(hidden = true) PagedResourcesAssembler <QuestionnaireResource> pagedResourcesAssembler) {
-        var page = questionnaireResourceMapper.questionnaireToResources(questionnaireCatalog.getQuestionnaires(tagUuid, pageable, PrincipalId.of(getPrincipal())));
+        var page = qcmResourceMapper.questionnaireToQuestionnaireResources(questionnaireCatalog.getQuestionnaires(tagUuid, pageable, PrincipalId.of(getPrincipal())));
         var selfLink = Link.of(ServletUriComponentsBuilder.fromCurrentRequest().build().toUriString());
         return pagedResourcesAssembler.toModel(page, this.questionnaireModelAssembler, selfLink);
     }
@@ -220,7 +215,7 @@ public class QuestionnaireRestController {
                 , new QuestionId(questionnaireQuestionUpdate.getUuid()), of(questionnaireQuestionUpdate.getPosition())
                 , PrincipalId.of(getPrincipal()));
 
-        var model = EntityModel.of(questionnaireResourceMapper.questionnaireQuestionToResources(questionnaireQuestion, uuid));
+        var model = EntityModel.of(qcmResourceMapper.questionnaireQuestionToResources(questionnaireQuestion, uuid));
         questionnaireQuestionModelAssembler.addLinks(model);
         return model;
     }

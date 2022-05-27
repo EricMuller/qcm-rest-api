@@ -5,7 +5,7 @@ import com.emu.apps.qcm.domain.model.upload.UploadId;
 import com.emu.apps.qcm.domain.model.upload.UploadRepository;
 import com.emu.apps.qcm.rest.controllers.management.hal.UploadModelAssembler;
 import com.emu.apps.qcm.rest.controllers.management.resources.UploadResource;
-import com.emu.apps.qcm.rest.mappers.QuestionnaireResourceMapper;
+import com.emu.apps.qcm.rest.mappers.QcmResourceMapper;
 import com.emu.apps.shared.annotations.Timer;
 import io.micrometer.core.annotation.Timed;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -51,13 +51,13 @@ public class UploadRestController {
 
     private final UploadRepository uploadRepository;
 
-    private final QuestionnaireResourceMapper questionnaireResourceMapper;
+    private final QcmResourceMapper qcmResourceMapper;
 
     private final UploadModelAssembler uploadModelAssembler;
 
-    public UploadRestController(UploadRepository uploadServicePort, QuestionnaireResourceMapper questionnaireResourceMapper, UploadModelAssembler uploadModelAssembler) {
+    public UploadRestController(UploadRepository uploadServicePort, QcmResourceMapper qcmResourceMapper, UploadModelAssembler uploadModelAssembler) {
         this.uploadRepository = uploadServicePort;
-        this.questionnaireResourceMapper = questionnaireResourceMapper;
+        this.qcmResourceMapper = qcmResourceMapper;
         this.uploadModelAssembler = uploadModelAssembler;
     }
 
@@ -71,7 +71,7 @@ public class UploadRestController {
                                            @RequestParam("file") MultipartFile multipartFile,
                                            @RequestParam(value = "async", required = false) Boolean async) throws IOException {
 
-        return questionnaireResourceMapper.uploadToResources(uploadRepository.uploadFile(fileType, multipartFile, async, PrincipalId.of(getPrincipal())));
+        return qcmResourceMapper.uploadToUploadResources(uploadRepository.uploadFile(fileType, multipartFile, async, PrincipalId.of(getPrincipal())));
     }
 
     @GetMapping
@@ -88,7 +88,7 @@ public class UploadRestController {
 
         Link selfLink = Link.of(ServletUriComponentsBuilder.fromCurrentRequest().build().toUriString());
 
-        var page = questionnaireResourceMapper.uploadToResources(uploadRepository.getUploads(pageable, PrincipalId.of(getPrincipal())));
+        var page = qcmResourceMapper.uploadToUploadResources(uploadRepository.getUploads(pageable, PrincipalId.of(getPrincipal())));
 
         return pagedResourcesAssembler.toModel(page, this.uploadModelAssembler, selfLink);
     }
@@ -109,7 +109,7 @@ public class UploadRestController {
             @ApiResponse(responseCode = "400", description = "Invalid input")})
     @Timed(value = "uploads.getUploadByUuid")
     public UploadResource getUploadByUuid(@PathVariable("uuid") String uuid) {
-        return questionnaireResourceMapper.uploadToResources(uploadRepository.getUploadByUuid(new UploadId(uuid)));
+        return qcmResourceMapper.uploadToUploadResources(uploadRepository.getUploadByUuid(new UploadId(uuid)));
     }
 
 }

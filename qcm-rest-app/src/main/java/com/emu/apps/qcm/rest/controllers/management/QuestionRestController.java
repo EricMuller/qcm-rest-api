@@ -3,7 +3,6 @@ package com.emu.apps.qcm.rest.controllers.management;
 import com.emu.apps.qcm.application.QuestionCatalog;
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
 import com.emu.apps.qcm.domain.model.category.MpttCategoryRepository;
-import com.emu.apps.qcm.domain.model.category.TypeCategory;
 import com.emu.apps.qcm.domain.model.question.QuestionId;
 import com.emu.apps.qcm.rest.config.cache.CacheName;
 import com.emu.apps.qcm.rest.controllers.management.command.QuestionStatus;
@@ -11,15 +10,13 @@ import com.emu.apps.qcm.rest.controllers.management.hal.QuestionModelAssembler;
 import com.emu.apps.qcm.rest.controllers.management.hal.SearchQuestionModelAssembler;
 import com.emu.apps.qcm.rest.controllers.management.hal.TagModelAssembler;
 import com.emu.apps.qcm.rest.controllers.management.openui.QuestionView;
-import com.emu.apps.qcm.rest.controllers.management.resources.CategoryResource;
 import com.emu.apps.qcm.rest.controllers.management.resources.MessageResource;
 import com.emu.apps.qcm.rest.controllers.management.resources.QuestionResource;
 import com.emu.apps.qcm.rest.controllers.management.resources.SearchQuestionResource;
 import com.emu.apps.qcm.rest.controllers.management.resources.TagResource;
-import com.emu.apps.qcm.rest.mappers.QuestionnaireResourceMapper;
+import com.emu.apps.qcm.rest.mappers.QcmResourceMapper;
 import com.emu.apps.qcm.rest.validators.ValidUuid;
 import com.emu.apps.shared.annotations.Timer;
-import com.emu.apps.shared.exceptions.FunctionnalException;
 import com.emu.apps.shared.exceptions.I18nedNotFoundException;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -48,8 +45,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.io.IOException;
 
-import static com.emu.apps.qcm.domain.model.category.TypeCategory.QUESTION;
-import static com.emu.apps.qcm.domain.model.category.TypeCategory.QUESTIONNAIRE;
 import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.*;
 import static com.emu.apps.qcm.rest.controllers.management.resources.MessageResource.ERROR;
 import static com.emu.apps.shared.exceptions.I18nedMessageSupport.UNKNOWN_UUID_QUESTION;
@@ -73,7 +68,7 @@ public class QuestionRestController {
 
     private final QuestionCatalog questionCatalog;
 
-    private final QuestionnaireResourceMapper questionnaireResourceMapper;
+    private final QcmResourceMapper qcmResourceMapper;
 
     private final SearchQuestionModelAssembler searchQuestionModelAssembler;
 
@@ -83,11 +78,11 @@ public class QuestionRestController {
 
     private final MpttCategoryRepository mpttCategoryRepository;
 
-    public QuestionRestController(QuestionCatalog questionCatalog, QuestionnaireResourceMapper questionnaireResourceMapper,
+    public QuestionRestController(QuestionCatalog questionCatalog, QcmResourceMapper qcmResourceMapper,
                                   SearchQuestionModelAssembler searchQuestionModelAssembler,
                                   QuestionModelAssembler questionModelAssembler, TagModelAssembler tagModelAssembler, MpttCategoryRepository mpttCategoryRepository) {
         this.questionCatalog = questionCatalog;
-        this.questionnaireResourceMapper = questionnaireResourceMapper;
+        this.qcmResourceMapper = qcmResourceMapper;
         this.searchQuestionModelAssembler = searchQuestionModelAssembler;
         this.questionModelAssembler = questionModelAssembler;
         this.tagModelAssembler = tagModelAssembler;
@@ -109,7 +104,7 @@ public class QuestionRestController {
                                                                           @Parameter(hidden = true) @PageableDefault(direction = DESC, sort = {"dateModification"}) Pageable pageable,
                                                                           @Parameter(hidden = true) PagedResourcesAssembler <SearchQuestionResource> pagedResourcesAssembler) {
         var page =
-                questionnaireResourceMapper.pageQuestionTagsToResources(
+                qcmResourceMapper.pageQuestionTagsToResources(
                         questionCatalog.getQuestions(tagUuid, questionnaireUuid, pageable, PrincipalId.of(getPrincipal())));
 
         return pagedResourcesAssembler.toModel(page, this.searchQuestionModelAssembler);
@@ -128,7 +123,7 @@ public class QuestionRestController {
     @Timed(value = "questions.getTags", longTask = true)
     public PagedModel <EntityModel <TagResource>> getTags(@Parameter(hidden = true) Pageable pageable,
                                                           @Parameter(hidden = true) PagedResourcesAssembler <TagResource> pagedTagResourcesAssembler) {
-        var page = questionnaireResourceMapper.pageTagsToResources(questionCatalog.findAllQuestionTagByPage(pageable, PrincipalId.of(getPrincipal())));
+        var page = qcmResourceMapper.pageTagsToResources(questionCatalog.findAllQuestionTagByPage(pageable, PrincipalId.of(getPrincipal())));
 
         return pagedTagResourcesAssembler.toModel(page, this.tagModelAssembler);
     }
@@ -154,7 +149,7 @@ public class QuestionRestController {
             @ApiResponse(responseCode = "400", description = "Invalid input")})
     @Timed(value = "questions.getQuestionByUuid")
     public EntityModel <QuestionResource> getQuestionByUuid(@ValidUuid @PathVariable("uuid") String uuid) {
-        return of(questionnaireResourceMapper.questionToResources(questionCatalog.getQuestionById(new QuestionId(uuid))
+        return of(qcmResourceMapper.questionToQuestionResource(questionCatalog.getQuestionById(new QuestionId(uuid))
                 .orElseThrow(() -> new I18nedNotFoundException(UNKNOWN_UUID_QUESTION, uuid))));
     }
 
@@ -167,8 +162,8 @@ public class QuestionRestController {
     @Timed(value = "questions.updateQuestion", longTask = true)
     public EntityModel <QuestionResource> updateQuestion(@ValidUuid @PathVariable("uuid") String uuid,
                                                          @JsonView(QuestionView.Update.class) @RequestBody @Valid QuestionResource questionResource) {
-        var question = questionnaireResourceMapper.questionToModel(uuid, questionResource);
-        return of(questionnaireResourceMapper.questionToResources(questionCatalog.updateQuestion(question, PrincipalId.of(getPrincipal()))));
+        var question = qcmResourceMapper.questionResourceToModel(uuid, questionResource);
+        return of(qcmResourceMapper.questionToQuestionResource(questionCatalog.updateQuestion(question, PrincipalId.of(getPrincipal()))));
     }
 
     @PostMapping(produces = APPLICATION_JSON_VALUE)
@@ -178,8 +173,8 @@ public class QuestionRestController {
             @ApiResponse(responseCode = "400", description = "Invalid input")})
     @Timed(value = "questions.createQuestion")
     public ResponseEntity <EntityModel <QuestionResource>> createQuestion(@JsonView(QuestionView.Create.class) @RequestBody @Valid QuestionResource questionResource) {
-        var question = questionnaireResourceMapper.questionToModel(questionResource);
-        var entityModel = of(questionnaireResourceMapper.questionToResources(questionCatalog.saveQuestion(question, PrincipalId.of(getPrincipal()))));
+        var question = qcmResourceMapper.questionResourceToModel(questionResource);
+        var entityModel = of(qcmResourceMapper.questionToQuestionResource(questionCatalog.saveQuestion(question, PrincipalId.of(getPrincipal()))));
 
         questionModelAssembler.addLinks(entityModel);
 
@@ -211,7 +206,7 @@ public class QuestionRestController {
                 .orElseThrow(() -> new I18nedNotFoundException(UNKNOWN_UUID_QUESTION, uuid));
 
         question.setStatus(questionStatus.getStatus());
-        return of(questionnaireResourceMapper.questionToResources(questionCatalog.saveQuestion(question, PrincipalId.of(getPrincipal()))));
+        return of(qcmResourceMapper.questionToQuestionResource(questionCatalog.saveQuestion(question, PrincipalId.of(getPrincipal()))));
     }
 
     @ExceptionHandler({JsonProcessingException.class, IOException.class})

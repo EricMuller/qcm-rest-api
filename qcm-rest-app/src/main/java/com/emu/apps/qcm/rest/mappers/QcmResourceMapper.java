@@ -29,14 +29,14 @@ import org.springframework.data.domain.Page;
         uses = {QuestionIdMapper.class, QuestionnaireIdMapper.class, AccountIdMapper.class, CategoryIdMapper.class,
                 WebhookIdMapper.class, TagIdMapper.class},
         unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface QuestionnaireResourceMapper {
+public interface QcmResourceMapper {
 
     @ResourceId
-    QuestionnaireResource questionnaireToResources(Questionnaire questionnaire);
+    QuestionnaireResource questionnaireToQuestionnaireResources(Questionnaire questionnaire);
 
-    Questionnaire questionnaireToModel(QuestionnaireResource questionnaireResource);
+    Questionnaire questionnaireResourceToModel(QuestionnaireResource questionnaireResource);
 
-    Questionnaire questionnaireToModel(String id, QuestionnaireResource questionnaireResource);
+    Questionnaire questionnaireResourceToModel(String id, QuestionnaireResource questionnaireResource);
 
     TagResource questionnaireTagToResources(QuestionnaireTag questionnaireTag);
 
@@ -46,88 +46,88 @@ public interface QuestionnaireResourceMapper {
     CategoryResource categoryToResources(MpttCategory mpttCategory);
 
     @ModelId
-    MpttCategory categoryToModel(CategoryResource categoryResource);
+    MpttCategory categoryResourceToModel(CategoryResource categoryResource);
 
     @Mapping(target = "uuid", source = "questionnaireQuestion.id")
     @Mapping(target = "questionnaireUuid", source = "questionnaireUuid")
     QuestionnaireQuestionResource questionnaireQuestionToResources(QuestionnaireQuestion questionnaireQuestion, String questionnaireUuid);
 
-    Question questionToModel(QuestionResource questionResource);
+    Question questionResourceToModel(QuestionResource questionResource);
 
-    Question questionToModel(String id, QuestionResource questionResource);
-
-    @ResourceId
-    QuestionResource questionToResources(Question question);
-
-    Response responseToModel(ResponseResource responseResource);
+    Question questionResourceToModel(String id, QuestionResource questionResource);
 
     @ResourceId
-    OwnerResource accountToOwner(Account account);
+    QuestionResource questionToQuestionResource(Question question);
 
-    ResponseResource responseToResources(Response response);
+    Response responseResourceToModel(ResponseResource responseResource);
 
-    TagResource questionTagToResources(QuestionTag questionTag);
+    @ResourceId
+    OwnerResource accountToOwnerResource(Account account);
+
+    ResponseResource responseToResource(Response response);
+
+    TagResource questionTagToTagResource(QuestionTag questionTag);
 
     QuestionTag questionTagToModel(TagResource tagResource);
 
     @ResourceId
-    SearchQuestionResource questionTagsToResources(QuestionWithTagsOnly questionWithTagsOnly);
+    SearchQuestionResource questionTagsToSearchResources(QuestionWithTagsOnly questionWithTagsOnly);
 
     @ResourceId
-    TagResource tagToResources(Tag tag);
+    TagResource tagToTagResources(Tag tag);
 
-    Tag tagToModel(String id, TagResource tagResource);
+    Tag tagResourceToModel(String id, TagResource tagResource);
 
-    Tag tagToModel(TagResource tagResource);
+    Tag tagResourceToModel(TagResource tagResource);
 
     Iterable <TagResource> tagsToResources(Iterable <Tag> tags);
 
-    UploadResource uploadToResources(Upload upload);
+    UploadResource uploadToUploadResources(Upload upload);
 
     Upload uploadToModel(UploadResource uploadResource);
 
     @ResourceId
-    AccountResource accountToResources(Account account);
+    AccountResource accountToAccountResource(Account account);
 
     @ModelId
-    Account accountToModel(AccountResource accountResource);
+    Account accountResourceToModel(AccountResource accountResource);
 
     @ResourceId
-    WebHookResource webhookToResources(WebHook webHook);
+    WebHookResource webhookToWebhookResources(WebHook webHook);
 
-    WebHook webhookToModel(WebHookResource webHookResource);
+    WebHook webhookResourceToModel(WebHookResource webHookResource);
 
-    WebHook webhookToModel(String id, WebHookResource webHookResource);
+    WebHook webhookResourceToModel(String id, WebHookResource webHookResource);
 
 
-    Iterable <CategoryResource> categoriesToResources(Iterable <MpttCategory> categories);
+    Iterable <CategoryResource> categoriesToCategoryResources(Iterable <MpttCategory> categories);
 
-    Iterable <SearchQuestionResource> questionTagsToResources(Page <QuestionWithTagsOnly> page);
+    Iterable <SearchQuestionResource> questionTagsToSearchResources(Page <QuestionWithTagsOnly> page);
 
-    default Page <WebHookResource> webhookToResources(Page <WebHook> page) {
-        return page.map(this::webhookToResources);
+    default Page <WebHookResource> webhookToWebhookResources(Page <WebHook> page) {
+        return page.map(this::webhookToWebhookResources);
     }
 
 
-    default Page <UploadResource> uploadToResources(Page <Upload> page) {
-        return page.map(this::uploadToResources);
+    default Page <UploadResource> uploadToUploadResources(Page <Upload> page) {
+        return page.map(this::uploadToUploadResources);
     }
 
-    default Page <TagResource> tagToResources(Page <Tag> page) {
-        return page.map(this::tagToResources);
+    default Page <TagResource> tagToTagResources(Page <Tag> page) {
+        return page.map(this::tagToTagResources);
     }
 
 
     default  Page <TagResource> pageTagsToResources(Page <Tag> page){
-        return page.map(this::tagToResources);
+        return page.map(this::tagToTagResources);
     }
 
     default Page <SearchQuestionResource> pageQuestionTagsToResources(Page <QuestionWithTagsOnly> page) {
-        return page.map(this::questionTagsToResources);
+        return page.map(this::questionTagsToSearchResources);
     }
 
-    default Page <QuestionnaireResource> questionnaireToResources(Page <Questionnaire> page) {
-        return page.map(this::questionnaireToResources);
+    default Page <QuestionnaireResource> questionnaireToQuestionnaireResources(Page <Questionnaire> page) {
+        return page.map(this::questionnaireToQuestionnaireResources);
     }
 
     default Page <QuestionnaireQuestionResource> questionnaireQuestionToResources(Page <QuestionnaireQuestion> page, String questionnaireUuid) {
