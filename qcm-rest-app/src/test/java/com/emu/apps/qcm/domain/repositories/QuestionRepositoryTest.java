@@ -1,17 +1,14 @@
 package com.emu.apps.qcm.domain.repositories;
 
 
+import com.emu.apps.qcm.domain.model.account.Account;
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
 import com.emu.apps.qcm.domain.model.category.MpttCategory;
 import com.emu.apps.qcm.domain.model.category.MpttCategoryRepository;
 import com.emu.apps.qcm.domain.model.question.Question;
 import com.emu.apps.qcm.domain.model.question.QuestionId;
 import com.emu.apps.qcm.domain.model.question.QuestionRepository;
-import com.emu.apps.qcm.domain.model.question.QuestionWithTagsOnly;
 import com.emu.apps.qcm.domain.model.question.Response;
-import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireId;
-import com.emu.apps.qcm.domain.model.tag.TagId;
-import com.emu.apps.qcm.domain.model.account.Account;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.BaeldungPostgresqlExtension;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.mptt.MpttType;
@@ -23,15 +20,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 
 import java.util.Arrays;
-import java.util.UUID;
 
-import static org.apache.commons.collections4.IterableUtils.isEmpty;
 import static org.apache.commons.collections4.IterableUtils.size;
 
 @SpringBootTest(classes = {SpringBootJpaTestConfig.class})
@@ -63,14 +57,6 @@ class QuestionRepositoryTest {
     @Autowired
     private DbRepositoryFixture dbFixture;
 
-    @Test
-    void testGetQuestions() {
-
-        Iterable <QuestionWithTagsOnly> questionTags = questionRepository.getQuestions(new TagId[0], new QuestionnaireId[0], PageRequest.of(0, 10), new PrincipalId(UUID.randomUUID().toString()));
-
-        Assertions.assertTrue(isEmpty(questionTags));
-
-    }
 
     @Test
     void testSaveQuestion() {
@@ -103,7 +89,7 @@ class QuestionRepositoryTest {
         Assertions.assertEquals("why?", saveQuestion.getQuestionText());
         Assertions.assertEquals(1, size(saveQuestion.getResponses()));
 
-        Question getQuestion = questionRepository.getQuestionById(new QuestionId(saveQuestion.getId().toUuid())).orElse(null);
+        Question getQuestion = questionRepository.getQuestionOfId(new QuestionId(saveQuestion.getId().toUuid())).orElse(null);
         Assertions.assertNotNull(getQuestion);
         Assertions.assertEquals("why?", saveQuestion.getQuestionText());
         Assertions.assertEquals(1, size(saveQuestion.getResponses()));

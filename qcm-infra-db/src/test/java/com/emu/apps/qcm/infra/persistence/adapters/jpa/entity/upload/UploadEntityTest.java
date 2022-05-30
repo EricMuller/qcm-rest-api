@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.upload;
 
-import java.util.UUID;
 import java.time.ZonedDateTime;
+import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -53,8 +53,6 @@ class UploadEntityTest {
 		assertEquals(param, result);
 	}
 
-
-
 	@Test
 	void testDateCreation() {
 		ZonedDateTime param = ZonedDateTime.now();
@@ -68,6 +66,14 @@ class UploadEntityTest {
 		ZonedDateTime param = ZonedDateTime.now();
 		aUploadEntity.setDateModification(param);
 		Object result = aUploadEntity.getDateModification();
+		assertEquals(param, result);
+	}
+
+	@Test
+	void testUuid() {
+		UUID param = UUID.randomUUID();
+		aUploadEntity.setUuid(param);
+		Object result = aUploadEntity.getUuid();
 		assertEquals(param, result);
 	}
 

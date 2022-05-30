@@ -4,8 +4,10 @@ import com.emu.apps.qcm.domain.model.base.PrincipalId;
 import com.emu.apps.qcm.domain.model.question.Question;
 import com.emu.apps.qcm.domain.model.question.QuestionId;
 import com.emu.apps.qcm.infra.persistence.QuestionnairePersistencePort;
+import com.emu.apps.shared.exceptions.I18nedNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.util.Streamable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+
+import static com.emu.apps.shared.exceptions.I18nedMessageSupport.UNKNOWN_UUID_QUESTIONNAIRE;
 
 /**
  * Questionnaire Business Delegate
@@ -41,9 +45,25 @@ class QuestionnaireRepositoryAdapter implements QuestionnaireRepository {
      */
     @Override
     @Transactional(readOnly = true)
-    public Optional <Questionnaire> getQuestionnaireById(QuestionnaireId questionnaireId) {
+    public Optional <Questionnaire> getQuestionnaireOfId(QuestionnaireId questionnaireId) {
         return questionnairePersistencePort.findByUuid(questionnaireId.toUuid());
 
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean existsOfId(QuestionnaireId questionnaireId) {
+        return questionnairePersistencePort.existsByUuid(questionnaireId.toUuid());
+    }
+
+    @Override
+    public QuestionnaireAggregate getQuestionnaireAggregateOfId(QuestionnaireId questionnaireId) {
+
+        var questionnaire = questionnairePersistencePort.findByUuid(questionnaireId.toUuid())
+                .orElseThrow(() -> new I18nedNotFoundException(UNKNOWN_UUID_QUESTIONNAIRE, questionnaireId.toUuid()));
+        var questionnaireQuestions = Streamable.of(questionnairePersistencePort.getQuestionsByQuestionnaireUuid(questionnaireId.toUuid())).toList();
+
+        return new QuestionnaireAggregate(questionnaire, questionnaireQuestions);
     }
 
     /**
@@ -53,7 +73,7 @@ class QuestionnaireRepositoryAdapter implements QuestionnaireRepository {
      * @return Nocontent
      */
     @Override
-    public ResponseEntity <Questionnaire> deleteQuestionnaireById(QuestionnaireId questionnaireId) {
+    public ResponseEntity <Questionnaire> deleteQuestionnaireOfId(QuestionnaireId questionnaireId) {
         questionnairePersistencePort.deleteByUuid(questionnaireId.toUuid());
         return new ResponseEntity <>(HttpStatus.NO_CONTENT);
     }
@@ -80,11 +100,11 @@ class QuestionnaireRepositoryAdapter implements QuestionnaireRepository {
         return questionnairePersistencePort.saveQuestionnaire(questionnaire, principal.toUuid());
     }
 
-    public Page <QuestionnaireQuestion> getQuestionsByQuestionnaireId(QuestionnaireId questionnaireId, Pageable pageable) {
+    public Page <QuestionnaireQuestion> getQuestionsByQuestionnaireOfId(QuestionnaireId questionnaireId, Pageable pageable) {
         return questionnairePersistencePort.getQuestionsByQuestionnaireUuid(questionnaireId.toUuid(), pageable);
     }
 
-    public Iterable <QuestionnaireQuestion> getQuestionsByQuestionnaireId(QuestionnaireId questionnaireId) {
+    public Iterable <QuestionnaireQuestion> getQuestionsByQuestionnaireOfId(QuestionnaireId questionnaireId) {
         return questionnairePersistencePort.getQuestionsByQuestionnaireUuid(questionnaireId.toUuid());
     }
 
@@ -137,7 +157,7 @@ class QuestionnaireRepositoryAdapter implements QuestionnaireRepository {
 
     @Override
     public void activateQuestionnaire(QuestionnaireId questionnaireId) {
-            // on progress
+        // on progress
     }
 
 }

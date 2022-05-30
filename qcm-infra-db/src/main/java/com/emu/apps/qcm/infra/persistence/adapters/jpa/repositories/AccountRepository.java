@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories;
 
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.AccountEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.account.AccountEntity;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.PagingAndSortingRepository;

@@ -5,7 +5,7 @@ import com.emu.apps.qcm.domain.mappers.CategoryIdMapperImpl;
 import com.emu.apps.qcm.domain.mappers.QuestionIdMapperImpl;
 import com.emu.apps.qcm.domain.model.question.Question;
 import com.emu.apps.qcm.domain.model.question.Response;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.AccountEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.account.AccountEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.ResponseEntity;
 import org.junit.jupiter.api.Assertions;

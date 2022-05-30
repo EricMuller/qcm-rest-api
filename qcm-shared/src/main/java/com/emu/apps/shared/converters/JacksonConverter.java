@@ -12,7 +12,7 @@ import java.io.ByteArrayOutputStream;
  */
 @Service(value = "JacksonConverter")
 @Slf4j
-public class JacksonConverter implements Converter {
+public final class JacksonConverter  {
 
     /**
      * objectMapper.configure(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS,true);
@@ -20,8 +20,7 @@ public class JacksonConverter implements Converter {
      * @param object
      * @return OupuStream
      */
-    @Override
-    public byte[] convert(Object object) {
+    public byte[] convertToByteArray(Object object) {
         try {
             ObjectMapper mapper = new ObjectMapper()
                     .findAndRegisterModules()

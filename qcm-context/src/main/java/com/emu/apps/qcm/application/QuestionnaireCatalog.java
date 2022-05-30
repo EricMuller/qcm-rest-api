@@ -36,21 +36,20 @@ public class QuestionnaireCatalog implements ApplicationService {
 
     public QuestionnaireQuestion addQuestion(QuestionnaireId questionnaireId, QuestionId questionId, Optional <Integer> position, PrincipalId principal) {
 
-        var questionnaire = questionnaireRepository.getQuestionnaireById(questionnaireId)
-                .orElseThrow(() -> new I18nedNotFoundException(UNKNOWN_UUID_QUESTIONNAIRE, questionId.toUuid()));
-
-
-        return questionnaireRepository.addQuestion(questionnaire.getId(), questionId, position, principal);
+        if (!questionnaireRepository.existsOfId(questionnaireId)) {
+            throw new I18nedNotFoundException(UNKNOWN_UUID_QUESTIONNAIRE, questionnaireId.toUuid());
+        }
+        return questionnaireRepository.addQuestion(questionnaireId, questionId, position, principal);
     }
 
     public Optional <Questionnaire> getQuestionnaireById(QuestionnaireId questionnaireId) {
 
-        return questionnaireRepository.getQuestionnaireById(questionnaireId);
+        return questionnaireRepository.getQuestionnaireOfId(questionnaireId);
     }
 
     public ResponseEntity <Questionnaire> deleteQuestionnaireById(QuestionnaireId questionnaireId) {
 
-        return questionnaireRepository.deleteQuestionnaireById(questionnaireId);
+        return questionnaireRepository.deleteQuestionnaireOfId(questionnaireId);
     }
 
     public Questionnaire updateQuestionnaire(Questionnaire questionnaire, PrincipalId principal) {
@@ -70,7 +69,7 @@ public class QuestionnaireCatalog implements ApplicationService {
 
     public Page <QuestionnaireQuestion> getQuestionsByQuestionnaireId(QuestionnaireId questionnaireId, Pageable pageable) {
 
-        return questionnaireRepository.getQuestionsByQuestionnaireId(questionnaireId, pageable);
+        return questionnaireRepository.getQuestionsByQuestionnaireOfId(questionnaireId, pageable);
     }
 
     public QuestionnaireQuestion getQuestion(QuestionnaireId questionnaireId, QuestionId questionId) {

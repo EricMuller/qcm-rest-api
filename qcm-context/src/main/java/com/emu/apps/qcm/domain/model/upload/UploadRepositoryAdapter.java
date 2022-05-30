@@ -55,7 +55,7 @@ class UploadRepositoryAdapter implements UploadRepository {
     }
 
     @Override
-    public void deleteUploadByUuid(UploadId uploadId) {
+    public void deleteUploadOfId(UploadId uploadId) {
         var upload = uploadPersistencePort.findByUuid(uploadId.toUuid())
                 .orElseThrow(() -> new I18nedNotFoundException(I18nedMessageSupport.UNKNOWN_UUID_UPLOAD, uploadId.toUuid()));
 
@@ -64,7 +64,7 @@ class UploadRepositoryAdapter implements UploadRepository {
     }
 
     @Override
-    public Upload getUploadByUuid(UploadId uploadId) {
+    public Upload getUploadOfId(UploadId uploadId) {
 
         return uploadPersistencePort.findByUuid(uploadId.toUuid())
                 .orElseThrow(() -> new I18nedNotFoundException(I18nedMessageSupport.UNKNOWN_UUID_UPLOAD, uploadId.toUuid()));

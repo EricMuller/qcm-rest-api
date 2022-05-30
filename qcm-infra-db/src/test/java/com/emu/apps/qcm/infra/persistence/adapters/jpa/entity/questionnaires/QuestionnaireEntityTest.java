@@ -1,9 +1,8 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires;
 
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.mptt.MpttCategoryEntity;
-
 import java.time.ZonedDateTime;
-
+import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -48,6 +47,14 @@ class QuestionnaireEntityTest {
 	}
 
 	@Test
+	void testStatus() {
+		String param = "123";
+		aQuestionnaireEntity.setStatus(param);
+		Object result = aQuestionnaireEntity.getStatus();
+		assertEquals(param, result);
+	}
+
+	@Test
 	void testWebsite() {
 		String param = "123";
 		aQuestionnaireEntity.setWebsite(param);
@@ -71,8 +78,6 @@ class QuestionnaireEntityTest {
 		assertEquals(param, result);
 	}
 
-
-
 	@Test
 	void testDateCreation() {
 		ZonedDateTime param = ZonedDateTime.now();
@@ -86,6 +91,14 @@ class QuestionnaireEntityTest {
 		ZonedDateTime param = ZonedDateTime.now();
 		aQuestionnaireEntity.setDateModification(param);
 		Object result = aQuestionnaireEntity.getDateModification();
+		assertEquals(param, result);
+	}
+
+	@Test
+	void testUuid() {
+		UUID param = UUID.randomUUID();
+		aQuestionnaireEntity.setUuid(param);
+		Object result = aQuestionnaireEntity.getUuid();
 		assertEquals(param, result);
 	}
 

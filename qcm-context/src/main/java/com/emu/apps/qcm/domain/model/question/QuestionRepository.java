@@ -11,11 +11,8 @@ import java.util.Collection;
 import java.util.Optional;
 
 public interface QuestionRepository {
-    Page <QuestionWithTagsOnly> getQuestions(TagId[] tagIds,
-                                             QuestionnaireId[] questionnaireIds,
-                                             Pageable pageable, PrincipalId principal);
 
-    Optional <Question> getQuestionById(QuestionId questionId);
+    Optional <Question> getQuestionOfId(QuestionId questionId);
 
     Question updateQuestion(Question question, PrincipalId principal);
 
@@ -23,10 +20,6 @@ public interface QuestionRepository {
 
     Question saveQuestion(Question question, PrincipalId principal);
 
-    void deleteQuestionById(QuestionId questionId);
-
-    Page <Tag> findAllQuestionTagByPage(Pageable pageable, PrincipalId principal);
-
-    Iterable <String> findAllStatusByPage(Pageable pageable, PrincipalId principal);
+    void deleteQuestionOfId(QuestionId questionId);
 
 }

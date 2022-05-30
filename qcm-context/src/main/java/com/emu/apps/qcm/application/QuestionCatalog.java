@@ -5,6 +5,7 @@ import com.emu.apps.qcm.domain.mappers.TagIdMapper;
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
 import com.emu.apps.qcm.domain.model.question.Question;
 import com.emu.apps.qcm.domain.model.question.QuestionId;
+import com.emu.apps.qcm.domain.model.question.QuestionQuery;
 import com.emu.apps.qcm.domain.model.question.QuestionRepository;
 import com.emu.apps.qcm.domain.model.question.QuestionWithTagsOnly;
 import com.emu.apps.qcm.domain.model.tag.Tag;
@@ -26,14 +27,16 @@ public class QuestionCatalog implements ApplicationService {
 
     private final QuestionRepository questionRepository;
 
+    private final QuestionQuery questionQuery;
     private final QuestionnaireIdMapper questionnaireIdMapper;
 
     private final TagIdMapper tagIdMapper;
 
     private final EventBus eventBus;
 
-    public QuestionCatalog(QuestionRepository questionRepository, QuestionnaireIdMapper questionnaireIdMapper, TagIdMapper tagIdMapper, @Qualifier("SimpleEventBus") EventBus eventBus) {
+    public QuestionCatalog(QuestionRepository questionRepository, QuestionQuery questionQuery, QuestionnaireIdMapper questionnaireIdMapper, TagIdMapper tagIdMapper, @Qualifier("SimpleEventBus") EventBus eventBus) {
         this.questionRepository = questionRepository;
+        this.questionQuery = questionQuery;
         this.questionnaireIdMapper = questionnaireIdMapper;
         this.tagIdMapper = tagIdMapper;
         this.eventBus = eventBus;
@@ -45,12 +48,12 @@ public class QuestionCatalog implements ApplicationService {
                                                     Pageable pageable, PrincipalId principal) {
 
 
-        return questionRepository.getQuestions(tagIdMapper.toTagId(tagUuid), questionnaireIdMapper.toQuestionnaireId(questionnaireUuid), pageable, principal);
+        return questionQuery.getQuestions(tagIdMapper.toTagId(tagUuid), questionnaireIdMapper.toQuestionnaireId(questionnaireUuid), pageable, principal);
     }
 
     public Optional <Question> getQuestionById(QuestionId questionId) {
 
-        return questionRepository.getQuestionById(questionId);
+        return questionRepository.getQuestionOfId(questionId);
     }
 
     public Question updateQuestion(Question question, PrincipalId principal) {
@@ -75,17 +78,17 @@ public class QuestionCatalog implements ApplicationService {
 
     public void deleteQuestionById(QuestionId questionId) {
 
-        questionRepository.deleteQuestionById(questionId);
+        questionRepository.deleteQuestionOfId(questionId);
     }
 
     public Page <Tag> findAllQuestionTagByPage(Pageable pageable, PrincipalId principal) {
 
-        return questionRepository.findAllQuestionTagByPage(pageable, principal);
+        return questionQuery.findAllQuestionTagByPage(pageable, principal);
     }
 
     public Iterable <String> findAllStatusByPage(Pageable pageable, PrincipalId principal) {
 
-        return questionRepository.findAllStatusByPage(pageable, principal);
+        return questionQuery.findAllStatusByPage(pageable, principal);
     }
 
     @Override

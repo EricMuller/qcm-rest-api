@@ -2,11 +2,9 @@ package com.emu.apps.qcm.rest.controllers.management;
 
 
 import com.emu.apps.qcm.application.QuestionnaireCatalog;
-import com.emu.apps.qcm.application.reporting.ExportService;
-import com.emu.apps.qcm.application.reporting.dtos.Export;
-import com.emu.apps.qcm.application.reporting.template.TemplateReportServices;
+import com.emu.apps.qcm.application.export.ExportService;
+import com.emu.apps.qcm.application.export.dto.Export;
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
-import com.emu.apps.qcm.domain.model.category.MpttCategoryRepository;
 import com.emu.apps.qcm.domain.model.question.QuestionId;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireId;
 import com.emu.apps.qcm.rest.config.cache.CacheName;
@@ -46,8 +44,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import static com.emu.apps.qcm.application.reporting.template.FileFormat.getFileFormat;
-import static com.emu.apps.qcm.application.reporting.template.ReportTemplate.TEMPLATE_QUESTIONNAIRE;
+import static com.emu.apps.qcm.application.export.ExportFormat.getFileFormat;
 import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.*;
 import static com.emu.apps.shared.exceptions.I18nedMessageSupport.UNKNOWN_UUID_QUESTIONNAIRE;
 import static com.emu.apps.shared.security.AuthentificationContextHolder.getPrincipal;
@@ -76,22 +73,17 @@ public class QuestionnaireRestController {
 
     private final ExportService exportService;
 
-    private final TemplateReportServices templateReportServices;
-
     private final QuestionnaireModelAssembler questionnaireModelAssembler;
 
     private final QuestionnaireQuestionModelAssembler questionnaireQuestionModelAssembler;
 
-    private final MpttCategoryRepository mpttCategoryRepository;
 
-    public QuestionnaireRestController(QuestionnaireCatalog questionnaireCatalog, QcmResourceMapper qcmResourceMapper, ExportService exportService, TemplateReportServices templateReportServices, QuestionnaireModelAssembler questionnaireModelAssembler, QuestionnaireQuestionModelAssembler questionnaireQuestionModelAssembler, MpttCategoryRepository mpttCategoryRepository) {
+    public QuestionnaireRestController(QuestionnaireCatalog questionnaireCatalog, QcmResourceMapper qcmResourceMapper, ExportService exportService, QuestionnaireModelAssembler questionnaireModelAssembler, QuestionnaireQuestionModelAssembler questionnaireQuestionModelAssembler) {
         this.questionnaireCatalog = questionnaireCatalog;
         this.qcmResourceMapper = qcmResourceMapper;
         this.exportService = exportService;
-        this.templateReportServices = templateReportServices;
         this.questionnaireModelAssembler = questionnaireModelAssembler;
         this.questionnaireQuestionModelAssembler = questionnaireQuestionModelAssembler;
-        this.mpttCategoryRepository = mpttCategoryRepository;
     }
 
     @GetMapping(value = "/{uuid}")
@@ -230,13 +222,12 @@ public class QuestionnaireRestController {
     }
 
 
-
     @Timer
     @GetMapping(value = "/{uuid}" + EXPORTS, produces = APPLICATION_JSON_VALUE)
     @ResponseBody
     @Timed(value = "questionnaires.getExportByQuestionnaireUuid", longTask = true)
     public Export getExportByQuestionnaireUuid(@PathVariable("uuid") String uuid) {
-        return exportService.getbyQuestionnaireUuid(uuid);
+        return exportService.getExportByQuestionnaireUuid(new QuestionnaireId(uuid));
     }
 
     @Timer
@@ -246,18 +237,15 @@ public class QuestionnaireRestController {
     public ResponseEntity <Resource> getReportByQuestionnaireUuid(@PathVariable("uuid") String uuid, @PathVariable("type-report") String type) {
 
         if (isNull(type)) {
-            throw new IllegalArgumentException(type);
+            throw new IllegalArgumentException("Invalid type-report argument");
         }
 
         var reportFormat = getFileFormat(type.toUpperCase(getDefault()));
 
-        final var export = exportService.getbyQuestionnaireUuid(uuid);
-
-        ByteArrayResource resource = new ByteArrayResource(templateReportServices
-                .convertAsStream(export, TEMPLATE_QUESTIONNAIRE, reportFormat));
+        ByteArrayResource resource = exportService.exportAsByteArray(new QuestionnaireId(uuid), reportFormat);
 
         return ResponseEntity.ok()
-                .header(CONTENT_DISPOSITION, "attachment; filename=\"" + export.getName() + "." + reportFormat.getExtention() + "\"")
+                .header(CONTENT_DISPOSITION, "attachment; filename=\"" + uuid + "." + reportFormat.getExtension() + "\"")
                 .body(resource);
     }
 

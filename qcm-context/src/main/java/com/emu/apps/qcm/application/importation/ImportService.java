@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.application.importation;
 
-import com.emu.apps.qcm.application.reporting.dtos.Export;
-import com.emu.apps.qcm.application.reporting.dtos.QuestionExport;
+import com.emu.apps.qcm.application.export.dto.Export;
+import com.emu.apps.qcm.application.export.dto.QuestionExport;
 import com.emu.apps.qcm.domain.model.Status;
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
 import com.emu.apps.qcm.domain.model.category.MpttCategory;
@@ -80,7 +80,7 @@ public class ImportService {
     @Transactional
     public Upload importFile(UploadId uploadId, PrincipalId principal) throws IOException {
 
-        var upload = uploadRepository.getUploadByUuid(uploadId);
+        var upload = uploadRepository.getUploadOfId(uploadId);
 
         //  use strategy
         if (EXPORT_JSON.name().equals(upload.getType())) {

@@ -18,7 +18,7 @@ import java.util.Map;
 /**
  *
  */
-@Service(value = "XdocPdfConverter")
+@Service(value = Converter.PDF)
 @Slf4j
 public class XdocPdfConverter implements Converter {
 

@@ -38,4 +38,6 @@ public interface QuestionnairePersistencePort {
 
     Iterable <QuestionnaireQuestion> getQuestionsByQuestionnaireUuid(String questionnaireUuid);
 
+    boolean existsByUuid(String uuid) ;
+
 }

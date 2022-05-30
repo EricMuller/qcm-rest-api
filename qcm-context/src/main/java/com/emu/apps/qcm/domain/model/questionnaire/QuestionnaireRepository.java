@@ -12,13 +12,16 @@ import java.util.List;
 import java.util.Optional;
 
 public interface QuestionnaireRepository {
-    Optional <Questionnaire> getQuestionnaireById(QuestionnaireId questionnaireId);
 
-    ResponseEntity <Questionnaire> deleteQuestionnaireById(QuestionnaireId questionnaireId);
+    boolean existsOfId(QuestionnaireId questionnaireId);
 
-    Page <QuestionnaireQuestion> getQuestionsByQuestionnaireId(QuestionnaireId questionnaireId, Pageable pageable);
+    Optional <Questionnaire> getQuestionnaireOfId(QuestionnaireId questionnaireId);
 
-    Iterable <QuestionnaireQuestion> getQuestionsByQuestionnaireId(QuestionnaireId questionnaireId);
+    ResponseEntity <Questionnaire> deleteQuestionnaireOfId(QuestionnaireId questionnaireId);
+
+    Page <QuestionnaireQuestion> getQuestionsByQuestionnaireOfId(QuestionnaireId questionnaireId, Pageable pageable);
+
+    Iterable <QuestionnaireQuestion> getQuestionsByQuestionnaireOfId(QuestionnaireId questionnaireId);
 
     QuestionnaireQuestion addQuestion(QuestionnaireId questionnaireId, QuestionId questionId, Optional <Integer> position, PrincipalId principal);
 
@@ -35,5 +38,7 @@ public interface QuestionnaireRepository {
     QuestionnaireQuestion getQuestion(QuestionnaireId questionnaireId, QuestionId questionId);
 
     void activateQuestionnaire(QuestionnaireId questionnaireId);
+
+    QuestionnaireAggregate getQuestionnaireAggregateOfId(QuestionnaireId questionnaireId) ;
 
 }

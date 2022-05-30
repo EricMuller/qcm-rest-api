@@ -1,8 +1,9 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions;
 
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.mptt.MpttCategoryEntity;
-
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.account.AccountEntity;
 import java.time.ZonedDateTime;
+import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -39,10 +40,18 @@ class QuestionEntityTest {
 	}
 
 	@Test
-	void testCategory() {
+	void testMpttCategory() {
 		MpttCategoryEntity param = new MpttCategoryEntity();
 		aQuestionEntity.setMpttCategory(param);
 		Object result = aQuestionEntity.getMpttCategory();
+		assertEquals(param, result);
+	}
+
+	@Test
+	void testStatus() {
+		String param = "123";
+		aQuestionEntity.setStatus(param);
+		Object result = aQuestionEntity.getStatus();
 		assertEquals(param, result);
 	}
 
@@ -54,6 +63,13 @@ class QuestionEntityTest {
 		assertEquals(param, result);
 	}
 
+	@Test
+	void testOwner() {
+		AccountEntity param = new AccountEntity();
+		aQuestionEntity.setOwner(param);
+		Object result = aQuestionEntity.getOwner();
+		assertEquals(param, result);
+	}
 
 	@Test
 	void testDateCreation() {
@@ -68,6 +84,14 @@ class QuestionEntityTest {
 		ZonedDateTime param = ZonedDateTime.now();
 		aQuestionEntity.setDateModification(param);
 		Object result = aQuestionEntity.getDateModification();
+		assertEquals(param, result);
+	}
+
+	@Test
+	void testUuid() {
+		UUID param = UUID.randomUUID();
+		aQuestionEntity.setUuid(param);
+		Object result = aQuestionEntity.getUuid();
 		assertEquals(param, result);
 	}
 

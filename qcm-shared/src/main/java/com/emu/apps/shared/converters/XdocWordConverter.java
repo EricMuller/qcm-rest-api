@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  *
  */
-@Service(value = "XdocWordConverter")
+@Service(value = Converter.WORD)
 @Slf4j
 public class XdocWordConverter implements Converter {
 

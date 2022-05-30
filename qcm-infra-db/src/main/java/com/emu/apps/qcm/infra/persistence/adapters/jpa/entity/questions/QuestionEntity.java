@@ -3,7 +3,7 @@ package com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions;
 
 import com.emu.apps.qcm.domain.model.question.TypeQuestion;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.converters.BooleanTFConverter;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.AccountEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.account.AccountEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.mptt.MpttCategoryEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.common.AuditableEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireQuestionEntity;

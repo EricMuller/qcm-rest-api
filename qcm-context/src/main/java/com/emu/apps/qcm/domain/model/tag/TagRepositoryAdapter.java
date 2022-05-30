@@ -41,7 +41,7 @@ class TagRepositoryAdapter implements TagRepository {
     }
 
     @Override
-    public Tag getTagById(TagId tagId) {
+    public Tag getTagOfId(TagId tagId) {
         return tagPersistencePort.findByUuid(tagId.toUuid());
     }
 

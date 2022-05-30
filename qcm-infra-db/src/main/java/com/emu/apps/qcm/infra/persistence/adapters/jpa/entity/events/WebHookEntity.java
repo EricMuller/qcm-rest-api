@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.events;
 
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.AccountEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.account.AccountEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.common.AuditableEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

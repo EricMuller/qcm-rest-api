@@ -8,9 +8,9 @@ public interface WebHookRepository {
 
     Page <WebHook> getWebHooks(Pageable pageable, PrincipalId principal);
 
-    void deleteWebHookByUuid(WebhookId webhookId);
+    void deleteWebHookOfId(WebhookId webhookId);
 
-    WebHook getWebHookByUuid(WebhookId webhookId);
+    WebHook getWebHookOfId(WebhookId webhookId);
 
     WebHook saveWebHook(WebHook webHook, PrincipalId principal);
 }

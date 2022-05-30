@@ -90,6 +90,11 @@ public class QuestionnairePersistenceAdapter implements QuestionnairePersistence
                 .modelToDto(questionnaireRepository.findByUuid(fromString(uuid)).orElse(null)));
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public boolean existsByUuid(String uuid) {
+        return questionnaireRepository.existsByUuid(fromString(uuid));
+    }
 
     private MpttCategoryEntity getCategory(final Questionnaire questionnaire){
 

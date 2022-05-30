@@ -77,7 +77,7 @@ public class TagRestController {
             @ApiResponse(responseCode = "400", description = "Invalid input")})
     @Timed(value = "tags.getTagByUuid")
     public EntityModel <TagResource> getTagByUuid(@PathVariable("uuid") String uuid) {
-        return EntityModel.of(qcmResourceMapper.tagToTagResources(tagRepository.getTagById(new TagId(uuid))));
+        return EntityModel.of(qcmResourceMapper.tagToTagResources(tagRepository.getTagOfId(new TagId(uuid))));
     }
 
     @PostMapping

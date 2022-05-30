@@ -1,5 +1,7 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires;
 
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireQuestionId;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionEntity;
 import org.junit.jupiter.api.Test;
 

@@ -9,7 +9,7 @@ import java.io.IOException;
 public interface TagRepository {
     Page <Tag> getTags(String search, Pageable pageable, PrincipalId principal) throws IOException;
 
-    Tag getTagById(TagId tagId);
+    Tag getTagOfId(TagId tagId);
 
     Tag saveTag(Tag tag);
 

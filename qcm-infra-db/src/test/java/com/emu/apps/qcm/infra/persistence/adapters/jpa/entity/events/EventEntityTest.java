@@ -15,7 +15,7 @@ class EventEntityTest {
 	}
 	@Test
 	void testId() {
-		Long param = 123L;
+		Long param = Long.valueOf(123);
 		aEventEntity.setId(param);
 		Object result = aEventEntity.getId();
 		assertEquals(param, result);
@@ -28,8 +28,6 @@ class EventEntityTest {
 		Object result = aEventEntity.getOrigin();
 		assertEquals(param, result);
 	}
-
-
 
 	@Test
 	void testDateCreation() {
@@ -44,6 +42,14 @@ class EventEntityTest {
 		ZonedDateTime param = ZonedDateTime.now();
 		aEventEntity.setDateModification(param);
 		Object result = aEventEntity.getDateModification();
+		assertEquals(param, result);
+	}
+
+	@Test
+	void testUuid() {
+		UUID param = UUID.randomUUID();
+		aEventEntity.setUuid(param);
+		Object result = aEventEntity.getUuid();
 		assertEquals(param, result);
 	}
 

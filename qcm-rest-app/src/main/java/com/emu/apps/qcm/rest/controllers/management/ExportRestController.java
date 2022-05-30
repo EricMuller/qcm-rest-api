@@ -1,10 +1,12 @@
 package com.emu.apps.qcm.rest.controllers.management;
 
 
-import com.emu.apps.qcm.application.reporting.ExportService;
-import com.emu.apps.qcm.application.reporting.dtos.Export;
-import com.emu.apps.qcm.application.reporting.template.FileFormat;
-import com.emu.apps.qcm.application.reporting.template.TemplateReportServices;
+import com.emu.apps.qcm.application.export.ExportService;
+import com.emu.apps.qcm.application.export.ExportFormat;
+import com.emu.apps.qcm.application.export.dto.Export;
+import com.emu.apps.qcm.application.export.converters.json.ObjectToJsonConverter;
+import com.emu.apps.qcm.application.export.converters.template.TemplateConverter;
+import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireId;
 import com.emu.apps.qcm.rest.controllers.ApiRestMappings;
 import com.emu.apps.shared.annotations.Timer;
 import io.micrometer.core.annotation.Timed;
@@ -21,8 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Objects;
 
-import static com.emu.apps.qcm.application.reporting.template.FileFormat.getFileFormat;
-import static com.emu.apps.qcm.application.reporting.template.ReportTemplate.TEMPLATE_QUESTIONNAIRE;
+import static com.emu.apps.qcm.application.export.ExportFormat.getFileFormat;
 import static java.util.Locale.getDefault;
 import static org.springframework.http.HttpHeaders.CONTENT_DISPOSITION;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -37,12 +38,9 @@ public class ExportRestController {
 
     private final ExportService exportService;
 
-    private final TemplateReportServices templateReportServices;
-
     @Autowired
-    public ExportRestController(ExportService exportService, TemplateReportServices templateReportServices) {
+    public ExportRestController(ExportService exportService, TemplateConverter templateConverter, ObjectToJsonConverter objectToJsonConverter) {
         this.exportService = exportService;
-        this.templateReportServices = templateReportServices;
     }
 
     @Timer
@@ -50,9 +48,8 @@ public class ExportRestController {
     @ResponseBody
     @Timed(value = "exports.getExportByQuestionnaireUuid", longTask = true)
     public Export getExportByQuestionnaireUuid(@PathVariable("uuid") String id) {
-        return exportService.getbyQuestionnaireUuid(id);
+        return exportService.getExportByQuestionnaireUuid(new QuestionnaireId(id));
     }
-
 
     @Timer
     @GetMapping(value = "/{uuid}/{type-report}", produces = APPLICATION_OCTET_STREAM_VALUE)
@@ -61,20 +58,16 @@ public class ExportRestController {
     public ResponseEntity <Resource> getReportByQuestionnaireUuid(@PathVariable("uuid") String uuid, @PathVariable("type-report") String type) {
 
         if (Objects.isNull(type)) {
-            throw new IllegalArgumentException(type);
+            throw new IllegalArgumentException("Invalid type-report argument");
         }
 
-        FileFormat reportFormat = getFileFormat(type.toUpperCase(getDefault()));
+        ExportFormat exportFormat = getFileFormat(type.toUpperCase(getDefault()));
 
-        final Export export = exportService.getbyQuestionnaireUuid(uuid);
-
-        ByteArrayResource resource = new ByteArrayResource(templateReportServices
-                .convertAsStream(export, TEMPLATE_QUESTIONNAIRE, reportFormat));
+        ByteArrayResource resource = exportService.exportAsByteArray(new QuestionnaireId(uuid), exportFormat);
 
         return ResponseEntity.ok()
-                .header(CONTENT_DISPOSITION, "attachment; filename=\"" + export.getName() + "." + reportFormat.getExtention() + "\"")
+                .header(CONTENT_DISPOSITION, "attachment; filename=\"" + uuid + "." + exportFormat.getExtension() + "\"")
                 .body(resource);
     }
-
 
 }

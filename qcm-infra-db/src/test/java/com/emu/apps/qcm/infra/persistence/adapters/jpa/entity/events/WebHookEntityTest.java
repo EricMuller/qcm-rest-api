@@ -1,8 +1,8 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.events;
 
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.AccountEntity;
-
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.account.AccountEntity;
 import java.time.ZonedDateTime;
+import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -47,7 +47,7 @@ class WebHookEntityTest {
 	}
 
 	@Test
-	void testUser() {
+	void testOwner() {
 		AccountEntity param = new AccountEntity();
 		aWebHookEntity.setOwner(param);
 		Object result = aWebHookEntity.getOwner();
@@ -62,7 +62,6 @@ class WebHookEntityTest {
 		assertEquals(param, result);
 	}
 
-
 	@Test
 	void testDateCreation() {
 		ZonedDateTime param = ZonedDateTime.now();
@@ -76,6 +75,14 @@ class WebHookEntityTest {
 		ZonedDateTime param = ZonedDateTime.now();
 		aWebHookEntity.setDateModification(param);
 		Object result = aWebHookEntity.getDateModification();
+		assertEquals(param, result);
+	}
+
+	@Test
+	void testUuid() {
+		UUID param = UUID.randomUUID();
+		aWebHookEntity.setUuid(param);
+		Object result = aWebHookEntity.getUuid();
 		assertEquals(param, result);
 	}
 

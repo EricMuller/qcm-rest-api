@@ -15,9 +15,9 @@ public interface UploadRepository {
 
     Page <Upload> getUploads(Pageable pageable, PrincipalId principal);
 
-    void deleteUploadByUuid(UploadId uploadId);
+    void deleteUploadOfId(UploadId uploadId);
 
-    Upload getUploadByUuid(UploadId uploadId);
+    Upload getUploadOfId(UploadId uploadId);
 
     Upload saveUpload(Upload upload);
 

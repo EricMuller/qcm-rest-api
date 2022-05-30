@@ -7,7 +7,7 @@ import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireQuestion;
 import com.emu.apps.qcm.domain.model.tag.Tag;
 import com.emu.apps.qcm.infra.persistence.QuestionPersistencePort;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.builders.QuestionTagBuilder;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.AccountEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.account.AccountEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.mptt.MpttCategoryEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.TagQuestionEntity;

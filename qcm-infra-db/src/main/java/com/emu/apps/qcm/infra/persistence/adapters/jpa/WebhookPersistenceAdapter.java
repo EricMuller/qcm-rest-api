@@ -3,7 +3,7 @@ package com.emu.apps.qcm.infra.persistence.adapters.jpa;
 
 import com.emu.apps.qcm.domain.model.webhook.WebHook;
 import com.emu.apps.qcm.infra.persistence.WebHookPersistencePort;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.AccountEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.account.AccountEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.events.WebHookEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.AccountRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.WebHookRepository;

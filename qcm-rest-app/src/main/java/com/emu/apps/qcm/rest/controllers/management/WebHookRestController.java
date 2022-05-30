@@ -66,14 +66,14 @@ public class WebHookRestController {
     @GetMapping(value = "/{uuid}")
     @ResponseBody
     public WebHookResource getWebHookByUuid(@PathVariable("uuid") String uuid) {
-        return qcmResourceMapper.webhookToWebhookResources(webHookRepository.getWebHookByUuid(new WebhookId(uuid)));
+        return qcmResourceMapper.webhookToWebhookResources(webHookRepository.getWebHookOfId(new WebhookId(uuid)));
     }
 
     @DeleteMapping(value = "/{uuid}")
     @ResponseBody
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteWebhookByUuid(@PathVariable("uuid") String uuid) {
-        webHookRepository.deleteWebHookByUuid(new WebhookId(uuid));
+        webHookRepository.deleteWebHookOfId(new WebhookId(uuid));
     }
 
 

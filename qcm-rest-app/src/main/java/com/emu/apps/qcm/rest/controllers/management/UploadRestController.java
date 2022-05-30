@@ -99,7 +99,7 @@ public class UploadRestController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @Timed(value = "uploads.deleteUploadByUuid")
     public void deleteUploadByUuid(@PathVariable("uuid") String uuid) {
-        uploadRepository.deleteUploadByUuid(new UploadId(uuid));
+        uploadRepository.deleteUploadOfId(new UploadId(uuid));
     }
 
     @GetMapping(value = "/{uuid}")
@@ -109,7 +109,7 @@ public class UploadRestController {
             @ApiResponse(responseCode = "400", description = "Invalid input")})
     @Timed(value = "uploads.getUploadByUuid")
     public UploadResource getUploadByUuid(@PathVariable("uuid") String uuid) {
-        return qcmResourceMapper.uploadToUploadResources(uploadRepository.getUploadByUuid(new UploadId(uuid)));
+        return qcmResourceMapper.uploadToUploadResources(uploadRepository.getUploadOfId(new UploadId(uuid)));
     }
 
 }

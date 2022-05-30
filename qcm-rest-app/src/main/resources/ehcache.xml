@@ -27,7 +27,7 @@
         <heap>4096</heap>
     </cache>
 
-    <cache alias="com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.AccountEntity" uses-template="simple">
+    <cache alias="com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.account.AccountEntity" uses-template="simple">
         <listeners>
             <listener>
                 <class>com.emu.apps.qcm.rest.config.cache.CacheEventLogger</class>

@@ -29,12 +29,12 @@ class WebHookRepositoryAdapter implements WebHookRepository {
     }
 
     @Override
-    public void deleteWebHookByUuid(WebhookId webhookId) {
+    public void deleteWebHookOfId(WebhookId webhookId) {
         webHookPersistencePort.deleteByUuid(webhookId.toUuid());
     }
 
     @Override
-    public WebHook getWebHookByUuid(WebhookId webhookId) {
+    public WebHook getWebHookOfId(WebhookId webhookId) {
         return webHookPersistencePort.findOneByUuid(webhookId.toUuid());
     }
 
