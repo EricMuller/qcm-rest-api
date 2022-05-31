@@ -31,8 +31,6 @@ public interface QuestionnaireRepository {
 
     Questionnaire saveQuestionnaire(Questionnaire questionnaire, PrincipalId principal);
 
-    Page <Questionnaire> getQuestionnaires(String[] tagUuid, Pageable pageable, PrincipalId principal);
-
     void deleteQuestion(QuestionnaireId questionnaireId, QuestionId questionId);
 
     QuestionnaireQuestion getQuestion(QuestionnaireId questionnaireId, QuestionId questionId);

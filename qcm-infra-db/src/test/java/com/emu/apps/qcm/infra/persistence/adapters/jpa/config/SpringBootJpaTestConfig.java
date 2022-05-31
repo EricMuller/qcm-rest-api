@@ -72,12 +72,14 @@ public class SpringBootJpaTestConfig {
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(EntityManagerFactoryBuilder builder,
-                                                                       DataSource dataSource) {
+                                                                       DataSource dataSource
+
+    ) {
         return builder
                 .dataSource(dataSource)
                 .packages("com.emu.apps.qcm.infra.persistence.adapters.jpa.entity")
                 .persistenceUnit("qcm")
-                //.properties(singletonMap("hibernate.hbm2ddl.auto", "update"))
+                .properties(singletonMap("hibernate.hbm2ddl.auto", "none"))
                 .build();
     }
 

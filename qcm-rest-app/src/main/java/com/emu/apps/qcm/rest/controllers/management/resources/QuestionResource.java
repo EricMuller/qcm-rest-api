@@ -91,4 +91,8 @@ public class QuestionResource  {
     @JsonView({Find.class})
     private OwnerResource owner;
 
+    @JsonProperty("numeroVersion")
+    @JsonView({Find.class, Create.class, Update.class,})
+    private int numeroVersion;
+
 }

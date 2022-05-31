@@ -62,6 +62,7 @@ public interface QuestionnaireQuestionEntityMapper {
     @Mapping(source = "question.status", target = "status")
     @Mapping(source = "position", target = "position")
     @Mapping(source = "points", target = "points")
+    @Mapping(source = "question.numeroVersion", target = "numeroVersion")
     QuestionnaireQuestion questionnaireQuestionEntityToDomain(QuestionnaireQuestionEntity questionnaireQuestionEntity);
 
     default Page <QuestionnaireQuestion> pageQuestionnaireQuestionEntityToDomain(Page <QuestionnaireQuestionEntity> page) {

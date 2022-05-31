@@ -176,7 +176,6 @@ public class QuestionnaireRestController {
     public QuestionnaireQuestionResource getQuestionnaireQuestionById(@PathVariable("uuid") String uuid, @PathVariable("q_uuid") String questionUuid) {
         return qcmResourceMapper.questionnaireQuestionToResources(questionnaireCatalog.getQuestion(new QuestionnaireId(uuid), new QuestionId(questionUuid)), uuid);
     }
-
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     @Timer
     @ResponseBody

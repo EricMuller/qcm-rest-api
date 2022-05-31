@@ -108,13 +108,6 @@ class QuestionnaireRepositoryAdapter implements QuestionnaireRepository {
         return questionnairePersistencePort.getQuestionsByQuestionnaireUuid(questionnaireId.toUuid());
     }
 
-
-    @Override
-    @Transactional(readOnly = true)
-    public Page <Questionnaire> getQuestionnaires(String[] tagUuid, Pageable pageable, PrincipalId principal) {
-        return questionnairePersistencePort.findAllByPage(tagUuid, principal.toUuid(), pageable);
-    }
-
     /**
      * Add  question to a questionnaire
      *

@@ -22,4 +22,6 @@ public class QuestionLight extends DomainId<QuestionId> {
     private String status;
 
     private Account owner;
+
+    private int numeroVersion;
 }

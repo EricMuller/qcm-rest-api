@@ -74,5 +74,8 @@ public class QuestionnaireQuestionResource {
     @JsonProperty(value = "points")
     private Integer points;
 
+    @JsonProperty(value = "numeroVersion")
+    private int numeroVersion;
+
 
 }

@@ -36,4 +36,6 @@ public class Question extends DomainId <QuestionId> {
 
     private Account owner;
 
+    private int numeroVersion;
+
 }

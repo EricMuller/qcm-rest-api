@@ -40,4 +40,6 @@ public class QuestionnaireQuestion extends DomainId<QuestionId> {
 
     private Integer points;
 
+    private int numeroVersion;
+
 }

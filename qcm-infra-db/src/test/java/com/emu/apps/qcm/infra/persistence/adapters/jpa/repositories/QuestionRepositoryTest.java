@@ -3,8 +3,8 @@ package com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.BaeldungPostgresqlExtension;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.config.SpringBootJpaTestConfig;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionEntity;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.ResponseEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionTagEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.ResponseEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.TagQuestionEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.fixtures.DbFixture;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.fixtures.Fixture;
@@ -68,7 +68,7 @@ class QuestionRepositoryTest {
     @Transactional
     void findOne() {
 
-        final String principal =  UUID.randomUUID().toString();
+        final String principal = UUID.randomUUID().toString();
 
         dbFixture.emptyDatabase(principal);
 
@@ -80,6 +80,9 @@ class QuestionRepositoryTest {
         assertNotNull(newQuestion.orElse(null).getId());
         assertEquals(DbFixture.QUESTION_QUESTION_1, newQuestion.get().getQuestionText());
         assertEquals(DbFixture.QUESTION_TIP_1, newQuestion.get().getTip());
+
+        assertEquals(2, newQuestion.get().getNumeroVersion());
+
         // Assert.assertEquals(RESPONSE, newQuestion.getResponse());
     }
 
@@ -87,7 +90,7 @@ class QuestionRepositoryTest {
     @DisplayName("Test LazyInitializationException with lazy collection Tags")
     void findOneLazyInitializationException() {
 
-        final String principal =  UUID.randomUUID().toString();
+        final String principal = UUID.randomUUID().toString();
 
         dbFixture.emptyDatabase(principal);
 
@@ -99,13 +102,14 @@ class QuestionRepositoryTest {
 
         assertThrows(LazyInitializationException.class, () -> newQuestion.get().getTags().size());
 
+
     }
 
     @Test
     @DisplayName("Test LazyInitializationException with lazy collection responses")
     void findByIdAndFetchTagsLazyInitializationException() {
 
-        final String principal =  UUID.randomUUID().toString();
+        final String principal = UUID.randomUUID().toString();
         dbFixture.emptyDatabase(principal);
 
         QuestionEntity question = dbFixture.createQuestionsAndGetFirst(principal);
@@ -119,7 +123,7 @@ class QuestionRepositoryTest {
     @Test
     void findByIdAndFetchTags() {
 
-        final String principal =UUID.randomUUID().toString();
+        final String principal = UUID.randomUUID().toString();
         dbFixture.emptyDatabase(principal);
 
         QuestionEntity question = dbFixture.createQuestionsAndGetFirst(principal);
@@ -129,6 +133,7 @@ class QuestionRepositoryTest {
         assertThat(newQuestion).isNotNull();
         assertThat(newQuestion.getTags()).isNotEmpty();
         assertThat(newQuestion.getTags()).hasSize(2);
+        assertEquals(2, newQuestion.getNumeroVersion());
 
         Optional <QuestionTagEntity> optional = newQuestion.getTags()
                 .stream()
@@ -142,7 +147,7 @@ class QuestionRepositoryTest {
     @Test
     void findByIdAndFetchTagsAndResponses() {
 
-        final String principal =  UUID.randomUUID().toString();
+        final String principal = UUID.randomUUID().toString();
         dbFixture.emptyDatabase(principal);
 
         QuestionEntity question = dbFixture.createQuestionsAndGetFirst(principal);
@@ -192,6 +197,7 @@ class QuestionRepositoryTest {
         QuestionEntity first = getFirst(content, null);
 
         assertThat(first).isNotNull();
+        assertEquals(2, first.getNumeroVersion());
 
         Set <QuestionTagEntity> questionTags = first.getTags();
         assertThat(questionTags).isNotEmpty();
@@ -230,7 +236,7 @@ class QuestionRepositoryTest {
 
         dbFixture.createOneQuestionnaireWithTwoQuestionTags(userUuid);
 
-        TagQuestionEntity tag1 = dbFixture.findTagQuestionbyLibelle(QUESTION_TAG_LIBELLE_1,  userUuid);
+        TagQuestionEntity tag1 = dbFixture.findTagQuestionbyLibelle(QUESTION_TAG_LIBELLE_1, userUuid);
         assertThat(tag1).isNotNull();
 
         Specification <QuestionEntity> specification = new QuestionEntity.SpecificationBuilder(PrincipalUtils.getEmailOrName((Principal) () -> userUuid))

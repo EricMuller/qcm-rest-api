@@ -4,6 +4,7 @@ import com.emu.apps.qcm.domain.model.base.PrincipalId;
 import com.emu.apps.qcm.domain.model.question.QuestionId;
 import com.emu.apps.qcm.domain.model.questionnaire.Questionnaire;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireId;
+import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireQuery;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireQuestion;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireRepository;
 import com.emu.apps.shared.application.ApplicationService;
@@ -24,13 +25,15 @@ import static java.util.Map.of;
 @Service
 public class QuestionnaireCatalog implements ApplicationService {
 
-
     private final QuestionnaireRepository questionnaireRepository;
+
+    private final QuestionnaireQuery questionnaireQuery;
 
     private final EventBus eventBus;
 
-    public QuestionnaireCatalog(QuestionnaireRepository questionnaireRepository, @Qualifier("SimpleEventBus") EventBus eventBus) {
+    public QuestionnaireCatalog(QuestionnaireRepository questionnaireRepository, QuestionnaireQuery questionnaireQuery, @Qualifier("SimpleEventBus") EventBus eventBus) {
         this.questionnaireRepository = questionnaireRepository;
+        this.questionnaireQuery = questionnaireQuery;
         this.eventBus = eventBus;
     }
 
@@ -77,7 +80,7 @@ public class QuestionnaireCatalog implements ApplicationService {
     }
 
     public Page <Questionnaire> getQuestionnaires(String[] tagUuid, Pageable pageable, PrincipalId principal) {
-        return questionnaireRepository.getQuestionnaires(tagUuid, pageable, principal);
+        return questionnaireQuery.getQuestionnaires(tagUuid, pageable, principal);
     }
 
     public void deleteQuestion(QuestionnaireId questionnaireId, QuestionId questionId) {

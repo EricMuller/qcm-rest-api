@@ -4,6 +4,7 @@ package com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions;
 import com.emu.apps.qcm.domain.model.question.TypeQuestion;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.converters.BooleanTFConverter;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.account.AccountEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.common.Version;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.mptt.MpttCategoryEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.common.AuditableEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireQuestionEntity;
@@ -18,6 +19,7 @@ import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.persistence.criteria.JoinType;
+import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -39,10 +41,11 @@ import static org.springframework.data.jpa.domain.Specification.where;
         subgraphs = @NamedSubgraph(name = "tags", attributeNodes = @NamedAttributeNode("tag")))
 @Table(name = "QUESTION",
         indexes = {
+                @Index(name = "IDX_QTO_ID_NUM_IDX", columnList = "id,numero_version"),
                 @Index(name = "IDX_QTO_CREATE_BY_IDX", columnList = "created_by"),
                 @Index(name = "IDX_QTO_UUID_IDX", columnList = "uuid")
         }
-        , uniqueConstraints = {@UniqueConstraint(name = "UK_QTO_UUID", columnNames = {"uuid"})}
+        , uniqueConstraints = {@UniqueConstraint(name = "UK_QTO_UUID_NUM_VERSION", columnNames = {"uuid","numero_version"})}
 )
 @Getter
 @Setter
@@ -77,7 +80,7 @@ public class QuestionEntity extends AuditableEntity <String> {
     private String tip;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "question_ID")
+    @JoinColumn(name = "QUESTION_ID")
     @BatchSize(size = 100)
     private List <ResponseEntity> responses;
 
@@ -91,8 +94,10 @@ public class QuestionEntity extends AuditableEntity <String> {
 
     @ManyToOne(fetch = FetchType.EAGER)
     // @JoinColumn(name = "CREATED_BY", updatable = false, nullable = false)
-    protected AccountEntity owner;
+    private AccountEntity owner;
 
+    @Column(name = "NUMERO_VERSION", nullable = false)
+    private int numeroVersion = 0 ;
 
     public QuestionEntity(UUID uuid) {
         super(uuid);

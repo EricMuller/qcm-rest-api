@@ -33,6 +33,7 @@ import java.util.Arrays;
 
 import static com.emu.apps.qcm.rest.config.RestHeaders.headers;
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(classes = {SpringBootJpaTestConfig.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("classpath:application-test.properties")
@@ -73,10 +74,12 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
     private QuestionResource createQuestion() {
         QuestionResource questionResource = new QuestionResource();
         questionResource.setQuestionText(QUESTION1);
+        questionResource.setNumeroVersion(2);
 
         ResponseResource responseResource = new ResponseResource();
         responseResource.setResponseText(RESPONSE1);
         responseResource.setGood(true);
+
 
         questionResource.setResponses(Arrays.asList(responseResource));
 
@@ -112,12 +115,12 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
         assertThat(getResponse.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
 
         assertThat(getResponse.getBody()).isNotNull();
+        assertEquals(2,getResponse.getBody().getNumeroVersion());
 
         ResponseResource firstResponse = Iterables.getFirst(getResponse.getBody().getResponses(), null);
         assertThat(firstResponse).isNotNull();
         assertThat(firstResponse.getResponseText()).isNotNull().isEqualTo(RESPONSE1);
 
     }
-
 
 }

@@ -1,0 +1,8 @@
+
+
+ALTER TABLE question
+    DROP CONSTRAINT UK_QTO_UUID;
+
+
+ALTER TABLE question
+    ADD CONSTRAINT UK_QTO_UUID_NUM_VERSION UNIQUE (uuid , numero_version);

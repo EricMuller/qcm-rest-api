@@ -98,4 +98,8 @@ public class SearchQuestionResource {
     @JsonView({QuestionView.Find.class})
     private OwnerResource owner;
 
+    @JsonProperty("numeroVersion")
+    @JsonView({QuestionView.Find.class})
+    private int  numeroVersion;
+
 }

@@ -45,17 +45,21 @@ class QuestionEntityMapperTest {
         questionEntity.setLastModifiedBy(accountEntity.getUuid().toString());
 
         questionEntity.setQuestionText(QUESTION_TEXT);
+        questionEntity.setNumeroVersion(2);
 
         var question = questionMapper.entityToQuestion(questionEntity);
 
         Assertions.assertNotNull(question);
 
         Assertions.assertEquals(QUESTION_TEXT, question.getQuestionText());
+        Assertions.assertEquals(2, question.getNumeroVersion());
         Assertions.assertEquals(accountEntity.getUuid().toString(), question.getCreatedBy());
         Assertions.assertEquals(accountEntity.getUuid().toString(), question.getLastModifiedBy());
 
+
         Assertions.assertNotNull(question.getOwner());
         Assertions.assertNotNull(USER_NAME, question.getOwner().getUserName());
+
 
     }
 
@@ -70,10 +74,12 @@ class QuestionEntityMapperTest {
         questionEntity.setLastModifiedBy(accountEntity.getUuid().toString());
 
         questionEntity.setQuestionText(QUESTION_TEXT);
+        questionEntity.setNumeroVersion(2);
 
         QuestionWithTagsOnly questionWithTagsOnly = questionMapper.entityToQuestionWithTagsOnly(questionEntity);
 
         Assertions.assertNotNull(questionWithTagsOnly);
+        Assertions.assertEquals(2, questionWithTagsOnly.getNumeroVersion());
 
         Assertions.assertEquals(QUESTION_TEXT, questionWithTagsOnly.getQuestionText());
         Assertions.assertEquals(accountEntity.getUuid().toString(), questionWithTagsOnly.getCreatedBy());

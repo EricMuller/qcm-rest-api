@@ -13,15 +13,15 @@ import java.util.Objects;
 @Entity
 @NamedEntityGraph(name = "QuestionnaireQuestion.question",
         attributeNodes = {
-              //  @NamedAttributeNode(value = "question")
+                //  @NamedAttributeNode(value = "question")
                 @NamedAttributeNode(value = "question", subgraph = "QuestionnaireQuestion.question")
         },
         subgraphs = {
 //                @NamedSubgraph(name = "question", attributeNodes =@NamedAttributeNode(value = "questionTags", subgraph = "tags")),
-               // @NamedSubgraph(name = "responses", attributeNodes =@NamedAttributeNode(value = "questionTags", subgraph = "tags")),
+                // @NamedSubgraph(name = "responses", attributeNodes =@NamedAttributeNode(value = "questionTags", subgraph = "tags")),
                 @NamedSubgraph(name = "QuestionnaireQuestion.question",
                         attributeNodes = {
-                       @NamedAttributeNode("mpttCategory"),
+                                @NamedAttributeNode("mpttCategory"),
 
                         }
                 )
@@ -42,8 +42,11 @@ public class QuestionnaireQuestionEntity implements Serializable {
     @JoinColumn(name = "QUESTIONNAIRE_ID", insertable = false, updatable = false)
     private QuestionnaireEntity questionnaire;
 
+    //insertable = false , You would do that when the responsibility of creating/updating the referenced column isn't in the current entity, but in another entity.
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "QUESTION_ID", insertable = false, updatable = false)
+    @JoinColumns({
+            @JoinColumn(name = "QUESTION_ID", insertable = false, updatable = false, nullable = false, referencedColumnName="ID"),
+            @JoinColumn(name = "NUMERO_VERSION", insertable = false, updatable = false, nullable = false, referencedColumnName="NUMERO_VERSION")})
     private QuestionEntity question;
 
     @Column
@@ -56,7 +59,7 @@ public class QuestionnaireQuestionEntity implements Serializable {
     private Integer points = 1;
 
     public QuestionnaireQuestionEntity(@NotNull QuestionnaireEntity questionnaire, @NotNull QuestionEntity question, Integer position) {
-        this.id = new QuestionnaireQuestionId(questionnaire.getId(), question.getId());
+        this.id = new QuestionnaireQuestionId(questionnaire.getId(), question.getId(), question.getNumeroVersion());
         this.questionnaire = questionnaire;
         this.question = question;
         this.position = position;

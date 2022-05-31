@@ -203,6 +203,7 @@ public class DbFixture extends Fixture {
             questionEntity1.setCreatedBy(accountUuid);
             questionEntity1.setMpttCategory(questionCategoryEntity);
             questionEntity1.setOwner(accountEntity);
+            questionEntity1.setNumeroVersion(2);
 
             // question.setQuestionnaire(questionnaire);
             responseEntity1.setQuestion(questionEntity1);
@@ -217,6 +218,7 @@ public class DbFixture extends Fixture {
             questionEntity2.setMpttCategory(questionCategoryEntity);
             questionEntity2.setCreatedBy(accountUuid);
             questionEntity2.setOwner(accountEntity);
+            questionEntity2.setNumeroVersion(3);
             questionEntity2 = questionRepository.save(questionEntity2);
 
             //questionTag
@@ -307,6 +309,7 @@ public class DbFixture extends Fixture {
         question1.setType(FREE_TEXT);
         question1.setTip(QUESTION_TIP_1);
         question1.setCreatedBy(accountId);
+        question1.setNumeroVersion(2);
 
         question1.setResponses(Lists.newArrayList(response, response2));
         questionRepository.save(question1);
