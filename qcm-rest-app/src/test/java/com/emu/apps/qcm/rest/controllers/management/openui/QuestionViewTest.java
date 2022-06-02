@@ -1,13 +1,13 @@
 package com.emu.apps.qcm.rest.controllers.management.openui;
 
 import com.emu.apps.qcm.rest.controllers.management.resources.QuestionResource;
-import com.emu.apps.qcm.rest.controllers.management.resources.ResponseResource;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 class QuestionViewTest {
 
@@ -25,29 +25,34 @@ class QuestionViewTest {
 
         assertThat(resources).isNotNull();
 
-        assertThat(resources.getUuid()).isNotNull();
-        assertThat(resources.getStatus()).isNotNull();
-        assertThat(resources.getTip()).isNotNull();
-        assertThat(resources.getType()).isNotNull();
-        assertThat(resources.getQuestionText()).isNotNull();
-        assertThat(resources.getResponses()).isNotNull().size().isEqualTo(1);
+        assertAll(
+                () -> assertThat(resources.getUuid()).isNotNull(),
+                () -> assertThat(resources.getStatus()).isNotNull(),
+                () -> assertThat(resources.getTip()).isNotNull(),
+                () -> assertThat(resources.getType()).isNotNull(),
+                () -> assertThat(resources.getQuestionText()).isNotNull(),
+                () -> assertThat(resources.getResponses()).isNotNull().size().isEqualTo(1),
+                () -> assertThat(resources.getVersion()).isNotNull(),
+                () -> assertThat(resources.getDateCreation()).isNull(),
+                () -> assertThat(resources.getDateModification()).isNull()
+        );
 
-        ResponseResource responseResource = resources.getResponses().stream().findFirst().get();
+        var responseResource = resources.getResponses().stream().findFirst().get();
 
-        assertThat(responseResource.getUuid()).isNotNull();
-        assertThat(responseResource.getResponseText()).isNotNull();
-        assertThat(responseResource.getGood()).isNotNull();
-        assertThat(responseResource.getNumber()).isNotNull();
-        assertThat(responseResource.getVersion()).isNotNull();
+        assertAll(
+                () -> assertThat(responseResource.getUuid()).isNotNull(),
+                () -> assertThat(responseResource.getResponseText()).isNotNull(),
+                () -> assertThat(responseResource.getGood()).isNotNull(),
+                () -> assertThat(responseResource.getNumber()).isNotNull(),
+                () -> assertThat(responseResource.getVersion()).isNotNull());
 
         assertThat(resources.getTags()).isNotNull().size().isEqualTo(1);
-        var  tagResources =resources.getTags().stream().findFirst().get();
-        assertThat(tagResources.getUuid()).isNotNull();
-        assertThat(tagResources.getLibelle()).isNotNull();
 
-        assertThat(resources.getVersion()).isNotNull();
-        assertThat(resources.getDateCreation()).isNull();
-        assertThat(resources.getDateModification()).isNull();
+        var tagResources = resources.getTags().stream().findFirst().get();
+
+        assertAll(
+                () -> assertThat(tagResources.getUuid()).isNotNull(),
+                () -> assertThat(tagResources.getLibelle()).isNotNull());
 
 
     }
@@ -62,35 +67,35 @@ class QuestionViewTest {
 
         assertThat(resources).isNotNull();
 
-        assertThat(resources).isNotNull();
+        assertAll(
+                () -> assertThat(resources.getUuid()).isNull(),
+                () -> assertThat(resources.getStatus()).isNotNull(),
+                () -> assertThat(resources.getTip()).isNotNull(),
+                () -> assertThat(resources.getType()).isNotNull(),
+                () -> assertThat(resources.getQuestionText()).isNotNull(),
+                () -> assertThat(resources.getResponses()).isNotNull().size().isEqualTo(1),
+                () -> assertThat(resources.getVersion()).isNull(),
+                () -> assertThat(resources.getDateCreation()).isNull(),
+                () -> assertThat(resources.getDateModification()).isNull()
+        );
 
-        assertThat(resources.getUuid()).isNull();
-        assertThat(resources.getStatus()).isNotNull();
-        assertThat(resources.getTip()).isNotNull();
-        assertThat(resources.getType()).isNotNull();
-        assertThat(resources.getQuestionText()).isNotNull();
-        assertThat(resources.getResponses()).isNotNull().size().isEqualTo(1);
+        var responseResource = resources.getResponses().stream().findFirst().get();
 
-        ResponseResource responseResource = resources.getResponses().stream().findFirst().get();
-
-        assertThat(responseResource.getUuid()).isNull();
-        assertThat(responseResource.getResponseText()).isNotNull();
-        assertThat(responseResource.getGood()).isNotNull();
-        assertThat(responseResource.getNumber()).isNotNull();
-        assertThat(responseResource.getVersion()).isNull();
-
-        assertThat(resources.getTags()).isNotNull().size().isEqualTo(1);
-        var  tagResources =resources.getTags().stream().findFirst().get();
-        assertThat(tagResources.getUuid()).isNotNull();
-        assertThat(tagResources.getLibelle()).isNotNull();
-
-
-        assertThat(resources.getVersion()).isNull();
-        assertThat(resources.getDateCreation()).isNull();
-        assertThat(resources.getDateModification()).isNull();
+        assertAll(
+                () -> assertThat(responseResource.getUuid()).isNull(),
+                () -> assertThat(responseResource.getResponseText()).isNotNull(),
+                () -> assertThat(responseResource.getGood()).isNotNull(),
+                () -> assertThat(responseResource.getNumber()).isNotNull(),
+                () -> assertThat(responseResource.getVersion()).isNull(),
+                () -> assertThat(resources.getTags()).isNotNull().size().isEqualTo(1)
+        );
+        var tagResources = resources.getTags().stream().findFirst().get();
 
 
+        assertAll(
+                () -> assertThat(tagResources.getUuid()).isNotNull(),
+                () -> assertThat(tagResources.getLibelle()).isNotNull()
+        );
     }
-
 
 }

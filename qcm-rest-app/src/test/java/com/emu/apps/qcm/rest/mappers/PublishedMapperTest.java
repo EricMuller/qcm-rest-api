@@ -23,11 +23,11 @@ class PublishedMapperTest {
     @Test
     void toPublishedQuestionnaireQuestionDto() {
 
-        QuestionnaireQuestion questionnaireQuestion = new QuestionnaireQuestion();
+        var questionnaireQuestion = new QuestionnaireQuestion();
         questionnaireQuestion.setQuestion("Text");
 
 
-        PushishedQuestionnaireQuestion pushishedQuestionnaireQuestionDto = publishedMapper.toPublishedQuestionnaireQuestion(questionnaireQuestion);
+        var pushishedQuestionnaireQuestionDto = publishedMapper.toPublishedQuestionnaireQuestion(questionnaireQuestion);
 
         Assertions.assertNotNull(pushishedQuestionnaireQuestionDto);
 

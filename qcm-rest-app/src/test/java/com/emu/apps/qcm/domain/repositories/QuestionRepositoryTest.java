@@ -61,27 +61,26 @@ class QuestionRepositoryTest {
     @Test
     void testSaveQuestion() {
 
-        Account account = dbFixture.createAccountTest();
+        var account = dbFixture.createAccountTest();
 
-        MpttCategory mpttCategory = new MpttCategory();
+        var mpttCategory = new MpttCategory();
         mpttCategory.setType(MpttType.QUESTION.name());
         mpttCategory.setLibelle("QuestionBusinessPortTest.testSaveQuestion");
 
-        final PrincipalId principalId = new PrincipalId(account.getId().toUuid());
+        final var principalId = new PrincipalId(account.getId().toUuid());
 
         mpttCategory = mpttCategoryRepository.saveCategory(mpttCategory, principalId);
 
-        Question question = new Question();
+        var question = new Question();
         question.setQuestionText("why?");
         question.setMpttCategory(mpttCategory);
 
-        Response response = new Response();
+        var response = new Response();
         response.setResponseText("because");
 
         question.setResponses(Arrays.asList(response));
 
-
-        Question saveQuestion = questionRepository.saveQuestion(question, principalId);
+        var saveQuestion = questionRepository.saveQuestion(question, principalId);
 
         Assertions.assertNotNull(saveQuestion);
         Assertions.assertNotNull(saveQuestion.getId());
@@ -89,14 +88,16 @@ class QuestionRepositoryTest {
         Assertions.assertEquals("why?", saveQuestion.getQuestionText());
         Assertions.assertEquals(1, size(saveQuestion.getResponses()));
 
-        Question getQuestion = questionRepository.getQuestionOfId(new QuestionId(saveQuestion.getId().toUuid())).orElse(null);
+        var getQuestion = questionRepository.getQuestionOfId(new QuestionId(saveQuestion.getId().toUuid())).orElse(null);
         Assertions.assertNotNull(getQuestion);
+
+
         Assertions.assertEquals("why?", saveQuestion.getQuestionText());
         Assertions.assertEquals(1, size(saveQuestion.getResponses()));
 
 
         getQuestion.setQuestionText("why2?");
-        Question updateQuestion = questionRepository.updateQuestion(getQuestion, principalId);
+        var updateQuestion = questionRepository.updateQuestion(getQuestion, principalId);
 
 
         Assertions.assertNotNull(updateQuestion);

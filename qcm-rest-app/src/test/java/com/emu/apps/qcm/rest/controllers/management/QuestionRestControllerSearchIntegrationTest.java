@@ -21,14 +21,12 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
 import java.util.Arrays;
 
 import static com.emu.apps.qcm.rest.config.RestHeaders.headers;
@@ -38,8 +36,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest(classes = {SpringBootJpaTestConfig.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("classpath:application-test.properties")
 @ActiveProfiles(value = "test")
-@ContextConfiguration(initializers = {QuestionRestControllerSearchTest.Initializer.class})
- class QuestionRestControllerSearchTest {
+@ContextConfiguration(initializers = {QuestionRestControllerSearchIntegrationTest.Initializer.class})
+class QuestionRestControllerSearchIntegrationTest {
 
     @RegisterExtension
     static BaeldungPostgresqlExtension postgresqlContainer = BaeldungPostgresqlExtension.getInstance();
@@ -54,6 +52,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
             ).applyTo(configurableApplicationContext.getEnvironment());
         }
     }
+
     private static final String QUESTIONS_URI = ApiRestMappings.MANAGEMENT_API + ApiRestMappings.QUESTIONS;
 
     private static final String QUESTION1 = "Question 1";
@@ -72,11 +71,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
     }
 
     private QuestionResource createQuestion() {
-        QuestionResource questionResource = new QuestionResource();
+        var questionResource = new QuestionResource();
         questionResource.setQuestionText(QUESTION1);
         questionResource.setNumeroVersion(2);
 
-        ResponseResource responseResource = new ResponseResource();
+        var responseResource = new ResponseResource();
         responseResource.setResponseText(RESPONSE1);
         responseResource.setGood(true);
 
@@ -87,37 +86,39 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
     }
 
     @BeforeAll
-    private static void beforeAll(@Autowired DbRepositoryFixture dbFixture){
+    private static void beforeAll(@Autowired DbRepositoryFixture dbFixture) {
         dbFixture.createAccountTest();
     }
 
 
     @Test
     @Transactional
-
     void getQuestionByIdShouldReturnQuestion() {
 
         // create a new question
-        final ResponseEntity <QuestionResource> postResponse = restTemplate
+        var postResponse = restTemplate
                 .exchange(getURL(QUESTIONS_URI), HttpMethod.POST, new HttpEntity <>(createQuestion(), headers()), QuestionResource.class);
+
 
         assertThat(postResponse.getStatusCode()).isEqualByComparingTo(HttpStatus.CREATED);
         assertThat(postResponse.getBody()).isNotNull();
 
         // get the question
-        String uuid = postResponse.getBody().getUuid();
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getURL(QUESTIONS_URI + "/{uuid}"));
-        URI uri = builder.build().expand(uuid).encode().toUri();
+        var uuid = postResponse.getBody().getUuid();
+        var builder = UriComponentsBuilder.fromHttpUrl(getURL(QUESTIONS_URI + "/{uuid}"));
+        var uri = builder.build().expand(uuid).encode().toUri();
 
-        final ResponseEntity <QuestionResource> getResponse = restTemplate
+        var getResponse = restTemplate
                 .exchange(uri, HttpMethod.GET, new HttpEntity <>(headers()), QuestionResource.class);
 
+
         assertThat(getResponse.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
-
         assertThat(getResponse.getBody()).isNotNull();
-        assertEquals(2,getResponse.getBody().getNumeroVersion());
+        assertEquals(2, getResponse.getBody().getNumeroVersion());
 
-        ResponseResource firstResponse = Iterables.getFirst(getResponse.getBody().getResponses(), null);
+        var firstResponse = Iterables.getFirst(getResponse.getBody().getResponses(), null);
+
+
         assertThat(firstResponse).isNotNull();
         assertThat(firstResponse.getResponseText()).isNotNull().isEqualTo(RESPONSE1);
 

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 class QuestionnaireViewTest {
 
@@ -24,23 +25,29 @@ class QuestionnaireViewTest {
 
         assertThat(resources).isNotNull();
 
-        assertThat(resources.getUuid()).isNotNull();
-        assertThat(resources.getStatus()).isNotNull();
-        assertThat(resources.getTitle()).isNotNull();
-        assertThat(resources.getWebsite()).isNotNull();
+        assertAll(
+                () -> assertThat(resources.getUuid()).isNotNull(),
+                () -> assertThat(resources.getStatus()).isNotNull(),
+                () -> assertThat(resources.getTitle()).isNotNull(),
+                () -> assertThat(resources.getWebsite()).isNotNull());
 
         assertThat(resources.getCategory()).isNotNull();
-        assertThat(resources.getCategory().getUuid()).isNotNull();
-        assertThat(resources.getCategory().getLibelle()).isNull();
-        assertThat(resources.getCategory().getDateCreation()).isNull();
-        assertThat(resources.getCategory().getDateModification()).isNull();
-        assertThat(resources.getCategory().getType()).isNull();
-        assertThat(resources.getCategory().getUserId()).isNull();
+
+        assertAll(
+                () -> assertThat(resources.getCategory().getUuid()).isNotNull(),
+                () -> assertThat(resources.getCategory().getLibelle()).isNull(),
+                () -> assertThat(resources.getCategory().getDateCreation()).isNull(),
+                () -> assertThat(resources.getCategory().getDateModification()).isNull(),
+                () -> assertThat(resources.getCategory().getType()).isNull(),
+                () -> assertThat(resources.getCategory().getUserId()).isNull());
 
         assertThat(resources.getTags()).isNotNull().size().isEqualTo(1);
+
         var tagResources = resources.getTags().stream().findFirst().get();
-        assertThat(tagResources.getUuid()).isNotNull();
-        assertThat(tagResources.getLibelle()).isNotNull();
+
+        assertAll(
+                () -> assertThat(tagResources.getUuid()).isNotNull(),
+                () -> assertThat(tagResources.getLibelle()).isNotNull());
 
     }
 
@@ -54,26 +61,27 @@ class QuestionnaireViewTest {
 
         assertThat(resources).isNotNull();
 
-        assertThat(resources.getUuid()).isNull();
-        assertThat(resources.getStatus()).isNotNull();
-        assertThat(resources.getTitle()).isNotNull();
-        assertThat(resources.getWebsite()).isNotNull();
+        assertAll(
+                () -> assertThat(resources.getUuid()).isNull(),
+                () -> assertThat(resources.getStatus()).isNotNull(),
+                () -> assertThat(resources.getTitle()).isNotNull(),
+                () -> assertThat(resources.getWebsite()).isNotNull());
 
         assertThat(resources.getCategory()).isNotNull();
-        assertThat(resources.getCategory().getUuid()).isNotNull();
-        assertThat(resources.getCategory().getLibelle()).isNull();
-        assertThat(resources.getCategory().getDateCreation()).isNull();
-        assertThat(resources.getCategory().getDateModification()).isNull();
-        assertThat(resources.getCategory().getType()).isNull();
-        assertThat(resources.getCategory().getUserId()).isNull();
+
+        assertAll(
+                () -> assertThat(resources.getCategory().getUuid()).isNotNull(),
+                () -> assertThat(resources.getCategory().getLibelle()).isNull(),
+                () -> assertThat(resources.getCategory().getDateCreation()).isNull(),
+                () -> assertThat(resources.getCategory().getDateModification()).isNull(),
+                () -> assertThat(resources.getCategory().getType()).isNull(),
+                () -> assertThat(resources.getCategory().getUserId()).isNull());
 
         assertThat(resources.getTags()).isNotNull().size().isEqualTo(1);
+
         var tagResources = resources.getTags().stream().findFirst().get();
         assertThat(tagResources.getUuid()).isNotNull();
         assertThat(tagResources.getLibelle()).isNotNull();
-
-
     }
-
 
 }

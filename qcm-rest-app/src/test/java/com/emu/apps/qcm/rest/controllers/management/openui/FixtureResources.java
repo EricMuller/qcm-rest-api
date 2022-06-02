@@ -43,65 +43,65 @@ public class FixtureResources {
     }
 
     public QuestionResource createQuestion() {
-        var q = new QuestionResource();
+        var questionResource = new QuestionResource();
 
-        q.setUuid(randomUUID().toString());
-        q.setType("Type");
-        q.setCategory(createCategory());
-        q.setStatus("Status");
-        q.setQuestionText("Question");
-        q.setResponses(List.of(createResponseResources()));
-        q.setTip("Tip");
+        questionResource.setUuid(randomUUID().toString());
+        questionResource.setType("Type");
+        questionResource.setCategory(createCategory());
+        questionResource.setStatus("Status");
+        questionResource.setQuestionText("Question");
+        questionResource.setResponses(List.of(createResponseResources()));
+        questionResource.setTip("Tip");
 
-        q.setTags(List.of(createQuestionTag()));
+        questionResource.setTags(List.of(createQuestionTag()));
 
-        q.setVersion(1L);
-        q.setDateCreation(ZonedDateTime.now());
-        q.setDateModification(ZonedDateTime.now());
+        questionResource.setVersion(1L);
+        questionResource.setDateCreation(ZonedDateTime.now());
+        questionResource.setDateModification(ZonedDateTime.now());
 
-        return q;
+        return questionResource;
     }
 
 
     public QuestionnaireTagResource createQuestionnaireTag() {
 
-        var qt = new QuestionnaireTagResource();
+        var questionnaireTagResource = new QuestionnaireTagResource();
 
-        qt.setUuid(randomUUID().toString());
-        qt.setLibelle("Libelle");
+        questionnaireTagResource.setUuid(randomUUID().toString());
+        questionnaireTagResource.setLibelle("Libelle");
 
-        return qt;
+        return questionnaireTagResource;
     }
 
     public QuestionTagResource createQuestionTag() {
 
-        var qt = new QuestionTagResource();
+        var questionTagResource = new QuestionTagResource();
 
-        qt.setUuid(randomUUID().toString());
-        qt.setLibelle("Libelle");
+        questionTagResource.setUuid(randomUUID().toString());
+        questionTagResource.setLibelle("Libelle");
 
-        return qt;
+        return questionTagResource;
     }
 
 
     public QuestionnaireResource createQuestionnaire() {
-        var q = new QuestionnaireResource();
+        var questionnaireResource = new QuestionnaireResource();
 
-        q.setUuid(randomUUID().toString());
-        q.setCategory(createCategory());
-        q.setStatus("Status");
-        q.setTitle("Title");
-        q.setDescription("Description");
-        q.setWebsite("WebSite");
+        questionnaireResource.setUuid(randomUUID().toString());
+        questionnaireResource.setCategory(createCategory());
+        questionnaireResource.setStatus("Status");
+        questionnaireResource.setTitle("Title");
+        questionnaireResource.setDescription("Description");
+        questionnaireResource.setWebsite("WebSite");
 
-        q.setTags(Set.of(createQuestionnaireTag()));
+        questionnaireResource.setTags(Set.of(createQuestionnaireTag()));
 
-        q.setVersion(1L);
-        q.setDateCreation(ZonedDateTime.now());
-        q.setDateModification(ZonedDateTime.now());
-        q.setCreatedBy("CreateBy");
+        questionnaireResource.setVersion(1L);
+        questionnaireResource.setDateCreation(ZonedDateTime.now());
+        questionnaireResource.setDateModification(ZonedDateTime.now());
+        questionnaireResource.setCreatedBy("CreateBy");
 
-        return q;
+        return questionnaireResource;
     }
 
 

@@ -9,6 +9,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import static com.emu.apps.qcm.rest.config.H2TestProfileJPAConfig.USERNAME_TEST;
+import static java.util.Objects.isNull;
 
 @Component
 public class DbRepositoryFixture {
@@ -21,15 +22,14 @@ public class DbRepositoryFixture {
 
     public synchronized Account createAccountTest() {
 
-        Account account = accountRepository.getAccountByEmail(USERNAME_TEST);
+        var account = accountRepository.getAccountByEmail(USERNAME_TEST);
 
-        if (Objects.isNull(account)) {
+        if (isNull(account)) {
             account = new Account();
             account.setUserName(USERNAME_TEST);
             account.setEmail(USERNAME_TEST);
             account.setId(AccountId.of(UUID.randomUUID()));
             account = accountRepository.createAccount(account);
-
         }
 
         return account;

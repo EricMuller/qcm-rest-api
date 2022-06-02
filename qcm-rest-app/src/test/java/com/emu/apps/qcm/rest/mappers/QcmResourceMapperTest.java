@@ -1,14 +1,16 @@
 package com.emu.apps.qcm.rest.mappers;
 
-import com.emu.apps.qcm.domain.mappers.*;
+import com.emu.apps.qcm.domain.mappers.AccountIdMapperImpl;
+import com.emu.apps.qcm.domain.mappers.CategoryIdMapperImpl;
+import com.emu.apps.qcm.domain.mappers.QuestionIdMapperImpl;
+import com.emu.apps.qcm.domain.mappers.QuestionnaireIdMapperImpl;
+import com.emu.apps.qcm.domain.mappers.TagIdMapperImpl;
+import com.emu.apps.qcm.domain.mappers.WebhookIdMapperImpl;
 import com.emu.apps.qcm.domain.model.question.Question;
 import com.emu.apps.qcm.domain.model.question.QuestionId;
 import com.emu.apps.qcm.domain.model.question.QuestionWithTagsOnly;
-import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireId;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireQuestion;
 import com.emu.apps.qcm.rest.controllers.management.resources.AccountResource;
-import com.emu.apps.qcm.rest.controllers.management.resources.QuestionnaireQuestionResource;
-import com.emu.apps.qcm.rest.controllers.management.resources.SearchQuestionResource;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -44,11 +46,12 @@ class QcmResourceMapperTest {
 
         Assertions.assertNotNull(account);
 
-        Assertions.assertNotNull(account.getId(),"uuid should not be Null");
+        Assertions.assertNotNull(account.getId(), "uuid should not be Null");
 
-        assertEquals(uuid,account.getId().toUuid());
+        assertEquals(uuid, account.getId().toUuid());
 
     }
+
     @Test
     void testquestionToQuestionResource() {
 
@@ -61,7 +64,7 @@ class QcmResourceMapperTest {
 
         Assertions.assertNotNull(questionResource);
 
-        assertEquals(2,questionResource.getNumeroVersion());
+        assertEquals(2, questionResource.getNumeroVersion());
 
 
     }
@@ -77,7 +80,7 @@ class QcmResourceMapperTest {
 
         var searchQuestionResource = qcmResourceMapper.questionTagsToSearchResources(questionWithTagsOnly);
 
-        assertEquals(2,searchQuestionResource.getNumeroVersion());
+        assertEquals(2, searchQuestionResource.getNumeroVersion());
 
 
     }
@@ -93,9 +96,10 @@ class QcmResourceMapperTest {
         questionnaireQuestion.setId(new QuestionId(questionUuid));
         var questionnaireQuestionResource = qcmResourceMapper.questionnaireQuestionToResources(questionnaireQuestion, questionnaireUuid);
 
-        assertEquals(2,questionnaireQuestionResource.getNumeroVersion());
-        assertEquals(questionnaireUuid,questionnaireQuestionResource.getQuestionnaireUuid());
-        assertEquals(questionUuid,questionnaireQuestionResource.getUuid());
+        Assertions.assertAll(
+                () -> assertEquals(2, questionnaireQuestionResource.getNumeroVersion()),
+                () -> assertEquals(questionnaireUuid, questionnaireQuestionResource.getQuestionnaireUuid()),
+                () -> assertEquals(questionUuid, questionnaireQuestionResource.getUuid()));
 
 
     }

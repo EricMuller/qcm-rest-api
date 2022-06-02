@@ -7,8 +7,9 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
- class MpttCategoryViewTest {
+class MpttCategoryViewTest {
 
     private final ObjectMapper MAPPER = new ObjectMapper();
 
@@ -24,12 +25,12 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 
         assertThat(resources).isNotNull();
 
-        assertThat(resources.getUuid()).isNotNull();
-        assertThat(resources.getLibelle()).isNotNull();
-
-        assertThat(resources.getVersion()).isNotNull();
-        assertThat(resources.getDateCreation()).isNull();
-        assertThat(resources.getDateModification()).isNull();
+        assertAll(
+                () -> assertThat(resources.getUuid()).isNotNull(),
+                () -> assertThat(resources.getLibelle()).isNotNull(),
+                () -> assertThat(resources.getVersion()).isNotNull(),
+                () -> assertThat(resources.getDateCreation()).isNull(),
+                () -> assertThat(resources.getDateModification()).isNull());
 
     }
 
@@ -43,12 +44,12 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 
         assertThat(resources).isNotNull();
 
-        assertThat(resources.getUuid()).isNull();
-        assertThat(resources.getLibelle()).isNotNull();
-
-        assertThat(resources.getVersion()).isNull();
-        assertThat(resources.getDateCreation()).isNull();
-        assertThat(resources.getDateModification()).isNull();
+        assertAll(
+                () -> assertThat(resources.getUuid()).isNull(),
+                () -> assertThat(resources.getLibelle()).isNotNull(),
+                () -> assertThat(resources.getVersion()).isNull(),
+                () -> assertThat(resources.getDateCreation()).isNull(),
+                () -> assertThat(resources.getDateModification()).isNull());
 
     }
 

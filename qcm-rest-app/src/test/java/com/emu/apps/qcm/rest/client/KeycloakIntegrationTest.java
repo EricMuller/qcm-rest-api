@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.validator.internal.IgnoreForbiddenApisErrors;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -27,21 +26,21 @@ class KeycloakIntegrationTest {
     @Test
     void grantPasswordTest() throws IOException, InterruptedException {
 
-        Multimap <String, String> parameters = ArrayListMultimap.create();
+        var parameters = ArrayListMultimap. <String, String>create();
         parameters.put("grant_type", "password");
         parameters.put("client_id", "qcm-mobile-rest-api");
         parameters.put("username", "demo");
         parameters.put("password", "demodemo");
 
-        HttpRequest requetePost = getHttpRequest(parameters);
+        var requetePost = getHttpRequest(parameters);
 
-        HttpClient httpClient = HttpClient.newBuilder()
+        var httpClient = HttpClient.newBuilder()
                 .version(HttpClient.Version.HTTP_1_1)
                 .build();
 
-        HttpResponse response = httpClient.send(requetePost, HttpResponse.BodyHandlers.ofString());
+        var response = httpClient.send(requetePost, HttpResponse.BodyHandlers.ofString());
 
-        UncheckedObjectMapper uncheckedObjectMapper = new UncheckedObjectMapper();
+        var uncheckedObjectMapper = new UncheckedObjectMapper();
 
         LOGGER.info("Status  : {}", response.statusCode());
         LOGGER.info("Headers : {}", response.headers());
@@ -55,32 +54,31 @@ class KeycloakIntegrationTest {
 
     }
 
-
     @Test
     @Disabled
     void authorisationCodePasswordTest() throws IOException, InterruptedException {
 
-        Multimap <String, String> parameters = ArrayListMultimap.create();
+        var  parameters = ArrayListMultimap.<String, String>create();
         parameters.put("response_type", "code");
         parameters.put("client_id", "qcm-rest-api");
 //        parameters.put("scope", "email");
         parameters.put("state", "123456");
 
-        HttpRequest requetePost = getHttpRequest(parameters);
+        var requetePost = getHttpRequest(parameters);
 
-        HttpClient httpClient = HttpClient.newBuilder()
+        var httpClient = HttpClient.newBuilder()
                 .version(HttpClient.Version.HTTP_1_1)
                 .build();
 
-        HttpResponse response = httpClient.send(requetePost, HttpResponse.BodyHandlers.ofString());
+        var response = httpClient.send(requetePost, HttpResponse.BodyHandlers.ofString());
 
-        UncheckedObjectMapper uncheckedObjectMapper = new UncheckedObjectMapper();
+        var uncheckedObjectMapper = new UncheckedObjectMapper();
 
         LOGGER.info("Status  : {}", response.statusCode());
         LOGGER.info("Headers : {}", response.headers());
         LOGGER.info("Body    : {}", response.body());
 
-        Map <String, String> map = uncheckedObjectMapper.readValue((String) response.body());
+        var map = uncheckedObjectMapper.readValue((String) response.body());
 
         LOGGER.info("Body  map  : {}", map);
 

@@ -19,23 +19,21 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
-
 import static com.emu.apps.qcm.rest.config.RestHeaders.headers;
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 @SpringBootTest(classes = {SpringBootJpaTestConfig.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("classpath:application-test.properties")
 @ActiveProfiles(value = "test")
-@ContextConfiguration(initializers = {QuestionnaireRestControllerTest.Initializer.class})
-class QuestionnaireRestControllerTest {
+@ContextConfiguration(initializers = {QuestionnaireRestControllerIntegrationTest.Initializer.class})
+class QuestionnaireRestControllerIntegrationTest {
 
     @RegisterExtension
     static BaeldungPostgresqlExtension postgresqlContainer = BaeldungPostgresqlExtension.getInstance();
@@ -68,11 +66,9 @@ class QuestionnaireRestControllerTest {
 
 
     private QuestionnaireResource createQuestionnaire() {
-        QuestionnaireResource questionnaire = new QuestionnaireResource();
+        var questionnaire = new QuestionnaireResource();
 
         questionnaire.setTitle(TITLE);
-
-
         return questionnaire;
     }
 
@@ -86,22 +82,20 @@ class QuestionnaireRestControllerTest {
     void getQuestionnaireByIdShouldReturnQuestionnaire() {
 
         // create a new question
-        final ResponseEntity <QuestionnaireResource> postResponse = restTemplate
+        var postResponse = restTemplate
                 .exchange(getURL(QUESTIONNAIRES_URI), HttpMethod.POST, new HttpEntity <>(createQuestionnaire(), headers()), QuestionnaireResource.class);
         assertThat(postResponse.getBody()).isNotNull();
 
         // get the question
-        String uuid = postResponse.getBody().getUuid();
-        URI uriGet = UriComponentsBuilder.fromHttpUrl(getURL(QUESTIONNAIRES_URI + "/{uuid}"))
+        var uuid = postResponse.getBody().getUuid();
+        var uriGet = UriComponentsBuilder.fromHttpUrl(getURL(QUESTIONNAIRES_URI + "/{uuid}"))
                 .build().expand(uuid).encode().toUri();
 
-        final ResponseEntity <QuestionnaireResource> getResponse = restTemplate
+        var getResponse = restTemplate
                 .exchange(uriGet, HttpMethod.GET, new HttpEntity <>(headers()), QuestionnaireResource.class);
 
         assertThat(getResponse.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
-
         assertThat(getResponse.getBody()).isNotNull();
-
 
         assertThat(getResponse.getBody().getTitle()).isNotNull().isEqualTo(TITLE);
     }
@@ -111,29 +105,30 @@ class QuestionnaireRestControllerTest {
     void putQuestionnaireByIdShouldReturnSameQuestionnaire() {
 
         // create a new question
-        final ResponseEntity <QuestionnaireResource> postResponse = restTemplate
+        var postResponse = restTemplate
                 .exchange(getURL(QUESTIONNAIRES_URI), HttpMethod.POST, new HttpEntity <>(createQuestionnaire(), headers()), QuestionnaireResource.class);
+
         assertThat(postResponse.getBody()).isNotNull();
 
-        // get the question
-        assertThat(postResponse.getBody().getUuid()).isNotNull();
-        assertThat(postResponse.getBody().getTitle()).isNotNull().isEqualTo(TITLE);
+        assertAll(
+                () -> assertThat(postResponse.getBody().getUuid()).isNotNull(),
+                () -> assertThat(postResponse.getBody().getTitle()).isNotNull().isEqualTo(TITLE));
 
-        String uuid = postResponse.getBody().getUuid();
-        URI uriPut = UriComponentsBuilder.fromHttpUrl(getURL(QUESTIONNAIRES_URI + "/{uuid}"))
+        var uuid = postResponse.getBody().getUuid();
+        var uriPut = UriComponentsBuilder.fromHttpUrl(getURL(QUESTIONNAIRES_URI + "/{uuid}"))
                 .build().expand(uuid).encode().toUri();
 
         postResponse.getBody().setTitle(TITLE2);
 
-        final ResponseEntity <QuestionnaireResource> putResponse = restTemplate
+        var putResponse = restTemplate
                 .exchange(uriPut, HttpMethod.PUT, new HttpEntity <>(postResponse.getBody(), headers()), QuestionnaireResource.class);
 
         assertThat(putResponse.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
-
         assertThat(putResponse.getBody()).isNotNull();
-        assertThat(putResponse.getBody().getUuid()).isNotNull().isEqualTo(postResponse.getBody().getUuid());
 
-        assertThat(putResponse.getBody().getTitle()).isNotNull().isEqualTo(TITLE2);
+        assertAll(
+                () -> assertThat(putResponse.getBody().getUuid()).isNotNull().isEqualTo(postResponse.getBody().getUuid()),
+                () -> assertThat(putResponse.getBody().getTitle()).isNotNull().isEqualTo(TITLE2));
     }
 
 }
