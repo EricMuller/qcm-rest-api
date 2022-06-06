@@ -25,7 +25,7 @@ public interface QuestionnaireRepository {
 
     QuestionnaireQuestion addQuestion(QuestionnaireId questionnaireId, QuestionId questionId, Optional <Integer> position, PrincipalId principal);
 
-    List <QuestionnaireQuestion> addQuestions(QuestionnaireId questionnaireId, Collection <Question> questionDtos, PrincipalId principal);
+    List <QuestionnaireQuestion> addQuestions(QuestionnaireId questionnaireId, Collection <Question> questions, PrincipalId principal);
 
     Questionnaire updateQuestionnaire(Questionnaire questionnaire, PrincipalId principal);
 

@@ -39,7 +39,7 @@ import java.io.IOException;
 
 import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.MANAGEMENT_API;
 import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.UPLOADS;
-import static com.emu.apps.shared.security.AuthentificationContextHolder.getPrincipal;
+import static com.emu.apps.shared.security.AccountContextHolder.getPrincipal;
 import static org.springframework.data.domain.Sort.Direction.DESC;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.PUBLIC_API;
-import static com.emu.apps.shared.security.AuthentificationContextHolder.getPrincipal;
+import static com.emu.apps.shared.security.AccountContextHolder.getPrincipal;
 
 @RestController
 @RequestMapping(PUBLIC_API)

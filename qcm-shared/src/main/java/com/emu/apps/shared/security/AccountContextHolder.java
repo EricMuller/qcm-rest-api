@@ -2,11 +2,11 @@ package com.emu.apps.shared.security;
 
 import java.security.Principal;
 
-public final class AuthentificationContextHolder<T extends Principal> {
+public final class AccountContextHolder<T extends Principal> {
 
     private static ThreadLocal <Principal> context = new ThreadLocal <>();
 
-    private AuthentificationContextHolder() {
+    private AccountContextHolder() {
     }
 
     public static Principal getPrincipal() {
@@ -17,5 +17,7 @@ public final class AuthentificationContextHolder<T extends Principal> {
         context.set(user);
         return context.get();
     }
+
+
 
 }

@@ -23,4 +23,6 @@ public class MpttCategory extends DomainId<CategoryId> {
 
     private String userId;
 
+
+
 }

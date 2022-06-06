@@ -2,16 +2,14 @@ package com.emu.apps.qcm.rest.config;
 
 import com.emu.apps.qcm.rest.exceptions.ExceptionMessage;
 import com.emu.apps.qcm.rest.exceptions.FieldErrorMessage;
-import com.emu.apps.shared.exceptions.I18nedBadRequestException;
 import com.emu.apps.qcm.rest.exceptions.builders.ExceptionMessageBuilder;
+import com.emu.apps.shared.exceptions.I18nedBadRequestException;
 import com.emu.apps.shared.exceptions.I18nedForbiddenRequestException;
 import com.emu.apps.shared.exceptions.I18nedNotFoundException;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
-import org.springframework.context.annotation.Profile;
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.OptimisticLockingFailureException;
@@ -40,8 +38,8 @@ import static org.springframework.context.i18n.LocaleContextHolder.getLocale;
 import static org.springframework.http.HttpStatus.*;
 
 @ControllerAdvice
+@Slf4j
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
-    private static final Logger LOG = LoggerFactory.getLogger(RestExceptionHandler.class);
 
     @Getter
     private final MessageSource messageSource;
@@ -61,7 +59,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
         String localizedMessage = messageSource.getMessage(e.getCodeMessage(), e.getArgs(), currentLocale);
 
-        LOG.error("EntityNotFoundException caught: {}", localizedMessage);
+        LOGGER.error("EntityNotFoundException caught: {}", localizedMessage);
 
         ExceptionMessage exceptionMessage = new ExceptionMessageBuilder()
                 .setStatus(BAD_REQUEST.value())
@@ -83,7 +81,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
         String localizedMessage = messageSource.getMessage(e.getCodeMessage(), e.getArgs(), currentLocale);
 
-        LOG.error("I18nedBadRequestException caught: {}", localizedMessage);
+        LOGGER.error("I18nedBadRequestException caught: {}", localizedMessage);
 
         ExceptionMessage exceptionMessage = new ExceptionMessageBuilder()
                 .setStatus(BAD_REQUEST.value())
@@ -105,7 +103,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
         String localizedMessage = messageSource.getMessage(e.getCodeMessage(), e.getArgs(), currentLocale);
 
-        LOG.error("I18nedBadRequestException caught: {}", localizedMessage);
+        LOGGER.error("I18nedBadRequestException caught: {}", localizedMessage);
 
         ExceptionMessage exceptionMessage = new ExceptionMessageBuilder()
                 .setStatus(FORBIDDEN.value())
@@ -128,7 +126,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ResponseBody
     public ResponseEntity <Object> handleAnyException(Exception e) {
 
-        LOG.error("AnyException caught: ", e);
+        LOGGER.error("AnyException caught: ", e);
 
         ExceptionMessage exceptionMessage = new ExceptionMessageBuilder()
                 .setStatus(INTERNAL_SERVER_ERROR.value())
@@ -153,7 +151,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ResponseBody
     public ResponseEntity <ExceptionMessage> handleMiscFailures(Throwable t) {
 
-        LOG.error("Misc Exception caught: ", t);
+        LOGGER.error("Misc Exception caught: ", t);
 
         ExceptionMessage exceptionMessage = new ExceptionMessageBuilder()
                 .setStatus(BAD_REQUEST.value())
@@ -180,7 +178,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ResponseBody
     public ResponseEntity <ExceptionMessage> handleConflict(Exception ex) {
 
-        LOG.error("Conflict Exception caught: ", ex);
+        LOGGER.error("Conflict Exception caught: ", ex);
 
         ExceptionMessage response = new ExceptionMessageBuilder()
                 .setStatus(CONFLICT.value())
@@ -193,7 +191,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     protected <T> ResponseEntity <T> response(T body, HttpStatus status) {
-        LOG.debug("Responding with a status of {}", status);
+        LOGGER.debug("Responding with a status of {}", status);
         return new ResponseEntity <>(body, new HttpHeaders(), status);
     }
 
@@ -241,7 +239,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ResponseStatus(BAD_REQUEST)
     ResponseEntity <Object> handleConstraintViolationException(ConstraintViolationException e) {
 
-        LOG.error("ConstraintViolationException caught: ", e);
+        LOGGER.error("ConstraintViolationException caught: ", e);
 
         ExceptionMessage exceptionMessage = new ExceptionMessageBuilder()
                 .setStatus(BAD_REQUEST.value())

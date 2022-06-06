@@ -1,5 +1,7 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa;
 
+import com.emu.apps.qcm.domain.model.account.Account;
+import com.emu.apps.qcm.domain.model.account.AccountId;
 import com.emu.apps.qcm.domain.model.question.Question;
 import com.emu.apps.qcm.domain.model.question.QuestionTag;
 import com.emu.apps.qcm.domain.model.question.QuestionWithTagsOnly;
@@ -22,6 +24,7 @@ import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.QuestionEntityUpd
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.QuestionnaireQuestionEntityMapper;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.TagEntityMapper;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.UuidMapper;
+import com.emu.apps.shared.security.AccountContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -127,6 +130,7 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
 
     @Override
     public Question saveQuestion(Question question, @NotNull String principal) {
+
 
         QuestionEntity questionEntity;
         MpttCategoryEntity mpttCategoryEntity = null;

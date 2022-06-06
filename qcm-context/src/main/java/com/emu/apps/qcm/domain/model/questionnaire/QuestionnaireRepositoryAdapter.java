@@ -133,7 +133,7 @@ class QuestionnaireRepositoryAdapter implements QuestionnaireRepository {
         AtomicInteger position = new AtomicInteger(0);
         return questions
                 .stream()
-                .map(questionDto -> addQuestion(questionnaireId, questionDto.getId(), Optional.of(position.incrementAndGet()), principal))
+                .map(question-> addQuestion(questionnaireId, question.getId(), Optional.of(position.incrementAndGet()), principal))
                 .collect(Collectors.toList());
 
     }

@@ -2,9 +2,14 @@ package com.emu.apps.qcm.domain.model.question;
 
 import com.emu.apps.qcm.domain.mappers.QuestionnaireIdMapper;
 import com.emu.apps.qcm.domain.mappers.TagIdMapper;
+import com.emu.apps.qcm.domain.model.account.Account;
+import com.emu.apps.qcm.domain.model.account.AccountId;
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
 import com.emu.apps.qcm.infra.persistence.QuestionPersistencePort;
 import com.emu.apps.shared.exceptions.I18nedNotFoundException;
+import com.emu.apps.shared.security.AccountContextHolder;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,16 +52,15 @@ class QuestionRepositoryAdapter implements QuestionRepository {
 
     @Override
     @Transactional
-    public Collection <Question> saveQuestions(Collection <Question> questions, final PrincipalId principal) {
+    public Collection <Question> saveQuestions(Collection <Question> questions, final PrincipalId principalId) {
         return questions
                 .stream()
-                .map(questionDto -> saveQuestion(questionDto, principal))
+                .map(    questionDto -> saveQuestion(questionDto, principalId))
                 .collect(Collectors.toList());
     }
-
     @Override
     @Transactional
-    public Question saveQuestion(Question question, PrincipalId principal) {
+    public Question saveQuestion(Question question, PrincipalId principalId) {
 
         if (Objects.nonNull(question.getResponses())) {
             AtomicLong numberLong = new AtomicLong(0);
@@ -64,9 +68,7 @@ class QuestionRepositoryAdapter implements QuestionRepository {
                 response.setNumber(numberLong.incrementAndGet());
             }
         }
-
-        return questionPersistencePort.saveQuestion(question, principal.toUuid());
-
+        return questionPersistencePort.saveQuestion(question, principalId.toUuid());
     }
 
     @Override

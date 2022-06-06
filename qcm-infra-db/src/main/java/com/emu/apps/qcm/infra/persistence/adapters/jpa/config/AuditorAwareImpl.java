@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-import static com.emu.apps.shared.security.AuthentificationContextHolder.getPrincipal;
+import static com.emu.apps.shared.security.AccountContextHolder.getPrincipal;
 import static java.util.Objects.isNull;
 import static java.util.Optional.ofNullable;
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
@@ -23,7 +23,7 @@ public class AuditorAwareImpl implements AuditorAware <String> {
     public Optional <String> getCurrentAuditor() {
         var authentication = getContext().getAuthentication();
         if (isNull(authentication) || !authentication.isAuthenticated()) {
-            throw new TechnicalException("authent");
+            throw new TechnicalException("no authentication in SecurityContextHolder");
         } else {
             return ofNullable(getPrincipal().getName());
         }

@@ -48,7 +48,7 @@ import java.io.IOException;
 import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.*;
 import static com.emu.apps.qcm.rest.controllers.management.resources.MessageResource.ERROR;
 import static com.emu.apps.shared.exceptions.I18nedMessageSupport.UNKNOWN_UUID_QUESTION;
-import static com.emu.apps.shared.security.AuthentificationContextHolder.getPrincipal;
+import static com.emu.apps.shared.security.AccountContextHolder.getPrincipal;
 import static org.springframework.data.domain.Sort.Direction.DESC;
 import static org.springframework.hateoas.EntityModel.of;
 import static org.springframework.hateoas.MediaTypes.HAL_JSON_VALUE;

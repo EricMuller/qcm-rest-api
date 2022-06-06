@@ -3,6 +3,8 @@ package com.emu.apps.qcm.application.importation;
 import com.emu.apps.qcm.application.export.dto.Export;
 import com.emu.apps.qcm.application.export.dto.QuestionExport;
 import com.emu.apps.qcm.domain.model.Status;
+import com.emu.apps.qcm.domain.model.account.Account;
+import com.emu.apps.qcm.domain.model.account.AccountId;
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
 import com.emu.apps.qcm.domain.model.category.MpttCategory;
 import com.emu.apps.qcm.domain.model.category.MpttCategoryRepository;
@@ -20,19 +22,27 @@ import com.emu.apps.qcm.domain.model.upload.Upload;
 import com.emu.apps.qcm.domain.model.upload.UploadId;
 import com.emu.apps.qcm.domain.model.upload.UploadRepository;
 import com.emu.apps.shared.exceptions.TechnicalException;
+import com.emu.apps.shared.security.AccountContextHolder;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.Future;
 
 import static com.emu.apps.qcm.domain.model.Status.DRAFT;
 import static com.emu.apps.qcm.domain.model.imports.ImportStatus.DONE;
@@ -49,6 +59,7 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 
 @Service
+@Slf4j
 public class ImportService {
 
     public static final String IMPORT = "import";
@@ -77,8 +88,14 @@ public class ImportService {
         this.mpttCategoryRepository = mpttCategoryRepository;
     }
 
+    @Async("asyncExecutor")
+    public Future <Upload> importFileAsync(UploadId uploadId, PrincipalId principalId) throws IOException, ExecutionException, InterruptedException {
+        AccountContextHolder.setPrincipal(new Account(AccountId.of(principalId.toUuid())));
+        return CompletableFuture.completedFuture(this.importFile(uploadId, principalId));
+    }
+
     @Transactional
-    public Upload importFile(UploadId uploadId, PrincipalId principal) throws IOException {
+    public Upload importFile(UploadId uploadId, PrincipalId principal) throws IOException, ExecutionException, InterruptedException {
 
         var upload = uploadRepository.getUploadOfId(uploadId);
 
@@ -99,7 +116,6 @@ public class ImportService {
         }
 
         return uploadRepository.saveUpload(upload);
-
     }
 
     private Question mapToQuestion(QuestionExport questionExport, MpttCategory mpttCategory) {
@@ -135,7 +151,6 @@ public class ImportService {
 
     }
 
-
     private Question mapToQuestion(ImportFileQuestion importFileQuestion, MpttCategory mpttCategory) {
 
         var question = new Question();
@@ -159,9 +174,12 @@ public class ImportService {
 
     }
 
+    private static void updateSecurityContext(SecurityContext originalSecurityContext, PrincipalId principalId) {
+        SecurityContextHolder.setContext(originalSecurityContext);
+        AccountContextHolder.setPrincipal(new Account(AccountId.of(principalId.toUuid())));
+    }
 
-    @Transactional
-    public ImportStatus importQuestionnaire(String name, Export export, PrincipalId principal) {
+    private ImportStatus importQuestionnaire(String name, Export export, final PrincipalId principalId) throws ExecutionException, InterruptedException {
 
         Questionnaire questionnaire = new Questionnaire();
 
@@ -191,39 +209,36 @@ public class ImportService {
             MpttCategory mpttCategory = new MpttCategory();
             mpttCategory.setLibelle(export.getQuestionnaire().getCategory().getLibelle());
             mpttCategory.setType(TYPE_QUESTIONNAIRE);
-            mpttCategory.setUserId(principal.toUuid());
-            mpttCategory = mpttCategoryRepository.saveCategory(mpttCategory, principal);
+            mpttCategory.setUserId(principalId.toUuid());
+            mpttCategory = mpttCategoryRepository.saveCategory(mpttCategory, principalId);
             questionnaire.setMpttCategory(mpttCategory);
         }
 
-        Questionnaire newQuestionnaire = questionnaireRepository.saveQuestionnaire(questionnaire, principal);
+        Questionnaire newQuestionnaire = questionnaireRepository.saveQuestionnaire(questionnaire, principalId);
 
+
+        final SecurityContext originalSecurityContext = SecurityContextHolder.getContext();
+
+        final ForkJoinPool forkJoinPool = new ForkJoinPool(10);
         //questions
-        List <Question> questions = export.getQuestions()
-                .stream()
-                .map(questionExport ->
-                {
-                    MpttCategory mpttCategory = null;
-                    if (Objects.nonNull(questionExport.getCategory())) {
-                        mpttCategory = new MpttCategory();
-                        mpttCategory.setLibelle(questionExport.getCategory().getLibelle());
-                        mpttCategory.setType(TYPE_QUESTION);
-                        mpttCategory.setUserId(principal.toUuid());
-                        mpttCategory = mpttCategoryRepository.saveCategory(mpttCategory, principal);
-                    }
+        List <Question> questions = forkJoinPool.submit(() ->
+                export.getQuestions()
+                        .parallelStream()
+                        .map(questionExport -> {
+                            updateSecurityContext(originalSecurityContext, principalId);
+                            MpttCategory mpttCategory = null;
+                            if (Objects.nonNull(questionExport.getCategory())) {
+                                mpttCategory = new MpttCategory(questionExport.getCategory().getLibelle(), TYPE_QUESTION, principalId.toUuid());
+                                mpttCategory = mpttCategoryRepository.saveCategory(mpttCategory, principalId);
+                            }
+                            var question = mapToQuestion(questionExport, mpttCategory);
+                            return questionRepository.saveQuestion(question, principalId);
+                        }).collect(toList())).get();
 
-                    return mapToQuestion(questionExport, mpttCategory);
-                })
-                .collect(toList());
-
-        Collection <Question> questionDtos = questionRepository.saveQuestions(questions, principal);
-
-        questionnaireRepository.addQuestions(new QuestionnaireId(newQuestionnaire.getId().toUuid()), questionDtos, principal);
+        questionnaireRepository.addQuestions(new QuestionnaireId(newQuestionnaire.getId().toUuid()), questions, principalId);
 
         return DONE;
     }
-
-
 
     private ImportStatus importQuestionnaire(String name, ImportFileQuestion[] fileQuestions, PrincipalId principal) {
 
@@ -264,7 +279,6 @@ public class ImportService {
             }
 
         }
-
         return DONE;
     }
 

@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 import static com.emu.apps.qcm.domain.model.account.AccountId.of;
-import static com.emu.apps.shared.security.AuthentificationContextHolder.setPrincipal;
+import static com.emu.apps.shared.security.AccountContextHolder.setPrincipal;
 import static com.emu.apps.shared.security.PrincipalUtils.USER_NAME_ATTRIBUTE;
 import static com.emu.apps.shared.security.PrincipalUtils.getAttribute;
 import static java.util.Objects.nonNull;

@@ -47,7 +47,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import static com.emu.apps.qcm.application.export.ExportFormat.getFileFormat;
 import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.*;
 import static com.emu.apps.shared.exceptions.I18nedMessageSupport.UNKNOWN_UUID_QUESTIONNAIRE;
-import static com.emu.apps.shared.security.AuthentificationContextHolder.getPrincipal;
+import static com.emu.apps.shared.security.AccountContextHolder.getPrincipal;
 import static java.util.Locale.getDefault;
 import static java.util.Objects.isNull;
 import static java.util.Optional.of;
