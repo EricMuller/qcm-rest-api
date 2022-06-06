@@ -1,7 +1,8 @@
-package com.emu.apps.qcm.application.importation;
+package com.emu.apps.qcm.application;
 
 import com.emu.apps.qcm.application.export.dto.Export;
 import com.emu.apps.qcm.application.export.dto.QuestionExport;
+import com.emu.apps.qcm.application.importation.ImportFileQuestion;
 import com.emu.apps.qcm.domain.model.Status;
 import com.emu.apps.qcm.domain.model.account.Account;
 import com.emu.apps.qcm.domain.model.account.AccountId;
@@ -60,7 +61,7 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @Service
 @Slf4j
-public class ImportService {
+public class QuestionnaireImport {
 
     public static final String IMPORT = "import";
 
@@ -79,8 +80,8 @@ public class ImportService {
     private final MpttCategoryRepository mpttCategoryRepository;
 
 
-    public ImportService(QuestionnaireRepository questionnaireService, QuestionRepository questionService,
-                         TagRepository tagRepository, UploadRepository uploadRepository, MpttCategoryRepository mpttCategoryRepository) {
+    public QuestionnaireImport(QuestionnaireRepository questionnaireService, QuestionRepository questionService,
+                               TagRepository tagRepository, UploadRepository uploadRepository, MpttCategoryRepository mpttCategoryRepository) {
         this.questionnaireRepository = questionnaireService;
         this.questionRepository = questionService;
         this.tagRepository = tagRepository;

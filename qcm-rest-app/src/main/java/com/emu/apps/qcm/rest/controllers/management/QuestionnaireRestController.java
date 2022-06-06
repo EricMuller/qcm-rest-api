@@ -9,9 +9,11 @@ import com.emu.apps.qcm.domain.model.question.QuestionId;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireId;
 import com.emu.apps.qcm.rest.config.cache.CacheName;
 import com.emu.apps.qcm.rest.controllers.management.command.QuestionnaireQuestionUpdate;
+import com.emu.apps.qcm.rest.controllers.management.hal.QuestionnaireActionModelAssembler;
 import com.emu.apps.qcm.rest.controllers.management.hal.QuestionnaireModelAssembler;
 import com.emu.apps.qcm.rest.controllers.management.hal.QuestionnaireQuestionModelAssembler;
 import com.emu.apps.qcm.rest.controllers.management.openui.QuestionnaireView;
+import com.emu.apps.qcm.rest.controllers.management.resources.ActionResource;
 import com.emu.apps.qcm.rest.controllers.management.resources.QuestionnaireQuestionResource;
 import com.emu.apps.qcm.rest.controllers.management.resources.QuestionnaireResource;
 import com.emu.apps.qcm.rest.mappers.QcmResourceMapper;
@@ -33,6 +35,7 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -43,6 +46,9 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import javax.websocket.server.PathParam;
+import java.util.List;
 
 import static com.emu.apps.qcm.application.export.ExportFormat.getFileFormat;
 import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.*;
@@ -77,13 +83,15 @@ public class QuestionnaireRestController {
 
     private final QuestionnaireQuestionModelAssembler questionnaireQuestionModelAssembler;
 
+    private final QuestionnaireActionModelAssembler questionnaireActionModelAssembler;
 
-    public QuestionnaireRestController(QuestionnaireCatalog questionnaireCatalog, QcmResourceMapper qcmResourceMapper, ExportService exportService, QuestionnaireModelAssembler questionnaireModelAssembler, QuestionnaireQuestionModelAssembler questionnaireQuestionModelAssembler) {
+    public QuestionnaireRestController(QuestionnaireCatalog questionnaireCatalog, QcmResourceMapper qcmResourceMapper, ExportService exportService, QuestionnaireModelAssembler questionnaireModelAssembler, QuestionnaireQuestionModelAssembler questionnaireQuestionModelAssembler, QuestionnaireActionModelAssembler questionnaireActionModelAssembler) {
         this.questionnaireCatalog = questionnaireCatalog;
         this.qcmResourceMapper = qcmResourceMapper;
         this.exportService = exportService;
         this.questionnaireModelAssembler = questionnaireModelAssembler;
         this.questionnaireQuestionModelAssembler = questionnaireQuestionModelAssembler;
+        this.questionnaireActionModelAssembler = questionnaireActionModelAssembler;
     }
 
     @GetMapping(value = "/{uuid}")
@@ -99,7 +107,7 @@ public class QuestionnaireRestController {
         return EntityModel.of(qcmResourceMapper.questionnaireToQuestionnaireResources(questionnaireCatalog.getQuestionnaireById(new QuestionnaireId(uuid))
                         .orElseThrow(() -> new I18nedNotFoundException(UNKNOWN_UUID_QUESTIONNAIRE, uuid))))
                 .add(linkTo(QuestionnaireRestController.class).slash(uuid).withSelfRel())
-                .add(linkTo(methodOn(QuestionnaireRestController.class).getExportByQuestionnaireUuid(uuid)).withRel("export"));
+                .add(linkTo(methodOn(QuestionnaireRestController.class).createJsonExportByQuestionnaireUuid(uuid)).withRel("export"));
     }
 
     @DeleteMapping(value = "/{uuid}")
@@ -176,6 +184,7 @@ public class QuestionnaireRestController {
     public QuestionnaireQuestionResource getQuestionnaireQuestionById(@PathVariable("uuid") String uuid, @PathVariable("q_uuid") String questionUuid) {
         return qcmResourceMapper.questionnaireQuestionToResources(questionnaireCatalog.getQuestion(new QuestionnaireId(uuid), new QuestionId(questionUuid)), uuid);
     }
+
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     @Timer
     @ResponseBody
@@ -222,18 +231,20 @@ public class QuestionnaireRestController {
 
 
     @Timer
-    @GetMapping(value = "/{uuid}" + EXPORTS, produces = APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{uuid}/actions/export/invoke", produces = APPLICATION_JSON_VALUE)
+    //@GetMapping(value = "/{uuid}" + EXPORTS, produces = APPLICATION_JSON_VALUE)
     @ResponseBody
-    @Timed(value = "questionnaires.getExportByQuestionnaireUuid", longTask = true)
-    public Export getExportByQuestionnaireUuid(@PathVariable("uuid") String uuid) {
+    @Timed(value = "questionnaires.actions.getExportByQuestionnaireUuid", longTask = true)
+    public Export createJsonExportByQuestionnaireUuid(@PathVariable("uuid") String uuid) {
         return exportService.getExportByQuestionnaireUuid(new QuestionnaireId(uuid));
     }
 
     @Timer
-    @GetMapping(value = "/{uuid}" + EXPORTS + "/{type-report}", produces = APPLICATION_OCTET_STREAM_VALUE)
+    @PutMapping(value = "/{uuid}/actions/report/invoke", produces = APPLICATION_OCTET_STREAM_VALUE)
+    //@GetMapping(value = "/{uuid}" + EXPORTS + "/{type-report}", produces = APPLICATION_OCTET_STREAM_VALUE)
     @SuppressWarnings("squid:S2583")
-    @Timed(value = "questionnaires.getReportByQuestionnaireUuid", longTask = true)
-    public ResponseEntity <Resource> getReportByQuestionnaireUuid(@PathVariable("uuid") String uuid, @PathVariable("type-report") String type) {
+    @Timed(value = "questionnaires.actions.getReportByQuestionnaireUuid", longTask = true)
+    public ResponseEntity <Resource> createByteArrayReportByQuestionnaireUuid(@PathVariable("uuid") String uuid, @PathParam("type-report") String type) {
 
         if (isNull(type)) {
             throw new IllegalArgumentException("Invalid type-report argument");
@@ -247,5 +258,29 @@ public class QuestionnaireRestController {
                 .header(CONTENT_DISPOSITION, "attachment; filename=\"" + uuid + "." + reportFormat.getExtension() + "\"")
                 .body(resource);
     }
+
+
+    @ResponseBody
+    @GetMapping(value = "/{uuid}/actions/")
+    @Timed(value = "questionnaires.getActions")
+    public PagedModel <EntityModel <ActionResource>> getActions(@PathVariable("uuid") String uploadUuid,
+                                                                @Parameter(hidden = true)
+                                                                @PageableDefault(direction = DESC, sort = {"action"}, size = 100) Pageable pageable,
+                                                                @Parameter(hidden = true) PagedResourcesAssembler <ActionResource> pagedResourcesAssembler) {
+
+        var actions = List.of(new ActionResource(uploadUuid, "export", "Export questionnaire as Json"),
+                new ActionResource(uploadUuid, "report", "Report questionnaire as pdf or dcx"));
+        var page = new QuestionnaireRestController.PageAction(actions, pageable, actions.size());
+        var selfLink = Link.of(ServletUriComponentsBuilder.fromCurrentRequest().build().toUriString());
+        return pagedResourcesAssembler.toModel(page, this.questionnaireActionModelAssembler, selfLink);
+    }
+
+
+    class PageAction extends PageImpl <ActionResource> {
+        public PageAction(List <ActionResource> content, Pageable pageable, long total) {
+            super(content, pageable, total);
+        }
+    }
+
 
 }

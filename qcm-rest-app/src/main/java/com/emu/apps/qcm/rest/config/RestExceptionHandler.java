@@ -5,6 +5,7 @@ import com.emu.apps.qcm.rest.exceptions.FieldErrorMessage;
 import com.emu.apps.qcm.rest.exceptions.builders.ExceptionMessageBuilder;
 import com.emu.apps.shared.exceptions.I18nedBadRequestException;
 import com.emu.apps.shared.exceptions.I18nedForbiddenRequestException;
+import com.emu.apps.shared.exceptions.I18nedInternalServerException;
 import com.emu.apps.shared.exceptions.I18nedNotFoundException;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -92,6 +93,29 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
         return response(exceptionMessage, BAD_REQUEST);
     }
+
+    @ExceptionHandler({I18nedInternalServerException.class})
+    @ResponseBody
+    public ResponseEntity <Object> handleInternalServerException(I18nedInternalServerException e, WebRequest request) {
+
+        String locale = request.getHeader(HttpHeaders.ACCEPT_LANGUAGE);
+
+        Locale currentLocale = isBlank(locale) ? getLocale() : forLanguageTag(locale);
+
+        String localizedMessage = messageSource.getMessage(e.getCodeMessage(), e.getArgs(), currentLocale);
+
+        LOGGER.error("I18nedBadRequestException caught: {}", localizedMessage);
+
+        ExceptionMessage exceptionMessage = new ExceptionMessageBuilder()
+                .setStatus(INTERNAL_SERVER_ERROR.value())
+                .setException(INTERNAL_SERVER_ERROR.getReasonPhrase())
+                .setError(e.getClass().getName())
+                .setTimestamp(now())
+                .setMessage(localizedMessage).createExceptionMessage();
+
+        return response(exceptionMessage, INTERNAL_SERVER_ERROR);
+    }
+
 
     @ExceptionHandler({I18nedForbiddenRequestException.class})
     @ResponseBody

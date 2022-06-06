@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.rest.controllers.management.hal;
 
-import com.emu.apps.qcm.rest.controllers.management.UploadRestController;
-import com.emu.apps.qcm.rest.controllers.management.resources.UploadResource;
+import com.emu.apps.qcm.rest.controllers.management.QuestionnaireRestController;
+import com.emu.apps.qcm.rest.controllers.management.resources.ActionResource;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.SimpleRepresentationModelAssembler;
@@ -11,7 +11,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
-public class UploadModelAssembler implements SimpleRepresentationModelAssembler <UploadResource> {
+public class QuestionnaireActionModelAssembler implements SimpleRepresentationModelAssembler <ActionResource> {
 
 
     /**
@@ -20,10 +20,12 @@ public class UploadModelAssembler implements SimpleRepresentationModelAssembler 
      * @param resource
      */
     @Override
-    public void addLinks(EntityModel <UploadResource> resource) {
+    public void addLinks(EntityModel <ActionResource> resource) {
 
         resource.add(
-                linkTo(methodOn(UploadRestController.class).getUploadByUuid(resource.getContent().getUuid())).withSelfRel());
+                linkTo(methodOn(QuestionnaireRestController.class).createJsonExportByQuestionnaireUuid(resource.getContent().getUuid())).withSelfRel(),
+                linkTo(methodOn(QuestionnaireRestController.class).createByteArrayReportByQuestionnaireUuid(resource.getContent().getUuid(),"json")).withSelfRel()
+        );
 
     }
 
@@ -34,7 +36,7 @@ public class UploadModelAssembler implements SimpleRepresentationModelAssembler 
      */
 
     @Override
-    public void addLinks(CollectionModel <EntityModel <UploadResource>> resources) {
+    public void addLinks(CollectionModel <EntityModel <ActionResource>> resources) {
 
 
     }

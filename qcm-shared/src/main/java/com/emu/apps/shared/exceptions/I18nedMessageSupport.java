@@ -24,5 +24,6 @@ public final class I18nedMessageSupport {
 
     public static final String UNKNOWN_UUID_WEBHOOK = "webhook.uuid.unknown";
 
+    public static final String ACTIONS_IMPORT_QUESTIONNAIRE_ERROR = "questionnaire.actions.import.error";
 
 }
