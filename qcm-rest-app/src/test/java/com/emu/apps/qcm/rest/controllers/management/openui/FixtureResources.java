@@ -36,7 +36,6 @@ public class FixtureResources {
         response.setResponseText("Reponse");
         response.setGood(Boolean.TRUE);
         response.setNumber(1L);
-        response.setVersion(1L);
 
         return response;
 

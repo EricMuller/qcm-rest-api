@@ -43,8 +43,8 @@ class QuestionViewTest {
                 () -> assertThat(responseResource.getUuid()).isNotNull(),
                 () -> assertThat(responseResource.getResponseText()).isNotNull(),
                 () -> assertThat(responseResource.getGood()).isNotNull(),
-                () -> assertThat(responseResource.getNumber()).isNotNull(),
-                () -> assertThat(responseResource.getVersion()).isNotNull());
+                () -> assertThat(responseResource.getNumber()).isNotNull()
+                );
 
         assertThat(resources.getTags()).isNotNull().size().isEqualTo(1);
 
@@ -86,7 +86,6 @@ class QuestionViewTest {
                 () -> assertThat(responseResource.getResponseText()).isNotNull(),
                 () -> assertThat(responseResource.getGood()).isNotNull(),
                 () -> assertThat(responseResource.getNumber()).isNotNull(),
-                () -> assertThat(responseResource.getVersion()).isNull(),
                 () -> assertThat(resources.getTags()).isNotNull().size().isEqualTo(1)
         );
         var tagResources = resources.getTags().stream().findFirst().get();

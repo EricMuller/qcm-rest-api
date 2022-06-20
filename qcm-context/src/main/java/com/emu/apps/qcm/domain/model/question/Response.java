@@ -21,8 +21,6 @@ public class Response {
 
     private Boolean good;
 
-    private Long version;
-
     private Long number;
 
 }

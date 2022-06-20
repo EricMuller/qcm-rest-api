@@ -2,7 +2,6 @@ package com.emu.apps.qcm.rest.controllers.management;
 
 import com.emu.apps.qcm.application.QuestionCatalog;
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
-import com.emu.apps.qcm.domain.model.category.MpttCategoryRepository;
 import com.emu.apps.qcm.domain.model.question.QuestionId;
 import com.emu.apps.qcm.rest.config.cache.CacheName;
 import com.emu.apps.qcm.rest.controllers.management.command.QuestionStatus;
@@ -76,17 +75,14 @@ public class QuestionRestController {
 
     private final TagModelAssembler tagModelAssembler;
 
-    private final MpttCategoryRepository mpttCategoryRepository;
-
     public QuestionRestController(QuestionCatalog questionCatalog, QcmResourceMapper qcmResourceMapper,
                                   SearchQuestionModelAssembler searchQuestionModelAssembler,
-                                  QuestionModelAssembler questionModelAssembler, TagModelAssembler tagModelAssembler, MpttCategoryRepository mpttCategoryRepository) {
+                                  QuestionModelAssembler questionModelAssembler, TagModelAssembler tagModelAssembler) {
         this.questionCatalog = questionCatalog;
         this.qcmResourceMapper = qcmResourceMapper;
         this.searchQuestionModelAssembler = searchQuestionModelAssembler;
         this.questionModelAssembler = questionModelAssembler;
         this.tagModelAssembler = tagModelAssembler;
-        this.mpttCategoryRepository = mpttCategoryRepository;
     }
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
@@ -149,8 +145,15 @@ public class QuestionRestController {
             @ApiResponse(responseCode = "400", description = "Invalid input")})
     @Timed(value = "questions.getQuestionByUuid")
     public EntityModel <QuestionResource> getQuestionByUuid(@ValidUuid @PathVariable("uuid") String uuid) {
-        return of(qcmResourceMapper.questionToQuestionResource(questionCatalog.getQuestionById(new QuestionId(uuid))
+
+
+        var entityModel = of(qcmResourceMapper.questionToQuestionResource(questionCatalog.getQuestionById(new QuestionId(uuid))
                 .orElseThrow(() -> new I18nedNotFoundException(UNKNOWN_UUID_QUESTION, uuid))));
+
+        questionModelAssembler.addLinks(entityModel);
+
+        return entityModel;
+
     }
 
     @PutMapping(value = "/{uuid}", produces = APPLICATION_JSON_VALUE)
@@ -163,7 +166,13 @@ public class QuestionRestController {
     public EntityModel <QuestionResource> updateQuestion(@ValidUuid @PathVariable("uuid") String uuid,
                                                          @JsonView(QuestionView.UpdateQuestion.class) @RequestBody @Valid QuestionResource questionResource) {
         var question = qcmResourceMapper.questionResourceToModel(uuid, questionResource);
-        return of(qcmResourceMapper.questionToQuestionResource(questionCatalog.updateQuestion(question, PrincipalId.of(getPrincipal()))));
+
+        var entityModel = of(qcmResourceMapper.questionToQuestionResource(questionCatalog.updateQuestion(question, PrincipalId.of(getPrincipal()))));
+
+        questionModelAssembler.addLinks(entityModel);
+        return entityModel;
+
+
     }
 
     @PostMapping(produces = APPLICATION_JSON_VALUE)
@@ -206,7 +215,13 @@ public class QuestionRestController {
                 .orElseThrow(() -> new I18nedNotFoundException(UNKNOWN_UUID_QUESTION, uuid));
 
         question.setStatus(questionStatus.getStatus());
-        return of(qcmResourceMapper.questionToQuestionResource(questionCatalog.saveQuestion(question, PrincipalId.of(getPrincipal()))));
+        var entityModel = of(qcmResourceMapper.questionToQuestionResource(questionCatalog.saveQuestion(question, PrincipalId.of(getPrincipal()))));
+
+        questionModelAssembler.addLinks(entityModel);
+
+        return entityModel;
+
+
     }
 
     @ExceptionHandler({JsonProcessingException.class, IOException.class})

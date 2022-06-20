@@ -23,6 +23,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -152,6 +153,19 @@ public class AccountRestController {
         var account = qcmResourceMapper.accountResourceToModel(accountResource);
         // fixme: ???
         return EntityModel.of(qcmResourceMapper.accountToAccountResource(accountRepository.updateAccount(account)));
+    }
+
+    @GetMapping(value = "/{uuid}", produces = APPLICATION_JSON_VALUE)
+    @ResponseBody
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Object", content = @Content(schema = @Schema(name = "AccountResource", implementation = AccountResource.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid input")})
+    @Timed("accounts.getUserById")
+    public EntityModel <AccountResource> getUserById(@PathVariable("uuid") String uuid ) {
+
+        var account = accountRepository.getAccountById(uuid);
+
+        return EntityModel.of(qcmResourceMapper.accountToAccountResource(account));
     }
 
 }

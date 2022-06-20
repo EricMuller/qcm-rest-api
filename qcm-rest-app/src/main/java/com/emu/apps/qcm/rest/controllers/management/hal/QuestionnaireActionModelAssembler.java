@@ -2,6 +2,7 @@ package com.emu.apps.qcm.rest.controllers.management.hal;
 
 import com.emu.apps.qcm.rest.controllers.management.QuestionnaireRestController;
 import com.emu.apps.qcm.rest.controllers.management.resources.ActionResource;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.SimpleRepresentationModelAssembler;
@@ -22,10 +23,20 @@ public class QuestionnaireActionModelAssembler implements SimpleRepresentationMo
     @Override
     public void addLinks(EntityModel <ActionResource> resource) {
 
-        resource.add(
-                linkTo(methodOn(QuestionnaireRestController.class).createJsonExportByQuestionnaireUuid(resource.getContent().getUuid())).withSelfRel(),
-                linkTo(methodOn(QuestionnaireRestController.class).createByteArrayReportByQuestionnaireUuid(resource.getContent().getUuid(),"json")).withSelfRel()
-        );
+
+        if (StringUtils.equals("export", resource.getContent().getAction())) {
+            resource.add(
+                    linkTo(methodOn(QuestionnaireRestController.class).createJsonExportByQuestionnaireUuid(resource.getContent().getUuid())).withSelfRel()
+                    );
+        }
+        if (StringUtils.equals("report", resource.getContent().getAction())) {
+            resource.add(
+                    linkTo(methodOn(QuestionnaireRestController.class ).createByteArrayReportByQuestionnaireUuid(resource.getContent().getUuid(), "json")).withSelfRel(),
+                    linkTo(methodOn(QuestionnaireRestController.class).createByteArrayReportByQuestionnaireUuid(resource.getContent().getUuid(), "pdf")).withSelfRel(),
+                    linkTo(methodOn(QuestionnaireRestController.class).createByteArrayReportByQuestionnaireUuid(resource.getContent().getUuid(), "docx")).withSelfRel()
+            );
+        }
+
 
     }
 

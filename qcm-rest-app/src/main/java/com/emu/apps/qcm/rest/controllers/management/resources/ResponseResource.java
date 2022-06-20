@@ -28,10 +28,6 @@ public class ResponseResource {
     @JsonProperty("uuid")
     private String uuid;
 
-    @JsonView({FindQuestion.class, UpdateQuestion.class})
-    @JsonProperty("version")
-    private Long version;
-
     @JsonView({FindQuestion.class, UpdateQuestion.class, CreateQuestion.class})
     @JsonProperty("response")
     private String responseText;
@@ -43,7 +39,5 @@ public class ResponseResource {
     @JsonView({FindQuestion.class, UpdateQuestion.class, CreateQuestion.class})
     @JsonProperty(value = "number")
     private Long number;
-
-
 
 }

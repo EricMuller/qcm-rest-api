@@ -1,7 +1,5 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa;
 
-import com.emu.apps.qcm.domain.model.account.Account;
-import com.emu.apps.qcm.domain.model.account.AccountId;
 import com.emu.apps.qcm.domain.model.question.Question;
 import com.emu.apps.qcm.domain.model.question.QuestionTag;
 import com.emu.apps.qcm.domain.model.question.QuestionWithTagsOnly;
@@ -24,7 +22,6 @@ import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.QuestionEntityUpd
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.QuestionnaireQuestionEntityMapper;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.TagEntityMapper;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.UuidMapper;
-import com.emu.apps.shared.security.AccountContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -53,9 +50,9 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
 
     private final QuestionnaireQuestionRepository questionnaireQuestionRepository;
 
-    private final QuestionEntityMapper questionMapper;
+    private final QuestionEntityMapper questionEntityMapper;
 
-    private final QuestionEntityUpdateMapper questionUpdateMapper;
+    private final QuestionEntityUpdateMapper questionEntityUpdateMapper;
 
     private final TagQuestionRepository tagQuestionRepository;
 
@@ -65,33 +62,33 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
 
     private final TagEntityMapper tagMapper;
 
-    private final QuestionnaireQuestionEntityMapper questionnaireQuestionMapper;
+    private final QuestionnaireQuestionEntityMapper questionnaireQuestionEntityMapper;
 
     private final AccountRepository accountRepository;
 
     @Autowired
     public QuestionPersistenceAdapter(QuestionRepository questionRepository, QuestionTagRepository questionTagRepository,
                                       QuestionnaireQuestionRepository questionnaireQuestionRepository,
-                                      QuestionEntityMapper questionMapper, QuestionEntityUpdateMapper questionUpdateMapper, TagQuestionRepository tagQuestionRepository,
-                                      MpttCategoryRepository mpttCategoryRepository, UuidMapper uuidMapper, TagEntityMapper tagMapper, QuestionnaireQuestionEntityMapper questionnaireQuestionMapper,
+                                      QuestionEntityMapper questionEntityMapper, QuestionEntityUpdateMapper questionEntityUpdateMapper, TagQuestionRepository tagQuestionRepository,
+                                      MpttCategoryRepository mpttCategoryRepository, UuidMapper uuidMapper, TagEntityMapper tagMapper, QuestionnaireQuestionEntityMapper questionnaireQuestionEntityMapper,
                                       AccountRepository accountRepository) {
         this.questionRepository = questionRepository;
         this.questionTagRepository = questionTagRepository;
         this.questionnaireQuestionRepository = questionnaireQuestionRepository;
-        this.questionMapper = questionMapper;
-        this.questionUpdateMapper = questionUpdateMapper;
+        this.questionEntityMapper = questionEntityMapper;
+        this.questionEntityUpdateMapper = questionEntityUpdateMapper;
         this.tagQuestionRepository = tagQuestionRepository;
         this.mpttCategoryRepository = mpttCategoryRepository;
         this.uuidMapper = uuidMapper;
         this.tagMapper = tagMapper;
-        this.questionnaireQuestionMapper = questionnaireQuestionMapper;
+        this.questionnaireQuestionEntityMapper = questionnaireQuestionEntityMapper;
         this.accountRepository = accountRepository;
     }
 
     @Override
     @Transactional(readOnly = true)
     public Optional <Question> findByUuid(String uuid) {
-        return Optional.ofNullable(questionMapper.entityToQuestion(questionRepository.findByUuid(UUID.fromString(uuid)).orElse(null)));
+        return Optional.ofNullable(questionEntityMapper.entityToQuestion(questionRepository.findByUuid(UUID.fromString(uuid)).orElse(null)));
 
     }
 
@@ -114,8 +111,8 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
         }
 
         questionEntity = questionRepository.findByUuid(UUID.fromString(question.getId().toUuid())).orElse(null);
-        questionEntity = questionUpdateMapper.questionToEntity(question, questionEntity);
-        questionEntity.setResponses(questionUpdateMapper.responsesToEntities(question.getResponses(), questionEntity.getResponses()));
+        questionEntity = questionEntityUpdateMapper.questionToEntity(question, questionEntity);
+        questionEntity.setResponses(questionEntityUpdateMapper.responsesToEntities(question.getResponses(), questionEntity.getResponses()));
 
 
         questionEntity.setMpttCategory(mpttCategoryEntity);
@@ -124,7 +121,7 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
 
         saveQuestionWithTags(questionEntity, question.getTags(), principal);
 
-        return questionMapper.entityToQuestion(questionEntity);
+        return questionEntityMapper.entityToQuestion(questionEntity);
 
     }
 
@@ -140,7 +137,7 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
             mpttCategoryEntity = mpttCategoryRepository.findByUuid(categoryUuid);
         }
 
-        questionEntity = questionMapper.questionToEntity(question);
+        questionEntity = questionEntityMapper.questionToEntity(question);
 
         Optional <AccountEntity> accountEntity = accountRepository.findByUuid(UUID.fromString(principal));
         if (accountEntity.isPresent()) {
@@ -153,7 +150,7 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
 
         saveQuestionWithTags(questionEntity, question.getTags(), principal);
 
-        return questionMapper.entityToQuestion(questionEntity);
+        return questionEntityMapper.entityToQuestion(questionEntity);
     }
 
     @Override
@@ -165,7 +162,7 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
         questionSpecificationBuilder.setQuestionnaireUuids(uuidMapper.toUUIDs(questionnaireIds));
         questionSpecificationBuilder.setTagUuids(uuidMapper.toUUIDs(tagIds));
 
-        return questionMapper.pageEntityToPageTagDto(questionRepository.findAll(questionSpecificationBuilder.build(), pageable));
+        return questionEntityMapper.pageEntityToPageTagDto(questionRepository.findAll(questionSpecificationBuilder.build(), pageable));
 
     }
 
@@ -225,7 +222,7 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
     @Transactional(readOnly = true)
     public Iterable <QuestionnaireQuestion> findAllWithTagsAndResponseByQuestionnaireUuid(String questionnaireUuid) {
 
-        return questionnaireQuestionMapper.questionnaireQuestionEntityToDomain(
+        return questionnaireQuestionEntityMapper.questionnaireQuestionEntityToDomain(
                 questionnaireQuestionRepository.findWithTagsAndResponseByQuestionnaireUuid(UUID.fromString(questionnaireUuid)));
     }
 

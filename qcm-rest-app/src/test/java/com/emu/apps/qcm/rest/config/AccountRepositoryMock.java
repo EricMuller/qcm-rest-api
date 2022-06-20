@@ -45,7 +45,7 @@ public class AccountRepositoryMock implements AccountRepository {
     }
 
     @Override
-    public Account userById(String id) {
+    public Account getAccountById(String id) {
          return createUSer();
     }
 }

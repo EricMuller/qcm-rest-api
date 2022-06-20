@@ -12,5 +12,5 @@ public interface AccountRepository {
 
     Account createAccount(Account account);
 
-    Account userById(String id) ;
+    Account getAccountById(String id) ;
 }

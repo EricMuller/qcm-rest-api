@@ -244,7 +244,7 @@ public class QuestionnaireRestController {
     //@GetMapping(value = "/{uuid}" + EXPORTS + "/{type-report}", produces = APPLICATION_OCTET_STREAM_VALUE)
     @SuppressWarnings("squid:S2583")
     @Timed(value = "questionnaires.actions.getReportByQuestionnaireUuid", longTask = true)
-    public ResponseEntity <Resource> createByteArrayReportByQuestionnaireUuid(@PathVariable("uuid") String uuid, @PathParam("type-report") String type) {
+    public ResponseEntity <Resource> createByteArrayReportByQuestionnaireUuid(@PathVariable("uuid") String uuid, @RequestParam("type-report") String type) {
 
         if (isNull(type)) {
             throw new IllegalArgumentException("Invalid type-report argument");

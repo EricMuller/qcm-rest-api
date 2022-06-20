@@ -1,6 +1,8 @@
 package com.emu.apps.qcm.rest.controllers.management.hal;
 
+import com.emu.apps.qcm.rest.controllers.management.AccountRestController;
 import com.emu.apps.qcm.rest.controllers.management.QuestionRestController;
+import com.emu.apps.qcm.rest.controllers.management.QuestionnaireRestController;
 import com.emu.apps.qcm.rest.controllers.management.resources.QuestionResource;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -23,8 +25,11 @@ public class QuestionModelAssembler implements SimpleRepresentationModelAssemble
     public void addLinks(EntityModel <QuestionResource> resource) {
 
         resource.add(
-                linkTo(methodOn(QuestionRestController.class).getQuestionByUuid( (resource.getContent() != null ) ? resource.getContent().getUuid() :
-        "")).withSelfRel());
+                linkTo(methodOn(QuestionRestController.class).getQuestionByUuid( (resource.getContent() != null ) ? resource.getContent().getUuid() :  "")
+
+                ).withSelfRel());
+
+        resource.add(linkTo(methodOn(AccountRestController.class).getUserById(resource.getContent().getOwner().getUuid())).withRel("owner"));
 
     }
 

@@ -50,7 +50,7 @@ class AccountRepositoryAdapter implements AccountRepository {
     }
 
     @Override
-    public Account userById(String id) {
+    public Account getAccountById(String id) {
         return userPersistencePort.findById(id);
     }
 
