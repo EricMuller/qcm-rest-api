@@ -1,8 +1,13 @@
 package com.emu.apps.qcm.rest.controllers.management.resources;
 
 
-import com.emu.apps.qcm.rest.controllers.management.openui.QuestionView;
+import com.emu.apps.qcm.rest.controllers.management.openui.QuestionView.CreateQuestion;
+import com.emu.apps.qcm.rest.controllers.management.openui.QuestionView.FindQuestion;
+import com.emu.apps.qcm.rest.controllers.management.openui.QuestionView.UpdateQuestion;
 import com.emu.apps.qcm.rest.controllers.management.openui.QuestionnaireView;
+import com.emu.apps.qcm.rest.controllers.management.openui.QuestionnaireView.CreateQuestionnaire;
+import com.emu.apps.qcm.rest.controllers.management.openui.QuestionnaireView.FindQuestionnaire;
+import com.emu.apps.qcm.rest.controllers.management.openui.QuestionnaireView.UpdateQuestionnaire;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
@@ -26,46 +31,46 @@ import static com.emu.apps.qcm.rest.controllers.management.resources.Constants.Z
 @JsonRootName(value = "Tag")
 public class TagResource {
 
-    public interface Base {
+    public interface BaseTag {
     }
 
-    public interface Update {
+    public interface UpdateTag {
     }
 
-    public interface Create {
+    public interface CreateTag {
     }
 
     @JsonProperty("uuid")
-    @JsonView({Base.class,
-            QuestionnaireView.Find.class, QuestionnaireView.Create.class, QuestionnaireView.Update.class,
-            QuestionView.Find.class, QuestionView.Create.class, QuestionView.Update.class})
+    @JsonView({BaseTag.class,
+            FindQuestionnaire.class, CreateQuestionnaire.class, UpdateQuestionnaire.class,
+            FindQuestion.class, CreateQuestion.class, UpdateQuestion.class})
     private String uuid;
 
     @JsonProperty("libelle")
-    @JsonView({Base.class, Create.class, Update.class,
-            QuestionnaireView.Find.class, QuestionnaireView.Create.class, QuestionnaireView.Update.class,
-            QuestionView.Find.class, QuestionView.Create.class, QuestionView.Update.class})
+    @JsonView({BaseTag.class, CreateTag.class, UpdateTag.class,
+            FindQuestionnaire.class, CreateQuestionnaire.class, UpdateQuestionnaire.class,
+            FindQuestion.class, CreateQuestion.class, UpdateQuestion.class})
     private String libelle;
 
     @JsonProperty("version")
-    @JsonView({Base.class, QuestionnaireView.Find.class, QuestionView.Find.class})
+    @JsonView({BaseTag.class, FindQuestionnaire.class, FindQuestion.class})
     private Long version;
 
     @JsonProperty("created_by")
-    @JsonView({Base.class, QuestionnaireView.Find.class, QuestionView.Find.class})
+    @JsonView({BaseTag.class, FindQuestionnaire.class, FindQuestion.class})
     private String createdBy;
 
     @JsonProperty("dateCreation")
-    @JsonView({Base.class, QuestionnaireView.Find.class, QuestionView.Find.class})
+    @JsonView({BaseTag.class, FindQuestionnaire.class, FindQuestion.class})
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = ZONED_DATE_TIME_FORMAT)
     private ZonedDateTime dateCreation;
 
     @JsonProperty("lastModified_By")
-    @JsonView({Base.class, QuestionnaireView.Find.class, QuestionView.Find.class})
+    @JsonView({BaseTag.class, FindQuestionnaire.class, FindQuestion.class})
     private String lastModifiedBy;
 
     @JsonProperty("dateModification")
-    @JsonView({Base.class, QuestionnaireView.Find.class, QuestionView.Find.class})
+    @JsonView({BaseTag.class, FindQuestionnaire.class, FindQuestion.class})
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = ZONED_DATE_TIME_FORMAT)
     private ZonedDateTime dateModification;
 

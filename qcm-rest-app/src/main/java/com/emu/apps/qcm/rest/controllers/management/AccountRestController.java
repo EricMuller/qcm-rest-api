@@ -106,7 +106,7 @@ public class AccountRestController {
             @ApiResponse(responseCode = "200", description = "Object updated", content = @Content(schema = @Schema(name = "AccountResource", implementation = AccountResource.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input")})
     @Timed("accounts.updateAuthentifiedUser")
-    public EntityModel <AccountResource> updateAuthentifiedUser(@JsonView(AccountView.Update.class) @RequestBody AccountResource accountResource, Principal principal) {
+    public EntityModel <AccountResource> updateAuthentifiedUser(@JsonView(AccountView.UpdateAccount.class) @RequestBody AccountResource accountResource, Principal principal) {
 
         var user = qcmResourceMapper.accountResourceToModel(accountResource);
         String email = getEmailOrName(principal);
@@ -124,7 +124,7 @@ public class AccountRestController {
             @ApiResponse(responseCode = "201", description = "Object created", content = @Content(schema = @Schema(name = "AccountResource", implementation = AccountResource.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input")})
     @Timed("accounts.createAuthentifiedUser")
-    public ResponseEntity <EntityModel <AccountResource>> createAuthentifiedUser(@JsonView(AccountView.Create.class) @RequestBody AccountResource accountResource, Principal principal) {
+    public ResponseEntity <EntityModel <AccountResource>> createAuthentifiedUser(@JsonView(AccountView.CreateAccount.class) @RequestBody AccountResource accountResource, Principal principal) {
         var user = qcmResourceMapper.accountResourceToModel(accountResource);
         String email = getEmailOrName(principal);
         Account authentAccount = accountRepository.getAccountByEmail(email);

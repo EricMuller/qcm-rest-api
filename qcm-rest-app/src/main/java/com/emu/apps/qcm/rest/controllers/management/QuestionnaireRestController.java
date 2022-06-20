@@ -128,7 +128,7 @@ public class QuestionnaireRestController {
             @ApiResponse(responseCode = "400", description = "Invalid input")})
     @Timed(value = "questionnaires.updateQuestionnaire")
     public EntityModel <QuestionnaireResource> updateQuestionnaire(@PathVariable("uuid") String uuid,
-                                                                   @JsonView(QuestionnaireView.Update.class) @RequestBody QuestionnaireResource questionnaireResource) {
+                                                                   @JsonView(QuestionnaireView.UpdateQuestionnaire.class) @RequestBody QuestionnaireResource questionnaireResource) {
         var questionnaire = qcmResourceMapper.questionnaireResourceToModel(uuid, questionnaireResource);
         return EntityModel.of(qcmResourceMapper.questionnaireToQuestionnaireResources(questionnaireCatalog.updateQuestionnaire(questionnaire, PrincipalId.of(getPrincipal()))))
                 .add(linkTo(QuestionnaireRestController.class).slash(uuid).withSelfRel());
@@ -140,7 +140,7 @@ public class QuestionnaireRestController {
             @ApiResponse(responseCode = "201", description = "Object created", content = @Content(schema = @Schema(name = "QuestionnaireResource", implementation = QuestionnaireResource.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input")})
     @Timed(value = "questionnaires.createQuestionnaire")
-    public ResponseEntity <EntityModel <QuestionnaireResource>> createQuestionnaire(@JsonView(QuestionnaireView.Create.class) @RequestBody QuestionnaireResource questionnaireResource) {
+    public ResponseEntity <EntityModel <QuestionnaireResource>> createQuestionnaire(@JsonView(QuestionnaireView.CreateQuestionnaire.class) @RequestBody QuestionnaireResource questionnaireResource) {
         var questionnaire = qcmResourceMapper.questionnaireResourceToModel(questionnaireResource);
 
         var entityModel = EntityModel.of(qcmResourceMapper.questionnaireToQuestionnaireResources(questionnaireCatalog.saveQuestionnaire(questionnaire, PrincipalId.of(getPrincipal()))));

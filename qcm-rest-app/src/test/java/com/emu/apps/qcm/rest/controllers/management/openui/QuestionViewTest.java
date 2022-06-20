@@ -18,7 +18,7 @@ class QuestionViewTest {
     @Test
     void readValueWithQuestionViewUpdateTest() throws IOException {
 
-        var valueAsString = MAPPER.writerWithView(QuestionView.Update.class)
+        var valueAsString = MAPPER.writerWithView(QuestionView.UpdateQuestion.class)
                 .writeValueAsString(fixtureResources.createQuestion());
 
         var resources = MAPPER.readValue(valueAsString, QuestionResource.class);
@@ -60,7 +60,7 @@ class QuestionViewTest {
     @Test
     void readValueWithQuestionViewCreateTest() throws IOException {
 
-        var valueAsString = MAPPER.writerWithView(QuestionView.Create.class)
+        var valueAsString = MAPPER.writerWithView(QuestionView.CreateQuestion.class)
                 .writeValueAsString(fixtureResources.createQuestion());
 
         var resources = MAPPER.readValue(valueAsString, QuestionResource.class);

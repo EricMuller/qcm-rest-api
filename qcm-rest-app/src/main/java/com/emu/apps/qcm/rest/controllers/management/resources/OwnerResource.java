@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.rest.controllers.management.resources;
 
-import com.emu.apps.qcm.rest.controllers.management.openui.AccountView.Public;
-import com.emu.apps.qcm.rest.controllers.management.openui.AccountView.Update;
+import com.emu.apps.qcm.rest.controllers.management.openui.AccountView.PublicAccount;
+import com.emu.apps.qcm.rest.controllers.management.openui.AccountView.UpdateAccount;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
@@ -20,7 +20,7 @@ import static com.emu.apps.qcm.rest.controllers.management.resources.Constants.Z
 @JsonRootName(value = "Owner")
 public class OwnerResource {
 
-    @JsonView({Public.class, Update.class})
+    @JsonView({PublicAccount.class, UpdateAccount.class})
     @JsonProperty("uuid")
     private String uuid;
 
@@ -28,7 +28,7 @@ public class OwnerResource {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = ZONED_DATE_TIME_FORMAT)
     private ZonedDateTime dateCreation;
 
-    @JsonView({Public.class, Update.class})
+    @JsonView({PublicAccount.class, UpdateAccount.class})
     @JsonProperty("userName")
     private String userName;
 

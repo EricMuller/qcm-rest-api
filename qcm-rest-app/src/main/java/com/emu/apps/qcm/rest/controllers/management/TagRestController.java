@@ -86,7 +86,7 @@ public class TagRestController {
             @ApiResponse(responseCode = "201", description = "Object created", content = @Content(schema = @Schema(name = "TagResource", implementation = TagResource.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input")})
     @Timed(value = "tags.createTag")
-    public EntityModel <TagResource> createTag(@JsonView(TagResource.Create.class) @RequestBody TagResource tagResource) {
+    public EntityModel <TagResource> createTag(@JsonView(TagResource.CreateTag.class) @RequestBody TagResource tagResource) {
         var tag = qcmResourceMapper.tagResourceToModel(tagResource);
         return EntityModel.of(qcmResourceMapper.tagToTagResources(tagRepository.saveTag(tag)));
     }
@@ -98,7 +98,7 @@ public class TagRestController {
             @ApiResponse(responseCode = "400", description = "Invalid input")})
     @Timed(value = "tags.updateTag")
     public TagResource updateTag(@PathVariable("uuid") String uuid,
-                                 @JsonView(TagResource.Update.class) @RequestBody TagResource tagResource) {
+                                 @JsonView(TagResource.UpdateTag.class) @RequestBody TagResource tagResource) {
         var tag = qcmResourceMapper.tagResourceToModel(uuid, tagResource);
         return qcmResourceMapper.tagToTagResources(tagRepository.saveTag(tag));
     }

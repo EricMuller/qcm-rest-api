@@ -2,13 +2,13 @@ package com.emu.apps.qcm.rest.controllers.management.openui;
 
 public final class QuestionnaireView {
 
-    public interface Find {
+    public interface FindQuestionnaire {
     }
 
-    public interface Update {
+    public interface UpdateQuestionnaire {
     }
 
-    public interface Create {
+    public interface CreateQuestionnaire {
     }
 
 }

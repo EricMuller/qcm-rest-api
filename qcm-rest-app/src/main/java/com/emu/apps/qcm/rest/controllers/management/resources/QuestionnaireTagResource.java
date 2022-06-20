@@ -1,6 +1,9 @@
 package com.emu.apps.qcm.rest.controllers.management.resources;
 
 import com.emu.apps.qcm.rest.controllers.management.openui.QuestionnaireView;
+import com.emu.apps.qcm.rest.controllers.management.openui.QuestionnaireView.CreateQuestionnaire;
+import com.emu.apps.qcm.rest.controllers.management.openui.QuestionnaireView.FindQuestionnaire;
+import com.emu.apps.qcm.rest.controllers.management.openui.QuestionnaireView.UpdateQuestionnaire;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -17,11 +20,11 @@ import lombok.Setter;
 public class QuestionnaireTagResource {
 
     @JsonProperty("uuid")
-    @JsonView({QuestionnaireView.Find.class, QuestionnaireView.Update.class, QuestionnaireView.Create.class})
+    @JsonView({FindQuestionnaire.class, UpdateQuestionnaire.class, CreateQuestionnaire.class})
     private String uuid;
 
     @JsonProperty("libelle")
-    @JsonView({QuestionnaireView.Find.class, QuestionnaireView.Update.class, QuestionnaireView.Create.class})
+    @JsonView({FindQuestionnaire.class, UpdateQuestionnaire.class, CreateQuestionnaire.class})
     private String libelle;
 
 }

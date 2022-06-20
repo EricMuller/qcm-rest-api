@@ -1,7 +1,7 @@
 package com.emu.apps.qcm.rest.controllers.management.resources;
 
-import com.emu.apps.qcm.rest.controllers.management.openui.AccountView.Public;
-import com.emu.apps.qcm.rest.controllers.management.openui.AccountView.Update;
+import com.emu.apps.qcm.rest.controllers.management.openui.AccountView.PublicAccount;
+import com.emu.apps.qcm.rest.controllers.management.openui.AccountView.UpdateAccount;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
@@ -20,11 +20,11 @@ import static com.emu.apps.qcm.rest.controllers.management.resources.Constants.Z
 @JsonRootName(value = "Account")
 public class AccountResource {
 
-    @JsonView({Public.class, Update.class})
+    @JsonView({PublicAccount.class, UpdateAccount.class})
     @JsonProperty("uuid")
     private String uuid;
 
-    @JsonView({Update.class})
+    @JsonView({UpdateAccount.class})
     @JsonProperty("version")
     private Long version;
 
@@ -37,22 +37,22 @@ public class AccountResource {
     private ZonedDateTime dateModification;
 
     @JsonProperty("email")
-    @JsonView({Update.class})
+    @JsonView({UpdateAccount.class})
     private String email;
 
-    @JsonView({Public.class, Update.class})
+    @JsonView({PublicAccount.class, UpdateAccount.class})
     @JsonProperty("userName")
     private String userName;
 
-    @JsonView({Update.class})
+    @JsonView({UpdateAccount.class})
     @JsonProperty("firstName")
     private String firstName;
 
-    @JsonView({Update.class})
+    @JsonView({UpdateAccount.class})
     @JsonProperty("lastName")
     private String lastName;
 
-    @JsonView({Update.class})
+    @JsonView({UpdateAccount.class})
     @JsonProperty("company")
     private String company;
 

@@ -2,13 +2,13 @@ package com.emu.apps.qcm.rest.controllers.management.openui;
 
 public final class CategoryView {
 
-    public interface Find {
+    public interface FindCategory {
 
     }
-    public interface Update {
+    public interface UpdateCategory {
     }
 
-    public interface Create {
+    public interface CreateCategory {
     }
 
 }

@@ -1,9 +1,9 @@
 package com.emu.apps.qcm.rest.controllers.management.resources;
 
 
-import com.emu.apps.qcm.rest.controllers.management.openui.QuestionView.Create;
-import com.emu.apps.qcm.rest.controllers.management.openui.QuestionView.Find;
-import com.emu.apps.qcm.rest.controllers.management.openui.QuestionView.Update;
+import com.emu.apps.qcm.rest.controllers.management.openui.QuestionView.CreateQuestion;
+import com.emu.apps.qcm.rest.controllers.management.openui.QuestionView.FindQuestion;
+import com.emu.apps.qcm.rest.controllers.management.openui.QuestionView.UpdateQuestion;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -32,67 +32,67 @@ import static com.emu.apps.qcm.rest.controllers.management.resources.Constants.Z
 public class QuestionResource  {
 
     @JsonProperty("uuid")
-    @JsonView({Find.class, Update.class,})
+    @JsonView({FindQuestion.class, UpdateQuestion.class,})
     private String uuid;
 
     @JsonProperty("version")
-    @JsonView({Find.class, Update.class,})
+    @JsonView({FindQuestion.class, UpdateQuestion.class,})
     private Long version;
 
     @JsonProperty("created_by")
-    @JsonView({Find.class})
+    @JsonView({FindQuestion.class})
     private String createdBy;
 
     @JsonProperty("dateCreation")
-    @JsonView({Find.class})
+    @JsonView({FindQuestion.class})
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = ZONED_DATE_TIME_FORMAT)
     private ZonedDateTime dateCreation;
 
     @JsonProperty("lastModified_By")
-    @JsonView({Find.class})
+    @JsonView({FindQuestion.class})
     private String lastModifiedBy;
 
     @JsonProperty("dateModification")
-    @JsonView({Find.class})
+    @JsonView({FindQuestion.class})
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = ZONED_DATE_TIME_FORMAT)
     private ZonedDateTime dateModification;
 
     @JsonProperty("type")
-    @JsonView({Find.class, Create.class, Update.class,})
+    @JsonView({FindQuestion.class, CreateQuestion.class, UpdateQuestion.class,})
     private String type;
 
     @JsonProperty("question")
     @NotNull(message = "{question.notNull}")
     @Size(min = 1, max = 1024, message = "{question.question.size}")
-    @JsonView({Find.class, Create.class, Update.class,})
+    @JsonView({FindQuestion.class, CreateQuestion.class, UpdateQuestion.class,})
     private String questionText;
 
     @JsonProperty("category")
-    @JsonView({Find.class, Create.class, Update.class,})
+    @JsonView({FindQuestion.class, CreateQuestion.class, UpdateQuestion.class,})
     private CategoryResource category;
 
     @JsonProperty("responses")
-    @JsonView({Find.class, Create.class, Update.class,})
+    @JsonView({FindQuestion.class, CreateQuestion.class, UpdateQuestion.class,})
     private java.util.List <ResponseResource> responses;
 
     @JsonProperty("tags")
-    @JsonView({Find.class, Create.class, Update.class,})
+    @JsonView({FindQuestion.class, CreateQuestion.class, UpdateQuestion.class,})
     private List <QuestionTagResource> tags;
 
     @JsonProperty("status")
-    @JsonView({Find.class, Create.class, Update.class,})
+    @JsonView({FindQuestion.class, CreateQuestion.class, UpdateQuestion.class,})
     private String status;
 
     @JsonProperty("tip")
-    @JsonView({Find.class, Create.class, Update.class,})
+    @JsonView({FindQuestion.class, CreateQuestion.class, UpdateQuestion.class,})
     private String tip;
 
     @JsonProperty("owner")
-    @JsonView({Find.class})
+    @JsonView({FindQuestion.class})
     private OwnerResource owner;
 
     @JsonProperty("numeroVersion")
-    @JsonView({Find.class, Create.class, Update.class,})
+    @JsonView({FindQuestion.class, CreateQuestion.class, UpdateQuestion.class,})
     private int numeroVersion;
 
 }

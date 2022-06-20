@@ -53,53 +53,53 @@ import static com.emu.apps.qcm.rest.controllers.management.resources.Constants.Z
 public class SearchQuestionResource {
 
     @JsonProperty("uuid")
-    @JsonView({QuestionView.Find.class})
+    @JsonView({QuestionView.FindQuestion.class})
     private String uuid;
 
     @JsonProperty("version")
-    @JsonView({QuestionView.Find.class})
+    @JsonView({QuestionView.FindQuestion.class})
     private Long version;
 
     @JsonProperty("created_by")
-    @JsonView({QuestionView.Find.class})
+    @JsonView({QuestionView.FindQuestion.class})
     private String createdBy;
 
     @JsonProperty("dateCreation")
-    @JsonView({QuestionView.Find.class})
+    @JsonView({QuestionView.FindQuestion.class})
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = ZONED_DATE_TIME_FORMAT)
     private ZonedDateTime dateCreation;
 
     @JsonProperty("lastModified_By")
-    @JsonView({QuestionView.Find.class})
+    @JsonView({QuestionView.FindQuestion.class})
     private String lastModifiedBy;
 
     @JsonProperty("dateModification")
-    @JsonView({QuestionView.Find.class})
+    @JsonView({QuestionView.FindQuestion.class})
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = ZONED_DATE_TIME_FORMAT)
     private ZonedDateTime dateModification;
 
     @JsonProperty("question")
-    @JsonView({QuestionView.Find.class})
+    @JsonView({QuestionView.FindQuestion.class})
     private String questionText;
 
     @JsonProperty("type")
-    @JsonView({QuestionView.Find.class})
+    @JsonView({QuestionView.FindQuestion.class})
     private String type;
 
     @JsonProperty("status")
-    @JsonView({QuestionView.Find.class})
+    @JsonView({QuestionView.FindQuestion.class})
     private String status;
 
     @JsonProperty("tags")
-    @JsonView({QuestionView.Find.class})
+    @JsonView({QuestionView.FindQuestion.class})
     private Set <QuestionTagResource> tags;
 
     @JsonProperty("owner")
-    @JsonView({QuestionView.Find.class})
+    @JsonView({QuestionView.FindQuestion.class})
     private OwnerResource owner;
 
     @JsonProperty("numeroVersion")
-    @JsonView({QuestionView.Find.class})
+    @JsonView({QuestionView.FindQuestion.class})
     private int  numeroVersion;
 
 }

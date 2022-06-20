@@ -161,7 +161,7 @@ public class QuestionRestController {
             @ApiResponse(responseCode = "400", description = "Invalid input")})
     @Timed(value = "questions.updateQuestion", longTask = true)
     public EntityModel <QuestionResource> updateQuestion(@ValidUuid @PathVariable("uuid") String uuid,
-                                                         @JsonView(QuestionView.Update.class) @RequestBody @Valid QuestionResource questionResource) {
+                                                         @JsonView(QuestionView.UpdateQuestion.class) @RequestBody @Valid QuestionResource questionResource) {
         var question = qcmResourceMapper.questionResourceToModel(uuid, questionResource);
         return of(qcmResourceMapper.questionToQuestionResource(questionCatalog.updateQuestion(question, PrincipalId.of(getPrincipal()))));
     }
@@ -172,7 +172,7 @@ public class QuestionRestController {
             @ApiResponse(responseCode = "201", description = "Object created", content = @Content(schema = @Schema(name = "QuestionResource", implementation = QuestionResource.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input")})
     @Timed(value = "questions.createQuestion")
-    public ResponseEntity <EntityModel <QuestionResource>> createQuestion(@JsonView(QuestionView.Create.class) @RequestBody @Valid QuestionResource questionResource) {
+    public ResponseEntity <EntityModel <QuestionResource>> createQuestion(@JsonView(QuestionView.CreateQuestion.class) @RequestBody @Valid QuestionResource questionResource) {
         var question = qcmResourceMapper.questionResourceToModel(questionResource);
         var entityModel = of(qcmResourceMapper.questionToQuestionResource(questionCatalog.saveQuestion(question, PrincipalId.of(getPrincipal()))));
 

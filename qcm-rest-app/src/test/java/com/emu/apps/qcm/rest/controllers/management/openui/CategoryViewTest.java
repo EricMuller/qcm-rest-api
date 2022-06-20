@@ -9,16 +9,16 @@ import java.io.IOException;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-class MpttCategoryViewTest {
+class CategoryViewTest {
 
     private final ObjectMapper MAPPER = new ObjectMapper();
 
     private FixtureResources fixtureResources = new FixtureResources();
 
     @Test
-    void readValueWithCategoryViewUpdateTest() throws IOException {
+    void whenUsedCategorieUpdateView_thenOnlyUpdateFieldsSerializedTest() throws IOException {
 
-        var valueAsString = MAPPER.writerWithView(CategoryView.Update.class)
+        var valueAsString = MAPPER.writerWithView(CategoryView.UpdateCategory.class)
                 .writeValueAsString(fixtureResources.createCategory());
 
         var resources = MAPPER.readValue(valueAsString, CategoryResource.class);
@@ -35,9 +35,9 @@ class MpttCategoryViewTest {
     }
 
     @Test
-    void readValueWithCategoryViewCreateTest() throws IOException {
+    void whenUsedCategorieCreateView_thenOnlyCreateFieldsSerializedTest() throws IOException {
 
-        var valueAsString = MAPPER.writerWithView(CategoryView.Create.class)
+        var valueAsString = MAPPER.writerWithView(CategoryView.CreateCategory.class)
                 .writeValueAsString(fixtureResources.createCategory());
 
         var resources = MAPPER.readValue(valueAsString, CategoryResource.class);

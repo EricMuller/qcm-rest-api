@@ -1,8 +1,8 @@
 package com.emu.apps.qcm.rest.controllers.management.resources;
 
-import com.emu.apps.qcm.rest.controllers.management.openui.QuestionnaireView.Create;
-import com.emu.apps.qcm.rest.controllers.management.openui.QuestionnaireView.Find;
-import com.emu.apps.qcm.rest.controllers.management.openui.QuestionnaireView.Update;
+import com.emu.apps.qcm.rest.controllers.management.openui.QuestionnaireView.CreateQuestionnaire;
+import com.emu.apps.qcm.rest.controllers.management.openui.QuestionnaireView.FindQuestionnaire;
+import com.emu.apps.qcm.rest.controllers.management.openui.QuestionnaireView.UpdateQuestionnaire;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -28,57 +28,57 @@ public class QuestionnaireResource {
 
 
     @JsonProperty("uuid")
-    @JsonView({Find.class, Update.class,})
+    @JsonView({FindQuestionnaire.class, UpdateQuestionnaire.class,})
     private String uuid;
 
     @JsonProperty("version")
-    @JsonView({Find.class, Update.class,})
+    @JsonView({FindQuestionnaire.class, UpdateQuestionnaire.class,})
     private Long version;
 
     @JsonProperty("created_by")
-    @JsonView({Find.class})
+    @JsonView({FindQuestionnaire.class})
     private String createdBy;
 
     @JsonProperty("dateCreation")
-    @JsonView({Find.class})
+    @JsonView({FindQuestionnaire.class})
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = ZONED_DATE_TIME_FORMAT)
     private ZonedDateTime dateCreation;
 
     @JsonProperty("lastModified_By")
-    @JsonView({Find.class})
+    @JsonView({FindQuestionnaire.class})
     private String lastModifiedBy;
 
     @JsonProperty("dateModification")
-    @JsonView({Find.class})
+    @JsonView({FindQuestionnaire.class})
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = ZONED_DATE_TIME_FORMAT)
     private ZonedDateTime dateModification;
 
     @JsonProperty("title")
-    @JsonView({Find.class, Update.class, Create.class})
+    @JsonView({FindQuestionnaire.class, UpdateQuestionnaire.class, CreateQuestionnaire.class})
     private String title;
 
     @JsonProperty("description")
-    @JsonView({Find.class, Update.class, Create.class})
+    @JsonView({FindQuestionnaire.class, UpdateQuestionnaire.class, CreateQuestionnaire.class})
     private String description;
 
     @JsonProperty("category")
-    @JsonView({Find.class, Update.class, Create.class})
+    @JsonView({FindQuestionnaire.class, UpdateQuestionnaire.class, CreateQuestionnaire.class})
     private CategoryResource category;
 
     @JsonProperty("tags")
-    @JsonView({Find.class, Update.class, Create.class})
+    @JsonView({FindQuestionnaire.class, UpdateQuestionnaire.class, CreateQuestionnaire.class})
     private Set <QuestionnaireTagResource> tags;
 
     @JsonProperty("status")
-    @JsonView({Find.class, Update.class, Create.class})
+    @JsonView({FindQuestionnaire.class, UpdateQuestionnaire.class, CreateQuestionnaire.class})
     private String status;
 
     @JsonProperty("website")
-    @JsonView({Find.class, Update.class, Create.class})
+    @JsonView({FindQuestionnaire.class, UpdateQuestionnaire.class, CreateQuestionnaire.class})
     private String website;
 
     @JsonProperty("published")
-    @JsonView({Find.class, Update.class, Create.class})
+    @JsonView({FindQuestionnaire.class, UpdateQuestionnaire.class, CreateQuestionnaire.class})
     private Boolean published;
 
 

@@ -38,6 +38,8 @@ management:
             show-details: always
 
 springdoc:
+    writer-with-order-by-keys: true
+    use-fqn: false
     show-actuator: true
     show:
         actuator: true
