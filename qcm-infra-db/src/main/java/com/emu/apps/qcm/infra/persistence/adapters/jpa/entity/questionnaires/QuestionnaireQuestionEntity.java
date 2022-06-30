@@ -44,9 +44,8 @@ public class QuestionnaireQuestionEntity implements Serializable {
 
     //insertable = false , You would do that when the responsibility of creating/updating the referenced column isn't in the current entity, but in another entity.
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumns({
-            @JoinColumn(name = "QUESTION_ID", insertable = false, updatable = false, nullable = false, referencedColumnName="ID"),
-            @JoinColumn(name = "NUMERO_VERSION", insertable = false, updatable = false, nullable = false, referencedColumnName="NUMERO_VERSION")})
+    @JoinColumn(name = "QUESTION_ID", insertable = false, updatable = false, nullable = false, referencedColumnName="ID")
+    @JoinColumn(name = "NUMERO_VERSION", insertable = false, updatable = false, nullable = false, referencedColumnName="NUMERO_VERSION")
     private QuestionEntity question;
 
     @Column

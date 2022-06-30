@@ -1,14 +1,13 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires;
 
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.mptt.MpttCategoryEntity;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.common.AuditableEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.converters.BooleanTFConverter;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.common.AuditableEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.mptt.MpttCategoryEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.ArrayUtils;
 import org.hibernate.annotations.BatchSize;
-
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.*;
@@ -40,13 +39,13 @@ import static org.springframework.data.jpa.domain.Specification.where;
 @Getter
 @Setter
 @NoArgsConstructor
-public class QuestionnaireEntity extends AuditableEntity <String> {
+public class QuestionnaireEntity extends AuditableEntity <Long, String> {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "DESCRIPTION",length = 2000)
+    @Column(name = "DESCRIPTION", length = 2000)
     private String description;
 
     @Column(name = "TITLE")
@@ -116,7 +115,7 @@ public class QuestionnaireEntity extends AuditableEntity <String> {
                 // Important because of the join in the questionnaireTags
                 query.distinct(true);
 
-                Specification<QuestionnaireEntity> where = where(fieldContains(TITLE_FIELD, title)
+                Specification <QuestionnaireEntity> where = where(fieldContains(TITLE_FIELD, title)
                         .and(questionnaireTagsUuidIn(tagUuids))
                 ); //
 

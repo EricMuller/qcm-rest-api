@@ -20,7 +20,7 @@ import java.util.UUID;
 @SuppressWarnings("serial")
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class AuditableEntity<U extends Serializable> extends IdentifiableEntity {
+public abstract class AuditableEntity<T,U extends Serializable> extends IdentifiableEntity<T> {
 
     @Column(name = "CREATED_BY", updatable = false)
     @CreatedBy

@@ -31,8 +31,6 @@ package com.emu.apps.qcm.infra.persistence.adapters.jpa;
 import com.emu.apps.qcm.domain.model.tag.Tag;
 import com.emu.apps.qcm.infra.persistence.TagQuestionnairePersistencePort;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.TagQuestionnaireEntity;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.TagQuestionEntity;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.TagQuestionEntityMapper;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.TagQuestionnaireEntityMapper;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.TagQuestionnaireRepository;
 import org.springframework.beans.factory.annotation.Autowired;

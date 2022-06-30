@@ -28,7 +28,7 @@ import static org.springframework.data.jpa.domain.Specification.where;
 @Setter
 @NoArgsConstructor
 //@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
-public class TagQuestionnaireEntity extends AuditableEntity <String> {
+public class TagQuestionnaireEntity extends AuditableEntity <Long, String> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

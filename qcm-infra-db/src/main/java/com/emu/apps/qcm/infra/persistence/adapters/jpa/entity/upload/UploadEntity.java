@@ -28,7 +28,7 @@ import static org.springframework.data.jpa.domain.Specification.where;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UploadEntity extends AuditableEntity <String> {
+public class UploadEntity extends AuditableEntity <Long, String> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

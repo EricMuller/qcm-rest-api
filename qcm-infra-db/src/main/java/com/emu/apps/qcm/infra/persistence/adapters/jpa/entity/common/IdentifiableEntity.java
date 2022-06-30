@@ -3,7 +3,6 @@ package com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.common;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.NaturalId;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;

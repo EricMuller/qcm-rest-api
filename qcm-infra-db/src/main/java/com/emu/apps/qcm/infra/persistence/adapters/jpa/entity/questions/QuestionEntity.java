@@ -4,9 +4,8 @@ package com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions;
 import com.emu.apps.qcm.domain.model.question.TypeQuestion;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.converters.BooleanTFConverter;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.account.AccountEntity;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.common.Version;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.mptt.MpttCategoryEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.common.AuditableEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.mptt.MpttCategoryEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.QuestionnaireQuestionEntity;
 import com.emu.apps.shared.exceptions.TechnicalException;
 import lombok.Getter;
@@ -19,7 +18,6 @@ import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.persistence.criteria.JoinType;
-import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -45,15 +43,15 @@ import static org.springframework.data.jpa.domain.Specification.where;
                 @Index(name = "IDX_QTO_CREATE_BY_IDX", columnList = "created_by"),
                 @Index(name = "IDX_QTO_UUID_IDX", columnList = "uuid")
         }
-        , uniqueConstraints = {@UniqueConstraint(name = "UK_QTO_UUID_NUM_VERSION", columnNames = {"uuid","numero_version"})}
+        , uniqueConstraints = {@UniqueConstraint(name = "UK_QTO_UUID_NUM_VERSION", columnNames = {"uuid", "numero_version"})}
 )
 @Getter
 @Setter
 @NoArgsConstructor
-public class QuestionEntity extends AuditableEntity <String> {
+public class QuestionEntity extends AuditableEntity <Long, String> {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Convert(converter = BooleanTFConverter.class)
@@ -69,7 +67,7 @@ public class QuestionEntity extends AuditableEntity <String> {
     private TypeQuestion type;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="category_id")
+    @JoinColumn(name = "category_id")
     private MpttCategoryEntity mpttCategory;
 
     //    @Enumerated(EnumType.STRING)
@@ -97,7 +95,7 @@ public class QuestionEntity extends AuditableEntity <String> {
     private AccountEntity owner;
 
     @Column(name = "NUMERO_VERSION", nullable = false)
-    private int numeroVersion = 0 ;
+    private int numeroVersion = 0;
 
     public QuestionEntity(UUID uuid) {
         super(uuid);
@@ -145,7 +143,7 @@ public class QuestionEntity extends AuditableEntity <String> {
         @Override
         public Specification <QuestionEntity> build() {
 
-            Specification accountSpecification =accountUuidIn(ownerAccountUuid);
+            var accountSpecification = accountUuidIn(ownerAccountUuid);
             if (Objects.nonNull(accountSpecification)) {
                 Specification <QuestionEntity> where =
                         accountSpecification.and(questionnaireQuestionsUuidIn(questionnaireUuids))

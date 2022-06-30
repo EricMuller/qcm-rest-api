@@ -1,22 +1,30 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions;
 
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.common.AuditableEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.converters.BooleanTFConverter;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.common.AuditableEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @Table(name = "RESPONSE")
-public class ResponseEntity extends AuditableEntity <String> {
+public class ResponseEntity extends AuditableEntity <Long, String> {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @SuppressWarnings("squid:S1700")

@@ -97,7 +97,7 @@ import static org.springframework.data.jpa.domain.Specification.where;
                         "   AND child.rgt < ancestor.lft)" +
                         " ORDER BY child.lft ASC")
 })
-public class MpttCategoryEntity extends AuditableEntity <String> implements MpttHierarchicalEntity <MpttCategoryEntity> {
+public class MpttCategoryEntity extends AuditableEntity <Long,String> implements MpttHierarchicalEntity <MpttCategoryEntity> {
 
     public static final String ROOT_NAME = "root";
 

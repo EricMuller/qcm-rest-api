@@ -7,7 +7,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.http.MediaType;
 
-import javax.persistence.*;
+import javax.persistence.Cacheable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
 @Getter
@@ -15,7 +23,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Cacheable
 @Table(name = "webhooks")
-public class WebHookEntity extends AuditableEntity <String> {
+public class WebHookEntity extends AuditableEntity <Long, String> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +31,7 @@ public class WebHookEntity extends AuditableEntity <String> {
 
     private String url;
 
-    @Column(name ="content_type", nullable = false)
+    @Column(name = "content_type", nullable = false)
     private String contentType = MediaType.APPLICATION_JSON_VALUE;
 
     @Column(name = "secret", nullable = false)

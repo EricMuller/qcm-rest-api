@@ -38,7 +38,7 @@ public class SimpleJpaBulkRepositoryImpl<T extends AuditableEntity, I extends Se
 
     }
 
-    private <T extends AuditableEntity> T persistOrMerge(T t) {
+    private <U extends AuditableEntity> U persistOrMerge(U t) {
         if (Objects.isNull(t.getId())) {
             entityManager.persist(t);
             return t;

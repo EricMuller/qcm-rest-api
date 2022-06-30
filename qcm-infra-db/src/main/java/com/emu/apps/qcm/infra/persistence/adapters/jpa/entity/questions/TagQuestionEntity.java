@@ -28,10 +28,10 @@ import static org.springframework.data.jpa.domain.Specification.where;
 @Setter
 @NoArgsConstructor
 //@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
-public class TagQuestionEntity extends AuditableEntity <String> {
+public class TagQuestionEntity extends AuditableEntity <Long, String> {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "LIBELLE")

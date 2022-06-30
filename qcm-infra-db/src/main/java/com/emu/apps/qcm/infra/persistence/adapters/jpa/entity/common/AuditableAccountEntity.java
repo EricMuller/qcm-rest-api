@@ -21,7 +21,7 @@ import java.util.UUID;
 @SuppressWarnings("serial")
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class AuditableAccountEntity<U extends Serializable> extends IdentifiableEntity {
+public abstract class AuditableAccountEntity<T, U extends Serializable> extends IdentifiableEntity <T> {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "CREATED_BY", updatable = false, nullable = false)
@@ -82,7 +82,7 @@ public abstract class AuditableAccountEntity<U extends Serializable> extends Ide
         this.lastModifiedBy = lastModifiedBy;
     }
 
-    public abstract static  class BaseSpecification<T> {
+    public abstract static class BaseSpecification<T> {
 
         private static final String WILDCARD = "%";
 
