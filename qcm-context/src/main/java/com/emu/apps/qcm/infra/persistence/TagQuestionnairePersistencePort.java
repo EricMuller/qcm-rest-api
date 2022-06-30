@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
 
-public interface TagPersistencePort {
+public interface TagQuestionnairePersistencePort {
 
 //
     Tag save(Tag tag);

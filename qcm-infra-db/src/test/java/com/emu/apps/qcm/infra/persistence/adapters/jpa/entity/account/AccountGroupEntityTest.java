@@ -1,8 +1,8 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.account;
 
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.account.AccountGroupId;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.account.AccountEntity;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.account.GroupEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.account.group.AccountGroupEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.account.group.AccountGroupId;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.account.group.GroupEntity;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

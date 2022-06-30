@@ -7,6 +7,7 @@ import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireId;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireQuery;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireQuestion;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireRepository;
+import com.emu.apps.qcm.domain.model.tag.Tag;
 import com.emu.apps.shared.application.ApplicationService;
 import com.emu.apps.shared.events.EventBus;
 import com.emu.apps.shared.exceptions.I18nedNotFoundException;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import static com.emu.apps.qcm.application.events.AppEvents.QCM_CREATED;
@@ -90,6 +92,11 @@ public class QuestionnaireCatalog implements ApplicationService {
     @Override
     public EventBus getEventBus() {
         return eventBus;
+    }
+
+    public Page <Tag> getTags(String search, Pageable pageable, PrincipalId principal) throws IOException {
+
+        return questionnaireRepository.getTags(search, pageable, principal);
     }
 
 }

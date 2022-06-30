@@ -1,14 +1,17 @@
 package com.emu.apps.qcm.rest.controllers.management;
 
 import com.emu.apps.qcm.application.QuestionCatalog;
+import com.emu.apps.qcm.application.RefCatalog;
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
 import com.emu.apps.qcm.domain.model.question.QuestionId;
+import com.emu.apps.qcm.domain.model.tag.TagId;
 import com.emu.apps.qcm.rest.config.cache.CacheName;
 import com.emu.apps.qcm.rest.controllers.management.command.QuestionStatus;
 import com.emu.apps.qcm.rest.controllers.management.hal.QuestionModelAssembler;
 import com.emu.apps.qcm.rest.controllers.management.hal.SearchQuestionModelAssembler;
 import com.emu.apps.qcm.rest.controllers.management.hal.TagModelAssembler;
 import com.emu.apps.qcm.rest.controllers.management.openui.QuestionView;
+import com.emu.apps.qcm.rest.controllers.management.resources.CategoryResource;
 import com.emu.apps.qcm.rest.controllers.management.resources.MessageResource;
 import com.emu.apps.qcm.rest.controllers.management.resources.QuestionResource;
 import com.emu.apps.qcm.rest.controllers.management.resources.SearchQuestionResource;
@@ -16,6 +19,7 @@ import com.emu.apps.qcm.rest.controllers.management.resources.TagResource;
 import com.emu.apps.qcm.rest.mappers.QcmResourceMapper;
 import com.emu.apps.qcm.rest.validators.ValidUuid;
 import com.emu.apps.shared.annotations.Timer;
+import com.emu.apps.shared.exceptions.FunctionnalException;
 import com.emu.apps.shared.exceptions.I18nedNotFoundException;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -31,6 +35,8 @@ import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -43,7 +49,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.List;
 
+import static com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.mptt.MpttType.QUESTION;
 import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.*;
 import static com.emu.apps.qcm.rest.controllers.management.resources.MessageResource.ERROR;
 import static com.emu.apps.shared.exceptions.I18nedMessageSupport.UNKNOWN_UUID_QUESTION;
@@ -67,6 +75,7 @@ public class QuestionRestController {
 
     private final QuestionCatalog questionCatalog;
 
+    private final RefCatalog refCatalog;
     private final QcmResourceMapper qcmResourceMapper;
 
     private final SearchQuestionModelAssembler searchQuestionModelAssembler;
@@ -75,10 +84,11 @@ public class QuestionRestController {
 
     private final TagModelAssembler tagModelAssembler;
 
-    public QuestionRestController(QuestionCatalog questionCatalog, QcmResourceMapper qcmResourceMapper,
+    public QuestionRestController(QuestionCatalog questionCatalog, RefCatalog refCatalog, QcmResourceMapper qcmResourceMapper,
                                   SearchQuestionModelAssembler searchQuestionModelAssembler,
                                   QuestionModelAssembler questionModelAssembler, TagModelAssembler tagModelAssembler) {
         this.questionCatalog = questionCatalog;
+        this.refCatalog = refCatalog;
         this.qcmResourceMapper = qcmResourceMapper;
         this.searchQuestionModelAssembler = searchQuestionModelAssembler;
         this.questionModelAssembler = questionModelAssembler;
@@ -111,6 +121,7 @@ public class QuestionRestController {
     @GetMapping(value = TAGS, produces = {APPLICATION_JSON_VALUE})
     @Timer
     @PageableAsQueryParam
+    @Operation(summary = "Get all tags")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List Tags",
                     content = @Content(array = @ArraySchema(schema = @Schema(name = "TagResources", implementation = TagResource.class)))
@@ -127,8 +138,9 @@ public class QuestionRestController {
     @GetMapping(value = STATUS, produces = {APPLICATION_JSON_VALUE})
     @Timer
     @PageableAsQueryParam
+    @Operation(summary = "Get all status")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "List Tags",
+            @ApiResponse(responseCode = "200", description = "List status",
                     content = @Content(array = @ArraySchema(schema = @Schema(name = "TagResources", implementation = String.class)))
             )})
     @Timed(value = "questions.getStatus", longTask = true)
@@ -140,6 +152,7 @@ public class QuestionRestController {
     @Timer
     @Cacheable(cacheNames = CacheName.Names.QUESTION, key = "#uuid")
     @ResponseBody
+    @Operation(summary = "Get a question")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Object updated", content = @Content(schema = @Schema(name = "QuestionResource", implementation = QuestionResource.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input")})
@@ -159,6 +172,7 @@ public class QuestionRestController {
     @PutMapping(value = "/{uuid}", produces = APPLICATION_JSON_VALUE)
     @CachePut(cacheNames = CacheName.Names.QUESTION, condition = "#questionResource != null", key = "#uuid")
     @ResponseBody
+    @Operation(summary = "Update a question")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Object updated", content = @Content(schema = @Schema(name = "QuestionResource", implementation = QuestionResource.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input")})
@@ -177,6 +191,7 @@ public class QuestionRestController {
 
     @PostMapping(produces = APPLICATION_JSON_VALUE)
     @ResponseBody
+    @Operation(summary = "Add a new question")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Object created", content = @Content(schema = @Schema(name = "QuestionResource", implementation = QuestionResource.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input")})
@@ -194,6 +209,7 @@ public class QuestionRestController {
 
     @DeleteMapping(value = "/{uuid}")
     @ResponseBody
+    @Operation(summary = "Delete a question")
     @CacheEvict(cacheNames = CacheName.Names.QUESTION, condition = "#uuid != null", key = "#uuid")
     @Timed(value = "questions.deleteQuestionByUuid")
     public ResponseEntity <Void> deleteQuestionByUuid(@PathVariable("uuid") String uuid) {
@@ -228,5 +244,50 @@ public class QuestionRestController {
     public ResponseEntity <MessageResource> handleAllException(Exception e) {
         return badRequest().body(new MessageResource(ERROR, e.getMessage()));
     }
+
+    @GetMapping(TAGS)
+    @ResponseBody
+    @Operation(summary = "Get all tags")
+    @PageableAsQueryParam
+    @Timed(value = "question.tags.getTags", longTask = true)
+    public QuestionRestController.PageTag getTags(@RequestParam(value = "search", required = false) String search,
+                                                       @Parameter(hidden = true)
+                                                       @PageableDefault(direction = DESC, sort = {"dateModification"}, size = 100) Pageable pageable) throws IOException {
+
+        Page <TagResource> tagResourcesPage =
+                qcmResourceMapper.tagToTagResources(questionCatalog.getTags(search, pageable, PrincipalId.of(getPrincipal())));
+
+        return new QuestionRestController.PageTag(tagResourcesPage.getContent(), pageable, tagResourcesPage.getContent().size());
+    }
+
+    @GetMapping(value = TAGS+"/{uuid}")
+    @ResponseBody
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Object", content = @Content(schema = @Schema(name = "TagResource", implementation = TagResource.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid input")})
+    @Timed(value = "tags.getTagByUuid")
+    public EntityModel <TagResource> getTagByUuid(@PathVariable("uuid") String uuid) {
+        return EntityModel.of(qcmResourceMapper.tagToTagResources(refCatalog.getTagQuestionOfId(new TagId(uuid))));
+    }
+
+
+    @GetMapping(CATEGORIES)
+    @ResponseBody
+    @Operation(summary = "Get all categories")
+    @ApiResponse(responseCode = "200", description = "successful operation",
+            content = @Content(array = @ArraySchema(schema = @Schema(implementation = CategoryResource.class))))
+    @Timed("questions.getCategories")
+    public Iterable <CategoryResource> getQuestionCategories()  {
+
+        return qcmResourceMapper.categoriesToCategoryResources(
+                refCatalog.getCategories(PrincipalId.of(getPrincipal()), QUESTION.name()));
+    }
+
+    class PageTag extends PageImpl <TagResource> {
+        public PageTag(List <TagResource> content, Pageable pageable, long total) {
+            super(content, pageable, total);
+        }
+    }
+
 
 }

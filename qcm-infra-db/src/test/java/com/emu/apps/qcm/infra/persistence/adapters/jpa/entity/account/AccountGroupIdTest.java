@@ -1,5 +1,6 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.account;
 
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.account.group.AccountGroupId;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

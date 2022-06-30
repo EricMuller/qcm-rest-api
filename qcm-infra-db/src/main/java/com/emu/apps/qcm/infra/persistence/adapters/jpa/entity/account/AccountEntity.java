@@ -1,5 +1,7 @@
 package com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.account;
 
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.account.group.AccountGroupEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.account.profile.AccountProfileEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.common.IdentifiableEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,7 +33,7 @@ import java.util.UUID;
         indexes = {@Index(name = "IDX_USR_EMAIL_IDX", columnList = "email")})
 @Cacheable
 @EntityListeners(AuditingEntityListener.class)
-public class AccountEntity extends IdentifiableEntity {
+public class AccountEntity extends IdentifiableEntity <Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -75,7 +77,11 @@ public class AccountEntity extends IdentifiableEntity {
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     @BatchSize(size = 20)
-    private Set<AccountGroupEntity> groups = new HashSet <>();
+    private Set <AccountGroupEntity> groups = new HashSet <>();
+
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
+    @BatchSize(size = 20)
+    private Set <AccountProfileEntity> profiles = new HashSet <>();
 
 //    @ManyToMany
 //    @JoinTable(

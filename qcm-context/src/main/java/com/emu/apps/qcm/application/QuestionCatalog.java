@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -95,4 +96,10 @@ public class QuestionCatalog implements ApplicationService {
     public EventBus getEventBus() {
         return null;
     }
+
+    public Page <Tag> getTags(String search, Pageable pageable, PrincipalId principal) throws IOException {
+
+        return questionRepository.getTags(search, pageable, principal);
+    }
+
 }

@@ -18,7 +18,7 @@ import static java.util.Objects.isNull;
 @MappedSuperclass
 @Getter
 @Setter
-public abstract class IdentifiableEntity implements Serializable {
+public abstract class IdentifiableEntity<T> implements Serializable {
 
     @Column(name = "UUID", nullable = false, updatable = false)
     @NaturalId
@@ -35,7 +35,7 @@ public abstract class IdentifiableEntity implements Serializable {
         this.uuid = uuid;
     }
 
-    public abstract Long getId();
+    public abstract T getId();
 
     @PrePersist
     public void prePersist() {

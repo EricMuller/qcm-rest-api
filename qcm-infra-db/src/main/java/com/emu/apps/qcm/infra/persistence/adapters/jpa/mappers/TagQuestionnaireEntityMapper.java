@@ -31,7 +31,7 @@ package com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers;
 
 import com.emu.apps.qcm.domain.mappers.TagIdMapper;
 import com.emu.apps.qcm.domain.model.tag.Tag;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.TagQuestionEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questionnaires.TagQuestionnaireEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.custom.IgnoreEntityId;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.custom.ModelId;
 import org.mapstruct.Mapper;
@@ -39,17 +39,17 @@ import org.mapstruct.ReportingPolicy;
 import org.springframework.data.domain.Page;
 
 @Mapper(componentModel = "spring", uses = {UuidMapper.class, TagIdMapper.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface TagEntityMapper {
+public interface TagQuestionnaireEntityMapper {
 
     @ModelId
-    Tag entityToModel(TagQuestionEntity tag);
+    Tag entityToModel(TagQuestionnaireEntity tag);
 
     @IgnoreEntityId
-    TagQuestionEntity modelToEntity(Tag tag);
+    TagQuestionnaireEntity modelToEntity(Tag tag);
 
-    Iterable <Tag> entitiesToModels(Iterable <TagQuestionEntity> tags);
+    Iterable <Tag> entitiesToModels(Iterable <TagQuestionnaireEntity> tags);
 
-    default Page <Tag> pageToModel(Page <TagQuestionEntity> page) {
+    default Page <Tag> pageToModel(Page <TagQuestionnaireEntity> page) {
         return page.map(this::entityToModel);
     }
 

@@ -18,7 +18,6 @@ import com.emu.apps.qcm.domain.model.questionnaire.Questionnaire;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireId;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireRepository;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireTag;
-import com.emu.apps.qcm.domain.model.tag.TagRepository;
 import com.emu.apps.qcm.domain.model.upload.Upload;
 import com.emu.apps.qcm.domain.model.upload.UploadId;
 import com.emu.apps.qcm.domain.model.upload.UploadRepository;
@@ -73,18 +72,16 @@ public class QuestionnaireImport {
 
     private final QuestionRepository questionRepository;
 
-    private final TagRepository tagRepository;
-
     private final UploadRepository uploadRepository;
 
     private final MpttCategoryRepository mpttCategoryRepository;
 
 
     public QuestionnaireImport(QuestionnaireRepository questionnaireService, QuestionRepository questionService,
-                               TagRepository tagRepository, UploadRepository uploadRepository, MpttCategoryRepository mpttCategoryRepository) {
+                               UploadRepository uploadRepository, MpttCategoryRepository mpttCategoryRepository) {
         this.questionnaireRepository = questionnaireService;
         this.questionRepository = questionService;
-        this.tagRepository = tagRepository;
+
         this.uploadRepository = uploadRepository;
         this.mpttCategoryRepository = mpttCategoryRepository;
     }
@@ -250,7 +247,7 @@ public class QuestionnaireImport {
                 questionnaire.setTitle(IMPORT);
                 questionnaire.setStatus(DRAFT);
 
-                final var tagQuestionnaire = tagRepository.findOrCreateByLibelle(IMPORT, principal);
+                final var tagQuestionnaire = questionnaireRepository.findOrCreateTagByLibelle(IMPORT, principal);
 
                 var questionnaireTag = new QuestionnaireTag();
                 questionnaireTag.setUuid(tagQuestionnaire.getId().toUuid());

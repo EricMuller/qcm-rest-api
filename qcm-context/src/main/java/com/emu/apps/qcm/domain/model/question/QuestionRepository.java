@@ -7,6 +7,7 @@ import com.emu.apps.qcm.domain.model.tag.TagId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -21,5 +22,9 @@ public interface QuestionRepository {
     Question saveQuestion(Question question, PrincipalId principal);
 
     void deleteQuestionOfId(QuestionId questionId);
+
+    Page <Tag> getTags(String search, Pageable pageable, PrincipalId principal) throws IOException;
+
+    Tag getTagOfId(TagId tagId);
 
 }

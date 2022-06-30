@@ -2,11 +2,13 @@ package com.emu.apps.qcm.rest.controllers.management;
 
 
 import com.emu.apps.qcm.application.QuestionnaireCatalog;
+import com.emu.apps.qcm.application.RefCatalog;
 import com.emu.apps.qcm.application.export.ExportService;
 import com.emu.apps.qcm.application.export.dto.Export;
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
 import com.emu.apps.qcm.domain.model.question.QuestionId;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireId;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.QuestionnaireTagRepository;
 import com.emu.apps.qcm.rest.config.cache.CacheName;
 import com.emu.apps.qcm.rest.controllers.management.command.QuestionnaireQuestionUpdate;
 import com.emu.apps.qcm.rest.controllers.management.hal.QuestionnaireActionModelAssembler;
@@ -14,13 +16,16 @@ import com.emu.apps.qcm.rest.controllers.management.hal.QuestionnaireModelAssemb
 import com.emu.apps.qcm.rest.controllers.management.hal.QuestionnaireQuestionModelAssembler;
 import com.emu.apps.qcm.rest.controllers.management.openui.QuestionnaireView;
 import com.emu.apps.qcm.rest.controllers.management.resources.ActionResource;
+import com.emu.apps.qcm.rest.controllers.management.resources.CategoryResource;
 import com.emu.apps.qcm.rest.controllers.management.resources.QuestionnaireQuestionResource;
 import com.emu.apps.qcm.rest.controllers.management.resources.QuestionnaireResource;
+import com.emu.apps.qcm.rest.controllers.management.resources.TagResource;
 import com.emu.apps.qcm.rest.mappers.QcmResourceMapper;
 import com.emu.apps.shared.annotations.Timer;
 import com.emu.apps.shared.exceptions.I18nedNotFoundException;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.micrometer.core.annotation.Timed;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -35,6 +40,7 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -47,10 +53,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.websocket.server.PathParam;
+import java.io.IOException;
 import java.util.List;
 
 import static com.emu.apps.qcm.application.export.ExportFormat.getFileFormat;
+import static com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.mptt.MpttType.QUESTION;
+import static com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.mptt.MpttType.QUESTIONNAIRE;
 import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.*;
 import static com.emu.apps.shared.exceptions.I18nedMessageSupport.UNKNOWN_UUID_QUESTIONNAIRE;
 import static com.emu.apps.shared.security.AccountContextHolder.getPrincipal;
@@ -75,6 +83,8 @@ public class QuestionnaireRestController {
 
     private final QuestionnaireCatalog questionnaireCatalog;
 
+    private final RefCatalog refCatalog;
+
     private final QcmResourceMapper qcmResourceMapper;
 
     private final ExportService exportService;
@@ -85,16 +95,18 @@ public class QuestionnaireRestController {
 
     private final QuestionnaireActionModelAssembler questionnaireActionModelAssembler;
 
-    public QuestionnaireRestController(QuestionnaireCatalog questionnaireCatalog, QcmResourceMapper qcmResourceMapper, ExportService exportService, QuestionnaireModelAssembler questionnaireModelAssembler, QuestionnaireQuestionModelAssembler questionnaireQuestionModelAssembler, QuestionnaireActionModelAssembler questionnaireActionModelAssembler) {
+    public QuestionnaireRestController(QuestionnaireCatalog questionnaireCatalog, QcmResourceMapper qcmResourceMapper, ExportService exportService, QuestionnaireModelAssembler questionnaireModelAssembler, QuestionnaireQuestionModelAssembler questionnaireQuestionModelAssembler, QuestionnaireActionModelAssembler questionnaireActionModelAssembler, QuestionnaireTagRepository questionnaireTagRepository, RefCatalog refCatalog) {
         this.questionnaireCatalog = questionnaireCatalog;
         this.qcmResourceMapper = qcmResourceMapper;
         this.exportService = exportService;
         this.questionnaireModelAssembler = questionnaireModelAssembler;
         this.questionnaireQuestionModelAssembler = questionnaireQuestionModelAssembler;
         this.questionnaireActionModelAssembler = questionnaireActionModelAssembler;
+        this.refCatalog = refCatalog;
     }
 
     @GetMapping(value = "/{uuid}")
+    @Operation(summary = "Get a questionnaire")
     @Timer
     @Cacheable(cacheNames = CacheName.Names.QUESTIONNAIRE, key = "#uuid")
     @ResponseBody
@@ -111,6 +123,7 @@ public class QuestionnaireRestController {
     }
 
     @DeleteMapping(value = "/{uuid}")
+    @Operation(summary = "Delete a questionnaire")
     @CacheEvict(cacheNames = CacheName.Names.QUESTIONNAIRE, key = "#uuid")
     @ResponseBody
     @Timed(value = "questionnaires.deleteQuestionnaireById")
@@ -120,6 +133,7 @@ public class QuestionnaireRestController {
     }
 
     @PutMapping(value = "/{uuid}")
+    @Operation(summary = "Update a questionnaire")
     @CachePut(cacheNames = CacheName.Names.QUESTIONNAIRE, condition = "#questionnaireResource != null", key = "#uuid")
     @Timer
     @ResponseBody
@@ -136,6 +150,7 @@ public class QuestionnaireRestController {
 
     @PostMapping
     @ResponseBody
+    @Operation(summary = "Add a new questionnaire")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Object created", content = @Content(schema = @Schema(name = "QuestionnaireResource", implementation = QuestionnaireResource.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input")})
@@ -157,6 +172,7 @@ public class QuestionnaireRestController {
     @GetMapping(value = "/{uuid}" + QUESTIONS)
     @ResponseBody
     @PageableAsQueryParam
+    @Operation(summary = "Get all questions")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List Questions",
                     content = @Content(array = @ArraySchema(schema = @Schema(name = "QuestionnaireQuestionResource", implementation = QuestionnaireQuestionResource.class)))
@@ -177,6 +193,7 @@ public class QuestionnaireRestController {
     @GetMapping(value = "/{uuid}" + QUESTIONS + "/{q_uuid}")
     @Timer
     @ResponseBody
+    @Operation(summary = "Get a question")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Object", content = @Content(schema = @Schema(name = "QuestionnaireQuestionResource", implementation = QuestionnaireQuestionResource.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input")})
@@ -189,6 +206,7 @@ public class QuestionnaireRestController {
     @Timer
     @ResponseBody
     @PageableAsQueryParam
+    @Operation(summary = "Get all questionnaires")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List Questionnaires",
                     content = @Content(array = @ArraySchema(schema = @Schema(name = "QuestionnaireResource", implementation = QuestionnaireResource.class)))
@@ -204,6 +222,7 @@ public class QuestionnaireRestController {
     }
 
     @PutMapping(value = "/{uuid}/questions")
+    @Operation(summary = "Add a question")
     @ResponseBody
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Object updated", content = @Content(schema = @Schema(name = "QuestionnaireQuestionResource", implementation = QuestionnaireQuestionResource.class))),
@@ -222,6 +241,7 @@ public class QuestionnaireRestController {
 
 
     @DeleteMapping(value = "/{uuid}/questions/{question_uuid}")
+    @Operation(summary = "Delete a question")
     @ResponseBody
     @Timed(value = "questionnaires.deleteQuestionByQuestionnaireId")
     public ResponseEntity <Void> deleteQuestionByQuestionnaireId(@PathVariable("uuid") String uuid, @PathVariable("question_uuid") String questionUuid) {
@@ -232,6 +252,7 @@ public class QuestionnaireRestController {
 
     @Timer
     @PutMapping(value = "/{uuid}/actions/export/invoke", produces = APPLICATION_JSON_VALUE)
+    @Operation(summary = "Invoke export action")
     //@GetMapping(value = "/{uuid}" + EXPORTS, produces = APPLICATION_JSON_VALUE)
     @ResponseBody
     @Timed(value = "questionnaires.actions.getExportByQuestionnaireUuid", longTask = true)
@@ -241,6 +262,7 @@ public class QuestionnaireRestController {
 
     @Timer
     @PutMapping(value = "/{uuid}/actions/report/invoke", produces = APPLICATION_OCTET_STREAM_VALUE)
+    @Operation(summary = "Invoke report action")
     //@GetMapping(value = "/{uuid}" + EXPORTS + "/{type-report}", produces = APPLICATION_OCTET_STREAM_VALUE)
     @SuppressWarnings("squid:S2583")
     @Timed(value = "questionnaires.actions.getReportByQuestionnaireUuid", longTask = true)
@@ -261,6 +283,7 @@ public class QuestionnaireRestController {
 
 
     @ResponseBody
+    @Operation(summary = "Get all actions")
     @GetMapping(value = "/{uuid}/actions/")
     @Timed(value = "questionnaires.getActions")
     public PagedModel <EntityModel <ActionResource>> getActions(@PathVariable("uuid") String uploadUuid,
@@ -276,8 +299,43 @@ public class QuestionnaireRestController {
     }
 
 
+
+    @GetMapping(TAGS)
+    @ResponseBody
+    @Operation(summary = "Get all tags")
+    @PageableAsQueryParam
+    @Timed(value = "questionnaire.tags.getTags", longTask = true)
+    public QuestionnaireRestController.PageTag getTags(@RequestParam(value = "search", required = false) String search,
+                                             @Parameter(hidden = true)
+                                             @PageableDefault(direction = DESC, sort = {"dateModification"}, size = 100) Pageable pageable) throws IOException {
+
+        Page <TagResource> tagResourcesPage =
+                qcmResourceMapper.tagToTagResources(questionnaireCatalog.getTags(search, pageable, PrincipalId.of(getPrincipal())));
+
+        return new QuestionnaireRestController.PageTag(tagResourcesPage.getContent(), pageable, tagResourcesPage.getContent().size());
+    }
+
+
+    @GetMapping(CATEGORIES)
+    @ResponseBody
+    @Operation(summary = "Get all categories")
+    @ApiResponse(responseCode = "200", description = "successful operation",
+            content = @Content(array = @ArraySchema(schema = @Schema(implementation = CategoryResource.class))))
+    @Timed("questionnaire.category.getCategories")
+    public Iterable <CategoryResource> getQuestionCategories()  {
+
+        return qcmResourceMapper.categoriesToCategoryResources(
+                refCatalog.getCategories(PrincipalId.of(getPrincipal()), QUESTIONNAIRE.name()));
+    }
+
     class PageAction extends PageImpl <ActionResource> {
         public PageAction(List <ActionResource> content, Pageable pageable, long total) {
+            super(content, pageable, total);
+        }
+    }
+
+    class PageTag extends PageImpl <TagResource> {
+        public PageTag(List <TagResource> content, Pageable pageable, long total) {
             super(content, pageable, total);
         }
     }

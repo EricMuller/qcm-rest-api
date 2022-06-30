@@ -3,10 +3,13 @@ package com.emu.apps.qcm.domain.model.questionnaire;
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
 import com.emu.apps.qcm.domain.model.question.Question;
 import com.emu.apps.qcm.domain.model.question.QuestionId;
+import com.emu.apps.qcm.domain.model.tag.Tag;
+import com.emu.apps.qcm.domain.model.tag.TagId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -38,5 +41,11 @@ public interface QuestionnaireRepository {
     void activateQuestionnaire(QuestionnaireId questionnaireId);
 
     QuestionnaireAggregate getQuestionnaireAggregateOfId(QuestionnaireId questionnaireId) ;
+
+    Page <Tag> getTags(String search, Pageable pageable, PrincipalId principal) throws IOException;
+
+    Tag getTagOfId(TagId tagId);
+
+    Tag findOrCreateTagByLibelle(String libelle, PrincipalId principal) ;
 
 }

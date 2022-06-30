@@ -1,18 +1,18 @@
 package com.emu.apps.qcm.domain.model.question;
 
-import com.emu.apps.qcm.domain.mappers.QuestionnaireIdMapper;
-import com.emu.apps.qcm.domain.mappers.TagIdMapper;
-import com.emu.apps.qcm.domain.model.account.Account;
-import com.emu.apps.qcm.domain.model.account.AccountId;
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
+import com.emu.apps.qcm.domain.model.tag.Tag;
+import com.emu.apps.qcm.domain.model.tag.TagId;
 import com.emu.apps.qcm.infra.persistence.QuestionPersistencePort;
+import com.emu.apps.qcm.infra.persistence.TagQuestionPersistencePort;
 import com.emu.apps.shared.exceptions.I18nedNotFoundException;
-import com.emu.apps.shared.security.AccountContextHolder;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
+import com.emu.apps.shared.parsers.rsql.CriteriaUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
@@ -35,9 +35,11 @@ class QuestionRepositoryAdapter implements QuestionRepository {
 
     private final QuestionPersistencePort questionPersistencePort;
 
+    private final TagQuestionPersistencePort tagQuestionPersistencePort;
 
-    public QuestionRepositoryAdapter(QuestionPersistencePort questionPersistencePort ) {
+    public QuestionRepositoryAdapter(QuestionPersistencePort questionPersistencePort, TagQuestionPersistencePort tagQuestionPersistencePort) {
         this.questionPersistencePort = questionPersistencePort;
+        this.tagQuestionPersistencePort = tagQuestionPersistencePort;
     }
 
     @Override
@@ -55,9 +57,10 @@ class QuestionRepositoryAdapter implements QuestionRepository {
     public Collection <Question> saveQuestions(Collection <Question> questions, final PrincipalId principalId) {
         return questions
                 .stream()
-                .map(    questionDto -> saveQuestion(questionDto, principalId))
+                .map(questionDto -> saveQuestion(questionDto, principalId))
                 .collect(Collectors.toList());
     }
+
     @Override
     @Transactional
     public Question saveQuestion(Question question, PrincipalId principalId) {
@@ -80,5 +83,17 @@ class QuestionRepositoryAdapter implements QuestionRepository {
         questionPersistencePort.deleteByUuid(questionOptional.getId().toUuid());
     }
 
+    @Override
+    public Page <Tag> getTags(String search, Pageable pageable, PrincipalId principal) throws IOException {
 
+        var criterias = CriteriaUtils.toCriteria(search);
+        Optional <String> firstLetter = CriteriaUtils.getAttribute("firstLetter", criterias);
+
+        return tagQuestionPersistencePort.findAllByPage(firstLetter, pageable, principal.toUuid());
+    }
+
+    @Override
+    public Tag getTagOfId(TagId tagId) {
+        return tagQuestionPersistencePort.findByUuid(tagId.toUuid());
+    }
 }

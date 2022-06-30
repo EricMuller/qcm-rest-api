@@ -13,14 +13,14 @@ import java.util.UUID;
 
 
 @Repository
-public interface TagQuestionnaireRepository extends PagingAndSortingRepository<TagQuestionnaireEntity, Long>, JpaSpecificationExecutor<TagQuestionEntity> {
+public interface TagQuestionnaireRepository extends PagingAndSortingRepository <TagQuestionnaireEntity, Long> , JpaSpecificationExecutor <TagQuestionnaireEntity> {
 
     @Query("SELECT DISTINCT q FROM TagQuestionnaireEntity q WHERE q.libelle  = :libelle and q.createdBy= :principal ")
     TagQuestionnaireEntity findByLibelle(@Param("libelle") String libelle, @Param("principal") String principal);
 
-    Iterable<TagQuestionnaireEntity> findByLibelleContaining(String libelle);
+    Iterable <TagQuestionnaireEntity> findByLibelleContaining(String libelle);
 
-    Optional<TagQuestionnaireEntity> findByUuid(UUID uuid);
+    Optional <TagQuestionnaireEntity> findByUuid(UUID uuid);
 
     void deleteByCreatedByEquals(String user);
 

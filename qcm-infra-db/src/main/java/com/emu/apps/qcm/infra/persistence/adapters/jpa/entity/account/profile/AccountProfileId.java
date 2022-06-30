@@ -1,4 +1,4 @@
-package com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.account;
+package com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.account.profile;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,31 +13,31 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
-public class AccountGroupId implements Serializable {
+public class AccountProfileId implements Serializable {
     private static final long serialVersionUID = -184075071703258579L;
 
     @Column(name = "ACCOUNT_ID")
     private Long accountId;
 
-    @Column(name = "GROUP_ID")
-    private Long groupId;
+    @Column(name = "PROFILE_ID")
+    private Long profileId;
 
-    public AccountGroupId(Long accountId, Long groupId) {
+    public AccountProfileId(Long accountId, Long profileId) {
         this.accountId = accountId;
-        this.groupId = groupId;
+        this.profileId = profileId;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        AccountGroupId that = (AccountGroupId) o;
+        AccountProfileId that = (AccountProfileId) o;
         return Objects.equals(accountId, that.accountId) &&
-                Objects.equals(groupId, that.groupId);
+                Objects.equals(profileId, that.profileId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(accountId, groupId);
+        return Objects.hash(accountId, profileId);
     }
 }

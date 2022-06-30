@@ -1,6 +1,6 @@
 package com.emu.apps.qcm.rest.controllers.management.hal;
 
-import com.emu.apps.qcm.rest.controllers.management.TagRestController;
+import com.emu.apps.qcm.rest.controllers.management.QuestionRestController;
 import com.emu.apps.qcm.rest.controllers.management.resources.TagResource;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -25,7 +25,7 @@ public class TagModelAssembler implements SimpleRepresentationModelAssembler <Ta
     public void addLinks(EntityModel <TagResource> resource) {
 
         resource.add(
-                linkTo(methodOn(TagRestController.class).getTagByUuid( (resource.getContent() != null ) ? resource.getContent().getUuid() :
+                linkTo(methodOn(QuestionRestController.class).getTagByUuid((resource.getContent() != null) ? resource.getContent().getUuid() :
                         "")).withSelfRel());
 
     }

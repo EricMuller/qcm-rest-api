@@ -3,8 +3,12 @@ package com.emu.apps.qcm.domain.model.questionnaire;
 import com.emu.apps.qcm.domain.model.base.PrincipalId;
 import com.emu.apps.qcm.domain.model.question.Question;
 import com.emu.apps.qcm.domain.model.question.QuestionId;
+import com.emu.apps.qcm.domain.model.tag.Tag;
+import com.emu.apps.qcm.domain.model.tag.TagId;
 import com.emu.apps.qcm.infra.persistence.QuestionnairePersistencePort;
+import com.emu.apps.qcm.infra.persistence.TagQuestionnairePersistencePort;
 import com.emu.apps.shared.exceptions.I18nedNotFoundException;
+import com.emu.apps.shared.parsers.rsql.CriteriaUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.util.Streamable;
@@ -13,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -33,8 +38,11 @@ class QuestionnaireRepositoryAdapter implements QuestionnaireRepository {
 
     private final QuestionnairePersistencePort questionnairePersistencePort;
 
-    public QuestionnaireRepositoryAdapter(QuestionnairePersistencePort questionnairePersistencePort) {
+    private final TagQuestionnairePersistencePort tagQuestionnairePersistencePort;
+
+    public QuestionnaireRepositoryAdapter(QuestionnairePersistencePort questionnairePersistencePort, TagQuestionnairePersistencePort tagQuestionnairePersistencePort) {
         this.questionnairePersistencePort = questionnairePersistencePort;
+        this.tagQuestionnairePersistencePort = tagQuestionnairePersistencePort;
     }
 
     /**
@@ -108,12 +116,13 @@ class QuestionnaireRepositoryAdapter implements QuestionnaireRepository {
         return questionnairePersistencePort.getQuestionsByQuestionnaireUuid(questionnaireId.toUuid());
     }
 
+
     /**
-     * Add  question to a questionnaire
-     *
-     * @param uuid     questionnaire UUID
-     * @param question the question DTO
-     * @return QuestionDto
+     * @param questionnaireId
+     * @param questionId
+     * @param position
+     * @param principal
+     * @return
      */
     @Override
     public QuestionnaireQuestion addQuestion(QuestionnaireId questionnaireId, QuestionId questionId, Optional <Integer> position, PrincipalId principal) {
@@ -133,7 +142,7 @@ class QuestionnaireRepositoryAdapter implements QuestionnaireRepository {
         AtomicInteger position = new AtomicInteger(0);
         return questions
                 .stream()
-                .map(question-> addQuestion(questionnaireId, question.getId(), Optional.of(position.incrementAndGet()), principal))
+                .map(question -> addQuestion(questionnaireId, question.getId(), Optional.of(position.incrementAndGet()), principal))
                 .collect(Collectors.toList());
 
     }
@@ -153,4 +162,22 @@ class QuestionnaireRepositoryAdapter implements QuestionnaireRepository {
         // on progress
     }
 
+    @Override
+    public Page <Tag> getTags(String search, Pageable pageable, PrincipalId principal) throws IOException {
+
+        var criterias = CriteriaUtils.toCriteria(search);
+        Optional <String> firstLetter = CriteriaUtils.getAttribute("firstLetter", criterias);
+
+
+        return tagQuestionnairePersistencePort.findAllByPage(firstLetter, pageable, principal.toUuid());
+    }
+
+    @Override
+    public Tag getTagOfId(TagId tagId) {
+        return tagQuestionnairePersistencePort.findByUuid(tagId.toUuid());
+    }
+
+    public Tag findOrCreateTagByLibelle(String libelle, PrincipalId principal) {
+        return tagQuestionnairePersistencePort.findOrCreateByLibelle(libelle, principal.toUuid());
+    }
 }

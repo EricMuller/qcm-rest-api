@@ -11,6 +11,7 @@ import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.account.AccountEnt
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.mptt.MpttCategoryEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.TagQuestionEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.TagQuestionEntityMapper;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.AccountRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.MpttCategoryRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.QuestionRepository;
@@ -20,7 +21,6 @@ import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.TagQuestionR
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.QuestionEntityMapper;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.QuestionEntityUpdateMapper;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.QuestionnaireQuestionEntityMapper;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.TagEntityMapper;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.UuidMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -60,7 +60,7 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
 
     private final UuidMapper uuidMapper;
 
-    private final TagEntityMapper tagMapper;
+    private final TagQuestionEntityMapper tagMapper;
 
     private final QuestionnaireQuestionEntityMapper questionnaireQuestionEntityMapper;
 
@@ -70,7 +70,7 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
     public QuestionPersistenceAdapter(QuestionRepository questionRepository, QuestionTagRepository questionTagRepository,
                                       QuestionnaireQuestionRepository questionnaireQuestionRepository,
                                       QuestionEntityMapper questionEntityMapper, QuestionEntityUpdateMapper questionEntityUpdateMapper, TagQuestionRepository tagQuestionRepository,
-                                      MpttCategoryRepository mpttCategoryRepository, UuidMapper uuidMapper, TagEntityMapper tagMapper, QuestionnaireQuestionEntityMapper questionnaireQuestionEntityMapper,
+                                      MpttCategoryRepository mpttCategoryRepository, UuidMapper uuidMapper, TagQuestionEntityMapper tagMapper, QuestionnaireQuestionEntityMapper questionnaireQuestionEntityMapper,
                                       AccountRepository accountRepository) {
         this.questionRepository = questionRepository;
         this.questionTagRepository = questionTagRepository;
