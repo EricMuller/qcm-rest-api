@@ -89,7 +89,7 @@ class QuestionRepositoryAdapter implements QuestionRepository {
         var criterias = CriteriaUtils.toCriteria(search);
         Optional <String> firstLetter = CriteriaUtils.getAttribute("firstLetter", criterias);
 
-        return tagQuestionPersistencePort.findAllByPage(firstLetter, pageable, principal.toUuid());
+        return tagQuestionPersistencePort.findTagsByPage(firstLetter, pageable, principal.toUuid());
     }
 
     @Override

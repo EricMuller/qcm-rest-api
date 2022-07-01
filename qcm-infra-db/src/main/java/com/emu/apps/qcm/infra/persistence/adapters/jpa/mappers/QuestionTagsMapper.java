@@ -30,7 +30,7 @@ package com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers;
 
 import com.emu.apps.qcm.domain.mappers.AccountIdMapper;
 import com.emu.apps.qcm.domain.mappers.QuestionIdMapper;
-import com.emu.apps.qcm.domain.model.question.QuestionWithTagsOnly;
+import com.emu.apps.qcm.domain.query.question.QuestionWithTagsOnly;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.account.AccountEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.custom.ModelId;

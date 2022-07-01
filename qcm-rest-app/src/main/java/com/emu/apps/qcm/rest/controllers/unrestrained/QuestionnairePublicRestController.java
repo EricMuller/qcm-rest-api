@@ -4,7 +4,7 @@ package com.emu.apps.qcm.rest.controllers.unrestrained;
 import com.emu.apps.qcm.application.PublishedService;
 import com.emu.apps.qcm.rest.controllers.unrestrained.resources.PublishedQuestionnaire;
 import com.emu.apps.qcm.rest.controllers.unrestrained.resources.PushishedQuestionnaireQuestion;
-import com.emu.apps.qcm.rest.mappers.PublishedMapper;
+import com.emu.apps.qcm.rest.controllers.unrestrained.mappers.PublishedMapper;
 import com.emu.apps.shared.annotations.Timer;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.*;
+import static com.emu.apps.qcm.rest.controllers.unrestrained.PublicMappings.*;
 import static org.springframework.data.domain.Sort.Direction.DESC;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 

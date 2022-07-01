@@ -2,7 +2,6 @@ package com.emu.apps.qcm.infra.persistence.adapters.jpa;
 
 import com.emu.apps.qcm.domain.model.question.Question;
 import com.emu.apps.qcm.domain.model.question.QuestionTag;
-import com.emu.apps.qcm.domain.model.question.QuestionWithTagsOnly;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireQuestion;
 import com.emu.apps.qcm.domain.model.tag.Tag;
 import com.emu.apps.qcm.infra.persistence.QuestionPersistencePort;
@@ -11,17 +10,17 @@ import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.account.AccountEnt
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.mptt.MpttCategoryEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.TagQuestionEntity;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.QuestionEntityMapper;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.QuestionEntityUpdateMapper;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.QuestionnaireQuestionEntityMapper;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.TagQuestionEntityMapper;
+import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.UuidMapper;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.AccountRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.MpttCategoryRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.QuestionRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.QuestionTagRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.QuestionnaireQuestionRepository;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.repositories.TagQuestionRepository;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.QuestionEntityMapper;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.QuestionEntityUpdateMapper;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.QuestionnaireQuestionEntityMapper;
-import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.UuidMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,7 +31,6 @@ import javax.validation.constraints.NotNull;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static java.util.Objects.nonNull;
@@ -155,31 +153,10 @@ public class QuestionPersistenceAdapter implements QuestionPersistencePort {
 
     @Override
     @Transactional(readOnly = true)
-    public Page <QuestionWithTagsOnly> findAllByPage(String[] questionnaireIds, String[] tagIds, Pageable pageable, String principal) {
-
-        var questionSpecificationBuilder = new QuestionEntity.SpecificationBuilder(principal);
-
-        questionSpecificationBuilder.setQuestionnaireUuids(uuidMapper.toUUIDs(questionnaireIds));
-        questionSpecificationBuilder.setTagUuids(uuidMapper.toUUIDs(tagIds));
-
-        return questionEntityMapper.pageEntityToPageTagDto(questionRepository.findAll(questionSpecificationBuilder.build(), pageable));
-
-    }
-
-    @Override
-    @Transactional(readOnly = true)
     public Page <Tag> findAllTagByPage(Pageable pageable, String principal) {
 
         return tagMapper.pageToModel(questionTagRepository.findAllTagByPrincipal(principal, pageable));
 
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Iterable <String> findAllStatusByPage(String principal, Pageable pageable) {
-        return StreamSupport.stream(questionRepository.findAllStatusByCreatedBy(principal, pageable)
-                        .spliterator(), false)
-                .collect(Collectors.toList());
     }
 
 

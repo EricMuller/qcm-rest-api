@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.LOGS;
+import static com.emu.apps.qcm.rest.controllers.unrestrained.PublicMappings.LOGS_API;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping(LOGS)
+@RequestMapping(LOGS_API)
 @Tag(name = "logs", description = "ngx Log feeder")
 @Slf4j
 public class NgxLoggerRestController {

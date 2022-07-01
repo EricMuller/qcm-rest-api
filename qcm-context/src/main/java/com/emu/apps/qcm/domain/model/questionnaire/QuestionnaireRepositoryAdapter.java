@@ -45,6 +45,12 @@ class QuestionnaireRepositoryAdapter implements QuestionnaireRepository {
         this.tagQuestionnairePersistencePort = tagQuestionnairePersistencePort;
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Page <Questionnaire> getQuestionnaires(String[] tagUuid, Pageable pageable, PrincipalId principal) {
+        return questionnairePersistencePort.findAllByPage(tagUuid, principal.toUuid(), pageable);
+    }
+
     /**
      * Find a Questionnaire with technical identifier
      *

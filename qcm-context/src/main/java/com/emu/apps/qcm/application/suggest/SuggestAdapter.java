@@ -1,7 +1,6 @@
 package com.emu.apps.qcm.application.suggest;
 
 
-import com.emu.apps.qcm.application.SuggestService;
 import com.emu.apps.qcm.domain.model.questionnaire.Suggest;
 import com.emu.apps.qcm.infra.persistence.QuestionnaireReaderPort;
 import org.springframework.stereotype.Service;

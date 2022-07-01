@@ -91,7 +91,7 @@ public class TagQuestionPersistenceAdapter implements TagQuestionPersistencePort
     }
 
     @Override
-    public Page <Tag> findAllByPage(Optional <String> firstLetter, Pageable pageable, String principal) {
+    public Page <Tag> findTagsByPage(Optional <String> firstLetter, Pageable pageable, String principal) {
 
         var tagSpecificationBuilder = new TagQuestionEntity.SpecificationBuilder()
                 .setPrincipal(principal)

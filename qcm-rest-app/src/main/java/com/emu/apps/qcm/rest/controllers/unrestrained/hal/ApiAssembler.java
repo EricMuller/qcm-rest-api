@@ -3,7 +3,7 @@ package com.emu.apps.qcm.rest.controllers.unrestrained.hal;
 import com.emu.apps.qcm.rest.controllers.unrestrained.AccountRestPublicController;
 import com.emu.apps.qcm.rest.controllers.unrestrained.QuestionnairePublicRestController;
 import com.emu.apps.qcm.rest.controllers.unrestrained.resources.ApiResource;
-import com.emu.apps.qcm.rest.controllers.management.QuestionnaireRestController;
+import com.emu.apps.qcm.rest.controllers.domain.QuestionnaireRestController;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.SimpleRepresentationModelAssembler;

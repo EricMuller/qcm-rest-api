@@ -31,7 +31,7 @@ package com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers;
 import com.emu.apps.qcm.domain.mappers.AccountIdMapper;
 import com.emu.apps.qcm.domain.mappers.QuestionIdMapper;
 import com.emu.apps.qcm.domain.model.question.Question;
-import com.emu.apps.qcm.domain.model.question.QuestionWithTagsOnly;
+import com.emu.apps.qcm.domain.query.question.QuestionWithTagsOnly;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.entity.questions.QuestionEntity;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.custom.IgnoreOwner;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.custom.IgnoreTags;
@@ -61,11 +61,7 @@ public interface QuestionEntityMapper {
     @ModelId
     Question questionResponseProjectionToDto(QuestionResponseProjection questionProjection);
 
-    default Page <Question> pageQuestionResponseProjectionToDto(Page <QuestionResponseProjection> page) {
-        return page.map(this::questionResponseProjectionToDto);
-    }
-
-    default Page <QuestionWithTagsOnly> pageEntityToPageTagDto(Page <QuestionEntity> page) {
+    default Page <QuestionWithTagsOnly> pageEntityToQuestionWithTagOnly(Page <QuestionEntity> page) {
         return page.map(this::entityToQuestionWithTagsOnly);
     }
 

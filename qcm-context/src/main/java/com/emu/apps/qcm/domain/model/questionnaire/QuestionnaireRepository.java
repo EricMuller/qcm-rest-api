@@ -18,6 +18,8 @@ public interface QuestionnaireRepository {
 
     boolean existsOfId(QuestionnaireId questionnaireId);
 
+    Page <Questionnaire> getQuestionnaires(String[] tagUuid, Pageable pageable, PrincipalId principal);
+
     Optional <Questionnaire> getQuestionnaireOfId(QuestionnaireId questionnaireId);
 
     ResponseEntity <Questionnaire> deleteQuestionnaireOfId(QuestionnaireId questionnaireId);

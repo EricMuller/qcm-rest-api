@@ -19,6 +19,6 @@ public interface TagQuestionPersistencePort {
 
     Iterable <Tag> findAll();
 
-    Page <Tag> findAllByPage(Optional <String> firstLetter, Pageable pageable, String principal);
+    Page <Tag> findTagsByPage(Optional <String> firstLetter, Pageable pageable, String principal);
 
 }

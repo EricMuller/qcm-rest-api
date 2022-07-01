@@ -2,7 +2,8 @@ package com.emu.apps.qcm.rest.mappers;
 
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireQuestion;
 import com.emu.apps.qcm.infra.persistence.adapters.jpa.mappers.UuidMapperImpl;
-import com.emu.apps.qcm.rest.controllers.unrestrained.resources.PushishedQuestionnaireQuestion;
+import com.emu.apps.qcm.rest.controllers.unrestrained.mappers.PublishedMapper;
+import com.emu.apps.qcm.rest.controllers.unrestrained.mappers.PublishedMapperImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;

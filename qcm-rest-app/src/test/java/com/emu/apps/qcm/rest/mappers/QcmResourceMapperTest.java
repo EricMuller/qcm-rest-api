@@ -8,9 +8,11 @@ import com.emu.apps.qcm.domain.mappers.TagIdMapperImpl;
 import com.emu.apps.qcm.domain.mappers.WebhookIdMapperImpl;
 import com.emu.apps.qcm.domain.model.question.Question;
 import com.emu.apps.qcm.domain.model.question.QuestionId;
-import com.emu.apps.qcm.domain.model.question.QuestionWithTagsOnly;
+import com.emu.apps.qcm.domain.query.question.QuestionWithTagsOnly;
 import com.emu.apps.qcm.domain.model.questionnaire.QuestionnaireQuestion;
-import com.emu.apps.qcm.rest.controllers.management.resources.AccountResource;
+import com.emu.apps.qcm.rest.controllers.domain.mappers.QcmResourceMapperImpl;
+import com.emu.apps.qcm.rest.controllers.domain.resources.AccountResource;
+import com.emu.apps.qcm.rest.controllers.domain.mappers.QcmResourceMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -76,7 +78,7 @@ class QcmResourceMapperTest {
 
         var questionWithTagsOnly = new QuestionWithTagsOnly();
         questionWithTagsOnly.setNumeroVersion(2);
-        questionWithTagsOnly.setId(new QuestionId(uuid));
+        questionWithTagsOnly.setId(uuid);
 
         var searchQuestionResource = qcmResourceMapper.questionTagsToSearchResources(questionWithTagsOnly);
 

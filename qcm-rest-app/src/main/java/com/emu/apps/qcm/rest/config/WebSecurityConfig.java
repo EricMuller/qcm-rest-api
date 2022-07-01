@@ -1,7 +1,8 @@
 package com.emu.apps.qcm.rest.config;
 
 
-import com.emu.apps.qcm.rest.controllers.ApiRestMappings;
+import com.emu.apps.qcm.rest.controllers.domain.DomainMappings;
+import com.emu.apps.qcm.rest.controllers.unrestrained.PublicMappings;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -68,8 +69,8 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .oauth2ResourceServer().jwt().jwtAuthenticationConverter(jwtAuthenticationConverter()).and()
                 .and()
                 .authorizeRequests()
-                .antMatchers(ApiRestMappings.PUBLIC_API + "/**").permitAll()
-                .antMatchers(ApiRestMappings.MANAGEMENT_API + "/**").authenticated()
+                .antMatchers(PublicMappings.PUBLIC_API + "/**").permitAll()
+                .antMatchers(DomainMappings.DOMAIN_API + "/**").authenticated()
                 .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
                 .anyRequest().permitAll();
 

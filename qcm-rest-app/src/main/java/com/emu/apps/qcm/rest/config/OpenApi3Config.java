@@ -5,7 +5,6 @@ import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
-import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.security.OAuthFlow;
@@ -24,10 +23,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-import java.util.Map;
-import java.util.TreeMap;
+import static com.emu.apps.qcm.rest.controllers.domain.DomainMappings.ACCOUNTS;
+import static com.emu.apps.qcm.rest.controllers.domain.DomainMappings.CATEGORIES;
+import static com.emu.apps.qcm.rest.controllers.domain.DomainMappings.QUESTIONNAIRES;
+import static com.emu.apps.qcm.rest.controllers.domain.DomainMappings.QUESTIONS;
+import static com.emu.apps.qcm.rest.controllers.domain.DomainMappings.*;
+import static com.emu.apps.qcm.rest.controllers.services.ServicesMappings.SEARCH;
+import static com.emu.apps.qcm.rest.controllers.services.ServicesMappings.SERVICES_API;
+import static com.emu.apps.qcm.rest.controllers.unrestrained.PublicMappings.*;
 
-import static com.emu.apps.qcm.rest.controllers.ApiRestMappings.*;
 
 @Configuration
 @Profile({"!test"})
@@ -57,7 +61,7 @@ public class OpenApi3Config {
     }
 
     @Bean
-    public Info managementInfo(){
+    public Info managementInfo() {
 
         return new Info()
                 .title("QCM Rest API")
@@ -68,12 +72,13 @@ public class OpenApi3Config {
                         .url("https://qcm.webmarks.net")
                         .email("eric.pierre.muller@gmail.com"));
     }
+
     @Bean
-    public Info technicalInfo(){
+    public Info serviceInfo() {
 
         return new Info()
                 .title("Technical Rest API")
-                .description("Technical Management")
+                .description("Services Management with Keycloak Authentication  <a href='https://keycloak.webmarks.net/'> here</a>")
                 .version(buildProperties.getVersion() + "-" + gitProperties.getShortCommitId() + "-" + buildProperties.getTime())
                 .contact(new Contact()
                         .name("Eric M.")
@@ -83,7 +88,7 @@ public class OpenApi3Config {
 
 
     @Bean
-    public Info qcmInfo(){
+    public Info qcmInfo() {
 
         return new Info()
                 .title("QCM Rest API")
@@ -96,7 +101,7 @@ public class OpenApi3Config {
     }
 
     @Bean
-    public Info actuatorInfo(){
+    public Info actuatorInfo() {
 
         return new Info()
                 .title("Spring Actuator API")
@@ -132,9 +137,10 @@ public class OpenApi3Config {
         return openApi -> openApi.info(actuatorInfo());
     }
 
-    @Bean SecurityScheme  KeyCoackSecurityScheme() {
+    @Bean
+    SecurityScheme KeyCoackSecurityScheme() {
         var authUrl = String.format("%s/realms/%s/protocol/openid-connect", this.authServer, this.realm);
-        return  new SecurityScheme()
+        return new SecurityScheme()
                 .type(SecurityScheme.Type.OAUTH2)
                 .description("Oauth2 flow")
                 .flows(new OAuthFlows()
@@ -146,8 +152,9 @@ public class OpenApi3Config {
                         ));
     }
 
-    @Bean SecurityScheme  apiKeySecurityScheme() {
-       return new SecurityScheme()
+    @Bean
+    SecurityScheme apiKeySecurityScheme() {
+        return new SecurityScheme()
                 .type(SecurityScheme.Type.APIKEY)
                 .description("Api Key access")
                 .in(SecurityScheme.In.HEADER)
@@ -160,32 +167,32 @@ public class OpenApi3Config {
             openApi.addSecurityItem(new SecurityRequirement().addList("keycloack_openid"));
             openApi.getComponents()
                     // sso
-                    .addSecuritySchemes("keycloack_openid", KeyCoackSecurityScheme()   )
+                    .addSecuritySchemes("keycloack_openid", KeyCoackSecurityScheme())
 
                     .addParameters("Version", new Parameter()
                             .in("header")
                             .name("Version")
                             .schema(new StringSchema())
-                            .required(false)) ;
+                            .required(false));
             openApi.info(managementInfo());
         };
     }
 
     @Bean
-    public OpenApiCustomiser technicalApiCustomizer() {
+    public OpenApiCustomiser serviceApiCustomizer() {
         return openApi -> {
             openApi.addSecurityItem(new SecurityRequirement().addList("keycloack_openid"));
             openApi.getComponents()
-                    .addSecuritySchemes("keycloack_openid", KeyCoackSecurityScheme()   );
-            openApi.info(technicalInfo());
+                    .addSecuritySchemes("keycloack_openid", KeyCoackSecurityScheme());
+            openApi.info(serviceInfo());
         };
     }
 
     @Bean
-    GroupedOpenApi qcmApis() {
+    GroupedOpenApi publicApis() {
         return GroupedOpenApi.builder()
-                .group("Qcm")
-                .pathsToMatch(PUBLIC_API + "/**" )
+                .group("Public api")
+                .pathsToMatch(PUBLIC_API + "/**", LOGS_API + "/**")
                 .addOpenApiCustomiser(qcmApiCustomizer())
                 .build();
     }
@@ -193,7 +200,7 @@ public class OpenApi3Config {
     @Bean
     GroupedOpenApi actuatorApis() {
         return GroupedOpenApi.builder()
-                .group("Actuator")
+                .group("Actuator api")
                 .pathsToMatch(ACTUATOR_API + "/**")
                 .addOpenApiCustomiser(actuatorApiCustomizer())
                 .build();
@@ -202,16 +209,14 @@ public class OpenApi3Config {
     @Bean
     GroupedOpenApi managementApis() {
         return GroupedOpenApi.builder()
-                .group("Management")
-                .pathsToMatch(MANAGEMENT_API + "/"
-                        , MANAGEMENT_API + ACCOUNTS + "/**"
-                        , MANAGEMENT_API + QUESTIONNAIRES + "/**"
-                        , MANAGEMENT_API + QUESTIONS + "/**"
-                        , MANAGEMENT_API + TAGS + "/**"
-                        , MANAGEMENT_API + CATEGORIES + "/**"
-                        , MANAGEMENT_API + EXPORTS + "/**"
-                        , MANAGEMENT_API + IMPORTS + "/**"
-                        , MANAGEMENT_API + UPLOADS + "/**"
+                .group("Domain Management api")
+                .pathsToMatch(DOMAIN_API + "/"
+                        , DOMAIN_API + ACCOUNTS + "/**"
+                        , DOMAIN_API + QUESTIONNAIRES + "/**"
+                        , DOMAIN_API + QUESTIONS + "/**"
+                        , DOMAIN_API + CATEGORIES + "/**"
+                        , DOMAIN_API + UPLOADS + "/**"
+                        , DOMAIN_API + WEBHOOKS + "/**"
                 )
                 .addOpenApiCustomiser(managementApiCustomizer())
                 .build();
@@ -220,13 +225,11 @@ public class OpenApi3Config {
     @Bean
     GroupedOpenApi technicalApis() {
         return GroupedOpenApi.builder()
-                .addOpenApiCustomiser(technicalApiCustomizer())
-                .group("Technical")
-                .pathsToMatch(MANAGEMENT_API + WEBHOOKS + "/**",
-                        MANAGEMENT_API + QUERY + "/**", LOGS + "/**")
+                .addOpenApiCustomiser(serviceApiCustomizer())
+                .group("Services Management api")
+                .pathsToMatch(SERVICES_API + SEARCH + "/**"
+                        )
                 .build();
     }
-
-
 
 }
